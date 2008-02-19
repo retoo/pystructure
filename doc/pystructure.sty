@@ -1,0 +1,80 @@
+\ProvidesPackage{pystructure}
+
+\usepackage[utf8]{inputenc}
+\usepackage[pdftex]{graphicx}
+\usepackage[british]{babel}
+% verbatim for comment environment
+\usepackage{verbatim}
+\graphicspath{{img/}{../}{../../}}
+
+% Colours
+\usepackage[usenames,dvipsnames]{color}
+\definecolor{titlegreen}{named}{OliveGreen}
+\definecolor{gray}{rgb}{0.9,0.9,0.9}
+
+% Font
+\usepackage{lmodern}
+\usepackage{mathpazo} % Palatino font
+\usepackage[T1]{fontenc}
+\linespread{1.05}
+\setkomafont{sectioning}{\rmfamily \bfseries \color{titlegreen}}
+
+% References
+\usepackage{varioref} % References like "on page X"
+\usepackage[pdftex,plainpages=false]{hyperref}
+\hypersetup{colorlinks, linkcolor=titlegreen, urlcolor=titlegreen, citecolor=titlegreen}
+
+% Heading and footing
+\usepackage[headsepline]{scrpage2}
+\pagestyle{scrheadings}
+% \clearscrheadfoot
+% \chead{\normalfont \sffamily \headmark}
+% \cfoot{\pagemark}
+\automark{chapter}
+
+% Other
+\usepackage{booktabs}
+\usepackage{fixltx2e} % Current patches for LaTeX
+\usepackage{microtype} % Perfect typesetting
+\usepackage{enumerate}
+
+% Code listings
+\usepackage{listings}
+
+\newcommand{\id}{\lstinline}
+\newcommand{\type}{\lstinline}
+\newcommand{\code}{\lstinline}
+\newcommand{\class}{\lstinline}
+
+\lstdefinelanguage[]{OurPython}[]{Python}{
+morendkeywords={self,object,int,float,str,list,dict}
+}
+
+\lstset{language=OurPython, basicstyle=\small\ttfamily, frame=shadowbox,
+numberstyle=\tiny, numbersep=6mm,
+framexleftmargin=3mm, framextopmargin=2mm, framexbottommargin=2mm,
+aboveskip=5mm, belowskip=5mm, xleftmargin=4mm,
+rulesepcolor=\color{gray}, showstringspaces=false,
+keywordstyle=\color{OliveGreen}\bfseries,
+ndkeywordstyle=\color{Bittersweet},
+identifierstyle=\color{Brown},
+stringstyle=\color{Red}
+}
+
+% Command for floating info boxes
+% usage: \infobox{<title>}{<text>}
+\usepackage{wrapfig}
+
+\newcommand{\infobox}[2]{
+  \begin{wrapfigure}{r}{6cm}
+    \hspace{4pt}
+    \fbox{
+      \parbox[b]{5.4cm}{\smallskip \footnotesize {\bf #1} \smallskip
+      
+        #2
+      
+        \smallskip
+      }
+    }
+  \end{wrapfigure}
+}
