@@ -17,9 +17,11 @@
 
 Planning and analysing a program's structure and internal dependencies is a common task when working on larger projects. Such analysis helps to meet the defined architectural design goals or to find structural flaws like cyclic dependencies. A clear architecture becomes more and more important as software grows.
 
-The project's goal is to develop a structural analyser for programs written in the Python programming language. The analyser should be able to parse an application's source code and generate a graph showing its internal dependencies between methods, classes and modules.
+The project's goal is to develop a structural analyser for programs written in the Python programming language. The analyser should be able to parse an application's source code and generate a graph representing its internal dependencies between methods, classes and modules. 
 
-Headway Software developed a program structure analyser (Structure 101g) which takes such a dependency graph and visualises it. The data is exchanged between the analyser and Structure 101g using XML files.
+(1) The generated representation can be used for various further analysis. Headway Software developed a program structure analyser (Structure 101g) which takes such a dependency graph and visualises it. The data is exchanged between the analyser and Structure 101g using XML files.
+
+(2) Of course the dependency representation can be used for other purposes as well.
 
 \begin{figure}[h] \centering
 \includegraphics[width=0.75\textwidth]{big_picture}
@@ -28,7 +30,7 @@ Headway Software developed a program structure analyser (Structure 101g) which t
 
 \subsection*{Analyser}
 
-The analyser's main goal is to generate a graph which represents the internal structure of a program. First the source code has to be parsed and all the involved components such as modules, classes and methods have to be identified. The analyser then has to determine what variables, attributes and parameters are being used in these components and what types the variables have. This information can then be used to identify dependencies between different components. For example if method \id{b} gets called in method \id{a} the analyser has to identify a dependency between method \id{a} and method \id{b}. All these components and dependencies have to be incorporated into a graph which then can be used by \emph{Structure 101g} for further analysis and visualisation.
+The analyser's main goal is to generate a graph which represents the internal structure of a program. First the source code has to be parsed and all the involved components such as modules, classes and methods have to be identified. The analyser then has to determine what variables, attributes and parameters are being used in these components and what types the variables have. This information can then be used to identify dependencies between different components. For example if method \id{b} gets called in method \id{a} the analyser has to identify a dependency between method \id{a} and method \id{b}. All these components and dependencies have to be incorporated into a graph which then can be used by \emph{Structure 101g} or other tools for further analysis or visualisation. 
 
 \subsection*{Type Inference Engine}
 
