@@ -8,8 +8,13 @@
 		classpath="/opt/findbugs/lib/findbugs-ant.jar"/>
 
 	<taskdef resource="checkstyletask.properties"
-		classpath="/opt/checkstyle/target/dist/checkstyle-4.3/checkstyle-all-4.3.jar"/>
+		classpath="/opt/checkstyle/checkstyle-all-4.4.jar"/>
 
+	<path id="junit.classpath">
+		<pathelement location="${junit.dir}/junit.jar" />
+	</path>
+
+	
 	<path id="cobertura.classpath">
 		<fileset dir="${cobertura.dir}">
 			<include name="cobertura.jar" />
@@ -19,12 +24,31 @@
 
 	<taskdef classpathref="cobertura.classpath" resource="tasks.properties" />
 
+	<path id="instrumented.classpath">
+		<pathelement location="${cobertura-dir}" />
+	</path>
+
+	<path id="project.classpath">
+		<pathelement location="${build.src}" />
+	</path>
+	
+	<path id="tests.classpath">
+		<pathelement location="${build.tests}" />
+	</path>
+
 	<target name="build">
-		
+		<javac srcdir="${src-dir}" destdir="${build.src}" debug="true" />
 	</target>
 
+	<target name="build-test">
+		<javac srcdir="${tests-dir}" destdir="${build.tests}">
+			<classpath refid="project.classpath" />
+			<classpath refid="junit.classpath" />
+		</javac>
+	</target>
+	
 	<target name="documentation">
-		<exec executable="${base-dir}/cruisecontrol/checkout/build/build-documents.sh" 
+		<exec executable="build/build-documents.sh" 
 			output="${output.doc-dir}/log.txt" />
 
 		<move todir="${output.doc-dir}/">
@@ -32,9 +56,27 @@
 		</move>
 	</target>
 
+	<target name="init">
+		<delete dir="${tmp-dir}" failonerror="false"/>
+		<mkdir  dir="${tmp-dir}" />
+		
+		<mkdir dir="${output.base}" />
+		<mkdir dir="${output.logs-dir}" />
+		<mkdir dir="${output.base}" />
+		<mkdir dir="${output.junit-dir}" />
+		<mkdir dir="${output.cobertura-dir}" />
+		<mkdir dir="${output.doc-dir}" />
+		<mkdir dir="${output.findbugs-dir}" />
+		<mkdir dir="${output.checkstyle-dir}" />
+
+
+		<mkdir dir="${build.base}" />
+		<mkdir dir="${build.src}" />
+		<mkdir dir="${build.tests}" />
+	</target>
+	
 	<target name="init-tests">
 		<mkdir dir="${output.junit-dir}" />
-
 		<delete>
 			<fileset dir="${output.junit-dir}">
 				<include name="*.txt"/>
@@ -43,37 +85,30 @@
 		</delete>
 	</target>
 
-	<target name="cobertura-instrument" depends="pluginbuilder-config">
-		<delete dir="${cobertura-dir}" failonerror="false"/>
-		<mkdir  dir="${cobertura-dir}" />
-
+	<target name="cobertura-instrument" depends="build">
 		<cobertura-instrument todir="${cobertura-dir}" datafile="${cobertura-ser}">
 			<includeClasses regex=".*" />
 			<excludeClasses regex="add-here-something-reasonable" />
 			<instrumentationClasspath>
-				<fileset dir="tbbbd">
-					<include name="xxx.jar" />
+				<fileset dir="${build.src}">
+					<include name="**/*.class" />
 				</fileset>
 			</instrumentationClasspath>
 		</cobertura-instrument>
 	</target>
 
-	<target name="run-tests" depends="init-tests,cobertura-instrument,pluginbuilder-config">
-		<path id="project.classpath">
-			<fileset dir="${cobertura-dir}">
-				<include name="*.jar" />
-			</fileset>
-		</path>
-		
-		<junit fork="true" haltonfailure="false" printsummary="true" dir="${base_dir}">	
+	<target name="run-tests" depends="init-tests,build-test,cobertura-instrument">
+		<junit fork="true" haltonfailure="false" printsummary="true">	
+			<classpath refid="junit.classpath" />
 			<classpath refid="cobertura.classpath" />
-			<classpath refid="project.classpath" />
+			<classpath refid="instrumented.classpath" /> 
+			<classpath refid="tests.classpath" />
 
 			<sysproperty key="net.sourceforge.cobertura.datafile" file="${cobertura-ser}" />
 
 			<formatter type="xml" />
 			<formatter type="plain" usefile="true" />
-			<test name="org.python.pydev.refactoring.tests.AllTests" todir="${output.junit-dir}" />
+			<test name="org.pystructure.tests.AllTests" todir="${output.junit-dir}" />
 		</junit>
 
 		<cobertura-report format="html" destdir="${output.cobertura-dir}" datafile="${cobertura-ser}">
@@ -87,17 +122,17 @@
 		<checkstyle config="${doc-dir}/sun_checks.xml"
 			failureProperty="checkstyle.failure"
 			failOnViolation="false">
-			<formatter type="xml"   tofile="${output.logs-dir}/checkstyle/checkstyle_report.xml"/>
+			<formatter type="xml"   tofile="${output.checkstyle-dir}/checkstyle_report.xml"/>
 			<formatter type="plain" tofile="${output.doc-dir}/checkstyle_report.txt"/>
-			<fileset dir="src/org.python.pydev.refactoring/src/" >
+			<fileset dir="src/" >
 				<include name="**/*.java" />
 				<exclude name="Exclude Stuff if you like" />
 			</fileset>
 		</checkstyle>
 	</target>
 
-	<target name="findbugs" depends="pluginbuilder-config,build-project">
-	<!--
+	<target name="findbugs" depends="build">
+
 		<findbugs 
 			home="${findbugs.dir}"
 			output="html"
@@ -105,21 +140,11 @@
 			jvmargs="-Xms256m -Xmx256m -XX:MaxPermSize=256m"
 			outputFile="${output.findbugs-dir}/findbugs-${label}.html" >
 				<auxClasspath>
-					<fileset dir="${eclipseDir}/plugins">
-						<include name="*.jar" />
-					</fileset>
-					<fileset dir="${pydev.home}">
-						<include name="org.python.pydev/pydev.jar" />
-						<include name="org.python.pydev.core/core.jar" />
-						<include name="org.python.pydev.parser/parser.jar" />
-						<include name="org.python.pydev.core/commons-codec.jar" />
-					</fileset>
 				</auxClasspath>
 				<sourcePath path="${src-dir}" />
-				<class location="${pydev.home}/org.python.pydev.refactoring/refactoring.jar" />
+				<class location="${build.src}" />
 		</findbugs>
-	-->
 	</target>
 
-	<target name="all" depends="build,documentation,update-site,checkstyle,run-tests,findbugs"/>
+	<target name="all" depends="init,build,documentation,checkstyle,run-tests,findbugs"/>
 </project>
