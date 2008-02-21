@@ -1,0 +1,125 @@
+<?xml version="1.0"?>
+
+<project default="all">
+	<property file="build.properties"/>
+
+	<taskdef name="findbugs" 
+		classname="edu.umd.cs.findbugs.anttask.FindBugsTask"
+		classpath="/opt/findbugs/lib/findbugs-ant.jar"/>
+
+	<taskdef resource="checkstyletask.properties"
+		classpath="/opt/checkstyle/target/dist/checkstyle-4.3/checkstyle-all-4.3.jar"/>
+
+	<path id="cobertura.classpath">
+		<fileset dir="${cobertura.dir}">
+			<include name="cobertura.jar" />
+			<include name="lib/**/*.jar" />
+		</fileset>
+	</path>
+
+	<taskdef classpathref="cobertura.classpath" resource="tasks.properties" />
+
+	<target name="build">
+		
+	</target>
+
+	<target name="documentation">
+		<exec executable="${base-dir}/cruisecontrol/checkout/build/build-documents.sh" 
+			output="${output.doc-dir}/log.txt" />
+
+		<move todir="${output.doc-dir}/">
+			<fileset dir="${doc-dir}" includes="**/**.pdf" />
+		</move>
+	</target>
+
+	<target name="init-tests">
+		<mkdir dir="${output.junit-dir}" />
+
+		<delete>
+			<fileset dir="${output.junit-dir}">
+				<include name="*.txt"/>
+				<include name="*.xml"/>
+			</fileset>
+		</delete>
+	</target>
+
+	<target name="cobertura-instrument" depends="pluginbuilder-config">
+		<delete dir="${cobertura-dir}" failonerror="false"/>
+		<mkdir  dir="${cobertura-dir}" />
+
+		<cobertura-instrument todir="${cobertura-dir}" datafile="${cobertura-ser}">
+			<includeClasses regex=".*" />
+			<excludeClasses regex="add-here-something-reasonable" />
+			<instrumentationClasspath>
+				<fileset dir="tbbbd">
+					<include name="xxx.jar" />
+				</fileset>
+			</instrumentationClasspath>
+		</cobertura-instrument>
+	</target>
+
+	<target name="run-tests" depends="init-tests,cobertura-instrument,pluginbuilder-config">
+		<path id="project.classpath">
+			<fileset dir="${cobertura-dir}">
+				<include name="*.jar" />
+			</fileset>
+		</path>
+		
+		<junit fork="true" haltonfailure="false" printsummary="true" dir="${base_dir}">	
+			<classpath refid="cobertura.classpath" />
+			<classpath refid="project.classpath" />
+
+			<sysproperty key="net.sourceforge.cobertura.datafile" file="${cobertura-ser}" />
+
+			<formatter type="xml" />
+			<formatter type="plain" usefile="true" />
+			<test name="org.python.pydev.refactoring.tests.AllTests" todir="${output.junit-dir}" />
+		</junit>
+
+		<cobertura-report format="html" destdir="${output.cobertura-dir}" datafile="${cobertura-ser}">
+		    <fileset dir="${src-dir}">
+			<include name="**/*.java" />
+		    </fileset>
+		</cobertura-report>
+	</target>    
+
+	<target name="checkstyle">
+		<checkstyle config="${doc-dir}/sun_checks.xml"
+			failureProperty="checkstyle.failure"
+			failOnViolation="false">
+			<formatter type="xml"   tofile="${output.logs-dir}/checkstyle/checkstyle_report.xml"/>
+			<formatter type="plain" tofile="${output.doc-dir}/checkstyle_report.txt"/>
+			<fileset dir="src/org.python.pydev.refactoring/src/" >
+				<include name="**/*.java" />
+				<exclude name="Exclude Stuff if you like" />
+			</fileset>
+		</checkstyle>
+	</target>
+
+	<target name="findbugs" depends="pluginbuilder-config,build-project">
+	<!--
+		<findbugs 
+			home="${findbugs.dir}"
+			output="html"
+			effort="max"
+			jvmargs="-Xms256m -Xmx256m -XX:MaxPermSize=256m"
+			outputFile="${output.findbugs-dir}/findbugs-${label}.html" >
+				<auxClasspath>
+					<fileset dir="${eclipseDir}/plugins">
+						<include name="*.jar" />
+					</fileset>
+					<fileset dir="${pydev.home}">
+						<include name="org.python.pydev/pydev.jar" />
+						<include name="org.python.pydev.core/core.jar" />
+						<include name="org.python.pydev.parser/parser.jar" />
+						<include name="org.python.pydev.core/commons-codec.jar" />
+					</fileset>
+				</auxClasspath>
+				<sourcePath path="${src-dir}" />
+				<class location="${pydev.home}/org.python.pydev.refactoring/refactoring.jar" />
+		</findbugs>
+	-->
+	</target>
+
+	<target name="all" depends="build,documentation,update-site,checkstyle,run-tests,findbugs"/>
+</project>
