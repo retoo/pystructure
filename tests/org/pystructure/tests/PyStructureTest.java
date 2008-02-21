@@ -1,11 +1,20 @@
 package org.pystructure.tests;
 
+import org.pystructure.PyStructure;
+
 import junit.framework.TestCase;
 
 public class PyStructureTest extends TestCase {
 
+	private PyStructure obj;
+
+	protected void setUp() throws Exception {
+		obj = new PyStructure();
+	}
+	
 	public void testAdd() {
-		assertTrue(true);
+		assertEquals(1 + 2, obj.add(1, 2));
+		assertEquals(1 + 2, obj.add(2, 1));
 	}
 
 }
