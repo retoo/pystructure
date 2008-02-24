@@ -98,7 +98,7 @@
 	</target>
 
 	<target name="run-tests" depends="init-tests,build-test,cobertura-instrument">
-		<junit fork="true" haltonfailure="false" printsummary="true">	
+		<junit fork="true" haltonfailure="true" printsummary="true">	
 			<classpath refid="junit.classpath" />
 			<classpath refid="cobertura.classpath" />
 			<classpath refid="instrumented.classpath" /> 
