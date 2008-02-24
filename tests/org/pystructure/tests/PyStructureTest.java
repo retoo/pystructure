@@ -16,5 +16,9 @@ public class PyStructureTest extends TestCase {
 		assertEquals(1 + 2, obj.add(1, 2));
 		assertEquals(1 + 2, obj.add(2, 1));
 	}
+	
+	public void testAdd2() {
+		assertEquals(1 + 3, obj.add(2, 1));
+	}
 
 }
