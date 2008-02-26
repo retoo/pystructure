@@ -148,3 +148,4 @@
 
 	<target name="all" depends="init,build,documentation,checkstyle,run-tests,findbugs"/>
 </project>
+
