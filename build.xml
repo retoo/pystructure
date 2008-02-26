@@ -51,9 +51,9 @@
 		<exec executable="build/build-documents.sh" 
 			output="${output.doc-dir}/log.txt" />
 
-		<move todir="${output.doc-dir}/">
+		<copy todir="${output.doc-dir}/">
 			<fileset dir="${doc-dir}" includes="**/**.pdf" />
-		</move>
+		</copy>
 	</target>
 
 	<target name="init">
