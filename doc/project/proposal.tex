@@ -17,11 +17,22 @@
 
 Planning and analysing a program's structure and internal dependencies is a common task when working on larger projects. Such analysis helps to meet the defined architectural design goals or to find structural flaws like cyclic dependencies. A clear architecture becomes more and more important as software grows.
 
-The project's goal is to develop a structural analyser for programs written in the Python programming language. The analyser should be able to parse an application's source code and generate a graph representing its internal dependencies between methods, classes and modules. 
+This project's goal is to develop a structural analyser for programs written in the Python programming language. The analyser should be able to parse an application's source code, analyse it and then generate a graph representing the internal structure of the project. Details which are usually not known until runtime have to be inferred during the analysis.
 
-(1) The generated representation can be used for various further analysis. Headway Software developed a program structure analyser (Structure 101g) which takes such a dependency graph and visualises it. The data is exchanged between the analyser and Structure 101g using XML files.
+The following information will be provided by the analyser: 
+\begin{itemize}
+	\item All involved \emph{components}, like modules, packages, classes or methods
+	\item \emph{Dependencies} between such components, caused by:
+	\begin{itemize}
+		\item method calls
+		\item using variables/parameters/fields of a certain type
+		\item inheritance
+	\end{itemize}
+	\item Module layout/structure
+\end{itemize}
 
-(2) Of course the dependency representation can be used for other purposes as well.
+The generated data can be used by other programs for various further analysis. One example is Structure 101g developed by Headway Software which takes arbitrary dependency data and visualises it. 
+
 
 \begin{figure}[h] \centering
 \includegraphics[width=0.75\textwidth]{big_picture}
