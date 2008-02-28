@@ -108,7 +108,7 @@
 
 			<formatter type="xml" />
 			<formatter type="plain" usefile="true" />
-			<test name="org.pystructure.tests.AllTests" todir="${output.junit-dir}" />
+			<test name="ch.hsr.ifs.pystructure.tests.AllTests" todir="${output.junit-dir}" />
 		</junit>
 
 		<cobertura-report format="html" destdir="${output.cobertura-dir}" datafile="${cobertura-ser}">
