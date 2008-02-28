@@ -1,4 +1,4 @@
-package org.pystructure;
+package ch.hsr.ifs.pystructure;
 
 public class PyStructure {
 	

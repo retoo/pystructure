@@ -1,6 +1,6 @@
 package org.pystructure.tests;
 
-import org.pystructure.PyStructure;
+import ch.hsr.ifs.pystructure.PyStructure;
 
 import junit.framework.TestCase;
 
