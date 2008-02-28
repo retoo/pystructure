@@ -1,4 +1,4 @@
-package org.pystructure.tests;
+package ch.hsr.ifs.pystructure.tests;
 
 import ch.hsr.ifs.pystructure.PyStructure;
 

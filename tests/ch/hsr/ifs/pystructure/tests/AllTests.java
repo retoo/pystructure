@@ -1,4 +1,4 @@
-package org.pystructure.tests;
+package ch.hsr.ifs.pystructure.tests;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
