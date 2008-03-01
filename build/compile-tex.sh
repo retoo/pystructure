@@ -34,6 +34,9 @@ OPTS="-interaction=nonstopmode -file-line-error-style"
 
 cp -a $SRCDIR/* $TMPDIR
 
+# Use the newer Koma-Script classes in the prepended path
+export TEXINPUTS=/opt/koma-script:
+
 cd $TMPDIR
 pdflatex $OPTS $DOCUMENT
 bibtex $DOCUMENT
