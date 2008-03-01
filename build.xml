@@ -88,10 +88,11 @@
 	<target name="cobertura-instrument" depends="build">
 		<cobertura-instrument todir="${cobertura-dir}" datafile="${cobertura-ser}">
 			<includeClasses regex=".*" />
-			<excludeClasses regex="add-here-something-reasonable" />
+			<excludeClasses regex="something" />
 			<instrumentationClasspath>
 				<fileset dir="${build.src}">
 					<include name="**/*.class" />
+					<exclude name="org/python/**" />
 				</fileset>
 			</instrumentationClasspath>
 		</cobertura-instrument>
@@ -99,10 +100,13 @@
 
 	<target name="run-tests" depends="init-tests,build-test,cobertura-instrument">
 		<junit fork="true" haltonfailure="true" printsummary="true">	
+
 			<classpath refid="junit.classpath" />
 			<classpath refid="cobertura.classpath" />
 			<classpath refid="instrumented.classpath" /> 
+
 			<classpath refid="tests.classpath" />
+			<classpath refid="project.classpath" />
 
 			<sysproperty key="net.sourceforge.cobertura.datafile" file="${cobertura-ser}" />
 

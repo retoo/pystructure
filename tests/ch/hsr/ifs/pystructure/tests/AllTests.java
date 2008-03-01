@@ -9,6 +9,7 @@ public class AllTests {
 		TestSuite suite = new TestSuite("Test for org.pystructure.tests");
 		//$JUnit-BEGIN$
 		suite.addTestSuite(PyStructureTest.class);
+		suite.addTest(org.python.pydev.refactoring.tests.typeinference.AllTests.suite());
 		//$JUnit-END$
 		return suite;
 	}
