@@ -17,7 +17,8 @@ import org.python.pydev.parser.jython.ast.NameTok;
 
 import ch.hsr.ifs.pystructure.parser.Parser;
 
-public class ExpressionAtPositionVisitorTest extends TestCase {
+public class ExpressionAtLineVisitorTest extends TestCase {
+
 	public void testName() throws Exception {
 		String source = "name";
 		Expr expression = getExpression(source, "name", 1);
@@ -50,4 +51,5 @@ public class ExpressionAtPositionVisitorTest extends TestCase {
 		Expr expression = visitor.getExpression();
 		return expression;
 	}
+
 }
