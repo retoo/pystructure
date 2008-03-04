@@ -5,7 +5,7 @@
  *
  */
 
-package org.python.pydev.refactoring.tests.typeinference;
+package ch.hsr.ifs.pystructure.tests.typeinference;
 
 import org.python.pydev.parser.jython.Visitor;
 import org.python.pydev.parser.jython.ast.Expr;

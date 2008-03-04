@@ -5,7 +5,7 @@
  *
  */
 
-package org.python.pydev.refactoring.tests.typeinference;
+package ch.hsr.ifs.pystructure.tests.typeinference;
 
 import junit.framework.TestCase;
 
