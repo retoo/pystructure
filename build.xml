@@ -30,22 +30,31 @@
 
 	<path id="project.classpath">
 		<pathelement location="${build.src}" />
+		<pathelement location="${build.paser.jar}" />
 	</path>
 	
 	<path id="tests.classpath">
 		<pathelement location="${build.tests}" />
 	</path>
 
-	<target name="build">
-		<javac srcdir="${src-dir}" destdir="${build.src}" debug="true" />
+	<target name="build" depends="build-parser,init">
+		<javac srcdir="${src-dir}" destdir="${build.src}" debug="true">
+			<classpath refid="project.classpath" />
+		</javac>
+	</target>
+	
+	<target name="build-parser" depends="init">
+		<javac srcdir="${parser-dir}" destdir="${build.parser}" />
+		<jar destfile="${build.paser.jar}" basedir="${build.parser}" />
 	</target>
 
-	<target name="build-test">
+	<target name="build-test" depends="build">
 		<javac srcdir="${tests-dir}" destdir="${build.tests}">
 			<classpath refid="project.classpath" />
 			<classpath refid="junit.classpath" />
 		</javac>
 	</target>
+	
 	
 	<target name="documentation">
 		<exec executable="build/build-documents.sh" 
@@ -72,6 +81,7 @@
 
 		<mkdir dir="${build.base}" />
 		<mkdir dir="${build.src}" />
+		<mkdir dir="${build.parser}" />
 		<mkdir dir="${build.tests}" />
 	</target>
 	
@@ -92,7 +102,7 @@
 			<instrumentationClasspath>
 				<fileset dir="${build.src}">
 					<include name="**/*.class" />
-					<exclude name="org/python/**" />
+					<exclude name="-not-used-atm-" />
 				</fileset>
 			</instrumentationClasspath>
 		</cobertura-instrument>
@@ -102,6 +112,7 @@
 		<junit fork="true" haltonfailure="true" printsummary="true">	
 
 			<classpath refid="junit.classpath" />
+			
 			<classpath refid="cobertura.classpath" />
 			<classpath refid="instrumented.classpath" /> 
 
@@ -144,6 +155,7 @@
 			jvmargs="-Xms256m -Xmx256m -XX:MaxPermSize=256m"
 			outputFile="${output.findbugs-dir}/findbugs-${label}.html" >
 				<auxClasspath>
+					<pathelement location="${build.paser.jar}" />
 				</auxClasspath>
 				<sourcePath path="${src-dir}" />
 				<class location="${build.src}" />
