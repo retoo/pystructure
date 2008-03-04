@@ -43,7 +43,7 @@ class ExpressionTypeAssertion extends Assert {
 		Module module = workspace.getModule(file);
 		SimpleNode rootNode = module.getNode();
 		
-		ExpressionAtPositionVisitor visitor = new ExpressionAtPositionVisitor(expression, line);
+		ExpressionAtLineVisitor visitor = new ExpressionAtLineVisitor(line);
 		
 		try {
 			visitor.traverse(rootNode);

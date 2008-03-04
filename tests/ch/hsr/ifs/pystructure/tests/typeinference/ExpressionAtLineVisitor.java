@@ -10,12 +10,15 @@ package ch.hsr.ifs.pystructure.tests.typeinference;
 import org.python.pydev.parser.jython.Visitor;
 import org.python.pydev.parser.jython.ast.Expr;
 
-public class ExpressionAtPositionVisitor extends Visitor {
+/**
+ * Visitor which finds an expression at a specified line number.
+ */
+public class ExpressionAtLineVisitor extends Visitor {
 	private int beginLine;
 	
 	private Expr expression;
 	
-	public ExpressionAtPositionVisitor(String wantedExpression, int beginLine) {
+	public ExpressionAtLineVisitor(int beginLine) {
 		this.beginLine = beginLine;
 	}
 

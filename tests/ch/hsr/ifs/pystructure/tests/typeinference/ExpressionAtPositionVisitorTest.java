@@ -45,7 +45,7 @@ public class ExpressionAtPositionVisitorTest extends TestCase {
 
 	private Expr getExpression(String source, String wantedExpression, int line) throws Exception {
 		SimpleNode node = Parser.parse(source);
-		ExpressionAtPositionVisitor visitor = new ExpressionAtPositionVisitor(wantedExpression, line);
+		ExpressionAtLineVisitor visitor = new ExpressionAtLineVisitor(line);
 		visitor.traverse(node);
 		Expr expression = visitor.getExpression();
 		return expression;
