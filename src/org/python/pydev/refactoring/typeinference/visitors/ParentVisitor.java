@@ -5,7 +5,7 @@
  *
  */
 
-package org.python.pydev.refactoring.ast.visitors;
+package org.python.pydev.refactoring.typeinference.visitors;
 
 import java.util.Stack;
 

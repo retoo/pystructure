@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.python.pydev.parser.jython.ParseException;
-import org.python.pydev.refactoring.ast.visitors.VisitorFactory;
+import org.python.pydev.refactoring.ast.visitors.Parser;
 import org.python.pydev.refactoring.typeinference.model.base.IModule;
 import org.python.pydev.refactoring.typeinference.model.base.NameAdapter;
 import org.python.pydev.refactoring.utils.FileUtils;
@@ -58,7 +58,7 @@ public class Module extends Definition<org.python.pydev.parser.jython.ast.Module
 
 		org.python.pydev.parser.jython.ast.Module module;
 		try {
-			module = VisitorFactory.parse(source);
+			module = Parser.parse(source);
 		} catch (ParseException e) {
 			throw new RuntimeException(e);
 		}

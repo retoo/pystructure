@@ -14,7 +14,7 @@ import org.python.pydev.parser.jython.ast.Attribute;
 import org.python.pydev.parser.jython.ast.Expr;
 import org.python.pydev.parser.jython.ast.Name;
 import org.python.pydev.parser.jython.ast.NameTok;
-import org.python.pydev.refactoring.ast.visitors.VisitorFactory;
+import org.python.pydev.refactoring.ast.visitors.Parser;
 
 public class ExpressionAtPositionVisitorTest extends TestCase {
 	public void testName() throws Exception {
@@ -43,7 +43,7 @@ public class ExpressionAtPositionVisitorTest extends TestCase {
 	}
 
 	private Expr getExpression(String source, String wantedExpression, int line) throws Exception {
-		SimpleNode node = VisitorFactory.parse(source);
+		SimpleNode node = Parser.parse(source);
 		ExpressionAtPositionVisitor visitor = new ExpressionAtPositionVisitor(wantedExpression, line);
 		visitor.traverse(node);
 		Expr expression = visitor.getExpression();

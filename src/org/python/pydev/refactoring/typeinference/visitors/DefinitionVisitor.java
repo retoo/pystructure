@@ -38,7 +38,6 @@ import org.python.pydev.parser.jython.ast.excepthandlerType;
 import org.python.pydev.parser.jython.ast.exprType;
 import org.python.pydev.parser.jython.ast.stmtType;
 import org.python.pydev.parser.jython.ast.suiteType;
-import org.python.pydev.refactoring.ast.visitors.ParentVisitor;
 import org.python.pydev.refactoring.typeinference.model.base.NameAdapter;
 import org.python.pydev.refactoring.typeinference.model.definitions.Argument;
 import org.python.pydev.refactoring.typeinference.model.definitions.AssignDefinition;
