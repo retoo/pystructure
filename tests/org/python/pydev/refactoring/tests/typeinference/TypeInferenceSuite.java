@@ -17,8 +17,8 @@ import java.util.LinkedList;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import org.python.pydev.refactoring.typeinference.inferencer.PythonTypeInferencer;
-import org.python.pydev.refactoring.typeinference.visitors.Workspace;
+import ch.hsr.ifs.pystructure.typeinference.inferencer.PythonTypeInferencer;
+import ch.hsr.ifs.pystructure.typeinference.visitors.Workspace;
 
 public class TypeInferenceSuite extends TestSuite {
 	

@@ -14,11 +14,12 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
-import org.python.pydev.refactoring.typeinference.dltk.inferencer.ITypeInferencer;
-import org.python.pydev.refactoring.typeinference.visitors.Workspace;
-import org.python.pydev.refactoring.utils.FileUtils;
-import org.python.pydev.refactoring.utils.TestUtils;
-import org.python.pydev.refactoring.utils.TestUtils.Marker;
+
+import ch.hsr.ifs.pystructure.typeinference.dltk.inferencer.ITypeInferencer;
+import ch.hsr.ifs.pystructure.typeinference.visitors.Workspace;
+import ch.hsr.ifs.pystructure.utils.FileUtils;
+import ch.hsr.ifs.pystructure.utils.TestUtils;
+import ch.hsr.ifs.pystructure.utils.TestUtils.Marker;
 
 public class TypeInferenceTest extends TestCase {
 

@@ -14,7 +14,8 @@ import org.python.pydev.parser.jython.ast.Attribute;
 import org.python.pydev.parser.jython.ast.Expr;
 import org.python.pydev.parser.jython.ast.Name;
 import org.python.pydev.parser.jython.ast.NameTok;
-import org.python.pydev.refactoring.ast.visitors.Parser;
+
+import ch.hsr.ifs.pystructure.parser.Parser;
 
 public class ExpressionAtPositionVisitorTest extends TestCase {
 	public void testName() throws Exception {

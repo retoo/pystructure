@@ -14,12 +14,13 @@ import junit.framework.AssertionFailedError;
 
 import org.python.pydev.parser.jython.SimpleNode;
 import org.python.pydev.parser.jython.ast.Expr;
-import org.python.pydev.refactoring.typeinference.contexts.PythonContext;
-import org.python.pydev.refactoring.typeinference.dltk.inferencer.ITypeInferencer;
-import org.python.pydev.refactoring.typeinference.dltk.types.IEvaluatedType;
-import org.python.pydev.refactoring.typeinference.goals.types.ExpressionTypeGoal;
-import org.python.pydev.refactoring.typeinference.model.definitions.Module;
-import org.python.pydev.refactoring.typeinference.visitors.Workspace;
+
+import ch.hsr.ifs.pystructure.typeinference.contexts.PythonContext;
+import ch.hsr.ifs.pystructure.typeinference.dltk.inferencer.ITypeInferencer;
+import ch.hsr.ifs.pystructure.typeinference.dltk.types.IEvaluatedType;
+import ch.hsr.ifs.pystructure.typeinference.goals.types.ExpressionTypeGoal;
+import ch.hsr.ifs.pystructure.typeinference.model.definitions.Module;
+import ch.hsr.ifs.pystructure.typeinference.visitors.Workspace;
 
 class ExpressionTypeAssertion extends Assert {
 
