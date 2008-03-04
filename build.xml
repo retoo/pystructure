@@ -38,8 +38,9 @@
 	</path>
 
 	<target name="build" depends="build-parser,init">
-		<javac srcdir="${src-dir}" destdir="${build.src}" debug="true">
+		<javac srcdir="${src-dir}" destdir="${build.src}" debug="true" deprecation="true">
 			<classpath refid="project.classpath" />
+			<compilerarg value="-Xlint:unchecked" />
 		</javac>
 	</target>
 	
