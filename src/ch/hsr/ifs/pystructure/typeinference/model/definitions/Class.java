@@ -53,7 +53,7 @@ public class Class extends Definition<ClassDef> implements IAttributeDefinition 
 	
 	@Override
 	public String toString() {
-		return "Class " + getName() + " defined at line " + getNode().beginLine + ", column " + getNode().beginColumn;
+		return "Class " + getName() + " " + getNodePosition();
 	}
 
 	public Module getModule() {

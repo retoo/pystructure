@@ -199,6 +199,8 @@ public class GoalEngine {
 			WorkingPair pair = workingQueue.removeFirst();
 			GoalEvaluationState state = goalStates.get(pair.goal);
 			
+			System.out.println(pair.goal);
+			
 			if (state != null && pair.creator != null) {
 				/*
 				 * TODO: Think about a better way to handle recursive goals,
@@ -232,6 +234,7 @@ public class GoalEngine {
 					GoalEvaluator evaluator = evaluatorFactory
 							.createEvaluator(pair.goal);
 					assert(evaluator != null);
+					System.out.println(" " + evaluator.getClass().getSimpleName());
 					statisticsRequestor.goalEvaluatorAssigned(pair.goal,
 							evaluator);
 					time = System.currentTimeMillis();

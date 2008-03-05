@@ -514,8 +514,18 @@ public class DefinitionVisitor extends ParentVisitor {
 
 			PathElement pe = path.top();
 
+			
+			/* Are we importing something from a package or a module
+			 * import some-module from package
+			 *  vs.
+			 * import some-class from` package.module
+			 * 
+			 * TODO: it probably would be nicer and easier if we could handle these 
+			 * cases without making a 'difference'
+			 */
 			if (pe instanceof Module) {
 				Module module = (Module) pe;
+				/* get the class/global variable in this particular module */
 				Definition definition = module.getChild(name);
 				
 				if (definition == null) {

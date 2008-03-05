@@ -34,5 +34,10 @@ public class ImportDefinition extends Definition<SimpleNode> implements IAttribu
 	public Definition getAttributeParent() {
 		return parent;
 	}
+	
+	@Override
+	public String toString() {
+		return "Import of " + element + " aliased as " + getName();
+	}
 
 }

@@ -45,6 +45,6 @@ public class DefinitionTypeGoal extends PythonTypeGoal {
 		return "DefinitionTypeGoal: "
 		+ ((definition != null) ? definition.toString() : "null")
 		+ " context: "
-		+ ((getContext() != null) ? getContext().toString() : "null");
+		+ ((getContext() != null) ? getContext().hashCode() : "null");
 	}
 }

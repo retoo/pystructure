@@ -49,6 +49,6 @@ public class ExpressionTypeGoal extends PythonTypeGoal {
 		return "ExpressionTypeGoal: "
 				+ ((expression != null) ? expression.toString() : "null")
 				+ " context: "
-				+ ((context != null) ? context.toString() : "null");
+				+ ((context != null) ? context.hashCode() : "null");
 	}
 }

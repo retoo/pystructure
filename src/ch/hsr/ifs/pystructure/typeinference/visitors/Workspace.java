@@ -67,9 +67,13 @@ public class Workspace {
 		}
 	}
 
-	@Deprecated
-	public Module getModule(String path) {
-		throw new RuntimeException("Deprecated");
+	public Module getModule(String name) {
+		for (Module module : getModules()) {
+			if (name.equals(module.getName().toString())) {
+				return module;
+			}
+		}
+		throw new RuntimeException("Unable to get module " + name);
 	}
 
 	public List<Module> getModules() {
@@ -79,8 +83,7 @@ public class Workspace {
 	// TODO: Use Map?
 	public Module getModule(File file) {
 		for (Module module : getModules()) {
-			File moduleFile = module.getFile();
-			if (file.equals(moduleFile)) {
+			if (file.equals(module.getFile())) {
 				return module;
 			}
 		}

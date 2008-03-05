@@ -66,6 +66,10 @@ public abstract class Definition<NodeType extends SimpleNode> implements IThing 
 	public String getDescription() {
 		return toString();
 	}
+	
+	public String getNodePosition() {
+		return "(L" + getNode().beginLine + " C" + getNode().beginColumn + ")";
+	}
 
 	@Override
 	public int hashCode() {
