@@ -1,0 +1,149 @@
+<data flavor="ch.hsr.ifs.pystructure">
+	<modules>
+		<module type="module" name="pydoku" id="pydoku" >
+			<submodule type="method" name="&lt;module&gt;" id="pydoku.__module__" />
+		</module>
+		<module type="class" name="sudoku.board.Board" id="board">
+			<submodule type="method"    name="__init__" id="board.__init__" />
+			<submodule type="method"    name="load_file" id="board.load_file" />
+			<submodule type="method"    name="interconnect" id="board.interconnect" />
+			<submodule type="method"    name="pre_solve" id="board.pre_solve" />
+			<submodule type="method"    name="solve" id="board.solve" />
+			<submodule type="method"    name="empty_fields" id="board.empty_fields" />
+			<submodule type="method"    name="__str__" id="board.__str__" />
+			
+			<submodule type="attribute" name="fields" id="board.fields" />
+			<submodule type="attribute" name="cols" id="board.cols" />
+			<submodule type="attribute" name="rows" id="board.rows" />
+			<submodule type="attribute" name="blocks" id="board.blocks" />
+			<submodule type="attribute" name="filename" id="board.filename" />
+		</module>
+		<module type="class" name="sudoku.field.Field" id="field">
+			<submodule type="method"    name="__init__" id="field.__init__" />
+			<submodule type="method"    name="set_value" id="field.set_value" />
+			<submodule type="method"    name="get_value" id="field.get_value" />
+			<submodule type="method"    name="isempty" id="field.isempty" />
+			<submodule type="method"    name="_neighbours" id="field._neighbours" /> <!-- private method? -->
+			<submodule type="method"    name="update_available_numbers" id="field.update_available_numbers" />
+			<submodule type="method"    name="possible_only_here" id="field.possible_only_here" />
+			<submodule type="method"    name="__cmp__" id="field.__cmp__" />
+			<submodule type="method"    name="__str__" id="field.__str__" />
+			<submodule type="method"    name="__repr__" id="field.__repr__" />
+
+			<submodule type="attribute" name="available_numbers_count" id="field.available_numbers_count" />
+			<submodule type="attribute" name="value" id="field.value" /> <!-- property? -->
+			<submodule type="attribute" name="_value" id="field._value" />
+			<submodule type="attribute" name="available_numbers" id="field.available_numbers" />
+			<submodule type="attribute" name="col" id="field.col" />
+			<submodule type="attribute" name="row" id="field.row" />
+			<submodule type="attribute" name="block" id="field.block" />
+			<submodule type="attribute" name="row_nr" id="field.row_nr" />
+			<submodule type="attribute" name="col_nr" id="field.col_nr" />
+			
+		</module>
+		<module type="class" name="sudoku.areas.Area" id="area">
+			<submodule type="method"    name="__init__" id="area.__init__" />
+			<submodule type="method"    name="append" id="area.append" />
+			<submodule type="method"    name="__str__" id="area.__str__" />
+			<submodule type="method"    name="__iter__" id="area.__iter__" />
+			<submodule type="attribute" name="available_numbers" id="area.available_numbers" />
+			<submodule type="attribute" name="fields" id="area.fields" />
+			<submodule type="attribute" name="i" id="area.i" />
+		</module>
+		
+	</modules>
+	<dependencies>
+		<dependency from="pydoku.__module__" to="board" type="references"/>
+		<dependency from="pydoku.__module__" to="board.__init__" type="calls"/>
+		<dependency from="pydoku.__module__" to="board.fields" type="references"/>
+		<dependency from="pydoku.__module__" to="board" type="references" />
+		<dependency from="pydoku.__module__" to="board.pre_solve" type="calls" />
+		<dependency from="pydoku.__module__" to="board.solve" type="calls" />
+
+		<dependency from="board.fields" to="field" type="references"/>
+		<dependency from="board.rows" to="area" type="references"/>
+		<dependency from="board.cols" to="area" type="references"/>
+		<dependency from="board.blocks" to="area" type="references"/>
+		<dependency from="board.__init__" to="board.filename" type="references" />
+		<dependency from="board.__init__" to="board.fields" type="references" />
+		<dependency from="board.__init__" to="board.cols" type="references" />
+		<dependency from="board.__init__" to="board.rows" type="references" />
+		<dependency from="board.__init__" to="board.blocks" type="references" />
+		<dependency from="board.__init__" to="field" type="references" />
+		<dependency from="board.__init__" to="field.__init__" type="calls" />
+		<dependency from="board.__init__" to="board.interconnect" type="calls" />
+		<dependency from="board.__init__" to="board.load_file" type="calls" />
+		<dependency from="board.load_file" to="board.filename" type="references" />
+		<dependency from="board.load_file" to="board.fields" type="references" />
+		<dependency from="board.interconnect" to="area.__init__" type="calls" />
+		<dependency from="board.interconnect" to="board.fields" type="references" />
+		<dependency from="board.interconnect" to="board.cols" type="references" />
+		<dependency from="board.interconnect" to="board.rows" type="references" />
+		<dependency from="board.interconnect" to="board.blocks" type="references" />
+		<dependency from="board.interconnect" to="field.col" type="references" />
+		<dependency from="board.interconnect" to="field.row" type="references" />
+		<dependency from="board.interconnect" to="field.block" type="references" />
+		<dependency from="board.pre_solve" to="board.empty_fields" type="calls" />
+		<dependency from="board.pre_solve" to="field.available_numbers_count" type="references" />
+		<dependency from="board.pre_solve" to="field.available_numbers" type="references" />
+		<dependency from="board.pre_solve" to="field.value" type="references" />
+		<dependency from="board.pre_solve" to="field.possible_only_here" type="calls" />
+		<dependency from="board.solve" to="board.empty_fields" type="calls" />
+		<dependency from="board.solve" to="field.available_numbers" type="references" />
+		<dependency from="board.solve" to="field.value" type="references" />
+		<dependency from="board.solve" to="board.solve" type="calls" />
+		<dependency from="board.empty_fields" to="field.isempty" type="calls" />
+		<dependency from="board.empty_fields" to="board.fields" type="references" />
+		<dependency from="board.__str__" to="board.fields" type="references" />
+		<dependency from="board.__str__" to="board.empty_fields" type="calls" />
+
+		<dependency from="field.block" to="area" type="is type" />
+		<dependency from="field.row" to="area" type="is type" />
+		<dependency from="field.col" to="area" type="is type" />
+		<dependency from="field.__init__" to="field.index" type="references" />
+		<dependency from="field.__init__" to="field.row_nr" type="references" />
+		<dependency from="field.__init__" to="field.col_nr" type="references" />
+		<dependency from="field.__init__" to="field._value" type="references" />
+		<dependency from="field.set_value" to="field._value" type="references" />
+		<dependency from="field.set_value" to="field.col" type="references" />
+		<dependency from="field.set_value" to="field.row" type="references" />
+		<dependency from="field.set_value" to="field.block" type="references" />
+		<dependency from="field.set_value" to="area" type="references" /> <!-- difficult -->
+		<dependency from="field.set_value" to="area.available_numbers" type="references" />
+		<dependency from="field.set_value" to="field._neighbours" type="calls" />
+		<dependency from="field.set_value" to="field.update_available_numbers" type="calls" />
+		<dependency from="field.set_value" to="field" type="references" />
+		<dependency from="field.get_value" to="field._value" type="references" />
+		<dependency from="field.value" to="field.get_value" type="references" />
+		<dependency from="field.value" to="field.set_value" type="references" />
+		<dependency from="field.isempty" to="field.value" type="references" />
+		<dependency from="field._neighbours" to="field.col" type="references" />
+		<dependency from="field._neighbours" to="field.row" type="references" />
+		<dependency from="field._neighbours" to="field.block" type="references" />
+		<dependency from="field.update_available_numbers" to="field.col" type="references" />
+		<dependency from="field.update_available_numbers" to="field.row" type="references" />
+		<dependency from="field.update_available_numbers" to="field.block" type="references" />
+		<dependency from="field.update_available_numbers" to="area.available_numbers" type="references" />
+		<dependency from="field.update_available_numbers" to="field.available_numbers" type="references" />
+		<dependency from="field.update_available_numbers" to="field.available_numbers_count" type="references" />
+		<dependency from="field.possible_only_here" to="field.available_numbers" type="references" />
+		<dependency from="field.possible_only_here" to="field.col" type="references" />
+		<dependency from="field.possible_only_here" to="field.row" type="references" />
+		<dependency from="field.possible_only_here" to="field.block" type="references" />
+		<dependency from="field.possible_only_here" to="field.isempty" type="calls" />
+		<dependency from="field.__cmp__" to="field.available_numbers_count" type="references" />
+		<dependency from="field.__cmp__" to="field" type="has param" />
+		<dependency from="field.__str__" to="field.isempty" type="calls" />
+		<dependency from="field.__str__" to="field.value" type="references" />
+		<dependency from="field.__repr__" to="field.col_nr" type="references" />
+		<dependency from="field.__repr__" to="field.row_nr" type="references" />
+		
+		<dependency from="area.__init__" to="area.fields" type="references" />
+		<dependency from="area.__init__" to="area.i" type="references" />
+		<dependency from="area.__init__" to="area.available_numbers" type="references" />
+		<dependency from="area.append" to="area.fields" type="references" />
+		<dependency from="area.append" to="field" type="has param" />
+		<dependency from="area.__iter__" to="area.fields" type="references" />
+		<dependency from="area.__str__" to="area.i" type="references" />
+	</dependencies>
+</data>
