@@ -11,7 +11,7 @@ import ch.hsr.ifs.pystructure.typeinference.dltk.types.IEvaluatedType;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.ExpressionTypeGoal;
 import ch.hsr.ifs.pystructure.typeinference.inferencer.PythonTypeInferencer;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.AssignDefinition;
-import ch.hsr.ifs.pystructure.typeinference.model.definitions.Definition;
+import ch.hsr.ifs.pysucture.typeinference.model.definitions.Definition;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Module;
 import ch.hsr.ifs.pystructure.typeinference.visitors.ExpressionAtLineVisitor;
 import ch.hsr.ifs.pystructure.typeinference.visitors.Workspace;
