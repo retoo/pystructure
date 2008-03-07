@@ -16,6 +16,7 @@ import org.python.pydev.parser.jython.ast.Name;
 import org.python.pydev.parser.jython.ast.NameTok;
 
 import ch.hsr.ifs.pystructure.parser.Parser;
+import ch.hsr.ifs.pystructure.typeinference.visitors.ExpressionAtLineVisitor;
 
 public class ExpressionAtLineVisitorTest extends TestCase {
 

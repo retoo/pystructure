@@ -5,7 +5,7 @@
  *
  */
 
-package ch.hsr.ifs.pystructure.tests.typeinference;
+package ch.hsr.ifs.pystructure.typeinference.visitors;
 
 import org.python.pydev.parser.jython.Visitor;
 import org.python.pydev.parser.jython.ast.Expr;

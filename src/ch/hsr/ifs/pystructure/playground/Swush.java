@@ -6,7 +6,6 @@ import org.python.pydev.parser.jython.SimpleNode;
 import org.python.pydev.parser.jython.ast.Expr;
 import org.python.pydev.parser.jython.ast.exprType;
 
-import ch.hsr.ifs.pystructure.tests.typeinference.ExpressionAtLineVisitor;
 import ch.hsr.ifs.pystructure.typeinference.contexts.PythonContext;
 import ch.hsr.ifs.pystructure.typeinference.dltk.types.IEvaluatedType;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.ExpressionTypeGoal;
@@ -14,6 +13,7 @@ import ch.hsr.ifs.pystructure.typeinference.inferencer.PythonTypeInferencer;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.AssignDefinition;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Definition;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Module;
+import ch.hsr.ifs.pystructure.typeinference.visitors.ExpressionAtLineVisitor;
 import ch.hsr.ifs.pystructure.typeinference.visitors.Workspace;
 
 public class Swush {
