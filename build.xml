@@ -57,12 +57,15 @@
 	</target>
 	
 	
-	<target name="documentation">
+	<target name="documentation" depends="init">
 		<exec executable="build/build-documents.sh" 
 			output="${output.doc-dir}/log.txt" />
 
 		<copy todir="${output.doc-dir}/">
 			<fileset dir="${doc-dir}" includes="**/**.pdf" />
+		</copy>
+		<copy todir="${output.img-dir}/">
+			<fileset dir="${doc-dir}/img/" includes="*" />
 		</copy>
 	</target>
 
