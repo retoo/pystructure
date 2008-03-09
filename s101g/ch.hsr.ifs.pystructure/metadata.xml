@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <flavor name="ch.hsr.ifs.pystructure">
 
-	<provider name="PyStructure" url="http://pystructure.ifs.hsr.ch" email="feedback@pystructure.ifs.hsr.ch"/>
+	<provider name="PyStructure" url="http://pystructure.ifs.hsr.ch" email=""/>
 
 	<description>PyStructure Structural Structur</description>
 
