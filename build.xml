@@ -2,7 +2,8 @@
 
 <project default="all">
 	<property file="build.properties"/>
-
+	<property file="build.properties.local"/>
+	
 	<taskdef name="findbugs" 
 		classname="edu.umd.cs.findbugs.anttask.FindBugsTask"
 		classpath="/opt/findbugs/lib/findbugs-ant.jar"/>
@@ -13,7 +14,6 @@
 	<path id="junit.classpath">
 		<pathelement location="${junit.dir}/junit.jar" />
 	</path>
-
 	
 	<path id="cobertura.classpath">
 		<fileset dir="${cobertura.dir}">
@@ -26,6 +26,14 @@
 
 	<path id="instrumented.classpath">
 		<pathelement location="${cobertura-dir}" />
+	</path>
+	
+	<path id="jdom.classpath">
+		<!-- I'm not that sure, but I think the ordering is important -->
+		<pathelement location="${jdom-dir}/xerces.jar" />
+		<pathelement location="${jdom-dir}/xalan.jar" />
+		<pathelement location="${jdom-dir}/xml-apis.jar" />
+		<pathelement location="${jdom-dir}/jdom.jar" />
 	</path>
 
 	<path id="project.classpath">
@@ -40,6 +48,7 @@
 	<target name="build" depends="build-parser,init">
 		<javac srcdir="${src-dir}" destdir="${build.src}" debug="true" deprecation="true">
 			<classpath refid="project.classpath" />
+			<classpath refid="jdom.classpath" />
 			<compilerarg value="-Xlint:unchecked" />
 		</javac>
 	</target>
@@ -52,10 +61,10 @@
 	<target name="build-test" depends="build">
 		<javac srcdir="${tests-dir}" destdir="${build.tests}">
 			<classpath refid="project.classpath" />
+			<classpath refid="jdom.classpath" />
 			<classpath refid="junit.classpath" />
 		</javac>
 	</target>
-	
 	
 	<target name="documentation" depends="init">
 		<exec executable="build/build-documents.sh" 
@@ -120,9 +129,10 @@
 			<classpath refid="cobertura.classpath" />
 			<classpath refid="instrumented.classpath" /> 
 
+			<classpath refid="jdom.classpath" />
 			<classpath refid="tests.classpath" />
 			<classpath refid="project.classpath" />
-
+			
 			<sysproperty key="net.sourceforge.cobertura.datafile" file="${cobertura-ser}" />
 
 			<formatter type="xml" />
@@ -160,6 +170,7 @@
 			outputFile="${output.findbugs-dir}/findbugs-${label}.html" >
 				<auxClasspath>
 					<pathelement location="${build.paser.jar}" />
+					<!-- FIXME <classpath refid="jdom.classpath" /> -->
 				</auxClasspath>
 				<sourcePath path="${src-dir}" />
 				<class location="${build.src}" />
