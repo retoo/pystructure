@@ -6,5 +6,8 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/3"/>
 	<classpathentry kind="lib" path="lib/jdom/jdom.jar"/>
+	<classpathentry kind="lib" path="lib/jdom/xalan.jar"/>
+	<classpathentry kind="lib" path="lib/jdom/xerces.jar"/>
+	<classpathentry kind="lib" path="lib/jdom/xml-apis.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
