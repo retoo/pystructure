@@ -13,14 +13,13 @@ import java.util.List;
 import org.python.pydev.parser.jython.SimpleNode;
 
 import ch.hsr.ifs.pystructure.typeinference.model.base.IModule;
-import ch.hsr.ifs.pystructure.typeinference.model.base.IThing;
 import ch.hsr.ifs.pystructure.typeinference.model.base.NameAdapter;
 
 /**
  * Definition of a name, for example through an assignment, a def or a class
  * statement. Each definition has a scope (function, class, module) and a node.
  */
-public abstract class Definition<NodeType extends SimpleNode> implements IThing {
+public abstract class Definition<NodeType extends SimpleNode> {
 
 	private NameAdapter name;
 	private NodeType node;

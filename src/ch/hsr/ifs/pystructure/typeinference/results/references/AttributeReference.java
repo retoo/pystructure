@@ -10,11 +10,10 @@ package ch.hsr.ifs.pystructure.typeinference.results.references;
 import org.python.pydev.parser.jython.SimpleNode;
 
 import ch.hsr.ifs.pystructure.typeinference.dltk.types.IEvaluatedType;
-import ch.hsr.ifs.pystructure.typeinference.model.base.IThing;
 import ch.hsr.ifs.pystructure.typeinference.model.base.NameAdapter;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Module;
 
-public class AttributeReference implements IThing {
+public class AttributeReference {
 
 	private final NameAdapter name;
 	private final IEvaluatedType parent;

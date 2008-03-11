@@ -9,10 +9,9 @@ package ch.hsr.ifs.pystructure.typeinference.model.definitions;
 
 import org.python.pydev.parser.jython.SimpleNode;
 
-import ch.hsr.ifs.pystructure.typeinference.model.base.IThing;
 import ch.hsr.ifs.pystructure.typeinference.model.base.NameAdapter;
 
-public abstract class Use implements IThing {
+public abstract class Use {
 
 	private final NameAdapter name;
 	private final SimpleNode node;
