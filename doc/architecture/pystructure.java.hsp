@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<local-project language="java" associate="http://pystructure.ifs.hsr.ch/101-pystructure/data/PyStructure" flavor="j2se">
+   <property name="hide-externals" value="true" />
+   <property name="detail-mode" value="true" />
+   <classpath>
+      <classpathentry kind="lib" path="/Users/reto/scripts/PyStructure-Workspace/PyStructure/bin" />
+   </classpath>
+   <excludes>
+      <exclude expression="org.python.pydev.*" />
+   </excludes>
+   <grid-set sep=".">
+      <grid name="General Overview" enforce="true" strict="false">
+         <row>
+            <cell name="ch.hsr.ifs.pystructure" pattern="ch.hsr.ifs.pystructure.*" vexpanded="true">
+               <grid>
+                  <row>
+                     <cell name="typeinference" pattern="ch.hsr.ifs.pystructure.typeinference.*" vexpanded="true">
+                        <grid>
+                           <row>
+                              <cell name="inferencer" pattern="ch.hsr.ifs.pystructure.typeinference.inferencer.?" vexpanded="true" />
+                           </row>
+                           <row>
+                              <cell name="evaluators" pattern="ch.hsr.ifs.pystructure.typeinference.evaluators.?" vexpanded="true" />
+                           </row>
+                           <row>
+                              <cell name="goals" pattern="ch.hsr.ifs.pystructure.typeinference.goals.*" vexpanded="false">
+                                 <grid>
+                                    <row>
+                                       <cell name="types" pattern="ch.hsr.ifs.pystructure.typeinference.goals.types.?" vexpanded="true" />
+                                       <cell name="references" pattern="ch.hsr.ifs.pystructure.typeinference.goals.references.?" vexpanded="true" />
+                                    </row>
+                                    <row>
+                                       <cell name="base" pattern="ch.hsr.ifs.pystructure.typeinference.goals.base.?" vexpanded="true" />
+                                    </row>
+                                 </grid>
+                              </cell>
+                           </row>
+                           <row>
+                              <cell name="contexts" pattern="ch.hsr.ifs.pystructure.typeinference.contexts.?" vexpanded="true" />
+                           </row>
+                           <row>
+                              <cell name="results" pattern="ch.hsr.ifs.pystructure.typeinference.results.*" vexpanded="false">
+                                 <grid>
+                                    <row>
+                                       <cell name="types" pattern="ch.hsr.ifs.pystructure.typeinference.results.types.?" vexpanded="true" />
+                                       <cell name="references" pattern="ch.hsr.ifs.pystructure.typeinference.results.references.?" vexpanded="true" />
+                                    </row>
+                                 </grid>
+                              </cell>
+                              <cell name="visitors" pattern="ch.hsr.ifs.pystructure.typeinference.visitors.?" vexpanded="true" />
+                           </row>
+                           <row>
+                              <cell name="model" pattern="ch.hsr.ifs.pystructure.typeinference.model.*" vexpanded="false">
+                                 <grid>
+                                    <row>
+                                       <cell name="scopes" pattern="ch.hsr.ifs.pystructure.typeinference.model.scopes.?" vexpanded="true" />
+                                    </row>
+                                    <row>
+                                       <cell name="definitions" pattern="ch.hsr.ifs.pystructure.typeinference.model.definitions.?" vexpanded="true" />
+                                    </row>
+                                    <row>
+                                       <cell name="base" pattern="ch.hsr.ifs.pystructure.typeinference.model.base.?" vexpanded="true" />
+                                    </row>
+                                 </grid>
+                              </cell>
+                              <cell name="dltk" pattern="ch.hsr.ifs.pystructure.typeinference.dltk.*" vexpanded="true" />
+                           </row>
+                        </grid>
+                     </cell>
+                  </row>
+                  <row>
+                     <cell name="parser" pattern="ch.hsr.ifs.pystructure.parser.?" vexpanded="true" />
+                     <cell name="utils" pattern="ch.hsr.ifs.pystructure.utils.?" vexpanded="true" />
+                  </row>
+               </grid>
+            </cell>
+         </row>
+         <description>General Application Overview</description>
+      </grid>
+   </grid-set>
+</local-project>
+
