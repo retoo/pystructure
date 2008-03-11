@@ -72,8 +72,7 @@ public class GoalEngine {
 		this.evaluatorFactory = evaluatorFactory;
 	}
 
-	private void storeGoal(IGoal goal, GoalState state, Object result,
-			GoalEvaluator creator) {
+	private void storeGoal(IGoal goal, GoalState state, Object result, GoalEvaluator creator) {
 		GoalEvaluationState es = new GoalEvaluationState();
 		es.result = result;
 		es.state = state;
@@ -177,25 +176,38 @@ public class GoalEngine {
 							.createEvaluator(pair.goal);
 					assert(evaluator != null);
 					System.out.println(" " + evaluator.getClass().getSimpleName());
-					List<IGoal> newGoals = evaluator.init();
-					if (newGoals == null) {
-						newGoals = IGoal.NO_GOALS;
-					}
-					if (!newGoals.isEmpty()) {
-						for (IGoal newGoal : newGoals) {
-							workingQueue.add(new WorkingPair(newGoal,
-									evaluator));
-						}
-						EvaluatorState evaluatorState = new EvaluatorState(
-								newGoals.size());
-						evaluatorState.subgoals.addAll(newGoals);
-						putEvaluatorState(evaluator, evaluatorState);
-						storeGoal(pair.goal, GoalState.WAITING, null,
-								pair.creator);
+					
+					/* Check if there are any cached results */
+					boolean isFinished = false;
+					
+					if (evaluator.isCached()) {
+						isFinished = true;
 					} else {
+						List<IGoal> newGoals = evaluator.init();
+					
+						/* please return IGoal.NO_GOALS if there are no goals */
+						assert(newGoals != null);
+					
+						/* Process Sub goals */
+						if (!newGoals.isEmpty()) {
+							for (IGoal newGoal : newGoals) {
+								workingQueue.add(new WorkingPair(newGoal,
+										evaluator));
+							}
+							EvaluatorState evaluatorState = new EvaluatorState(newGoals.size());
+							evaluatorState.subgoals.addAll(newGoals);
+							putEvaluatorState(evaluator, evaluatorState);
+							storeGoal(pair.goal, GoalState.WAITING, null,
+									pair.creator);
+						} else {
+							/* If there haven't been any sub goals the result is already known */
+							isFinished = true;
+						}
+					}
+					
+					if (isFinished) {
 						Object result = evaluator.produceResult();
-						storeGoal(pair.goal, GoalState.DONE, result,
-								pair.creator);
+						storeGoal(pair.goal, GoalState.DONE, result, pair.creator);
 						if (pair.creator != null) {
 							notifyEvaluator(pair.creator, pair.goal);
 						}

@@ -26,28 +26,22 @@ import ch.hsr.ifs.pystructure.typeinference.model.definitions.Function;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Method;
 import ch.hsr.ifs.pystructure.typeinference.results.references.FunctionReference;
 import ch.hsr.ifs.pystructure.typeinference.results.types.ClassType;
-import ch.hsr.ifs.pystructure.typeinference.results.types.CombinedType;
 
 /**
  * Evaluator for the type of an argument.
  */
-public class ArgumentTypeEvaluator extends PythonEvaluator {
+public class ArgumentTypeEvaluator extends DefinitionTypeEvaluator {
 
 	private final Argument argument;
 	
-	private CombinedType resultType;
-	
 	public ArgumentTypeEvaluator(PythonTypeGoal goal, Argument argument) {
-		super(goal);
+		super(goal, argument);
 		this.argument = argument;
-		
-		this.resultType = new CombinedType();
 	}
 
 	@Override
 	public List<IGoal> init() {
 		List<IGoal> subgoals = new ArrayList<IGoal>();
-		
 		Function function = argument.getFunction();
 		
 		PythonContext context = getGoal().getContext();
@@ -101,12 +95,13 @@ public class ArgumentTypeEvaluator extends PythonEvaluator {
 		}
 		return IGoal.NO_GOALS;
 	}
-
-	@Override
-	public Object produceResult() {
-		return resultType;
-	}
 	
+	@Override
+	public boolean isCached() {
+		return false;
+//		return super.isCached();
+	}
+
 	private IGoal getArgumentExpressionGoal(FunctionReference reference) {
 		exprType expression = reference.getArgumentExpression(argument);
 		return new ExpressionTypeGoal(getGoal().getContext(), expression);

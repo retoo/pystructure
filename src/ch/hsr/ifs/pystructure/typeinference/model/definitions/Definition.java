@@ -14,6 +14,7 @@ import org.python.pydev.parser.jython.SimpleNode;
 
 import ch.hsr.ifs.pystructure.typeinference.model.base.IModule;
 import ch.hsr.ifs.pystructure.typeinference.model.base.NameAdapter;
+import ch.hsr.ifs.pystructure.typeinference.results.types.CombinedType;
 
 /**
  * Definition of a name, for example through an assignment, a def or a class
@@ -25,9 +26,11 @@ public abstract class Definition<NodeType extends SimpleNode> {
 	private NodeType node;
 	private LinkedList<NameUse> uses;
 	private IModule module;
+	public CombinedType type;
 
 	protected Definition() {
 		this.uses = new LinkedList<NameUse>();
+		this.type = null;
 	}
 	
 	public Definition(IModule module, NameAdapter name, NodeType node) {

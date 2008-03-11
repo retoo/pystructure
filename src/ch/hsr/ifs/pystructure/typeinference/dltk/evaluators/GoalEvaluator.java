@@ -68,4 +68,9 @@ public abstract class GoalEvaluator {
 		goals.add(goal);
 		return goals;
 	}
+
+	public boolean isCached() {
+		return false;
+	}
+
 }

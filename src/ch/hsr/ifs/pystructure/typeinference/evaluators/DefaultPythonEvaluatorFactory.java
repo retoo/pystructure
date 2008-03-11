@@ -105,6 +105,9 @@ public class DefaultPythonEvaluatorFactory implements IGoalEvaluatorFactory {
 		if (def instanceof Argument) {
 			return new ArgumentTypeEvaluator(goal, (Argument) def);
 		}
+		if (def instanceof ImportDefinition) {
+			return new ImportTypeEvaluator(goal, (ImportDefinition) def);
+		}
 		if (def instanceof Function) {
 			Function function = (Function) def;
 			return new FixedAnswerEvaluator(goal, new FunctionType(module, function));
@@ -116,9 +119,6 @@ public class DefaultPythonEvaluatorFactory implements IGoalEvaluatorFactory {
 		if (def instanceof Module) {
 			Module moduleDef = (Module) def;
 			return new FixedAnswerEvaluator(goal, new ModuleType(moduleDef));
-		}
-		if (def instanceof ImportDefinition) {
-			return new ImportTypeEvaluator(goal, (ImportDefinition) def);
 		}
 		if (def instanceof LoopVariableDefinition) {
 			// TODO: Implement LoopVariableTypeEvaluator

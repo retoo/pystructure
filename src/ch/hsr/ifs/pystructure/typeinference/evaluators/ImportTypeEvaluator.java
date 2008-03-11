@@ -11,7 +11,6 @@ import java.util.List;
 
 import ch.hsr.ifs.pystructure.typeinference.dltk.goals.GoalState;
 import ch.hsr.ifs.pystructure.typeinference.dltk.goals.IGoal;
-import ch.hsr.ifs.pystructure.typeinference.dltk.types.IEvaluatedType;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.DefinitionTypeGoal;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Class;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.ImportDefinition;
@@ -25,13 +24,12 @@ import ch.hsr.ifs.pystructure.typeinference.results.types.PackageType;
  * Evaluator for the type of an import, which could be a module, a class, a
  * function, or a global variable.
  */
-public class ImportTypeEvaluator extends PythonEvaluator {
+public class ImportTypeEvaluator extends DefinitionTypeEvaluator {
 	
 	private final ImportDefinition importDefinition;
-	private IEvaluatedType type;
 	
 	public ImportTypeEvaluator(DefinitionTypeGoal goal, ImportDefinition importDefinition) {
-		super(goal);
+		super(goal, importDefinition);
 		this.importDefinition = importDefinition;
 	}
 
@@ -41,13 +39,13 @@ public class ImportTypeEvaluator extends PythonEvaluator {
 		
 		if (element instanceof Package) {
 			Package pkg = (Package) element;
-			type = new PackageType(pkg);
+			resultType.appendType(new PackageType(pkg));
 		} else if (element instanceof Module) {
 			Module module = (Module) element;
-			type = new ModuleType(module);
+			resultType.appendType(new ModuleType(module));
 		} else if (element instanceof Class) {
 			Class klass = (Class) element;
-			type = new MetaclassType(klass.getModule(), klass);
+			resultType.appendType(new MetaclassType(klass.getModule(), klass));
 		}
 
 		return IGoal.NO_GOALS;
@@ -57,9 +55,5 @@ public class ImportTypeEvaluator extends PythonEvaluator {
 	public List<IGoal> subGoalDone(IGoal subgoal, Object result, GoalState state) {
 		return IGoal.NO_GOALS;
 	}
-
-	@Override
-	public Object produceResult() {
-		return type;
-	}
+	
 }

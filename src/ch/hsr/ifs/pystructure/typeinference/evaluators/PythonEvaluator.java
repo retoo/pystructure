@@ -24,5 +24,5 @@ public abstract class PythonEvaluator extends GoalEvaluator {
 		// Our constructor only allows IPythonGoal, so this cast should be ok.
 		return (IPythonGoal) super.getGoal();
 	}
-
+	
 }
