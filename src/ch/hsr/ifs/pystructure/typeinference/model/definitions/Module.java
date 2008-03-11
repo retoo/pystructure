@@ -81,6 +81,16 @@ public class Module extends Definition<org.python.pydev.parser.jython.ast.Module
 	public String getPath() {
 		return path;
 	}
+	
+	// TODO: Package also needs a getFullName()
+	public String getFullName() {
+		StringBuilder s = new StringBuilder();
+		s.append(getName());
+		for (IPackage pkg = this.pkg; !(pkg instanceof ImportPath); pkg = pkg.getParent()) {
+			s.insert(0, pkg.getName().getId() + ".");
+		}
+		return s.toString();
+	}
 
 	@Override
 	public String toString() {
@@ -93,6 +103,16 @@ public class Module extends Definition<org.python.pydev.parser.jython.ast.Module
 
 	public List<Definition> getDefinitions() {
 		return definitions;
+	}
+	
+	public List<Class> getClasses() {
+		List<Class> classes = new ArrayList<Class>();
+		for (Definition definition : definitions) {
+			if (definition instanceof Class) {
+				classes.add((Class) definition);
+			}
+		}
+		return classes;
 	}
 
 	public IPackage getPackage() {
