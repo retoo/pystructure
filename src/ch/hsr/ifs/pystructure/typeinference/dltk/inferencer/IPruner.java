@@ -31,5 +31,5 @@ public interface IPruner {
 	 * @param stat
 	 *            information about created evaluator
 	 */
-	boolean prune(IGoal goal, EvaluatorStatistics stat);
+	boolean prune(IGoal goal);
 }

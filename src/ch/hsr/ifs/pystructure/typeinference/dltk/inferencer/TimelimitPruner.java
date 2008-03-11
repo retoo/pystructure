@@ -28,7 +28,7 @@ public class TimelimitPruner implements IPruner {
 		this.timeStart = System.currentTimeMillis();
 	}
 
-	public boolean prune(IGoal goal, EvaluatorStatistics stat) {
+	public boolean prune(IGoal goal) {
 		if (timeLimit > 0 && System.currentTimeMillis() - timeStart > timeLimit) {
 			return true;
 		}

@@ -11,11 +11,7 @@ package ch.hsr.ifs.pystructure.typeinference.dltk.inferencer;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import ch.hsr.ifs.pystructure.typeinference.dltk.evaluators.FieldReferencesGoalEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.dltk.evaluators.GoalEvaluator;
@@ -24,10 +20,8 @@ import ch.hsr.ifs.pystructure.typeinference.dltk.evaluators.MethodCallsGoalEvalu
 import ch.hsr.ifs.pystructure.typeinference.dltk.evaluators.NullGoalEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.dltk.goals.AbstractTypeGoal;
 import ch.hsr.ifs.pystructure.typeinference.dltk.goals.FieldReferencesGoal;
-import ch.hsr.ifs.pystructure.typeinference.dltk.goals.GoalState;
 import ch.hsr.ifs.pystructure.typeinference.dltk.goals.IGoal;
 import ch.hsr.ifs.pystructure.typeinference.dltk.goals.MethodCallsGoal;
-import ch.hsr.ifs.pystructure.typeinference.dltk.statistics.IEvaluationStatisticsRequestor;
 import ch.hsr.ifs.pystructure.typeinference.dltk.types.IEvaluatedType;
 
 /**
@@ -48,83 +42,6 @@ import ch.hsr.ifs.pystructure.typeinference.dltk.types.IEvaluatedType;
  *
  */
 public class DefaultTypeInferencer implements ITypeInferencer {
-
-	private static class ProxyStatisticsRequestor implements
-			IEvaluationStatisticsRequestor {
-
-		public void evaluationStarted(IGoal rootGoal) {
-			for (Iterator iterator = statRequestors.iterator(); iterator
-					.hasNext();) {
-				IEvaluationStatisticsRequestor t = (IEvaluationStatisticsRequestor) iterator
-						.next();
-				if (t != null) {
-					t.evaluationStarted(rootGoal);
-				}
-			}
-		}
-
-		public void evaluatorInitialized(GoalEvaluator evaluator,
-				List<IGoal> subgoals, long time) {
-			for (Iterator iterator = statRequestors.iterator(); iterator
-					.hasNext();) {
-				IEvaluationStatisticsRequestor t = (IEvaluationStatisticsRequestor) iterator
-						.next();
-				if (t != null) {
-					t.evaluatorInitialized(evaluator, subgoals, time);
-				}
-			}
-		}
-
-		public void evaluatorProducedResult(GoalEvaluator evaluator,
-				Object result, long time) {
-			for (Iterator iterator = statRequestors.iterator(); iterator
-					.hasNext();) {
-				IEvaluationStatisticsRequestor t = (IEvaluationStatisticsRequestor) iterator
-						.next();
-				if (t != null) {
-					t.evaluatorProducedResult(evaluator, result, time);
-				}
-			}
-
-		}
-
-		public void evaluatorReceivedResult(GoalEvaluator evaluator,
-				IGoal finishedGoal, List<IGoal> newSubgoals, long time) {
-			for (Iterator iterator = statRequestors.iterator(); iterator
-					.hasNext();) {
-				IEvaluationStatisticsRequestor t = (IEvaluationStatisticsRequestor) iterator
-						.next();
-				if (t != null) {
-					t.evaluatorReceivedResult(evaluator, finishedGoal,
-							newSubgoals, time);
-				}
-			}
-		}
-
-		public void goalEvaluatorAssigned(IGoal goal, GoalEvaluator evaluator) {
-			for (Iterator iterator = statRequestors.iterator(); iterator
-					.hasNext();) {
-				IEvaluationStatisticsRequestor t = (IEvaluationStatisticsRequestor) iterator
-						.next();
-				if (t != null) {
-					t.goalEvaluatorAssigned(goal, evaluator);
-				}
-			}
-		}
-
-		public void goalStateChanged(IGoal goal, GoalState state,
-				GoalState oldState) {
-			for (Iterator iterator = statRequestors.iterator(); iterator
-					.hasNext();) {
-				IEvaluationStatisticsRequestor t = (IEvaluationStatisticsRequestor) iterator
-						.next();
-				if (t != null) {
-					t.goalStateChanged(goal, state, oldState);
-				}
-			}
-		}
-
-	}
 
 	private class MapBasedEvaluatorFactory implements IGoalEvaluatorFactory {
 
@@ -179,12 +96,8 @@ public class DefaultTypeInferencer implements ITypeInferencer {
 
 	private Map evaluators = new HashMap();
 
-	private static Set statRequestors = new HashSet();
-
 	private final GoalEngine engine;
 	private final IGoalEvaluatorFactory userFactory;
-
-	private final ProxyStatisticsRequestor stat = new ProxyStatisticsRequestor();
 
 	private void initStdGoals() {
 		registerEvaluator(FieldReferencesGoal.class,
@@ -221,25 +134,15 @@ public class DefaultTypeInferencer implements ITypeInferencer {
 	 * @see org.eclipse.dltk.ti.ITypeInferencer#evaluateType(org.eclipse.dltk.ti.AbstractTypeGoal)
 	 */
 	public IEvaluatedType evaluateType(AbstractTypeGoal goal, IPruner pruner) {
-		return (IEvaluatedType) engine.evaluateGoal(goal, pruner, stat);
+		return (IEvaluatedType) engine.evaluateGoal(goal, pruner);
 	}
 
 	protected Object evaluateGoal(IGoal goal, IPruner pruner) {
-		return engine.evaluateGoal(goal, pruner, stat);
+		return engine.evaluateGoal(goal, pruner);
 	}
 
 	public IEvaluatedType evaluateType(AbstractTypeGoal goal) {
 		return evaluateType(goal, null);
-	}
-
-	public static void addEvaluationStatisticsRequestor(
-			IEvaluationStatisticsRequestor r) {
-		statRequestors.add(r);
-	}
-
-	public static void removeEvaluationStatisticsRequestor(
-			IEvaluationStatisticsRequestor r) {
-		statRequestors.remove(r);
 	}
 
 }

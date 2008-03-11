@@ -19,7 +19,6 @@ import ch.hsr.ifs.pystructure.typeinference.dltk.evaluators.GoalEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.dltk.evaluators.IGoalEvaluatorFactory;
 import ch.hsr.ifs.pystructure.typeinference.dltk.goals.GoalState;
 import ch.hsr.ifs.pystructure.typeinference.dltk.goals.IGoal;
-import ch.hsr.ifs.pystructure.typeinference.dltk.statistics.IEvaluationStatisticsRequestor;
 
 /**
  * Main working class for type inference. Purpose of this class is simple:
@@ -36,8 +35,6 @@ public class GoalEngine {
 	private final LinkedList<WorkingPair> workingQueue = new LinkedList<WorkingPair>();
 	private final Map<IGoal, GoalEvaluationState> goalStates = new HashMap<IGoal, GoalEvaluationState>();
 	private final Map<GoalEvaluator, EvaluatorState> evaluatorStates = new HashMap<GoalEvaluator, EvaluatorState>();
-
-	private IEvaluationStatisticsRequestor statisticsRequestor;
 
 	private static class EvaluatorState {
 		public long timeCreated;
@@ -82,10 +79,6 @@ public class GoalEngine {
 		es.state = state;
 		es.creator = creator;
 		goalStates.put(goal, es);
-		this.statisticsRequestor.goalStateChanged(goal, state, null); // TODO:
-																		// add
-																		// old
-																		// state
 	}
 
 	private EvaluatorState getEvaluatorState(GoalEvaluator evaluator) {
@@ -109,8 +102,6 @@ public class GoalEngine {
 		
 		t = System.currentTimeMillis();
 		List<IGoal> newGoals = evaluator.subGoalDone(subGoal, result, state);
-		statisticsRequestor.evaluatorReceivedResult(evaluator, subGoal,
-				newGoals, System.currentTimeMillis() - t);
 		if (newGoals == null) {
 			newGoals = IGoal.NO_GOALS;
 		}
@@ -128,8 +119,6 @@ public class GoalEngine {
 		if (ev.subgoalsLeft == 0) {
 			t = System.currentTimeMillis();
 			Object newRes = evaluator.produceResult();
-			statisticsRequestor.evaluatorProducedResult(evaluator, result,
-					System.currentTimeMillis() - t);
 			GoalEvaluationState st = goalStates.get(evaluator.getGoal());
 			assert(st != null);
 			st.state = GoalState.DONE;
@@ -140,58 +129,12 @@ public class GoalEngine {
 		}
 	}
 
-	private EvaluatorStatistics getEvaluatorStatistics(GoalEvaluator evaluator) {
-		EvaluatorState ev = getEvaluatorState(evaluator);
-		if (ev == null) {
-			return null;
-		}
-		long currentTime = System.currentTimeMillis();
-		return new EvaluatorStatistics(ev.totalSubgoals, currentTime
-				- ev.timeCreated, ev.totalSubgoals - ev.subgoalsLeft,
-				ev.successfulSubgoals);
-	}
-
 	public Object evaluateGoal(IGoal rootGoal, IPruner pruner) {
-		return evaluateGoal(rootGoal, pruner, null);
-	}
-
-	public Object evaluateGoal(IGoal rootGoal, IPruner pruner,
-			IEvaluationStatisticsRequestor statisticsRequestor) {
-		long time = 0;
-
-		if (statisticsRequestor == null) {
-			statisticsRequestor = new IEvaluationStatisticsRequestor() {
-				public void evaluationStarted(IGoal rootGoal) {
-				}
-
-				public void evaluatorInitialized(GoalEvaluator evaluator,
-						List<IGoal> subgoals, long time) {
-				}
-
-				public void evaluatorProducedResult(GoalEvaluator evaluator,
-						Object result, long time) {
-				}
-
-				public void evaluatorReceivedResult(GoalEvaluator evaluator,
-						IGoal finishedGoal, List<IGoal> newSubgoals, long time) {
-				}
-
-				public void goalEvaluatorAssigned(IGoal goal,
-						GoalEvaluator evaluator) {
-				}
-
-				public void goalStateChanged(IGoal goal, GoalState state,
-						GoalState oldState) {
-				}
-			};
-		}
-		this.statisticsRequestor = statisticsRequestor;
 		reset();
 		if (pruner != null) {
 			pruner.init();
 		}
 		workingQueue.add(new WorkingPair(rootGoal, null));
-		statisticsRequestor.evaluationStarted(rootGoal);
 		
 		WorkingPair firstPostponed = null;
 		
@@ -224,8 +167,7 @@ public class GoalEngine {
 				
 				boolean prune = false;
 				if (pruner != null && pair.creator != null) {
-					prune = pruner.prune(pair.goal,
-							getEvaluatorStatistics(pair.creator));
+					prune = pruner.prune(pair.goal);
 				}
 				if (prune) {
 					storeGoal(pair.goal, GoalState.PRUNED, null, pair.creator);
@@ -235,15 +177,10 @@ public class GoalEngine {
 							.createEvaluator(pair.goal);
 					assert(evaluator != null);
 					System.out.println(" " + evaluator.getClass().getSimpleName());
-					statisticsRequestor.goalEvaluatorAssigned(pair.goal,
-							evaluator);
-					time = System.currentTimeMillis();
 					List<IGoal> newGoals = evaluator.init();
 					if (newGoals == null) {
 						newGoals = IGoal.NO_GOALS;
 					}
-					statisticsRequestor.evaluatorInitialized(evaluator,
-							newGoals, System.currentTimeMillis() - time);
 					if (!newGoals.isEmpty()) {
 						for (IGoal newGoal : newGoals) {
 							workingQueue.add(new WorkingPair(newGoal,
@@ -256,10 +193,7 @@ public class GoalEngine {
 						storeGoal(pair.goal, GoalState.WAITING, null,
 								pair.creator);
 					} else {
-						time = System.currentTimeMillis();
 						Object result = evaluator.produceResult();
-						statisticsRequestor.evaluatorProducedResult(evaluator,
-								result, System.currentTimeMillis() - time);
 						storeGoal(pair.goal, GoalState.DONE, result,
 								pair.creator);
 						if (pair.creator != null) {
