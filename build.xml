@@ -30,10 +30,10 @@
 	
 	<path id="jdom.classpath">
 		<!-- I'm not that sure, but I think the ordering is important -->
-		<pathelement location="${jdom-dir}/xerces.jar" />
-		<pathelement location="${jdom-dir}/xalan.jar" />
-		<pathelement location="${jdom-dir}/xml-apis.jar" />
-		<pathelement location="${jdom-dir}/jdom.jar" />
+		<pathelement location="${jdom.dir}/xerces.jar" />
+		<pathelement location="${jdom.dir}/xalan.jar" />
+		<pathelement location="${jdom.dir}/xml-apis.jar" />
+		<pathelement location="${jdom.dir}/jdom.jar" />
 	</path>
 
 	<path id="project.classpath">
