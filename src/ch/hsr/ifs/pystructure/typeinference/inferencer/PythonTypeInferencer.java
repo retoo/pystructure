@@ -8,9 +8,9 @@
 package ch.hsr.ifs.pystructure.typeinference.inferencer;
 
 import ch.hsr.ifs.pystructure.typeinference.basetype.IEvaluatedType;
-import ch.hsr.ifs.pystructure.typeinference.dltk.goals.AbstractTypeGoal;
 import ch.hsr.ifs.pystructure.typeinference.dltk.goals.IGoal;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.DefaultPythonEvaluatorFactory;
+import ch.hsr.ifs.pystructure.typeinference.goals.types.PythonTypeGoal;
 
 public class PythonTypeInferencer implements ITypeInferencer {
 
@@ -20,7 +20,7 @@ public class PythonTypeInferencer implements ITypeInferencer {
 		engine = new GoalEngine(new DefaultPythonEvaluatorFactory());
 	}
 
-	public synchronized IEvaluatedType evaluateType(AbstractTypeGoal goal, int timeLimit) {
+	public synchronized IEvaluatedType evaluateType(PythonTypeGoal goal, int timeLimit) {
 		return (IEvaluatedType) engine.evaluateGoal(goal, new TimelimitPruner(timeLimit));
 	}
 

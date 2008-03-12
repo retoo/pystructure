@@ -8,19 +8,18 @@
 package ch.hsr.ifs.pystructure.typeinference.goals.types;
 
 import ch.hsr.ifs.pystructure.typeinference.contexts.PythonContext;
-import ch.hsr.ifs.pystructure.typeinference.dltk.goals.AbstractTypeGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IPythonGoal;
 
-public class PythonTypeGoal extends AbstractTypeGoal implements IPythonGoal {
+public abstract class PythonTypeGoal implements IPythonGoal {
 
+	protected final PythonContext context;
+	
 	public PythonTypeGoal(PythonContext context) {
-		super(context);
+		this.context = context;
 	}
 	
-	@Override
 	public PythonContext getContext() {
-		// Our constructor only allows PythonContext, so this cast should be ok.
-		return (PythonContext) super.getContext();
+		return context;
 	}
 
 }

@@ -10,7 +10,7 @@
 package ch.hsr.ifs.pystructure.typeinference.inferencer;
 
 import ch.hsr.ifs.pystructure.typeinference.basetype.IEvaluatedType;
-import ch.hsr.ifs.pystructure.typeinference.dltk.goals.AbstractTypeGoal;
+import ch.hsr.ifs.pystructure.typeinference.goals.types.PythonTypeGoal;
 
 /**
  *
@@ -29,5 +29,5 @@ public interface ITypeInferencer {
 	 *            time in milliseconds, or -1 if no limits.
 	 * @return
 	 */
-	IEvaluatedType evaluateType(AbstractTypeGoal goal, int timeLimit);
+	IEvaluatedType evaluateType(PythonTypeGoal goal, int timeLimit);
 }
