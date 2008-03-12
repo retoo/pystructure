@@ -7,7 +7,6 @@
 
 package ch.hsr.ifs.pystructure.typeinference.evaluators;
 
-import ch.hsr.ifs.pystructure.typeinference.dltk.evaluators.GoalEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IPythonGoal;
 
 /**

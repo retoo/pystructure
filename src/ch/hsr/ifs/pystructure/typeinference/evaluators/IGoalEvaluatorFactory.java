@@ -7,7 +7,7 @@
  *
 
  *******************************************************************************/
-package ch.hsr.ifs.pystructure.typeinference.dltk.evaluators;
+package ch.hsr.ifs.pystructure.typeinference.evaluators;
 
 import ch.hsr.ifs.pystructure.typeinference.dltk.goals.IGoal;
 

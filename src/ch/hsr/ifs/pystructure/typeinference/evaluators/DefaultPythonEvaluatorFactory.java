@@ -21,9 +21,6 @@ import org.python.pydev.parser.jython.ast.Str;
 import org.python.pydev.parser.jython.ast.Tuple;
 import org.python.pydev.parser.jython.ast.num_typeType;
 
-import ch.hsr.ifs.pystructure.typeinference.dltk.evaluators.FixedAnswerEvaluator;
-import ch.hsr.ifs.pystructure.typeinference.dltk.evaluators.GoalEvaluator;
-import ch.hsr.ifs.pystructure.typeinference.dltk.evaluators.IGoalEvaluatorFactory;
 import ch.hsr.ifs.pystructure.typeinference.dltk.goals.IGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.references.AttributeReferencesGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.references.ClassReferencesGoal;
