@@ -8,28 +8,21 @@
 package ch.hsr.ifs.pystructure.typeinference.results.types;
 
 import ch.hsr.ifs.pystructure.typeinference.basetype.IEvaluatedType;
-import ch.hsr.ifs.pystructure.typeinference.dltk.types.ClassType;
-import ch.hsr.ifs.pystructure.typeinference.dltk.types.IClassType;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Package;
 
-public class PackageType extends ClassType implements IClassType {
+public class PackageType extends AbstractType {
 
-	private String modelKey;
 	private Package pkg;
 
 	public PackageType(Package pkg) {
+		super(pkg.getName().getId());
 		this.pkg = pkg;
-		this.modelKey = pkg.getName().getId();
 	}
 	
 	public boolean subtypeOf(IEvaluatedType type) {
 		return false; //TODO
 	}
 
-	public String getModelKey() {
-		return modelKey;
-	}
-	
 	public String getTypeName() {
 		return getModelKey();
 	}
@@ -56,7 +49,7 @@ public class PackageType extends ClassType implements IClassType {
 		if (getClass() != obj.getClass()) {
 			return false;
 		}
-		final PackageType other = (PackageType) obj;
+		final AbstractType other = (AbstractType) obj;
 		if (modelKey == null) {
 			if (other.modelKey != null) {
 				return false;

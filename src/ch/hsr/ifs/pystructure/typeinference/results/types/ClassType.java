@@ -10,24 +10,22 @@
 package ch.hsr.ifs.pystructure.typeinference.results.types;
 
 import ch.hsr.ifs.pystructure.typeinference.basetype.IEvaluatedType;
-import ch.hsr.ifs.pystructure.typeinference.dltk.types.IClassType;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Class;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Module;
 
-public class ClassType implements IClassType {
+public class ClassType extends AbstractType {
 
 	private Module module;
-	private String modelKey;
 	private Class klass;
 	
 	public ClassType(String modelKey) {
-		this.modelKey = modelKey;
+		super(modelKey);
 	}
 
 	public ClassType(Module module, Class klass) {
+		super(klass.getName().getId());
 		this.module = module;
 		this.klass = klass;
-		this.modelKey = klass.getName().getId();
 	}
 	
 	public Module getModule() {
@@ -42,10 +40,6 @@ public class ClassType implements IClassType {
 		return false; //TODO
 	}
 
-	public String getModelKey() {
-		return modelKey;
-	}
-	
 	public String getTypeName() {
 		return getModelKey();
 	}

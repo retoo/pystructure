@@ -10,21 +10,18 @@
 package ch.hsr.ifs.pystructure.typeinference.results.types;
 
 import ch.hsr.ifs.pystructure.typeinference.basetype.IEvaluatedType;
-import ch.hsr.ifs.pystructure.typeinference.dltk.types.ClassType;
-import ch.hsr.ifs.pystructure.typeinference.dltk.types.IClassType;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Class;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Module;
 
-public class MetaclassType extends ClassType implements IClassType {
+public class MetaclassType extends AbstractType {
 
-	private String modelKey;
 	private Module module;
 	private Class klass;
 
 	public MetaclassType(Module module, Class klass) {
+		super("metaclass");
 		this.module = module;
 		this.klass = klass;
-		this.modelKey = "metaclass";
 	}
 	
 	public Module getModule() {
@@ -37,10 +34,6 @@ public class MetaclassType extends ClassType implements IClassType {
 
 	public boolean subtypeOf(IEvaluatedType type) {
 		return false; //TODO
-	}
-
-	public String getModelKey() {
-		return modelKey;
 	}
 
 	public String getTypeName() {
