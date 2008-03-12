@@ -8,7 +8,6 @@
 package ch.hsr.ifs.pystructure.typeinference.goals.base;
 
 import ch.hsr.ifs.pystructure.typeinference.contexts.PythonContext;
-import ch.hsr.ifs.pystructure.typeinference.dltk.goals.IGoal;
 
 public interface IPythonGoal extends IGoal {
 

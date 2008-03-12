@@ -21,7 +21,7 @@ import org.python.pydev.parser.jython.ast.Str;
 import org.python.pydev.parser.jython.ast.Tuple;
 import org.python.pydev.parser.jython.ast.num_typeType;
 
-import ch.hsr.ifs.pystructure.typeinference.dltk.goals.IGoal;
+import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.references.AttributeReferencesGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.references.ClassReferencesGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.references.FunctionReferencesGoal;

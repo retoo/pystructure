@@ -11,8 +11,8 @@ package ch.hsr.ifs.pystructure.typeinference.evaluators;
 
 import java.util.List;
 
-import ch.hsr.ifs.pystructure.typeinference.dltk.goals.GoalState;
-import ch.hsr.ifs.pystructure.typeinference.dltk.goals.IGoal;
+import ch.hsr.ifs.pystructure.typeinference.goals.base.GoalState;
+import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
 
 public class FixedAnswerEvaluator extends GoalEvaluator {
 

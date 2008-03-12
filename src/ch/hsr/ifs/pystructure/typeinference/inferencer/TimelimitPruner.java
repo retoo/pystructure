@@ -12,7 +12,7 @@
  */
 package ch.hsr.ifs.pystructure.typeinference.inferencer;
 
-import ch.hsr.ifs.pystructure.typeinference.dltk.goals.IGoal;
+import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
 
 public class TimelimitPruner implements IPruner {
 

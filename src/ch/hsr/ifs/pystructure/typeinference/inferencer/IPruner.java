@@ -9,7 +9,7 @@
  *******************************************************************************/
 package ch.hsr.ifs.pystructure.typeinference.inferencer;
 
-import ch.hsr.ifs.pystructure.typeinference.dltk.goals.IGoal;
+import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
 
 /**
  * Pruner is thing, that can prune some goals from working queue. It could be

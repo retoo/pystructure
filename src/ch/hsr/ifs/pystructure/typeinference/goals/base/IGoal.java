@@ -7,7 +7,7 @@
  *
 
  *******************************************************************************/
-package ch.hsr.ifs.pystructure.typeinference.dltk.goals;
+package ch.hsr.ifs.pystructure.typeinference.goals.base;
 
 import java.util.ArrayList;
 import java.util.List;

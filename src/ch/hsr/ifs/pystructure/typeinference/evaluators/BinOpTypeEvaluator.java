@@ -20,8 +20,8 @@ import org.python.pydev.parser.jython.ast.expr_contextType;
 import org.python.pydev.parser.jython.ast.name_contextType;
 import org.python.pydev.parser.jython.ast.operatorType;
 
-import ch.hsr.ifs.pystructure.typeinference.dltk.goals.GoalState;
-import ch.hsr.ifs.pystructure.typeinference.dltk.goals.IGoal;
+import ch.hsr.ifs.pystructure.typeinference.goals.base.GoalState;
+import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.ExpressionTypeGoal;
 
 /**

@@ -18,8 +18,8 @@ import org.python.pydev.parser.jython.ast.Attribute;
 
 import ch.hsr.ifs.pystructure.typeinference.basetype.IEvaluatedType;
 import ch.hsr.ifs.pystructure.typeinference.contexts.PythonContext;
-import ch.hsr.ifs.pystructure.typeinference.dltk.goals.GoalState;
-import ch.hsr.ifs.pystructure.typeinference.dltk.goals.IGoal;
+import ch.hsr.ifs.pystructure.typeinference.goals.base.GoalState;
+import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.references.PossibleAttributeReferencesGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.references.PossibleReferencesGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.DefinitionTypeGoal;

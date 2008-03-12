@@ -9,7 +9,7 @@
  *******************************************************************************/
 package ch.hsr.ifs.pystructure.typeinference.evaluators;
 
-import ch.hsr.ifs.pystructure.typeinference.dltk.goals.IGoal;
+import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
 
 
 public interface IGoalEvaluatorFactory {

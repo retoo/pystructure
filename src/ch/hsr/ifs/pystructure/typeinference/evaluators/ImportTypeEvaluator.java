@@ -9,8 +9,8 @@ package ch.hsr.ifs.pystructure.typeinference.evaluators;
 
 import java.util.List;
 
-import ch.hsr.ifs.pystructure.typeinference.dltk.goals.GoalState;
-import ch.hsr.ifs.pystructure.typeinference.dltk.goals.IGoal;
+import ch.hsr.ifs.pystructure.typeinference.goals.base.GoalState;
+import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.DefinitionTypeGoal;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Class;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.ImportDefinition;

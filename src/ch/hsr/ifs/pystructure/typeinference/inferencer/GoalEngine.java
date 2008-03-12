@@ -15,10 +15,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import ch.hsr.ifs.pystructure.typeinference.dltk.goals.GoalState;
-import ch.hsr.ifs.pystructure.typeinference.dltk.goals.IGoal;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.GoalEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.IGoalEvaluatorFactory;
+import ch.hsr.ifs.pystructure.typeinference.goals.base.GoalState;
+import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
 
 /**
  * Main working class for type inference. Purpose of this class is simple:

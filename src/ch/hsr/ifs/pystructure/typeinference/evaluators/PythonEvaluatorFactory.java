@@ -7,7 +7,7 @@
 
 package ch.hsr.ifs.pystructure.typeinference.evaluators;
 
-import ch.hsr.ifs.pystructure.typeinference.dltk.goals.IGoal;
+import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
 
 /**
  * Evaluator factory which, given a goal, creates the appropriate evaluator. It

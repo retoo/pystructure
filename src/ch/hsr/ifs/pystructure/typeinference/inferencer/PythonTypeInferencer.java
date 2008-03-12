@@ -8,8 +8,8 @@
 package ch.hsr.ifs.pystructure.typeinference.inferencer;
 
 import ch.hsr.ifs.pystructure.typeinference.basetype.IEvaluatedType;
-import ch.hsr.ifs.pystructure.typeinference.dltk.goals.IGoal;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.DefaultPythonEvaluatorFactory;
+import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.AbstractTypeGoal;
 
 public class PythonTypeInferencer implements ITypeInferencer {
