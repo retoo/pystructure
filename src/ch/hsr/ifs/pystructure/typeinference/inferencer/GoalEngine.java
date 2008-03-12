@@ -7,7 +7,7 @@
  *
 
  *******************************************************************************/
-package ch.hsr.ifs.pystructure.typeinference.dltk.inferencer;
+package ch.hsr.ifs.pystructure.typeinference.inferencer;
 
 import java.util.ArrayList;
 import java.util.HashMap;

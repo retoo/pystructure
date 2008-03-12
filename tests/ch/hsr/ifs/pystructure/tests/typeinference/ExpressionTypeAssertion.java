@@ -17,8 +17,8 @@ import org.python.pydev.parser.jython.ast.Expr;
 
 import ch.hsr.ifs.pystructure.typeinference.basetype.IEvaluatedType;
 import ch.hsr.ifs.pystructure.typeinference.contexts.PythonContext;
-import ch.hsr.ifs.pystructure.typeinference.dltk.inferencer.ITypeInferencer;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.ExpressionTypeGoal;
+import ch.hsr.ifs.pystructure.typeinference.inferencer.ITypeInferencer;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Module;
 import ch.hsr.ifs.pystructure.typeinference.visitors.ExpressionAtLineVisitor;
 import ch.hsr.ifs.pystructure.typeinference.visitors.Workspace;

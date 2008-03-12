@@ -10,10 +10,6 @@ package ch.hsr.ifs.pystructure.typeinference.inferencer;
 import ch.hsr.ifs.pystructure.typeinference.basetype.IEvaluatedType;
 import ch.hsr.ifs.pystructure.typeinference.dltk.goals.AbstractTypeGoal;
 import ch.hsr.ifs.pystructure.typeinference.dltk.goals.IGoal;
-import ch.hsr.ifs.pystructure.typeinference.dltk.inferencer.GoalEngine;
-import ch.hsr.ifs.pystructure.typeinference.dltk.inferencer.IPruner;
-import ch.hsr.ifs.pystructure.typeinference.dltk.inferencer.ITypeInferencer;
-import ch.hsr.ifs.pystructure.typeinference.dltk.inferencer.TimelimitPruner;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.DefaultPythonEvaluatorFactory;
 
 public class PythonTypeInferencer implements ITypeInferencer {

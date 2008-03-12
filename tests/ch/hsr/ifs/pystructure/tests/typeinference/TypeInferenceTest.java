@@ -15,7 +15,7 @@ import java.util.List;
 import junit.framework.TestCase;
 
 
-import ch.hsr.ifs.pystructure.typeinference.dltk.inferencer.ITypeInferencer;
+import ch.hsr.ifs.pystructure.typeinference.inferencer.ITypeInferencer;
 import ch.hsr.ifs.pystructure.typeinference.visitors.Workspace;
 import ch.hsr.ifs.pystructure.utils.FileUtils;
 import ch.hsr.ifs.pystructure.utils.TestUtils;
