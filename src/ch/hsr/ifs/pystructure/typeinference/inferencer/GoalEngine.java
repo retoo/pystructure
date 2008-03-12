@@ -115,7 +115,7 @@ public class GoalEngine {
 		if (ev.subgoalsLeft == 0) {
 			Object newRes = evaluator.produceResult();
 			GoalEvaluationState st = goalStates.get(evaluator.getGoal());
-			assert(st != null);
+			assert st != null;
 			st.state = GoalState.DONE;
 			st.result = newRes;
 			if (st.creator != null) {
@@ -170,7 +170,7 @@ public class GoalEngine {
 				} else {
 					GoalEvaluator evaluator = evaluatorFactory
 							.createEvaluator(pair.goal);
-					assert(evaluator != null);
+					assert evaluator != null;
 					System.out.println(" " + evaluator.getClass().getSimpleName());
 					
 					/* Check if there are any cached results */
@@ -182,7 +182,7 @@ public class GoalEngine {
 						List<IGoal> newGoals = evaluator.init();
 					
 						/* please return IGoal.NO_GOALS if there are no goals */
-						assert(newGoals != null);
+						assert newGoals != null;
 					
 						/* Process Sub goals */
 						if (!newGoals.isEmpty()) {
@@ -213,7 +213,7 @@ public class GoalEngine {
 		}
 		GoalEvaluationState s = goalStates.get(rootGoal);
 
-		assert(s.state == GoalState.DONE);
+		assert s.state == GoalState.DONE;
 		return s.result;
 	}
 
