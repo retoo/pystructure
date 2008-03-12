@@ -89,8 +89,6 @@ public class GoalEngine {
 	}
 
 	private void notifyEvaluator(GoalEvaluator evaluator, IGoal subGoal) {
-		long t = 0;
-
 		GoalEvaluationState subGoalState = goalStates.get(subGoal);
 		Object result = subGoalState.result;
 		GoalState state = subGoalState.state;
@@ -99,7 +97,6 @@ public class GoalEngine {
 			state = GoalState.RECURSIVE;
 		}
 		
-		t = System.currentTimeMillis();
 		List<IGoal> newGoals = evaluator.subGoalDone(subGoal, result, state);
 		if (newGoals == null) {
 			newGoals = IGoal.NO_GOALS;
@@ -116,7 +113,6 @@ public class GoalEngine {
 			ev.successfulSubgoals++;
 		}
 		if (ev.subgoalsLeft == 0) {
-			t = System.currentTimeMillis();
 			Object newRes = evaluator.produceResult();
 			GoalEvaluationState st = goalStates.get(evaluator.getGoal());
 			assert(st != null);
