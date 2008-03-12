@@ -13,6 +13,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
+import ch.hsr.ifs.pystructure.typeinference.basetype.IEvaluatedType;
 import ch.hsr.ifs.pystructure.typeinference.dltk.evaluators.FieldReferencesGoalEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.dltk.evaluators.GoalEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.dltk.evaluators.IGoalEvaluatorFactory;
@@ -22,7 +23,6 @@ import ch.hsr.ifs.pystructure.typeinference.dltk.goals.AbstractTypeGoal;
 import ch.hsr.ifs.pystructure.typeinference.dltk.goals.FieldReferencesGoal;
 import ch.hsr.ifs.pystructure.typeinference.dltk.goals.IGoal;
 import ch.hsr.ifs.pystructure.typeinference.dltk.goals.MethodCallsGoal;
-import ch.hsr.ifs.pystructure.typeinference.dltk.types.IEvaluatedType;
 
 /**
  * <p>

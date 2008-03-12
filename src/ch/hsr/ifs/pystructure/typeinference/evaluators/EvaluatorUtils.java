@@ -10,8 +10,8 @@ package ch.hsr.ifs.pystructure.typeinference.evaluators;
 import java.util.ArrayList;
 import java.util.List;
 
-import ch.hsr.ifs.pystructure.typeinference.dltk.types.IEvaluatedType;
-import ch.hsr.ifs.pystructure.typeinference.results.types.CombinedType;
+import ch.hsr.ifs.pystructure.typeinference.basetype.CombinedType;
+import ch.hsr.ifs.pystructure.typeinference.basetype.IEvaluatedType;
 
 public final class EvaluatorUtils {
 	private EvaluatorUtils() { }

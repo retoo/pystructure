@@ -12,9 +12,9 @@ import java.util.List;
 
 import org.python.pydev.parser.jython.SimpleNode;
 
+import ch.hsr.ifs.pystructure.typeinference.basetype.CombinedType;
 import ch.hsr.ifs.pystructure.typeinference.model.base.IModule;
 import ch.hsr.ifs.pystructure.typeinference.model.base.NameAdapter;
-import ch.hsr.ifs.pystructure.typeinference.results.types.CombinedType;
 
 /**
  * Definition of a name, for example through an assignment, a def or a class

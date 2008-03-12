@@ -14,13 +14,13 @@ import org.python.pydev.parser.jython.ast.Return;
 import org.python.pydev.parser.jython.ast.exprType;
 import org.python.pydev.parser.visitors.scope.ReturnVisitor;
 
+import ch.hsr.ifs.pystructure.typeinference.basetype.CombinedType;
+import ch.hsr.ifs.pystructure.typeinference.basetype.IEvaluatedType;
 import ch.hsr.ifs.pystructure.typeinference.dltk.goals.GoalState;
 import ch.hsr.ifs.pystructure.typeinference.dltk.goals.IGoal;
-import ch.hsr.ifs.pystructure.typeinference.dltk.types.IEvaluatedType;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.ExpressionTypeGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.ReturnTypeGoal;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Function;
-import ch.hsr.ifs.pystructure.typeinference.results.types.CombinedType;
 
 /**
  * Evaluator for the return type of a function or method.

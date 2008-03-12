@@ -7,7 +7,7 @@
 
 package ch.hsr.ifs.pystructure.typeinference.results.types;
 
-import ch.hsr.ifs.pystructure.typeinference.dltk.types.IEvaluatedType;
+import ch.hsr.ifs.pystructure.typeinference.basetype.IEvaluatedType;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Method;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Module;
 

@@ -9,7 +9,7 @@ package ch.hsr.ifs.pystructure.typeinference.results.types;
 
 import org.python.pydev.parser.jython.ast.Tuple;
 
-import ch.hsr.ifs.pystructure.typeinference.dltk.types.IEvaluatedType;
+import ch.hsr.ifs.pystructure.typeinference.basetype.IEvaluatedType;
 
 public class TupleType implements IEvaluatedType {
 

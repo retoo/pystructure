@@ -9,9 +9,10 @@ package ch.hsr.ifs.pystructure.typeinference.evaluators;
 
 import java.util.List;
 
+import ch.hsr.ifs.pystructure.typeinference.basetype.CombinedType;
+import ch.hsr.ifs.pystructure.typeinference.basetype.IEvaluatedType;
 import ch.hsr.ifs.pystructure.typeinference.dltk.goals.GoalState;
 import ch.hsr.ifs.pystructure.typeinference.dltk.goals.IGoal;
-import ch.hsr.ifs.pystructure.typeinference.dltk.types.IEvaluatedType;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.DefinitionTypeGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.ExpressionTypeGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.TupleElementTypeGoal;
@@ -19,7 +20,6 @@ import ch.hsr.ifs.pystructure.typeinference.model.definitions.AssignDefinition;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.TupleElement;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Value;
 import ch.hsr.ifs.pystructure.typeinference.results.types.ClassType;
-import ch.hsr.ifs.pystructure.typeinference.results.types.CombinedType;
 
 /**
  * Evaluator for assign nodes. For determining the type of the left hand side,

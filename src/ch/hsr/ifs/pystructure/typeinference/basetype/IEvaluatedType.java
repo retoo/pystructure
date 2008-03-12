@@ -7,7 +7,7 @@
  *
 
  *******************************************************************************/
-package ch.hsr.ifs.pystructure.typeinference.dltk.types;
+package ch.hsr.ifs.pystructure.typeinference.basetype;
 
 public interface IEvaluatedType {
 

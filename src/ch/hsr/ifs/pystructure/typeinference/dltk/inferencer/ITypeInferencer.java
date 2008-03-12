@@ -9,8 +9,8 @@
  *******************************************************************************/
 package ch.hsr.ifs.pystructure.typeinference.dltk.inferencer;
 
+import ch.hsr.ifs.pystructure.typeinference.basetype.IEvaluatedType;
 import ch.hsr.ifs.pystructure.typeinference.dltk.goals.AbstractTypeGoal;
-import ch.hsr.ifs.pystructure.typeinference.dltk.types.IEvaluatedType;
 
 /**
  *

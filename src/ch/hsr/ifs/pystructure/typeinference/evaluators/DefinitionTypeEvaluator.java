@@ -1,8 +1,8 @@
 package ch.hsr.ifs.pystructure.typeinference.evaluators;
 
+import ch.hsr.ifs.pystructure.typeinference.basetype.CombinedType;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.PythonTypeGoal;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Definition;
-import ch.hsr.ifs.pystructure.typeinference.results.types.CombinedType;
 
 public abstract class DefinitionTypeEvaluator extends PythonEvaluator {
 

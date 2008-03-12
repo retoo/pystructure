@@ -9,6 +9,8 @@
  *******************************************************************************/
 package ch.hsr.ifs.pystructure.typeinference.dltk.types;
 
+import ch.hsr.ifs.pystructure.typeinference.basetype.IEvaluatedType;
+
 /**
  * Represents type as some user class
  * Each such class should be presented inside a DLTK MixinModel.

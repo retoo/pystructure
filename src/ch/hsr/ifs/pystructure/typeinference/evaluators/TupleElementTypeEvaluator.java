@@ -13,9 +13,9 @@ import java.util.List;
 import org.python.pydev.parser.jython.ast.Tuple;
 import org.python.pydev.parser.jython.ast.exprType;
 
+import ch.hsr.ifs.pystructure.typeinference.basetype.IEvaluatedType;
 import ch.hsr.ifs.pystructure.typeinference.dltk.goals.GoalState;
 import ch.hsr.ifs.pystructure.typeinference.dltk.goals.IGoal;
-import ch.hsr.ifs.pystructure.typeinference.dltk.types.IEvaluatedType;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.ExpressionTypeGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.TupleElementTypeGoal;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.TupleElement;

@@ -9,7 +9,7 @@ package ch.hsr.ifs.pystructure.typeinference.results.references;
 
 import org.python.pydev.parser.jython.SimpleNode;
 
-import ch.hsr.ifs.pystructure.typeinference.dltk.types.IEvaluatedType;
+import ch.hsr.ifs.pystructure.typeinference.basetype.IEvaluatedType;
 import ch.hsr.ifs.pystructure.typeinference.model.base.NameAdapter;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Module;
 

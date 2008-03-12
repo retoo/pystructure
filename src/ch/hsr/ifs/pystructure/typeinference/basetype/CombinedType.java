@@ -5,7 +5,7 @@
  *
  */
 
-package ch.hsr.ifs.pystructure.typeinference.results.types;
+package ch.hsr.ifs.pystructure.typeinference.basetype;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -13,7 +13,6 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 
-import ch.hsr.ifs.pystructure.typeinference.dltk.types.IEvaluatedType;
 import ch.hsr.ifs.pystructure.utils.StringUtils;
 
 public class CombinedType implements IEvaluatedType {

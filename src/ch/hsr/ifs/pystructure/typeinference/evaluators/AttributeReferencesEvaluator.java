@@ -10,9 +10,9 @@ package ch.hsr.ifs.pystructure.typeinference.evaluators;
 import java.util.ArrayList;
 import java.util.List;
 
+import ch.hsr.ifs.pystructure.typeinference.basetype.IEvaluatedType;
 import ch.hsr.ifs.pystructure.typeinference.dltk.goals.GoalState;
 import ch.hsr.ifs.pystructure.typeinference.dltk.goals.IGoal;
-import ch.hsr.ifs.pystructure.typeinference.dltk.types.IEvaluatedType;
 import ch.hsr.ifs.pystructure.typeinference.goals.references.AttributeReferencesGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.references.PossibleAttributeReferencesGoal;
 import ch.hsr.ifs.pystructure.typeinference.model.base.NameAdapter;

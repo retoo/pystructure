@@ -12,10 +12,10 @@ import java.util.List;
 
 import org.python.pydev.parser.jython.SimpleNode;
 
+import ch.hsr.ifs.pystructure.typeinference.basetype.IEvaluatedType;
 import ch.hsr.ifs.pystructure.typeinference.contexts.PythonContext;
 import ch.hsr.ifs.pystructure.typeinference.dltk.goals.GoalState;
 import ch.hsr.ifs.pystructure.typeinference.dltk.goals.IGoal;
-import ch.hsr.ifs.pystructure.typeinference.dltk.types.IEvaluatedType;
 import ch.hsr.ifs.pystructure.typeinference.goals.references.ClassReferencesGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.references.MethodReferencesGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.references.PossibleAttributeReferencesGoal;
