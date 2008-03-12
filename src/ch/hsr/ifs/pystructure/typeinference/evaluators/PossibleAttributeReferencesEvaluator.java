@@ -24,7 +24,7 @@ import ch.hsr.ifs.pystructure.typeinference.goals.references.PossibleAttributeRe
 import ch.hsr.ifs.pystructure.typeinference.goals.references.PossibleReferencesGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.DefinitionTypeGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.ExpressionTypeGoal;
-import ch.hsr.ifs.pystructure.typeinference.goals.types.PythonTypeGoal;
+import ch.hsr.ifs.pystructure.typeinference.goals.types.AbstractTypeGoal;
 import ch.hsr.ifs.pystructure.typeinference.model.base.NameAdapter;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.AttributeUse;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Definition;
@@ -107,7 +107,7 @@ public class PossibleAttributeReferencesEvaluator extends PythonEvaluator {
 			return subgoals;
 			
 		} else {
-			PythonTypeGoal typeGoal = (PythonTypeGoal) subgoal;
+			AbstractTypeGoal typeGoal = (AbstractTypeGoal) subgoal;
 			IEvaluatedType type = (IEvaluatedType) result;
 			NameAdapter name = attributeNames.get(subgoal);
 			SimpleNode node = attributeNodes.get(subgoal);

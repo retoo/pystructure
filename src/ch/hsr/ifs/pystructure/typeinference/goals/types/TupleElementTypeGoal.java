@@ -10,7 +10,7 @@ package ch.hsr.ifs.pystructure.typeinference.goals.types;
 import ch.hsr.ifs.pystructure.typeinference.contexts.PythonContext;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.TupleElement;
 
-public class TupleElementTypeGoal extends PythonTypeGoal {
+public class TupleElementTypeGoal extends AbstractTypeGoal {
 
 	private final TupleElement element;
 	

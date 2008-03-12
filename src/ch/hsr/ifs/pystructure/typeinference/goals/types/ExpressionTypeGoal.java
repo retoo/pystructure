@@ -11,7 +11,7 @@ import org.python.pydev.parser.jython.SimpleNode;
 
 import ch.hsr.ifs.pystructure.typeinference.contexts.PythonContext;
 
-public class ExpressionTypeGoal extends PythonTypeGoal {
+public class ExpressionTypeGoal extends AbstractTypeGoal {
 
 	private final SimpleNode expression;
 	

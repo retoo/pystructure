@@ -20,7 +20,7 @@ import ch.hsr.ifs.pystructure.typeinference.dltk.goals.IGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.references.FunctionReferencesGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.references.MethodReferencesGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.ExpressionTypeGoal;
-import ch.hsr.ifs.pystructure.typeinference.goals.types.PythonTypeGoal;
+import ch.hsr.ifs.pystructure.typeinference.goals.types.AbstractTypeGoal;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Argument;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Function;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Method;
@@ -34,7 +34,7 @@ public class ArgumentTypeEvaluator extends DefinitionTypeEvaluator {
 
 	private final Argument argument;
 	
-	public ArgumentTypeEvaluator(PythonTypeGoal goal, Argument argument) {
+	public ArgumentTypeEvaluator(AbstractTypeGoal goal, Argument argument) {
 		super(goal, argument);
 		this.argument = argument;
 	}
