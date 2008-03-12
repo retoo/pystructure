@@ -11,7 +11,7 @@ package ch.hsr.ifs.pystructure.typeinference.dltk.goals;
 
 import org.python.pydev.parser.jython.SimpleNode;
 
-import ch.hsr.ifs.pystructure.typeinference.dltk.contexts.IContext;
+import ch.hsr.ifs.pystructure.typeinference.contexts.IContext;
 
 public class ExpressionTypeGoal extends AbstractTypeGoal {
 

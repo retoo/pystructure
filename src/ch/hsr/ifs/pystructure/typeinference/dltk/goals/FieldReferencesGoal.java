@@ -9,7 +9,7 @@
  *******************************************************************************/
 package ch.hsr.ifs.pystructure.typeinference.dltk.goals;
 
-import ch.hsr.ifs.pystructure.typeinference.dltk.contexts.IContext;
+import ch.hsr.ifs.pystructure.typeinference.contexts.IContext;
 
 /**
  * Task of this goal is to find all references to the given field or variable.

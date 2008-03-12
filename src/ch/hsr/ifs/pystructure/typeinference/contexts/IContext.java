@@ -7,7 +7,7 @@
  *
 
  *******************************************************************************/
-package ch.hsr.ifs.pystructure.typeinference.dltk.contexts;
+package ch.hsr.ifs.pystructure.typeinference.contexts;
 
 public interface IContext {
 	String getLangNature();

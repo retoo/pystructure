@@ -12,7 +12,7 @@ package ch.hsr.ifs.pystructure.typeinference.dltk.goals;
 import java.util.ArrayList;
 import java.util.List;
 
-import ch.hsr.ifs.pystructure.typeinference.dltk.contexts.IContext;
+import ch.hsr.ifs.pystructure.typeinference.contexts.IContext;
 public interface IGoal {
 
 	List<IGoal> NO_GOALS = new ArrayList<IGoal>();

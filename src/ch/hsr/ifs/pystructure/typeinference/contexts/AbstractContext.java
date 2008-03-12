@@ -7,7 +7,6 @@
 
 package ch.hsr.ifs.pystructure.typeinference.contexts;
 
-import ch.hsr.ifs.pystructure.typeinference.dltk.contexts.IContext;
 
 public class AbstractContext implements IContext {
 
