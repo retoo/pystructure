@@ -25,3 +25,9 @@ def special(a, b, c, d=True):
     d ## type bool
 
 special(1, c=1.1, b="test")
+
+def foo(x):
+    x ## type int|str
+    return x
+foo(1)
+foo("x")

@@ -1,10 +1,3 @@
-#def foo(x):
-#    x # FIXME I BREAK type int|str
-#    return x
-#foo(1)
-#foo("x")
-
-
 # This test case breaks if caching is activated (rschuett 2008.03.11)
 class A():
     def method(self, x):

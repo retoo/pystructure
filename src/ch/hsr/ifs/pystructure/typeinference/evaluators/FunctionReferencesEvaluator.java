@@ -16,6 +16,7 @@ import ch.hsr.ifs.pystructure.typeinference.goals.references.FunctionReferencesG
 import ch.hsr.ifs.pystructure.typeinference.goals.references.PossibleReferencesGoal;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Function;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.NameUse;
+import ch.hsr.ifs.pystructure.typeinference.model.definitions.Use;
 import ch.hsr.ifs.pystructure.typeinference.results.references.FunctionReference;
 
 /**
@@ -43,12 +44,21 @@ public class FunctionReferencesEvaluator extends PythonEvaluator {
 	@Override
 	public List<IGoal> subGoalDone(IGoal subgoal, Object result, GoalState state) {
 		if (subgoal instanceof PossibleReferencesGoal) {
-			List<NameUse> possibleNameUses = (List<NameUse>) result;
-			for (NameUse nameUse : possibleNameUses) {
-				if (nameUse.getDefinitions().contains(function)) {
-					references.add(new FunctionReference(function, nameUse.getName().getNode()));
+			List<Use> possibleUses = (List<Use>) result;
+			for (Use use : possibleUses) {
+				/*
+				 * The PossibleReferencesEvaluator might return AttributeUses
+				 * which we dont really need at this point
+				 */
+				if (use instanceof NameUse) {
+					NameUse nameUse = (NameUse) use;
+					if (nameUse.getDefinitions().contains(function)) {
+						references.add(new FunctionReference(function, use.getName().getNode()));
+					}
+					// TODO: Check if it's in the right module etc.
+				} else {
+					/* skip */
 				}
-				// TODO: Check if it's in the right module etc.
 			}
 		}
 		return IGoal.NO_GOALS;
