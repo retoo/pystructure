@@ -68,7 +68,7 @@ public class Swush {
 		Expr expression = visitor.getExpression();
 
 		if (expression == null) {
-			throw new RuntimeException("Unable to find node for expresssion '" + expression + "'");
+			throw new RuntimeException("Unable to find expression on line " + line);
 		}
 		return expression;
 	}
