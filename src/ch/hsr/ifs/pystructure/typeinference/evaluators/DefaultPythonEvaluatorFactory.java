@@ -129,7 +129,7 @@ public class DefaultPythonEvaluatorFactory implements IGoalEvaluatorFactory {
 			return new FixedAnswerEvaluator(goal, new ClassType("object"));
 		}
 		
-		return null;
+		throw new RuntimeException("Can't create evaluator for definition " + def + ", goal " + goal);
 	}
 	
 	private GoalEvaluator createExpressionEvaluator(ExpressionTypeGoal goal) {
@@ -160,7 +160,7 @@ public class DefaultPythonEvaluatorFactory implements IGoalEvaluatorFactory {
 			return evaluator;
 		}
 		
-		return null;
+		throw new RuntimeException("Can't create Evaluator for " + goal);
 	}
 	
 	// TODO: Maybe move this into an ExpressionTypeEvaluator.
@@ -198,7 +198,8 @@ public class DefaultPythonEvaluatorFactory implements IGoalEvaluatorFactory {
 		if (expr instanceof Dict) {
 			return new FixedAnswerEvaluator(goal, new ClassType("dict"));
 		}
-		return null;
+		
+		throw new RuntimeException("Can't create evaluator for literal expression " + expr +  ", goal " + goal);
 	}
 
 }

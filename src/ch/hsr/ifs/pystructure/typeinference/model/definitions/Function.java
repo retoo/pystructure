@@ -22,6 +22,7 @@ public class Function extends Definition<FunctionDef> implements IAttributeDefin
 
 	public Function(IModule module, NameAdapter name, FunctionDef functionDef, Definition attributeParent) {
 		super(module, name, functionDef);
+		assert attributeParent != null;
 		this.attributeParent = attributeParent;
 	}
 

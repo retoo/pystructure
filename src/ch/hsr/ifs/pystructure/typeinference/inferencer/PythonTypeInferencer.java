@@ -1,34 +1,35 @@
-/*******************************************************************************
- * Copyright (c) 2005, 2007 IBM Corporation and others.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+/*
+ * Copyright (C) 2008  Reto Schuettel, Robin Stocker
  *
- 
- *******************************************************************************/
+ * IFS Institute for Software, HSR Rapperswil, Switzerland
+ *
+ */
+
 package ch.hsr.ifs.pystructure.typeinference.inferencer;
 
 import ch.hsr.ifs.pystructure.typeinference.basetype.IEvaluatedType;
 import ch.hsr.ifs.pystructure.typeinference.dltk.goals.AbstractTypeGoal;
 import ch.hsr.ifs.pystructure.typeinference.dltk.goals.IGoal;
-import ch.hsr.ifs.pystructure.typeinference.dltk.inferencer.DefaultTypeInferencer;
+import ch.hsr.ifs.pystructure.typeinference.dltk.inferencer.GoalEngine;
 import ch.hsr.ifs.pystructure.typeinference.dltk.inferencer.IPruner;
+import ch.hsr.ifs.pystructure.typeinference.dltk.inferencer.ITypeInferencer;
 import ch.hsr.ifs.pystructure.typeinference.dltk.inferencer.TimelimitPruner;
-import ch.hsr.ifs.pystructure.typeinference.evaluators.PythonEvaluatorFactory;
+import ch.hsr.ifs.pystructure.typeinference.evaluators.DefaultPythonEvaluatorFactory;
 
-public class PythonTypeInferencer extends DefaultTypeInferencer {
+public class PythonTypeInferencer implements ITypeInferencer {
 
+	private final GoalEngine engine;
+	
 	public PythonTypeInferencer() {
-		super(new PythonEvaluatorFactory());
+		engine = new GoalEngine(new DefaultPythonEvaluatorFactory());
 	}
 
 	public synchronized IEvaluatedType evaluateType(AbstractTypeGoal goal, int timeLimit) {
-		return super.evaluateType(goal, new TimelimitPruner(timeLimit));
+		return (IEvaluatedType) engine.evaluateGoal(goal, new TimelimitPruner(timeLimit));
 	}
 
 	public synchronized Object evaluateGoal(IGoal goal, IPruner pruner) {
-		return super.evaluateGoal(goal, pruner);
+		return engine.evaluateGoal(goal, pruner);
 	}
 
 }

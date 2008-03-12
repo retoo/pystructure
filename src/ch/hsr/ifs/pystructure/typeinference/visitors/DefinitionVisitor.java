@@ -99,8 +99,7 @@ public class DefinitionVisitor extends ParentVisitor {
 
 	@Override
 	public Object visitModule(org.python.pydev.parser.jython.ast.Module node) throws Exception {
-		// TODO: Definition of ModuleScope?
-		moduleScope = new ModuleScope(new BuiltInScope());
+		moduleScope = new ModuleScope(new BuiltInScope(), module);
 
 		beginScope(moduleScope);
 		super.visitModule(node);
@@ -138,7 +137,8 @@ public class DefinitionVisitor extends ParentVisitor {
 				klass.addMethod(method);
 				addDefinition(method);
 			} else {
-				addDefinition(new Function(module, name, node, getScopeOf(name).getDefinition()));
+				Definition parentDefinition = getScopeOf(name).getDefinition();
+				addDefinition(new Function(module, name, node, parentDefinition));
 			}
 			return null;
 		}

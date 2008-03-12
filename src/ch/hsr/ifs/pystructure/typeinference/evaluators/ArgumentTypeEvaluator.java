@@ -104,7 +104,13 @@ public class ArgumentTypeEvaluator extends DefinitionTypeEvaluator {
 
 	private IGoal getArgumentExpressionGoal(FunctionReference reference) {
 		exprType expression = reference.getArgumentExpression(argument);
-		return new ExpressionTypeGoal(getGoal().getContext(), expression);
+		if (expression == null) {
+			// This is a reference of the function without a call, e.g.:
+			//   other_name_for_function = function
+			return null;
+		} else {
+			return new ExpressionTypeGoal(getGoal().getContext(), expression);
+		}
 	}
 	
 }
