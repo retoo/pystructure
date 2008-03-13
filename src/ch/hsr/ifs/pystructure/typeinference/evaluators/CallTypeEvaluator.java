@@ -20,7 +20,6 @@ import ch.hsr.ifs.pystructure.typeinference.contexts.PythonContext;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.GoalState;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.ExpressionTypeGoal;
-import ch.hsr.ifs.pystructure.typeinference.goals.types.AbstractTypeGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.ReturnTypeGoal;
 import ch.hsr.ifs.pystructure.typeinference.results.references.FunctionReference;
 import ch.hsr.ifs.pystructure.typeinference.results.references.MethodReference;
@@ -39,7 +38,7 @@ public class CallTypeEvaluator extends PythonEvaluator {
 	
 	private CombinedType resultType;
 	
-	public CallTypeEvaluator(AbstractTypeGoal goal, Call call) {
+	public CallTypeEvaluator(ExpressionTypeGoal goal, Call call) {
 		super(goal);
 		this.call = call;
 		
