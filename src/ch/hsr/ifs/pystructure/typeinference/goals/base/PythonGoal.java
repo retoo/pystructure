@@ -7,17 +7,17 @@
 
 package ch.hsr.ifs.pystructure.typeinference.goals.base;
 
-import ch.hsr.ifs.pystructure.typeinference.contexts.PythonContext;
+import ch.hsr.ifs.pystructure.typeinference.contexts.ModuleContext;
 
 public class PythonGoal implements IPythonGoal {
 
-	private final PythonContext context;
+	private final ModuleContext context;
 	
-	public PythonGoal(PythonContext context) {
+	public PythonGoal(ModuleContext context) {
 		this.context = context;
 	}
 	
-	public PythonContext getContext() {
+	public ModuleContext getContext() {
 		return context;
 	}
 

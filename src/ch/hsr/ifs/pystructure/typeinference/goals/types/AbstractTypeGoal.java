@@ -7,18 +7,18 @@
 
 package ch.hsr.ifs.pystructure.typeinference.goals.types;
 
-import ch.hsr.ifs.pystructure.typeinference.contexts.PythonContext;
+import ch.hsr.ifs.pystructure.typeinference.contexts.ModuleContext;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IPythonGoal;
 
 public abstract class AbstractTypeGoal implements IPythonGoal {
 
-	protected final PythonContext context;
+	protected final ModuleContext context;
 	
-	public AbstractTypeGoal(PythonContext context) {
+	public AbstractTypeGoal(ModuleContext context) {
 		this.context = context;
 	}
 	
-	public PythonContext getContext() {
+	public ModuleContext getContext() {
 		return context;
 	}
 

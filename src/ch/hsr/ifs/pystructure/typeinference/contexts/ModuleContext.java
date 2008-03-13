@@ -13,23 +13,23 @@ import ch.hsr.ifs.pystructure.typeinference.visitors.Workspace;
 /**
  * Root context for {@link PythonGoal}s.
  */
-public class PythonContext extends AbstractContext {
+public class ModuleContext {
 
-	private PythonContext parent;
+	private ModuleContext parent;
 	private Workspace workspace;
 	private Module module;
 	
-	public PythonContext(PythonContext parent, Module module) {
+	public ModuleContext(ModuleContext parent, Module module) {
 		this(parent.getWorkspace(), module);
 		this.parent = parent;
 	}
 	
-	public PythonContext(Workspace workspace, Module module) {
+	public ModuleContext(Workspace workspace, Module module) {
 		this.module = module;
 		this.workspace = workspace;
 	}
 
-	public PythonContext getParent() {
+	public ModuleContext getParent() {
 		return parent;
 	}
 	
@@ -40,7 +40,7 @@ public class PythonContext extends AbstractContext {
 	 * @return the last call context on the "stack"
 	 */
 	public CallContext getCallContext() {
-		PythonContext c;
+		ModuleContext c;
 		for (c = this; c.parent != null; c = c.parent) {
 			if (c instanceof CallContext) {
 				return (CallContext) c;

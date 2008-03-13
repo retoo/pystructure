@@ -16,7 +16,7 @@ import org.python.pydev.parser.jython.ast.exprType;
 import ch.hsr.ifs.pystructure.typeinference.basetype.CombinedType;
 import ch.hsr.ifs.pystructure.typeinference.basetype.IEvaluatedType;
 import ch.hsr.ifs.pystructure.typeinference.contexts.CallContext;
-import ch.hsr.ifs.pystructure.typeinference.contexts.PythonContext;
+import ch.hsr.ifs.pystructure.typeinference.contexts.ModuleContext;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.GoalState;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.ExpressionTypeGoal;
@@ -70,11 +70,11 @@ public class CallTypeEvaluator extends PythonEvaluator {
 						reference = new FunctionReference(functionType.getFunction(), call.func);
 					}
 					
-					PythonContext context = getGoal().getContext();
+					ModuleContext context = getGoal().getContext();
 					// Module of call context may be different from that of the
 					// function definition, therefore the two contexts.
 					CallContext callContext = new CallContext(context, context.getModule(), reference);
-					PythonContext moduleContext = new PythonContext(callContext, functionType.getModule());
+					ModuleContext moduleContext = new ModuleContext(callContext, functionType.getModule());
 					
 					subgoals.add(new ReturnTypeGoal(moduleContext, functionType.getFunction()));
 				}

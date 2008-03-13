@@ -7,7 +7,7 @@
 
 package ch.hsr.ifs.pystructure.typeinference.goals.references;
 
-import ch.hsr.ifs.pystructure.typeinference.contexts.PythonContext;
+import ch.hsr.ifs.pystructure.typeinference.contexts.ModuleContext;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.PythonGoal;
 import ch.hsr.ifs.pystructure.typeinference.model.base.NameAdapter;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Definition;
@@ -17,7 +17,7 @@ public class AttributeReferencesGoal extends PythonGoal {
 	private final NameAdapter attributeName;
 	private final Definition attributeParent;
 
-	public AttributeReferencesGoal(PythonContext context,
+	public AttributeReferencesGoal(ModuleContext context,
 			NameAdapter attributeName, Definition attributeParent) {
 		super(context);
 		this.attributeName = attributeName;

@@ -16,7 +16,7 @@ import org.python.pydev.parser.jython.SimpleNode;
 import org.python.pydev.parser.jython.ast.Expr;
 
 import ch.hsr.ifs.pystructure.typeinference.basetype.IEvaluatedType;
-import ch.hsr.ifs.pystructure.typeinference.contexts.PythonContext;
+import ch.hsr.ifs.pystructure.typeinference.contexts.ModuleContext;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.ExpressionTypeGoal;
 import ch.hsr.ifs.pystructure.typeinference.inferencer.ITypeInferencer;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Module;
@@ -58,7 +58,7 @@ class ExpressionTypeAssertion extends Assert {
 			throw new RuntimeException("Unable to find node for expresssion '" + this.expression + "'");
 		}
 		
-		PythonContext context = new PythonContext(workspace, module);
+		ModuleContext context = new ModuleContext(workspace, module);
 		ExpressionTypeGoal goal = new ExpressionTypeGoal(context, expression.value);
 		IEvaluatedType type = inferencer.evaluateType(goal, -1);
 		if (!correctClassRef.equals("recursion")) {

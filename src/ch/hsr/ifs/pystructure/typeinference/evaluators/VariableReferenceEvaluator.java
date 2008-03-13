@@ -14,7 +14,7 @@ import org.python.pydev.parser.jython.ast.Name;
 
 import ch.hsr.ifs.pystructure.typeinference.basetype.CombinedType;
 import ch.hsr.ifs.pystructure.typeinference.basetype.IEvaluatedType;
-import ch.hsr.ifs.pystructure.typeinference.contexts.PythonContext;
+import ch.hsr.ifs.pystructure.typeinference.contexts.ModuleContext;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.GoalState;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.DefinitionTypeGoal;
@@ -44,7 +44,7 @@ public class VariableReferenceEvaluator extends PythonEvaluator {
 	public List<IGoal> init() {
 		List<IGoal> subgoals = new ArrayList<IGoal>();
 		
-		PythonContext context = getGoal().getContext();
+		ModuleContext context = getGoal().getContext();
 		Module module = context.getModule();
 		
 		for (Use use : module.getContainedUses()) {

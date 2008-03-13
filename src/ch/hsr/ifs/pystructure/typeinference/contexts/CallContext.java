@@ -24,11 +24,11 @@ import ch.hsr.ifs.pystructure.typeinference.results.references.FunctionReference
  * 
  * Without the call context, both results would be float|int.
  */
-public class CallContext extends PythonContext {
+public class CallContext extends ModuleContext {
 
 	private final FunctionReference functionReference;
 	
-	public CallContext(PythonContext parent, Module module, FunctionReference functionReference) {
+	public CallContext(ModuleContext parent, Module module, FunctionReference functionReference) {
 		super(parent, module);
 		this.functionReference = functionReference;
 	}

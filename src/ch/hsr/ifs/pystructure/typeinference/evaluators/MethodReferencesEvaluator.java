@@ -13,7 +13,7 @@ import java.util.List;
 import org.python.pydev.parser.jython.SimpleNode;
 
 import ch.hsr.ifs.pystructure.typeinference.basetype.IEvaluatedType;
-import ch.hsr.ifs.pystructure.typeinference.contexts.PythonContext;
+import ch.hsr.ifs.pystructure.typeinference.contexts.ModuleContext;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.GoalState;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.references.ClassReferencesGoal;
@@ -46,7 +46,7 @@ public class MethodReferencesEvaluator extends PythonEvaluator {
 
 	@Override
 	public List<IGoal> init() {
-		PythonContext context = getGoal().getContext();
+		ModuleContext context = getGoal().getContext();
 		
 		if (isConstructor()) {
 			return wrap(new ClassReferencesGoal(context, method.getKlass()));

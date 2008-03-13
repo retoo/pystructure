@@ -7,7 +7,7 @@
 
 package ch.hsr.ifs.pystructure.typeinference.goals.references;
 
-import ch.hsr.ifs.pystructure.typeinference.contexts.PythonContext;
+import ch.hsr.ifs.pystructure.typeinference.contexts.ModuleContext;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.PythonGoal;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Function;
 
@@ -15,7 +15,7 @@ public class FunctionReferencesGoal extends PythonGoal {
 
 	private final Function function;
 
-	public FunctionReferencesGoal(PythonContext context, Function function) {
+	public FunctionReferencesGoal(ModuleContext context, Function function) {
 		super(context);
 		this.function = function;
 	}

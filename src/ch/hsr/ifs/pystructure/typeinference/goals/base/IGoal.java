@@ -12,7 +12,8 @@ package ch.hsr.ifs.pystructure.typeinference.goals.base;
 import java.util.ArrayList;
 import java.util.List;
 
-import ch.hsr.ifs.pystructure.typeinference.contexts.IContext;
+import ch.hsr.ifs.pystructure.typeinference.contexts.ModuleContext;
+
 public interface IGoal {
 
 	List<IGoal> NO_GOALS = new ArrayList<IGoal>();
@@ -25,5 +26,5 @@ public interface IGoal {
 	 * @return The context of this goal, or <code>null</code> is there is
 	 *         none.
 	 */
-	IContext getContext();
+	ModuleContext getContext();
 }

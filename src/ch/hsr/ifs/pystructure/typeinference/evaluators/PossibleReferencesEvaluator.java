@@ -10,7 +10,7 @@ package ch.hsr.ifs.pystructure.typeinference.evaluators;
 import java.util.ArrayList;
 import java.util.List;
 
-import ch.hsr.ifs.pystructure.typeinference.contexts.PythonContext;
+import ch.hsr.ifs.pystructure.typeinference.contexts.ModuleContext;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.GoalState;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.references.PossibleReferencesGoal;
@@ -38,7 +38,7 @@ public class PossibleReferencesEvaluator extends PythonEvaluator {
 
 	@Override
 	public List<IGoal> init() {
-		PythonContext context = getGoal().getContext();
+		ModuleContext context = getGoal().getContext();
 		Workspace workspace = context.getWorkspace();
 		
 		for (Module module : workspace.getModules()) {

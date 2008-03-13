@@ -17,7 +17,7 @@ import org.python.pydev.parser.jython.SimpleNode;
 import org.python.pydev.parser.jython.ast.Attribute;
 
 import ch.hsr.ifs.pystructure.typeinference.basetype.IEvaluatedType;
-import ch.hsr.ifs.pystructure.typeinference.contexts.PythonContext;
+import ch.hsr.ifs.pystructure.typeinference.contexts.ModuleContext;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.GoalState;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.references.PossibleAttributeReferencesGoal;
@@ -71,8 +71,8 @@ public class PossibleAttributeReferencesEvaluator extends PythonEvaluator {
 			
 			for (Use use : uses) {
 				SimpleNode node = use.getName().getNode();
-				PythonContext parentContext = getGoal().getContext();
-				PythonContext context = new PythonContext(parentContext, use.getModule());
+				ModuleContext parentContext = getGoal().getContext();
+				ModuleContext context = new ModuleContext(parentContext, use.getModule());
 				
 				if (use instanceof AttributeUse) {
 					AttributeUse attributeUse = (AttributeUse) use;

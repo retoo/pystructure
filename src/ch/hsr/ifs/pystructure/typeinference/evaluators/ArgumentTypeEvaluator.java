@@ -14,7 +14,7 @@ import org.python.pydev.parser.jython.ast.exprType;
 
 import ch.hsr.ifs.pystructure.typeinference.basetype.IEvaluatedType;
 import ch.hsr.ifs.pystructure.typeinference.contexts.CallContext;
-import ch.hsr.ifs.pystructure.typeinference.contexts.PythonContext;
+import ch.hsr.ifs.pystructure.typeinference.contexts.ModuleContext;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.GoalState;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.references.FunctionReferencesGoal;
@@ -44,7 +44,7 @@ public class ArgumentTypeEvaluator extends DefinitionTypeEvaluator {
 		List<IGoal> subgoals = new ArrayList<IGoal>();
 		Function function = argument.getFunction();
 		
-		PythonContext context = getGoal().getContext();
+		ModuleContext context = getGoal().getContext();
 		if (function instanceof Method 
 				&& function.isFirstArgument(argument)) {
 			Method method = (Method) function;

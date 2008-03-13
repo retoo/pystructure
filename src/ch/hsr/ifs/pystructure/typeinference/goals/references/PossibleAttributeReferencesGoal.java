@@ -7,12 +7,12 @@
 
 package ch.hsr.ifs.pystructure.typeinference.goals.references;
 
-import ch.hsr.ifs.pystructure.typeinference.contexts.PythonContext;
+import ch.hsr.ifs.pystructure.typeinference.contexts.ModuleContext;
 import ch.hsr.ifs.pystructure.typeinference.model.base.NameAdapter;
 
 public class PossibleAttributeReferencesGoal extends PossibleReferencesGoal {
 
-	public PossibleAttributeReferencesGoal(PythonContext context, NameAdapter name) {
+	public PossibleAttributeReferencesGoal(ModuleContext context, NameAdapter name) {
 		super(context, name);
 	}
 

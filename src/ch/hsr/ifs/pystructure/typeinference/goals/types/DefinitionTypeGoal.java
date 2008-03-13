@@ -7,14 +7,14 @@
 
 package ch.hsr.ifs.pystructure.typeinference.goals.types;
 
-import ch.hsr.ifs.pystructure.typeinference.contexts.PythonContext;
+import ch.hsr.ifs.pystructure.typeinference.contexts.ModuleContext;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Definition;
 
 public class DefinitionTypeGoal extends AbstractTypeGoal {
 
 	private final Definition definition;
 
-	public DefinitionTypeGoal(PythonContext context, Definition definition) {
+	public DefinitionTypeGoal(ModuleContext context, Definition definition) {
 		super(context);
 		this.definition = definition;
 	}

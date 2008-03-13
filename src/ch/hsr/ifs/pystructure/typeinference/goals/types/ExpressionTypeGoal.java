@@ -9,13 +9,13 @@ package ch.hsr.ifs.pystructure.typeinference.goals.types;
 
 import org.python.pydev.parser.jython.SimpleNode;
 
-import ch.hsr.ifs.pystructure.typeinference.contexts.PythonContext;
+import ch.hsr.ifs.pystructure.typeinference.contexts.ModuleContext;
 
 public class ExpressionTypeGoal extends AbstractTypeGoal {
 
 	private final SimpleNode expression;
 	
-	public ExpressionTypeGoal(PythonContext context, SimpleNode expression) {
+	public ExpressionTypeGoal(ModuleContext context, SimpleNode expression) {
 		super(context);
 		this.expression = expression;
 	}

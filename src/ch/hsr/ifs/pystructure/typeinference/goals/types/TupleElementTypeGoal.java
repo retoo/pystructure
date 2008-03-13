@@ -7,14 +7,14 @@
 
 package ch.hsr.ifs.pystructure.typeinference.goals.types;
 
-import ch.hsr.ifs.pystructure.typeinference.contexts.PythonContext;
+import ch.hsr.ifs.pystructure.typeinference.contexts.ModuleContext;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.TupleElement;
 
 public class TupleElementTypeGoal extends AbstractTypeGoal {
 
 	private final TupleElement element;
 	
-	public TupleElementTypeGoal(PythonContext context, TupleElement element) {
+	public TupleElementTypeGoal(ModuleContext context, TupleElement element) {
 		super(context);
 		this.element = element;
 	}

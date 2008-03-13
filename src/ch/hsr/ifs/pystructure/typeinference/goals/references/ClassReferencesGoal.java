@@ -7,7 +7,7 @@
 
 package ch.hsr.ifs.pystructure.typeinference.goals.references;
 
-import ch.hsr.ifs.pystructure.typeinference.contexts.PythonContext;
+import ch.hsr.ifs.pystructure.typeinference.contexts.ModuleContext;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.PythonGoal;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Class;
 
@@ -16,7 +16,7 @@ public class ClassReferencesGoal extends PythonGoal {
 
 	private final Class klass;
 
-	public ClassReferencesGoal(PythonContext context, Class klass) {
+	public ClassReferencesGoal(ModuleContext context, Class klass) {
 		super(context);
 		this.klass = klass;
 	}
