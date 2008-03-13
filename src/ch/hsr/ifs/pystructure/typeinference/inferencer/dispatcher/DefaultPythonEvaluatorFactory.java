@@ -65,7 +65,8 @@ import ch.hsr.ifs.pystructure.typeinference.results.types.ModuleType;
 import ch.hsr.ifs.pystructure.typeinference.results.types.TupleType;
 
 /**
- * Default evaluator factory used by {@link PythonEvaluatorFactory}.
+ * Evaluator factory which, given a goal, creates the appropriate evaluator. It
+ * can be seen as a kind of dispatcher.
  */
 public class DefaultPythonEvaluatorFactory implements IGoalEvaluatorFactory {
 
