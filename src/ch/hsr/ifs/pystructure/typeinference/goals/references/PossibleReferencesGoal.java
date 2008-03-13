@@ -26,10 +26,10 @@ public class PossibleReferencesGoal extends AbstractGoal {
 
 	@Override
 	public String toString() {
-		return "PossibleReferencesGoal: "
-		+ ((name != null) ? name.toString() : "null")
+		return getClass().getSimpleName() + ": "
+		+ name
 		+ " context: "
-		+ ((getContext() != null) ? getContext().toString() : "null");
+		+ context;
 	}
 
 	@Override

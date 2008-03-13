@@ -74,10 +74,9 @@ public class AttributeReferencesGoal extends AbstractGoal {
 
 	public String toString() {
 		return "AttributeReferencesGoal: "
-		+ ((attributeName != null) ? attributeName.toString() : "null")
-		+ ((attributeParent != null) ? attributeParent.toString() : "null")
-		+ " context: "
-		+ ((getContext() != null) ? getContext().toString() : "null");
+		+ "Attribute " + attributeName
+		+ " of " + attributeParent
+		+ " context: " + context;
 	}
 
 }

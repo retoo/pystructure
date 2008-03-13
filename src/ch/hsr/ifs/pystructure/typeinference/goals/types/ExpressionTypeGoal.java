@@ -10,6 +10,7 @@ package ch.hsr.ifs.pystructure.typeinference.goals.types;
 import org.python.pydev.parser.jython.SimpleNode;
 
 import ch.hsr.ifs.pystructure.typeinference.contexts.ModuleContext;
+import ch.hsr.ifs.pystructure.typeinference.model.base.NodeUtils;
 
 public class ExpressionTypeGoal extends AbstractTypeGoal {
 
@@ -48,7 +49,7 @@ public class ExpressionTypeGoal extends AbstractTypeGoal {
 	public String toString() {
 		return "ExpressionTypeGoal: "
 				+ ((expression != null) ? expression.toString() : "null")
-				+ " context: "
-				+ ((context != null) ? context.hashCode() : "null");
+				+ NodeUtils.nodePosition(expression)
+				+ " context: " + context;
 	}
 }

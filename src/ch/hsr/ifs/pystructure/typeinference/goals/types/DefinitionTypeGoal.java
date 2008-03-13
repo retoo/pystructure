@@ -44,7 +44,6 @@ public class DefinitionTypeGoal extends AbstractTypeGoal {
 	public String toString() {
 		return "DefinitionTypeGoal: "
 		+ ((definition != null) ? definition.toString() : "null")
-		+ " context: "
-		+ ((getContext() != null) ? getContext().hashCode() : "null");
+		+ " context: " + context;
 	}
 }

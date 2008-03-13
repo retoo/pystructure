@@ -56,5 +56,10 @@ public class ModuleContext {
 	public Workspace getWorkspace() {
 		return workspace;
 	}
+	
+	@Override
+	public String toString() {
+		return "Module " + module.getName().toString();
+	}
 
 }
