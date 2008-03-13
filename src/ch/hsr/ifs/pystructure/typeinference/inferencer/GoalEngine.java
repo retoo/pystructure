@@ -16,9 +16,9 @@ import java.util.List;
 import java.util.Map;
 
 import ch.hsr.ifs.pystructure.typeinference.evaluators.base.GoalEvaluator;
-import ch.hsr.ifs.pystructure.typeinference.evaluators.base.IGoalEvaluatorFactory;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.GoalState;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
+import ch.hsr.ifs.pystructure.typeinference.inferencer.dispatcher.IGoalEvaluatorFactory;
 
 /**
  * Main working class for type inference. Purpose of this class is simple:

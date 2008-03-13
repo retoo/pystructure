@@ -5,10 +5,9 @@
  *
  */
 
-package ch.hsr.ifs.pystructure.typeinference.evaluators.dispatcher;
+package ch.hsr.ifs.pystructure.typeinference.inferencer.dispatcher;
 
 import ch.hsr.ifs.pystructure.typeinference.evaluators.base.GoalEvaluator;
-import ch.hsr.ifs.pystructure.typeinference.evaluators.base.IGoalEvaluatorFactory;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
 
 /**

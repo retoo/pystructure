@@ -7,7 +7,7 @@
  *
  
  *******************************************************************************/
-package ch.hsr.ifs.pystructure.typeinference.evaluators.dispatcher;
+package ch.hsr.ifs.pystructure.typeinference.inferencer.dispatcher;
 
 import org.python.pydev.parser.jython.SimpleNode;
 import org.python.pydev.parser.jython.ast.Attribute;
@@ -22,7 +22,6 @@ import org.python.pydev.parser.jython.ast.Tuple;
 import org.python.pydev.parser.jython.ast.num_typeType;
 
 import ch.hsr.ifs.pystructure.typeinference.evaluators.base.GoalEvaluator;
-import ch.hsr.ifs.pystructure.typeinference.evaluators.base.IGoalEvaluatorFactory;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.references.AttributeReferencesEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.references.ClassReferencesEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.references.FunctionReferencesEvaluator;
