@@ -79,6 +79,6 @@ public class NameUse extends Use {
 	
 	public String toString() {
 		SimpleNode node = getName().getNode();
-		return getName() + " used at line " + node.beginLine + ", column " + node.beginColumn;
+		return getName() + " (L" + node.beginLine + "C" + node.beginColumn +")";
 	}
 }
