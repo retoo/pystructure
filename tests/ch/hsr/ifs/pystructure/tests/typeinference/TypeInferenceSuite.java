@@ -35,7 +35,7 @@ public class TypeInferenceSuite extends TestSuite {
 		PythonTypeInferencer inferencer = new PythonTypeInferencer();
 		
 		LinkedList<String> sysPath = new LinkedList<String>();
-		Workspace workspace = new Workspace("tests/python/typeinference", sysPath);
+		Workspace workspace = new Workspace(testsDirectory, sysPath);
 		
 		for (File file : files) {
 			try {
