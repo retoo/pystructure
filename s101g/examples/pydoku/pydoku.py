@@ -11,7 +11,7 @@ print board
 board.solve()
 print board
 
-
+board
 
 
 # 0.143

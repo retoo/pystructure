@@ -7,7 +7,7 @@
  *
  
  *******************************************************************************/
-package ch.hsr.ifs.pystructure.typeinference.evaluators;
+package ch.hsr.ifs.pystructure.typeinference.evaluators.dispatcher;
 
 import org.python.pydev.parser.jython.SimpleNode;
 import org.python.pydev.parser.jython.ast.Attribute;
@@ -21,6 +21,24 @@ import org.python.pydev.parser.jython.ast.Str;
 import org.python.pydev.parser.jython.ast.Tuple;
 import org.python.pydev.parser.jython.ast.num_typeType;
 
+import ch.hsr.ifs.pystructure.typeinference.evaluators.base.GoalEvaluator;
+import ch.hsr.ifs.pystructure.typeinference.evaluators.base.IGoalEvaluatorFactory;
+import ch.hsr.ifs.pystructure.typeinference.evaluators.references.AttributeReferencesEvaluator;
+import ch.hsr.ifs.pystructure.typeinference.evaluators.references.ClassReferencesEvaluator;
+import ch.hsr.ifs.pystructure.typeinference.evaluators.references.FunctionReferencesEvaluator;
+import ch.hsr.ifs.pystructure.typeinference.evaluators.references.MethodReferencesEvaluator;
+import ch.hsr.ifs.pystructure.typeinference.evaluators.references.PossibleAttributeReferencesEvaluator;
+import ch.hsr.ifs.pystructure.typeinference.evaluators.references.PossibleReferencesEvaluator;
+import ch.hsr.ifs.pystructure.typeinference.evaluators.references.VariableReferenceEvaluator;
+import ch.hsr.ifs.pystructure.typeinference.evaluators.types.ArgumentTypeEvaluator;
+import ch.hsr.ifs.pystructure.typeinference.evaluators.types.AssignTypeEvaluator;
+import ch.hsr.ifs.pystructure.typeinference.evaluators.types.AttributeTypeEvaluator;
+import ch.hsr.ifs.pystructure.typeinference.evaluators.types.BinOpTypeEvaluator;
+import ch.hsr.ifs.pystructure.typeinference.evaluators.types.CallTypeEvaluator;
+import ch.hsr.ifs.pystructure.typeinference.evaluators.types.FixedAnswerEvaluator;
+import ch.hsr.ifs.pystructure.typeinference.evaluators.types.ImportTypeEvaluator;
+import ch.hsr.ifs.pystructure.typeinference.evaluators.types.ReturnTypeEvaluator;
+import ch.hsr.ifs.pystructure.typeinference.evaluators.types.TupleElementTypeEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.references.AttributeReferencesGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.references.ClassReferencesGoal;
