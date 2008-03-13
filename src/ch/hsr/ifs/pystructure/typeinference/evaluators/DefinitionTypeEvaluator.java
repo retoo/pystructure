@@ -1,7 +1,7 @@
 package ch.hsr.ifs.pystructure.typeinference.evaluators;
 
 import ch.hsr.ifs.pystructure.typeinference.basetype.CombinedType;
-import ch.hsr.ifs.pystructure.typeinference.goals.types.AbstractTypeGoal;
+import ch.hsr.ifs.pystructure.typeinference.goals.types.DefinitionTypeGoal;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Definition;
 
 public abstract class DefinitionTypeEvaluator extends PythonEvaluator {
@@ -9,7 +9,7 @@ public abstract class DefinitionTypeEvaluator extends PythonEvaluator {
 	private Definition<?> definition;
 	protected CombinedType resultType;
 	
-	public DefinitionTypeEvaluator(AbstractTypeGoal goal, Definition<?> definition) {
+	public DefinitionTypeEvaluator(DefinitionTypeGoal goal, Definition<?> definition) {
 		super(goal);
 		this.definition = definition;
 		this.resultType = new CombinedType();
