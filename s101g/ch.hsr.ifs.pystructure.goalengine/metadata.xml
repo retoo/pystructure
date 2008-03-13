@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flavor name="ch.hsr.ifs.pystructure">
+
+	<provider name="PyStructure" url="http://pystructure.ifs.hsr.ch" email=""/>
+
+	<description>PyStructure GoalEngine Visualisation</description>
+
+	<item-types>
+		<module-types sep=".">
+			<module-type name="class"/>
+		</module-types>
+		<nested-types>
+			<nested-type name="method"/>
+			<nested-type name="attribute"/>
+		</nested-types>
+		<virtual-types>
+			<virtual-type nature="root"/>
+			<virtual-type nature="folder" name="package"/>
+			<virtual-type nature="module" name="module"/>
+			<virtual-type nature="bundle"/>
+		</virtual-types>
+	</item-types>
+
+	<dependency-types>
+		<dependency-type name="references"/>
+		<dependency-type name="calls"/>
+		<dependency-type name="is type"/>
+		<dependency-type name="has param"/>
+	</dependency-types>
+
+</flavor>
