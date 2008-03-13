@@ -36,6 +36,8 @@ public class GoalEngine {
 	private final Map<IGoal, GoalEvaluationState> goalStates = new HashMap<IGoal, GoalEvaluationState>();
 	private final Map<GoalEvaluator, EvaluatorState> evaluatorStates = new HashMap<GoalEvaluator, EvaluatorState>();
 
+	private IGoalEngineLogger logger;
+
 	private static class EvaluatorState {
 		public long timeCreated;
 		public int totalSubgoals;
@@ -69,7 +71,12 @@ public class GoalEngine {
 	}
 
 	public GoalEngine(IEvaluatorFactory evaluatorFactory) {
+		this(evaluatorFactory, new GoalEngineNullLogger());
+	}
+
+	public GoalEngine(IEvaluatorFactory evaluatorFactory, IGoalEngineLogger logger) {
 		this.evaluatorFactory = evaluatorFactory;
+		this.logger = logger;
 	}
 
 	private void storeGoal(IGoal goal, GoalState state, Object result, GoalEvaluator creator) {
@@ -80,14 +87,6 @@ public class GoalEngine {
 		goalStates.put(goal, es);
 	}
 
-	private EvaluatorState getEvaluatorState(GoalEvaluator evaluator) {
-		return evaluatorStates.get(evaluator);
-	}
-
-	private void putEvaluatorState(GoalEvaluator evaluator, EvaluatorState state) {
-		evaluatorStates.put(evaluator, state);
-	}
-
 	private void notifyEvaluator(GoalEvaluator evaluator, IGoal subGoal) {
 		GoalEvaluationState subGoalState = goalStates.get(subGoal);
 		Object result = subGoalState.result;
@@ -96,15 +95,15 @@ public class GoalEngine {
 		if (state == GoalState.WAITING) {
 			state = GoalState.RECURSIVE;
 		}
-		
+
 		List<IGoal> newGoals = evaluator.subGoalDone(subGoal, result, state);
-		if (newGoals == null) {
-			newGoals = IGoal.NO_GOALS;
-		}
+		assert newGoals != null : "please return IGoal.NO_GOALS if there are no goals";
+
 		for (IGoal newGoal : newGoals) {
 			workingQueue.add(new WorkingPair(newGoal, evaluator));
 		}
-		EvaluatorState ev = getEvaluatorState(evaluator);
+		
+		EvaluatorState ev = evaluatorStates.get(evaluator);
 		ev.subgoalsLeft--;
 		ev.subgoalsLeft += newGoals.size();
 		ev.totalSubgoals += newGoals.size();
@@ -130,83 +129,79 @@ public class GoalEngine {
 			pruner.init();
 		}
 		workingQueue.add(new WorkingPair(rootGoal, null));
-		
+
 		WorkingPair firstPostponed = null;
-		
+
 		while (!workingQueue.isEmpty()) {
 			WorkingPair pair = workingQueue.removeFirst();
 			GoalEvaluationState state = goalStates.get(pair.goal);
-			
-			System.out.println(pair.goal);
-			
+
 			if (state != null && pair.creator != null) {
+				/*
+				 * Previous goal which reapppeared (because its subgoals are not
+				 * yet finished)
+				 */
+
 				/*
 				 * TODO: Think about a better way to handle recursive goals,
 				 * maybe with a priority queue.
 				 * 
 				 * TODO: needs better documentation and better warning printing
+				 * 
+				 * Check if the list only contains goals which currently are in
+				 * the state 'waiting'
 				 */
-				/* Check if the list only contains goals which currently are in the state 'waiting'  */
 				if (state.state == GoalState.WAITING && pair != firstPostponed) {
 					if (firstPostponed == null) {
 						firstPostponed = pair;
 					}
-					
+
 					workingQueue.addLast(pair);
 				} else {
 					firstPostponed = null;
 					notifyEvaluator(pair.creator, pair.goal);
 				}
 			} else {
+				/* Goal just entered the loop */ 
 				firstPostponed = null;
+
+				GoalEvaluator evaluator = evaluatorFactory.createEvaluator(pair.goal);
+				assert evaluator != null;
 				
-				boolean prune = false;
-				if (pruner != null && pair.creator != null) {
-					prune = pruner.prune(pair.goal);
-				}
-				if (prune) {
-					storeGoal(pair.goal, GoalState.PRUNED, null, pair.creator);
-					notifyEvaluator(pair.creator, pair.goal);
+				logger.goalCreated(pair.goal, pair.creator, evaluator);
+
+				/* Check if there are any cached results */
+				boolean isFinished = false;
+
+				if (evaluator.isCached()) {
+					isFinished = true;
 				} else {
-					GoalEvaluator evaluator = evaluatorFactory
-							.createEvaluator(pair.goal);
-					assert evaluator != null;
-					System.out.println(" " + evaluator.getClass().getSimpleName());
-					
-					/* Check if there are any cached results */
-					boolean isFinished = false;
-					
-					if (evaluator.isCached()) {
-						isFinished = true;
+					List<IGoal> newGoals = evaluator.init();
+
+					assert newGoals != null : "please return IGoal.NO_GOALS if there are no goals";
+
+					/* Process Sub goals */
+					if (!newGoals.isEmpty()) {
+						for (IGoal newGoal : newGoals) {
+							workingQueue.add(new WorkingPair(newGoal,
+									evaluator));
+						}
+						EvaluatorState evaluatorState = new EvaluatorState(newGoals.size());
+						evaluatorState.subgoals.addAll(newGoals);
+						evaluatorStates.put(evaluator, evaluatorState);
+						storeGoal(pair.goal, GoalState.WAITING, null, pair.creator);
 					} else {
-						List<IGoal> newGoals = evaluator.init();
-					
-						/* please return IGoal.NO_GOALS if there are no goals */
-						assert newGoals != null;
-					
-						/* Process Sub goals */
-						if (!newGoals.isEmpty()) {
-							for (IGoal newGoal : newGoals) {
-								workingQueue.add(new WorkingPair(newGoal,
-										evaluator));
-							}
-							EvaluatorState evaluatorState = new EvaluatorState(newGoals.size());
-							evaluatorState.subgoals.addAll(newGoals);
-							putEvaluatorState(evaluator, evaluatorState);
-							storeGoal(pair.goal, GoalState.WAITING, null,
-									pair.creator);
-						} else {
-							/* If there haven't been any sub goals the result is already known */
-							isFinished = true;
-						}
+						/* If there haven't been any sub goals the result is already known */
+						isFinished = true;
 					}
-					
-					if (isFinished) {
-						Object result = evaluator.produceResult();
-						storeGoal(pair.goal, GoalState.DONE, result, pair.creator);
-						if (pair.creator != null) {
-							notifyEvaluator(pair.creator, pair.goal);
-						}
+				}
+
+				if (isFinished) {
+					Object result = evaluator.produceResult();
+					logger.goalFinished(pair.goal);
+					storeGoal(pair.goal, GoalState.DONE, result, pair.creator);
+					if (pair.creator != null) {
+						notifyEvaluator(pair.creator, pair.goal);
 					}
 				}
 			}
