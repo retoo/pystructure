@@ -16,6 +16,7 @@ import org.python.pydev.parser.jython.ast.Attribute;
 
 import ch.hsr.ifs.pystructure.typeinference.basetype.CombinedType;
 import ch.hsr.ifs.pystructure.typeinference.basetype.IEvaluatedType;
+import ch.hsr.ifs.pystructure.typeinference.contexts.ModuleContext;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.base.EvaluatorUtils;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.base.GoalEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.GoalState;
@@ -133,8 +134,10 @@ public class AttributeTypeEvaluator extends GoalEvaluator {
 					// TODO: Tuples
 					if (assign.targets[0] == node) {
 						this.state = State.ASSIGNED_VALUE_WAIT;
-						subgoals.add(new ExpressionTypeGoal(
-								getGoal().getContext(), assign.value));
+						// The ExpressionTypeGoal has to be evaluated in the
+						// context of the reference (its module)
+						ModuleContext context = new ModuleContext(getGoal().getContext(), reference.getModule());
+						subgoals.add(new ExpressionTypeGoal(context, assign.value));
 					}
 				}
 			}
