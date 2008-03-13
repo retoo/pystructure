@@ -15,7 +15,7 @@ import org.python.pydev.parser.jython.SimpleNode;
 import ch.hsr.ifs.pystructure.typeinference.basetype.IEvaluatedType;
 import ch.hsr.ifs.pystructure.typeinference.contexts.ModuleContext;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.base.EvaluatorUtils;
-import ch.hsr.ifs.pystructure.typeinference.evaluators.base.PythonEvaluator;
+import ch.hsr.ifs.pystructure.typeinference.evaluators.base.GoalEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.GoalState;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.references.ClassReferencesGoal;
@@ -33,7 +33,7 @@ import ch.hsr.ifs.pystructure.typeinference.results.types.MetaclassType;
  * stages. First, find all possible references, then validate whether the
  * receiver is of the right type.
  */
-public class MethodReferencesEvaluator extends PythonEvaluator {
+public class MethodReferencesEvaluator extends GoalEvaluator {
 
 	private final Method method;
 	

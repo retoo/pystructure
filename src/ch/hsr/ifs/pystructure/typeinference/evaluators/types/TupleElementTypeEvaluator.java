@@ -15,7 +15,7 @@ import org.python.pydev.parser.jython.ast.exprType;
 
 import ch.hsr.ifs.pystructure.typeinference.basetype.IEvaluatedType;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.base.EvaluatorUtils;
-import ch.hsr.ifs.pystructure.typeinference.evaluators.base.PythonEvaluator;
+import ch.hsr.ifs.pystructure.typeinference.evaluators.base.GoalEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.GoalState;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.ExpressionTypeGoal;
@@ -23,7 +23,7 @@ import ch.hsr.ifs.pystructure.typeinference.goals.types.TupleElementTypeGoal;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.TupleElement;
 import ch.hsr.ifs.pystructure.typeinference.results.types.TupleType;
 
-public class TupleElementTypeEvaluator extends PythonEvaluator {
+public class TupleElementTypeEvaluator extends GoalEvaluator {
 
 	private enum State { EXPRESSION_WAIT, RESULT_WAIT };
 	private State state;

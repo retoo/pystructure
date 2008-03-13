@@ -12,7 +12,7 @@ import java.util.List;
 
 import ch.hsr.ifs.pystructure.typeinference.basetype.IEvaluatedType;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.base.EvaluatorUtils;
-import ch.hsr.ifs.pystructure.typeinference.evaluators.base.PythonEvaluator;
+import ch.hsr.ifs.pystructure.typeinference.evaluators.base.GoalEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.GoalState;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.references.AttributeReferencesGoal;
@@ -27,7 +27,7 @@ import ch.hsr.ifs.pystructure.typeinference.results.types.ModuleType;
 /**
  * Evaluator for finding all the references to a data attribute of a class.
  */
-public class AttributeReferencesEvaluator extends PythonEvaluator {
+public class AttributeReferencesEvaluator extends GoalEvaluator {
 
 	private final NameAdapter attributeName;
 	private final Definition attributeParent;

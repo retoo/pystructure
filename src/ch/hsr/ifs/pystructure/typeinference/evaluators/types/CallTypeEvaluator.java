@@ -18,7 +18,7 @@ import ch.hsr.ifs.pystructure.typeinference.basetype.IEvaluatedType;
 import ch.hsr.ifs.pystructure.typeinference.contexts.CallContext;
 import ch.hsr.ifs.pystructure.typeinference.contexts.ModuleContext;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.base.EvaluatorUtils;
-import ch.hsr.ifs.pystructure.typeinference.evaluators.base.PythonEvaluator;
+import ch.hsr.ifs.pystructure.typeinference.evaluators.base.GoalEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.GoalState;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.ExpressionTypeGoal;
@@ -34,7 +34,7 @@ import ch.hsr.ifs.pystructure.typeinference.results.types.MethodType;
  * Evaluator for Call nodes. It could be a constructor, a method call or a
  * normal function call.
  */
-public class CallTypeEvaluator extends PythonEvaluator {
+public class CallTypeEvaluator extends GoalEvaluator {
 
 	private final Call call;
 	

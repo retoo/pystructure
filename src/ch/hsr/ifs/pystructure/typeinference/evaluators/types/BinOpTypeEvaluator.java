@@ -20,7 +20,7 @@ import org.python.pydev.parser.jython.ast.expr_contextType;
 import org.python.pydev.parser.jython.ast.name_contextType;
 import org.python.pydev.parser.jython.ast.operatorType;
 
-import ch.hsr.ifs.pystructure.typeinference.evaluators.base.PythonEvaluator;
+import ch.hsr.ifs.pystructure.typeinference.evaluators.base.GoalEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.GoalState;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.ExpressionTypeGoal;
@@ -28,7 +28,7 @@ import ch.hsr.ifs.pystructure.typeinference.goals.types.ExpressionTypeGoal;
 /**
  * Evaluator for binary operations like +.
  */
-public class BinOpTypeEvaluator extends PythonEvaluator {
+public class BinOpTypeEvaluator extends GoalEvaluator {
 
 	private final BinOp binOp;
 	

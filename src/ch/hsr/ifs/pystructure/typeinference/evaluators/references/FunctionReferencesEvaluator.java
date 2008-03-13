@@ -10,7 +10,7 @@ package ch.hsr.ifs.pystructure.typeinference.evaluators.references;
 import java.util.ArrayList;
 import java.util.List;
 
-import ch.hsr.ifs.pystructure.typeinference.evaluators.base.PythonEvaluator;
+import ch.hsr.ifs.pystructure.typeinference.evaluators.base.GoalEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.GoalState;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.references.FunctionReferencesGoal;
@@ -23,7 +23,7 @@ import ch.hsr.ifs.pystructure.typeinference.results.references.FunctionReference
 /**
  * Evaluator for finding all the references to a function.
  */
-public class FunctionReferencesEvaluator extends PythonEvaluator {
+public class FunctionReferencesEvaluator extends GoalEvaluator {
 
 	private final Function function;
 	

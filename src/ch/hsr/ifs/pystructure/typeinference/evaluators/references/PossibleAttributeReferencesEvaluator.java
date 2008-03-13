@@ -18,14 +18,14 @@ import org.python.pydev.parser.jython.ast.Attribute;
 
 import ch.hsr.ifs.pystructure.typeinference.basetype.IEvaluatedType;
 import ch.hsr.ifs.pystructure.typeinference.contexts.ModuleContext;
-import ch.hsr.ifs.pystructure.typeinference.evaluators.base.PythonEvaluator;
+import ch.hsr.ifs.pystructure.typeinference.evaluators.base.GoalEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.GoalState;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.references.PossibleAttributeReferencesGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.references.PossibleReferencesGoal;
+import ch.hsr.ifs.pystructure.typeinference.goals.types.AbstractTypeGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.DefinitionTypeGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.ExpressionTypeGoal;
-import ch.hsr.ifs.pystructure.typeinference.goals.types.AbstractTypeGoal;
 import ch.hsr.ifs.pystructure.typeinference.model.base.NameAdapter;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.AttributeUse;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Definition;
@@ -39,7 +39,7 @@ import ch.hsr.ifs.pystructure.typeinference.results.references.AttributeReferenc
  * Evaluator for finding uses of a name, which could be possible references to a
  * function or method.
  */
-public class PossibleAttributeReferencesEvaluator extends PythonEvaluator {
+public class PossibleAttributeReferencesEvaluator extends GoalEvaluator {
 
 	private NameAdapter name;
 	private Map<IGoal, NameAdapter> attributeNames;
