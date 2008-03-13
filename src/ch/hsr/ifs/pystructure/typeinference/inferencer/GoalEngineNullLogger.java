@@ -5,12 +5,26 @@ import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
 
 public class GoalEngineNullLogger implements IGoalEngineLogger {
 
+	@Override
+	public void evaluationFinished(IGoal rootGoal) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void evaluationStarted(IGoal rootGoal) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
 	public void goalCreated(IGoal goal, GoalEvaluator creator,
 			GoalEvaluator evaluator) {
 		// TODO Auto-generated method stub
 		
 	}
 
+	@Override
 	public void goalFinished(IGoal goal) {
 		// TODO Auto-generated method stub
 		

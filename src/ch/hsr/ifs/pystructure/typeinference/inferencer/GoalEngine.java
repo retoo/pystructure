@@ -124,6 +124,8 @@ public class GoalEngine {
 	}
 
 	public Object evaluateGoal(IGoal rootGoal, IPruner pruner) {
+		logger.evaluationStarted(rootGoal);
+		
 		reset();
 		if (pruner != null) {
 			pruner.init();
@@ -209,6 +211,9 @@ public class GoalEngine {
 		GoalEvaluationState s = goalStates.get(rootGoal);
 
 		assert s.state == GoalState.DONE;
+		
+		logger.evaluationFinished(rootGoal);
+		
 		return s.result;
 	}
 
