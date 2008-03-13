@@ -25,7 +25,7 @@ public class AssignDefinition extends Definition<Assign> {
 	}
 	
 	public String toString() {
-		return "Variable " + getName() + " defined at line " + getNode().beginLine + ", column " + getNode().beginColumn;
+		return "Variable " + getName() + getNodePosition();
 	}
 
 	public Value getValue() {
