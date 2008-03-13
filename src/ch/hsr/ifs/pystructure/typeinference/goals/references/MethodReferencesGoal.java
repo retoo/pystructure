@@ -8,10 +8,10 @@
 package ch.hsr.ifs.pystructure.typeinference.goals.references;
 
 import ch.hsr.ifs.pystructure.typeinference.contexts.ModuleContext;
-import ch.hsr.ifs.pystructure.typeinference.goals.base.PythonGoal;
+import ch.hsr.ifs.pystructure.typeinference.goals.base.AbstractGoal;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Method;
 
-public class MethodReferencesGoal extends PythonGoal {
+public class MethodReferencesGoal extends AbstractGoal {
 
 	private final Method method;
 

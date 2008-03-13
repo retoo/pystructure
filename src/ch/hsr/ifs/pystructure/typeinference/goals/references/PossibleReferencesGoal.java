@@ -8,10 +8,10 @@
 package ch.hsr.ifs.pystructure.typeinference.goals.references;
 
 import ch.hsr.ifs.pystructure.typeinference.contexts.ModuleContext;
-import ch.hsr.ifs.pystructure.typeinference.goals.base.PythonGoal;
+import ch.hsr.ifs.pystructure.typeinference.goals.base.AbstractGoal;
 import ch.hsr.ifs.pystructure.typeinference.model.base.NameAdapter;
 
-public class PossibleReferencesGoal extends PythonGoal {
+public class PossibleReferencesGoal extends AbstractGoal {
 
 	private NameAdapter name;
 	

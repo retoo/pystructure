@@ -9,8 +9,16 @@ package ch.hsr.ifs.pystructure.typeinference.goals.base;
 
 import ch.hsr.ifs.pystructure.typeinference.contexts.ModuleContext;
 
-public interface IPythonGoal extends IGoal {
+public class AbstractGoal implements IGoal {
 
-	ModuleContext getContext();
+	protected final ModuleContext context;
+	
+	public AbstractGoal(ModuleContext context) {
+		this.context = context;
+	}
+	
+	public ModuleContext getContext() {
+		return context;
+	}
 
 }

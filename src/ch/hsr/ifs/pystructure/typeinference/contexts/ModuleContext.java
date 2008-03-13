@@ -11,7 +11,7 @@ import ch.hsr.ifs.pystructure.typeinference.model.definitions.Module;
 import ch.hsr.ifs.pystructure.typeinference.visitors.Workspace;
 
 /**
- * Root context for {@link PythonGoal}s.
+ * Root context for {@link AbstractGoal}s.
  */
 public class ModuleContext {
 

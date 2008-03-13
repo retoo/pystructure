@@ -8,11 +8,11 @@
 package ch.hsr.ifs.pystructure.typeinference.goals.references;
 
 import ch.hsr.ifs.pystructure.typeinference.contexts.ModuleContext;
-import ch.hsr.ifs.pystructure.typeinference.goals.base.PythonGoal;
+import ch.hsr.ifs.pystructure.typeinference.goals.base.AbstractGoal;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Class;
 
 // TODO: Maybe implement with an AttributeReferencesGoal (with Module as the parent)?
-public class ClassReferencesGoal extends PythonGoal {
+public class ClassReferencesGoal extends AbstractGoal {
 
 	private final Class klass;
 

@@ -7,21 +7,21 @@
 
 package ch.hsr.ifs.pystructure.typeinference.evaluators;
 
-import ch.hsr.ifs.pystructure.typeinference.goals.base.IPythonGoal;
+import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
 
 /**
- * Base class for all the Python evaluators. It evaluates an {@link IPythonGoal}.
+ * Base class for all the Python evaluators. It evaluates an {@link IGoal}.
  */
 public abstract class PythonEvaluator extends GoalEvaluator {
 
-	public PythonEvaluator(IPythonGoal goal) {
+	public PythonEvaluator(IGoal goal) {
 		super(goal);
 	}
 	
 	@Override
-	public IPythonGoal getGoal() {
+	public IGoal getGoal() {
 		// Our constructor only allows IPythonGoal, so this cast should be ok.
-		return (IPythonGoal) super.getGoal();
+		return (IGoal) super.getGoal();
 	}
 	
 }
