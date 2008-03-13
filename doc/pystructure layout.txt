@@ -1,0 +1,17 @@
+
+/home/<project/
+	logs
+		junit				JUnit Logs
+		checkstyle			Checkstyle Logs
+	svn						Subversion Repository
+	trac					Trac Repository
+	cruisecontrol
+		config				cc config
+		logs				cc log
+		run					status file
+		checkouta
+	tmp
+		cobertura			cobertura temp files
+		build
+			src
+			tests
