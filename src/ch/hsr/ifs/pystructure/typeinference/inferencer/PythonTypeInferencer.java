@@ -10,14 +10,14 @@ package ch.hsr.ifs.pystructure.typeinference.inferencer;
 import ch.hsr.ifs.pystructure.typeinference.basetype.IEvaluatedType;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.AbstractTypeGoal;
-import ch.hsr.ifs.pystructure.typeinference.inferencer.dispatcher.DefaultPythonEvaluatorFactory;
+import ch.hsr.ifs.pystructure.typeinference.inferencer.dispatcher.PythonEvaluatorFactory;
 
 public class PythonTypeInferencer implements ITypeInferencer {
 
 	private final GoalEngine engine;
 	
 	public PythonTypeInferencer() {
-		engine = new GoalEngine(new DefaultPythonEvaluatorFactory());
+		engine = new GoalEngine(new PythonEvaluatorFactory());
 	}
 
 	public synchronized IEvaluatedType evaluateType(AbstractTypeGoal goal, int timeLimit) {

@@ -12,6 +12,6 @@ package ch.hsr.ifs.pystructure.typeinference.inferencer.dispatcher;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.base.GoalEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
 
-public interface IGoalEvaluatorFactory {
+public interface IEvaluatorFactory {
 	GoalEvaluator createEvaluator(IGoal goal);
 }

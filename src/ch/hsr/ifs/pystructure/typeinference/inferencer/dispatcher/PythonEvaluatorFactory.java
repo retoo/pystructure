@@ -68,7 +68,7 @@ import ch.hsr.ifs.pystructure.typeinference.results.types.TupleType;
  * Evaluator factory which, given a goal, creates the appropriate evaluator. It
  * can be seen as a kind of dispatcher.
  */
-public class DefaultPythonEvaluatorFactory implements IGoalEvaluatorFactory {
+public class PythonEvaluatorFactory implements IEvaluatorFactory {
 
 	public GoalEvaluator createEvaluator(IGoal goal) {
 		if (goal instanceof PossibleReferencesGoal) {

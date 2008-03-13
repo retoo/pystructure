@@ -18,7 +18,7 @@ import java.util.Map;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.base.GoalEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.GoalState;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
-import ch.hsr.ifs.pystructure.typeinference.inferencer.dispatcher.IGoalEvaluatorFactory;
+import ch.hsr.ifs.pystructure.typeinference.inferencer.dispatcher.IEvaluatorFactory;
 
 /**
  * Main working class for type inference. Purpose of this class is simple:
@@ -30,7 +30,7 @@ import ch.hsr.ifs.pystructure.typeinference.inferencer.dispatcher.IGoalEvaluator
  */
 public class GoalEngine {
 
-	private final IGoalEvaluatorFactory evaluatorFactory;
+	private final IEvaluatorFactory evaluatorFactory;
 
 	private final LinkedList<WorkingPair> workingQueue = new LinkedList<WorkingPair>();
 	private final Map<IGoal, GoalEvaluationState> goalStates = new HashMap<IGoal, GoalEvaluationState>();
@@ -68,7 +68,7 @@ public class GoalEngine {
 		public Object result;
 	}
 
-	public GoalEngine(IGoalEvaluatorFactory evaluatorFactory) {
+	public GoalEngine(IEvaluatorFactory evaluatorFactory) {
 		this.evaluatorFactory = evaluatorFactory;
 	}
 
