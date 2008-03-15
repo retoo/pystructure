@@ -11,6 +11,7 @@ import org.python.pydev.parser.jython.SimpleNode;
 
 import ch.hsr.ifs.pystructure.typeinference.basetype.IEvaluatedType;
 import ch.hsr.ifs.pystructure.typeinference.model.base.NameAdapter;
+import ch.hsr.ifs.pystructure.typeinference.model.base.NodeUtils;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Module;
 
 public class AttributeReference {
@@ -50,7 +51,12 @@ public class AttributeReference {
 	}
 	
 	public String getDescription() {
-		return "attribute reference '" + name + "' of class " + getParent().getTypeName();
+		return "attribute reference '" + name + "' of class " + getParent().getTypeName() + " in " + module + " " + NodeUtils.nodePosition(node);
+	}
+	
+	@Override
+	public String toString() {
+		return getDescription();
 	}
 
 	@Override

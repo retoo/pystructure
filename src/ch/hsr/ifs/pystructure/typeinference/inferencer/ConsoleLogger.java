@@ -31,7 +31,7 @@ public class ConsoleLogger implements IGoalEngineLogger {
 	public void goalCreated(IGoal goal, GoalEvaluator creator, GoalEvaluator evaluator) {
 		numbers.put(evaluator, curNr++);
 		creators.put(evaluator, creator);
-		say(evaluator, "Created " + goal);
+		say(evaluator, "Created " + evaluator.getClass().getSimpleName() + " "  + goal);
 	}
 	
 	public void goalFinished(IGoal goal, GoalEvaluator evaluator) {

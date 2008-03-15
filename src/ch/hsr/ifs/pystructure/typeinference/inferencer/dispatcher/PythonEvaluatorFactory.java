@@ -34,6 +34,7 @@ import ch.hsr.ifs.pystructure.typeinference.evaluators.types.AssignTypeEvaluator
 import ch.hsr.ifs.pystructure.typeinference.evaluators.types.AttributeTypeEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.types.BinOpTypeEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.types.CallTypeEvaluator;
+import ch.hsr.ifs.pystructure.typeinference.evaluators.types.ClassAttributeTypeEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.types.FixedAnswerEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.types.ImportTypeEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.types.ReturnTypeEvaluator;
@@ -45,6 +46,7 @@ import ch.hsr.ifs.pystructure.typeinference.goals.references.FunctionReferencesG
 import ch.hsr.ifs.pystructure.typeinference.goals.references.MethodReferencesGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.references.PossibleAttributeReferencesGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.references.PossibleReferencesGoal;
+import ch.hsr.ifs.pystructure.typeinference.goals.types.ClassAttributeTypeGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.DefinitionTypeGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.ExpressionTypeGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.ReturnTypeGoal;
@@ -96,6 +98,10 @@ public class PythonEvaluatorFactory implements IEvaluatorFactory {
 		if (goal instanceof TupleElementTypeGoal) {
 			return new TupleElementTypeEvaluator((TupleElementTypeGoal) goal);
 		}
+		if (goal instanceof ClassAttributeTypeGoal) {
+			return new ClassAttributeTypeEvaluator((ClassAttributeTypeGoal) goal);
+		}
+		
 		
 		if (goal instanceof DefinitionTypeGoal) {
 			DefinitionTypeGoal defGoal = (DefinitionTypeGoal) goal;

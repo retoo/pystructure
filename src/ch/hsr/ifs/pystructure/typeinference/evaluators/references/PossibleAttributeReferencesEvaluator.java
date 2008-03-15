@@ -68,6 +68,7 @@ public class PossibleAttributeReferencesEvaluator extends GoalEvaluator {
 	public List<IGoal> subGoalDone(IGoal subgoal, Object result, GoalState state) {
 		if (subgoal instanceof PossibleReferencesGoal) {
 			List<IGoal> subgoals = new LinkedList<IGoal>();
+
 			List<Use> uses = (List<Use>) result;
 			
 			for (Use use : uses) {
