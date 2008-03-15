@@ -9,6 +9,6 @@ public interface IGoalEngineLogger {
 	void evaluationFinished(IGoal rootGoal);
 
 	void goalCreated(IGoal goal, GoalEvaluator creator, GoalEvaluator evaluator);
-	void goalFinished(IGoal goal);
+	void goalFinished(IGoal goal, GoalEvaluator evaluator);
 
 }

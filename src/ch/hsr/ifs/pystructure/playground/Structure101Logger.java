@@ -43,9 +43,9 @@ public class Structure101Logger implements IGoalEngineLogger {
 		System.out.println(goal);
 	}
 
-	public void goalFinished(IGoal goal) {
+	public void goalFinished(IGoal goal, GoalEvaluator evaluator) {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 }

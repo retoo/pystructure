@@ -120,6 +120,7 @@ public class GoalEngine {
 			if (st.creator != null) {
 				notifyEvaluator(st.creator, evaluator.getGoal());
 			}
+			logger.goalFinished(evaluator.getGoal(), evaluator);
 		}
 	}
 
@@ -200,7 +201,7 @@ public class GoalEngine {
 
 				if (isFinished) {
 					Object result = evaluator.produceResult();
-					logger.goalFinished(pair.goal);
+					logger.goalFinished(pair.goal, evaluator);
 					storeGoal(pair.goal, GoalState.DONE, result, pair.creator);
 					if (pair.creator != null) {
 						notifyEvaluator(pair.creator, pair.goal);

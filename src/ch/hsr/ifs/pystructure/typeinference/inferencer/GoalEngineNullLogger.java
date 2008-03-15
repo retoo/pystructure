@@ -21,7 +21,7 @@ public class GoalEngineNullLogger implements IGoalEngineLogger {
 		
 	}
 
-	public void goalFinished(IGoal goal) {
+	public void goalFinished(IGoal goal, GoalEvaluator evaluator) {
 		// TODO Auto-generated method stub
 		
 	}
