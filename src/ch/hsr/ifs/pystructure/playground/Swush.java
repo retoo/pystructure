@@ -8,6 +8,7 @@ import org.python.pydev.parser.jython.ast.Expr;
 import ch.hsr.ifs.pystructure.typeinference.basetype.IEvaluatedType;
 import ch.hsr.ifs.pystructure.typeinference.contexts.ModuleContext;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.ExpressionTypeGoal;
+import ch.hsr.ifs.pystructure.typeinference.inferencer.ConsoleLogger;
 import ch.hsr.ifs.pystructure.typeinference.inferencer.PythonTypeInferencer;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Module;
 import ch.hsr.ifs.pystructure.typeinference.visitors.ExpressionAtLineVisitor;
@@ -17,12 +18,12 @@ public class Swush {
 	public static void main(String[] args) {
 		LinkedList<String> sysPath = new LinkedList<String>();
 
-		PythonTypeInferencer inferencer = new PythonTypeInferencer();
-		String path = "s101g/examples/pydoku/";
+		PythonTypeInferencer inferencer = new PythonTypeInferencer(new ConsoleLogger());
+		String path = "s101g/examples/simple/";
 		Workspace workspace = new Workspace(path, sysPath);
-		Module module = workspace.getModule("pydoku");
+		Module module = workspace.getModule("simple");
 		
-		int[] lines = {7, 14};
+		int[] lines = {13, 14};
 		
 		for (int line : lines) {
 			Expr expression = getExpressionAtLine(module, line);
