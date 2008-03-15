@@ -113,6 +113,7 @@ public class GoalEngine {
 		}
 		if (ev.subgoalsLeft == 0) {
 			Object newRes = evaluator.produceResult();
+			logger.goalFinished(evaluator.getGoal(), evaluator);
 			GoalEvaluationState st = goalStates.get(evaluator.getGoal());
 			assert st != null;
 			st.state = GoalState.DONE;
@@ -120,7 +121,6 @@ public class GoalEngine {
 			if (st.creator != null) {
 				notifyEvaluator(st.creator, evaluator.getGoal());
 			}
-			logger.goalFinished(evaluator.getGoal(), evaluator);
 		}
 	}
 

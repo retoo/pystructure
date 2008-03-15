@@ -98,5 +98,15 @@ public final class StringUtils {
 		}
 		return parts;
 	}
+	
+	public static String multiply(int times, String str) {
+		StringBuilder sb = new StringBuilder();
+		
+		for (int i = 0; i < times; i++) {
+			sb.append(str);
+		}
+		
+		return sb.toString();
+	}
 
 }
