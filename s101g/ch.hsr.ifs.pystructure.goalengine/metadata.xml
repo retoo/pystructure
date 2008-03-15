@@ -6,7 +6,7 @@
 	<description>PyStructure GoalEngine Visualisation</description>
 
 	<item-types>
-		<module-types sep=".">
+		<module-types sep="/">
 			<module-type name="evaluator"/>
 		</module-types>
 		<nested-types>
@@ -16,7 +16,7 @@
 		<virtual-types>
 			<virtual-type nature="root"/>
 			<virtual-type nature="folder" name="package"/>
-			<virtual-type nature="module" name="module"/>
+			<virtual-type nature="module" name="evaluator"/>
 			<virtual-type nature="bundle"/>
 		</virtual-types>
 	</item-types>
@@ -33,6 +33,7 @@
 		<dependency-type name="ExpressionType"/>
 		<dependency-type name="ReturnType"/>
 		<dependency-type name="TupleElementType"/>
+		<dependency-type name="ClassAttributeType"/>
 	</dependency-types>
 
 </flavor>

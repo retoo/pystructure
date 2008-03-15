@@ -15,13 +15,17 @@ import java.io.IOException;
 import java.util.LinkedList;
 
 import junit.framework.TestCase;
+import junit.framework.TestResult;
 import junit.framework.TestSuite;
 
+import ch.hsr.ifs.pystructure.playground.Structure101Logger;
 import ch.hsr.ifs.pystructure.typeinference.inferencer.PythonTypeInferencer;
 import ch.hsr.ifs.pystructure.typeinference.visitors.Workspace;
 
 public class TypeInferenceSuite extends TestSuite {
 	
+	private Structure101Logger logger;
+
 	public TypeInferenceSuite(String testsDirectory) {
 		super(testsDirectory);
 		File dir = new File(testsDirectory);
@@ -32,18 +36,25 @@ public class TypeInferenceSuite extends TestSuite {
 			}
 		});
 		
-		PythonTypeInferencer inferencer = new PythonTypeInferencer();
+		logger = new Structure101Logger();
+		PythonTypeInferencer inferencer = new PythonTypeInferencer(logger);
 		
 		LinkedList<String> sysPath = new LinkedList<String>();
 		Workspace workspace = new Workspace(testsDirectory, sysPath);
 		
 		for (File file : files) {
 			try {
-				TestCase test = new TypeInferenceTest(file.getName(), file, inferencer, workspace);
+				TestCase test = new TypeInferenceTest(file.getName(), file, workspace, inferencer, logger);
 				addTest(test);
 			} catch (IOException e) {
 				throw new RuntimeException(e);
 			}
 		}
 	}
+	
+	public void run(TestResult result) {
+		super.run(result);
+		logger.testSuiteFinished();
+	}
+
 }

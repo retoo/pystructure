@@ -27,9 +27,9 @@ class ExpressionTypeAssertion extends Assert {
 
 	private final String correctClassRef;
 
-	private final String filename;
-	private final String expression;
-	private final int line;
+	public final String filename;
+	public final String expression;
+	public final int line;
 
 	public ExpressionTypeAssertion(String fileName, String expression,
 			int line, String correctClassRef) {

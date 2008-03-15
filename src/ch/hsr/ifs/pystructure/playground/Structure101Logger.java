@@ -1,5 +1,6 @@
 package ch.hsr.ifs.pystructure.playground;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.IdentityHashMap;
 
@@ -20,14 +21,13 @@ public class Structure101Logger implements IGoalEngineLogger {
 	private Document document;
 	private Element modules;
 	private Element dependencies;
+	private String modulePrefix;
 
 	private IdentityHashMap<GoalEvaluator, Integer> ids;
 
 	public Structure101Logger() {
 		outputter = new XMLOutputter(Format.getPrettyFormat());
-	}
-
-	public void evaluationStarted(IGoal rootGoal) {
+		
 		document = new Document();
 		ids = new IdentityHashMap<GoalEvaluator, Integer>();
 		
@@ -38,22 +38,36 @@ public class Structure101Logger implements IGoalEngineLogger {
 		modules = new Element("modules");
 		dependencies = new Element("dependencies");
 	}
+	
+	public void testStarted(String filename, String expression, int line) {
+		modulePrefix = filename + "/" + line + ":" + expression + "/";
+	}
 
-	public void evaluationFinished(IGoal rootGoal) {
+	public void testSuiteFinished() {
 		Element root = document.getRootElement();
 		root.addContent(modules);
 		root.addContent(dependencies);
 		
 		try {
-			outputter.output(document, System.out);
+			String outDir = System.getProperty("output.tests", "tests");
+			FileOutputStream out = new FileOutputStream(outDir + "/goalengine.xml");
+			outputter.output(document, out);
 		} catch (IOException e) {
-			// Ignore
+			// ignore
 		}
 	}
 
+	public void evaluationStarted(IGoal rootGoal) {
+		// ignore
+	}
+
+	public void evaluationFinished(IGoal rootGoal) {
+		// ignore
+	}
+
 	public void goalCreated(IGoal goal, GoalEvaluator creator, GoalEvaluator evaluator) {
-		registerEvaluator(creator);
-		registerEvaluator(evaluator);
+		addEvaluator(creator);
+		addEvaluator(evaluator);
 		
 		Element dependency = new Element("dependency");
 		dependency.setAttribute("from", id(creator));
@@ -66,21 +80,18 @@ public class Structure101Logger implements IGoalEngineLogger {
 		// ignore
 	}
 
-	private String type(IGoal goal) {
-		return goal.getClass().getSimpleName().replaceAll("Goal$", "");
-	}
-
-	private void registerEvaluator(GoalEvaluator creator) {
+	private void addEvaluator(GoalEvaluator creator) {
 		if (!ids.containsKey(creator)) {
 			Element module = new Element("module");
-			module.setAttribute("name", name(creator));
-			module.setAttribute("type", "class");
+			module.setAttribute("name", modulePrefix + name(creator));
+			module.setAttribute("type", "evaluator");
 			module.setAttribute("id", id(creator));
 			modules.addContent(module);
 		}
 	}
 	
 	private static String name(GoalEvaluator evaluator) {
+		// TODO: Add one "start" per test assertion
 		if (evaluator == null) {
 			return "start";
 		} else {
@@ -96,5 +107,9 @@ public class Structure101Logger implements IGoalEngineLogger {
 			ids.put(evaluator, id);
 			return Integer.toString(id);
 		}
+	}
+
+	private String type(IGoal goal) {
+		return goal.getClass().getSimpleName().replaceAll("Goal$", "");
 	}
 }
