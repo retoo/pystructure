@@ -1,11 +1,12 @@
 from .field import Field
 from .areas import Area
 
+
 class Board(object):
-    def __init__(self, filename):        
+    def __init__(self, filename):
         self.filename = filename
-        
         self.fields = list()
+
         self.rows = list()
         self.cols = list()
         self.blocks = list()
