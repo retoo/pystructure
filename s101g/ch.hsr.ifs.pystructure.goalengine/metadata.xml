@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<flavor name="ch.hsr.ifs.pystructure">
+<flavor name="ch.hsr.ifs.pystructure.goalengine">
 
 	<provider name="PyStructure" url="http://pystructure.ifs.hsr.ch" email=""/>
 
@@ -7,7 +7,7 @@
 
 	<item-types>
 		<module-types sep=".">
-			<module-type name="class"/>
+			<module-type name="evaluator"/>
 		</module-types>
 		<nested-types>
 			<nested-type name="method"/>
@@ -22,10 +22,17 @@
 	</item-types>
 
 	<dependency-types>
-		<dependency-type name="references"/>
-		<dependency-type name="calls"/>
-		<dependency-type name="is type"/>
-		<dependency-type name="has param"/>
+		<dependency-type name="AttributeReferences"/>
+		<dependency-type name="ClassReferences"/>
+		<dependency-type name="FunctionReferences"/>
+		<dependency-type name="MethodReferences"/>
+		<dependency-type name="PossibleAttributeReferences"/>
+		<dependency-type name="PossibleReferences"/>
+		<dependency-type name="AbstractType"/>
+		<dependency-type name="DefinitionType"/>
+		<dependency-type name="ExpressionType"/>
+		<dependency-type name="ReturnType"/>
+		<dependency-type name="TupleElementType"/>
 	</dependency-types>
 
 </flavor>
