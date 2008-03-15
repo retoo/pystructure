@@ -90,12 +90,13 @@
 		<mkdir dir="${output.doc-dir}" />
 		<mkdir dir="${output.findbugs-dir}" />
 		<mkdir dir="${output.checkstyle-dir}" />
-
+		<mkdir dir="${output.tests}" />
 
 		<mkdir dir="${build.base}" />
 		<mkdir dir="${build.src}" />
 		<mkdir dir="${build.parser}" />
 		<mkdir dir="${build.tests}" />
+	
 	</target>
 	
 	<target name="init-tests">
