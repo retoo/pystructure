@@ -13,6 +13,5 @@ public interface IModule {
 	
 	File getFile();
 	String getRelativePath();
-//	IDocument getDocument();
 	
 }
