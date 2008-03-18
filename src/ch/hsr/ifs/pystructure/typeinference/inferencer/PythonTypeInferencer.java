@@ -11,6 +11,7 @@ import ch.hsr.ifs.pystructure.typeinference.basetype.IEvaluatedType;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.AbstractTypeGoal;
 import ch.hsr.ifs.pystructure.typeinference.inferencer.dispatcher.PythonEvaluatorFactory;
+import ch.hsr.ifs.pystructure.typeinference.inferencer.logger.IGoalEngineLogger;
 
 public class PythonTypeInferencer implements ITypeInferencer {
 

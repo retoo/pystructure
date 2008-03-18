@@ -1,4 +1,4 @@
-package ch.hsr.ifs.pystructure.typeinference.inferencer;
+package ch.hsr.ifs.pystructure.typeinference.inferencer.logger;
 
 import ch.hsr.ifs.pystructure.typeinference.evaluators.base.GoalEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;

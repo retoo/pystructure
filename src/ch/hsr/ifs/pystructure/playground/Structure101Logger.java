@@ -11,7 +11,7 @@ import org.jdom.output.XMLOutputter;
 
 import ch.hsr.ifs.pystructure.typeinference.evaluators.base.GoalEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
-import ch.hsr.ifs.pystructure.typeinference.inferencer.IGoalEngineLogger;
+import ch.hsr.ifs.pystructure.typeinference.inferencer.logger.IGoalEngineLogger;
 
 public class Structure101Logger implements IGoalEngineLogger {
 

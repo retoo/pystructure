@@ -1,4 +1,4 @@
-package ch.hsr.ifs.pystructure.typeinference.inferencer;
+package ch.hsr.ifs.pystructure.typeinference.inferencer.logger;
 
 import java.io.PrintStream;
 import java.util.IdentityHashMap;

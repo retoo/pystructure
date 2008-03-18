@@ -19,6 +19,8 @@ import ch.hsr.ifs.pystructure.typeinference.evaluators.base.GoalEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.GoalState;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
 import ch.hsr.ifs.pystructure.typeinference.inferencer.dispatcher.IEvaluatorFactory;
+import ch.hsr.ifs.pystructure.typeinference.inferencer.logger.GoalEngineNullLogger;
+import ch.hsr.ifs.pystructure.typeinference.inferencer.logger.IGoalEngineLogger;
 
 /**
  * Main working class for type inference. Purpose of this class is simple:
