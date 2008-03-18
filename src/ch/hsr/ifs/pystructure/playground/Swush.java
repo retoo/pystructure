@@ -9,7 +9,10 @@ import ch.hsr.ifs.pystructure.typeinference.basetype.IEvaluatedType;
 import ch.hsr.ifs.pystructure.typeinference.contexts.ModuleContext;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.ExpressionTypeGoal;
 import ch.hsr.ifs.pystructure.typeinference.inferencer.PythonTypeInferencer;
+import ch.hsr.ifs.pystructure.typeinference.inferencer.logger.CombinedLogger;
 import ch.hsr.ifs.pystructure.typeinference.inferencer.logger.ConsoleLogger;
+import ch.hsr.ifs.pystructure.typeinference.inferencer.logger.IGoalEngineLogger;
+import ch.hsr.ifs.pystructure.typeinference.inferencer.logger.StatsLogger;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Module;
 import ch.hsr.ifs.pystructure.typeinference.visitors.ExpressionAtLineVisitor;
 import ch.hsr.ifs.pystructure.typeinference.visitors.Workspace;
@@ -18,12 +21,14 @@ public class Swush {
 	public static void main(String[] args) {
 		LinkedList<String> sysPath = new LinkedList<String>();
 
-		PythonTypeInferencer inferencer = new PythonTypeInferencer(new ConsoleLogger());
+		IGoalEngineLogger logger = new CombinedLogger(new ConsoleLogger(), new StatsLogger());
+		
+		PythonTypeInferencer inferencer = new PythonTypeInferencer(logger);
 		String path = "s101g/examples/simple/";
 		Workspace workspace = new Workspace(path, sysPath);
 		Module module = workspace.getModule("simple");
 		
-		int[] lines = {13, 14};
+		int[] lines = {13, 14, 15, 16};
 		
 		for (int line : lines) {
 			Expr expression = getExpressionAtLine(module, line);
@@ -35,6 +40,8 @@ public class Swush {
 			System.out.println("Type is: " + type);
 			
 		}
+		
+		inferencer.shutdown();
 		
 		
 //		for (Definition<?> x : module.getDefinitions()) {

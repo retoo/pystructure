@@ -39,6 +39,8 @@ public class GoalEngine {
 	private final Map<GoalEvaluator, EvaluatorState> evaluatorStates = new HashMap<GoalEvaluator, EvaluatorState>();
 
 	private IGoalEngineLogger logger;
+	
+	private final static boolean CACHING_ENABLED = false;
 
 	private static class EvaluatorState {
 		public long timeCreated;
@@ -178,7 +180,7 @@ public class GoalEngine {
 				/* Check if there are any cached results */
 				boolean isFinished = false;
 
-				if (evaluator.isCached()) {
+				if (CACHING_ENABLED && evaluator.isCached()) {
 					isFinished = true;
 				} else {
 					List<IGoal> newGoals = evaluator.init();
@@ -224,6 +226,10 @@ public class GoalEngine {
 		workingQueue.clear();
 		goalStates.clear();
 		evaluatorStates.clear();
+	}
+
+	public void shutdown() {
+		logger.shutdown();
 	}
 
 }

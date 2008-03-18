@@ -8,14 +8,14 @@
 package ch.hsr.ifs.pystructure.typeinference.basetype;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-
 import ch.hsr.ifs.pystructure.utils.StringUtils;
 
-public class CombinedType implements IEvaluatedType {
+public class CombinedType implements IEvaluatedType, Iterable<IEvaluatedType> {
 
 	private Set<IEvaluatedType> types;
 	
@@ -52,5 +52,9 @@ public class CombinedType implements IEvaluatedType {
 	@Override
 	public String toString() {
 		return getTypeName();
+	}
+
+	public Iterator<IEvaluatedType> iterator() {
+		return types.iterator();
 	}
 }

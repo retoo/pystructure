@@ -30,4 +30,6 @@ public interface ITypeInferencer {
 	 * @return
 	 */
 	IEvaluatedType evaluateType(AbstractTypeGoal goal, int timeLimit);
+	
+	void shutdown();
 }

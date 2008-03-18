@@ -35,4 +35,10 @@ public class CombinedLogger implements IGoalEngineLogger {
 		}
 	}
 
+	public void shutdown() {
+		for (IGoalEngineLogger logger : loggers) {
+			logger.shutdown();
+		}
+	}
+
 }

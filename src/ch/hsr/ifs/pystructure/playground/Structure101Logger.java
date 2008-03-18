@@ -43,20 +43,6 @@ public class Structure101Logger implements IGoalEngineLogger {
 		modulePrefix = filename + "/" + line + ":" + expression + "/";
 	}
 
-	public void testSuiteFinished() {
-		Element root = document.getRootElement();
-		root.addContent(modules);
-		root.addContent(dependencies);
-		
-		try {
-			String outDir = System.getProperty("output.tests", "tests");
-			FileOutputStream out = new FileOutputStream(outDir + "/goalengine.xml");
-			outputter.output(document, out);
-		} catch (IOException e) {
-			// ignore
-		}
-	}
-
 	public void evaluationStarted(IGoal rootGoal) {
 		// ignore
 	}
@@ -111,5 +97,19 @@ public class Structure101Logger implements IGoalEngineLogger {
 
 	private String type(IGoal goal) {
 		return goal.getClass().getSimpleName().replaceAll("Goal$", "");
+	}
+
+	public void shutdown() {
+		Element root = document.getRootElement();
+		root.addContent(modules);
+		root.addContent(dependencies);
+		
+		try {
+			String outDir = System.getProperty("output.tests", "tests");
+			FileOutputStream out = new FileOutputStream(outDir + "/goalengine.xml");
+			outputter.output(document, out);
+		} catch (IOException e) {
+			// ignore
+		}
 	}
 }

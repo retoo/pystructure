@@ -33,4 +33,8 @@ public class PythonTypeInferencer implements ITypeInferencer {
 		return engine.evaluateGoal(goal, pruner);
 	}
 
+	public void shutdown() {
+		engine.shutdown();
+	}
+
 }

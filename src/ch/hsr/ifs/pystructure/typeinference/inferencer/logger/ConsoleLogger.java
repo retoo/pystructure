@@ -12,7 +12,7 @@ public class ConsoleLogger implements IGoalEngineLogger {
 	
 	private IdentityHashMap<GoalEvaluator, GoalEvaluator> creators;
 	private IdentityHashMap<Object, Integer> numbers;
-	private int curNr = 0;
+	private int curNr = 1;
 	
 	public ConsoleLogger() {
 		this.creators = new IdentityHashMap<GoalEvaluator, GoalEvaluator>(); 
@@ -48,7 +48,7 @@ public class ConsoleLogger implements IGoalEngineLogger {
 
 	private int getNumber(GoalEvaluator evaluator) {
 		Integer nr = numbers.get(evaluator);
-		return nr != null ? (int) nr : -1; 
+		return nr != null ? (int) nr : 0; 
 	}
 
 	private int level(GoalEvaluator evaluator) {
@@ -65,5 +65,8 @@ public class ConsoleLogger implements IGoalEngineLogger {
 		return creators.get(creator);
 	}
 
+	public void shutdown() {
+		out.println("Engine Finsihed");
+	}
 
 }

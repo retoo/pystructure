@@ -20,11 +20,14 @@ import junit.framework.TestSuite;
 
 import ch.hsr.ifs.pystructure.playground.Structure101Logger;
 import ch.hsr.ifs.pystructure.typeinference.inferencer.PythonTypeInferencer;
+import ch.hsr.ifs.pystructure.typeinference.inferencer.logger.CombinedLogger;
+import ch.hsr.ifs.pystructure.typeinference.inferencer.logger.IGoalEngineLogger;
+import ch.hsr.ifs.pystructure.typeinference.inferencer.logger.StatsLogger;
 import ch.hsr.ifs.pystructure.typeinference.visitors.Workspace;
 
 public class TypeInferenceSuite extends TestSuite {
 	
-	private Structure101Logger logger;
+	private PythonTypeInferencer inferencer;
 
 	public TypeInferenceSuite(String testsDirectory) {
 		super(testsDirectory);
@@ -36,15 +39,17 @@ public class TypeInferenceSuite extends TestSuite {
 			}
 		});
 		
-		logger = new Structure101Logger();
-		PythonTypeInferencer inferencer = new PythonTypeInferencer(logger);
+		
+		Structure101Logger s101log = new Structure101Logger();
+		IGoalEngineLogger logger = new CombinedLogger(s101log, new StatsLogger());
+		inferencer = new PythonTypeInferencer(logger);
 		
 		LinkedList<String> sysPath = new LinkedList<String>();
 		Workspace workspace = new Workspace(testsDirectory, sysPath);
 		
 		for (File file : files) {
 			try {
-				TestCase test = new TypeInferenceTest(file.getName(), file, workspace, inferencer, logger);
+				TestCase test = new TypeInferenceTest(file.getName(), file, workspace, inferencer, s101log);
 				addTest(test);
 			} catch (IOException e) {
 				throw new RuntimeException(e);
@@ -54,7 +59,7 @@ public class TypeInferenceSuite extends TestSuite {
 	
 	public void run(TestResult result) {
 		super.run(result);
-		logger.testSuiteFinished();
+		inferencer.shutdown();
 	}
 
 }
