@@ -16,6 +16,7 @@ import ch.hsr.ifs.pystructure.typeinference.goals.references.AttributeReferences
 import ch.hsr.ifs.pystructure.typeinference.goals.types.ClassAttributeTypeGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.ExpressionTypeGoal;
 import ch.hsr.ifs.pystructure.typeinference.model.base.NameAdapter;
+import ch.hsr.ifs.pystructure.typeinference.model.definitions.Class;
 import ch.hsr.ifs.pystructure.typeinference.results.references.AttributeReference;
 import ch.hsr.ifs.pystructure.typeinference.results.types.ClassType;
 
@@ -24,11 +25,13 @@ public class ClassAttributeTypeEvaluator extends GoalEvaluator {
 	private ClassType classType;
 	private NameAdapter attributeName;
 	private CombinedType resultType;
+	private Class klass;
 
 	public ClassAttributeTypeEvaluator(ClassAttributeTypeGoal goal) {
 		super(goal);
 
 		this.classType = goal.getClassType();
+		this.klass = classType.getKlass();
 		this.attributeName = goal.getAttributeName();
 
 		this.resultType = new CombinedType();
@@ -39,14 +42,17 @@ public class ClassAttributeTypeEvaluator extends GoalEvaluator {
 		// It's probably a data attribute
 		return wrap(
 				new AttributeReferencesGoal( getGoal().getContext(),
-						attributeName, classType.getKlass()));
+						attributeName, klass));
 	}
-
+	
+	
 	@Override
 	public List<IGoal> subGoalDone(IGoal subgoal, Object result, GoalState state) {
 		ArrayList<IGoal> subgoals = new ArrayList<IGoal>();
 		
 		if (subgoal instanceof AttributeReferencesGoal) {
+			/* there's no way to */
+			@SuppressWarnings("unchecked")
 			List<AttributeReference> references = (List<AttributeReference>) result;
 
 			for (AttributeReference reference : references) {
@@ -73,9 +79,24 @@ public class ClassAttributeTypeEvaluator extends GoalEvaluator {
 
 		return subgoals;
 	}
+	
+	@Override
+	public boolean isCached() {
+		CombinedType cachedType = klass.attributes.get(attributeName);
+		if (cachedType != null) {
+			resultType = cachedType;
+			return true;
+		} else {
+			return false;
+		}
+	}
 
 	@Override
 	public Object produceResult() {
+		if (klass.attributes.get(attributeName) == null) {
+			klass.attributes.put(attributeName, resultType);
+		}
+		
 		return resultType;
 	}
 

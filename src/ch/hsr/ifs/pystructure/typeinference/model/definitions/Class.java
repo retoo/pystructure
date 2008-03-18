@@ -8,10 +8,12 @@
 package ch.hsr.ifs.pystructure.typeinference.model.definitions;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.python.pydev.parser.jython.ast.ClassDef;
 
+import ch.hsr.ifs.pystructure.typeinference.basetype.CombinedType;
 import ch.hsr.ifs.pystructure.typeinference.model.base.NameAdapter;
 
 /**
@@ -21,11 +23,13 @@ public class Class extends Definition<ClassDef> implements IAttributeDefinition 
 
 	private List<Method> methods;
 	private Module module;
+	public HashMap<NameAdapter, CombinedType> attributes;
 
 	public Class(NameAdapter name, ClassDef classDef, Module module) {
 		super(module, name, classDef);
 		this.methods = new ArrayList<Method>();
 		this.module = module;
+		this.attributes = new HashMap<NameAdapter, CombinedType>();
 	}
 	
 	public void addMethod(Method method) {

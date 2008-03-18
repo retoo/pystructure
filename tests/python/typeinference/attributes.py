@@ -31,8 +31,8 @@ class Context(object):
         return self.attr
 
 c = Context()
-c.method("x") ## type str
-c.method(1)  ## type int
+c.method("x") # FIXME: doesnt work atm because of the call context # type str
+c.method(1)  # FIXME: doesnt work atm because of the call context# type int
 c.another_method() ## type int|str
 
 c.attr ## type int|str
