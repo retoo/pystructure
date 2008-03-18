@@ -9,7 +9,8 @@
 \section*{Structural Analyser for Python – Project Proposal}
 \vspace{-0.5cm}
 
-\emph{by Reto Schüttel \& Robin Stocker, 12th February 2008}
+\emph{by Reto Schüttel \& Robin Stocker, 12th February 2008}\\
+\url{http://pystructure.ifs.hsr.ch/}
 
 \vspace{-0.3cm}
 
@@ -72,6 +73,10 @@ For Java, structural analysis has turned out to be a valuable instrument, but fo
 	\item The type inference engine has to be able to detect implicit abstraction. Due to the nature of type inference, the engine only finds \emph{concrete} types (like \id{car} or \id{plane}) for variables, but never \emph {abstract} types (like \id{vehicle}). The implicitly used base class has to be guessed using the information provided by the context. For example: if a method processes planes and cars, but only the method \id{repair} of the common base class \id{vehicle} is being called, the engine should automatically guess that the developer implicitly intended to handle the passed parameter as object of the base class \id{vehicle}. In Java this intention is explicitly declared.
 	\item How does the type inference algorithm scale to large projects? What is the impact of using XML as a data exchange format?
 \end{itemize}
+
+\subsection*{Learn More}
+
+More information and recent updates about the project can be found on the project's website: \url{http://pystructure.ifs.hsr.ch/}.
 
 
 \end{document}
