@@ -40,16 +40,6 @@ public class Runtime implements IModuleCreator {
 		prepareModule(module);
 		return module;	
 	}
-	
-	/* (non-Javadoc)
-	 * @see ch.hsr.ifs.pystructure.typeinference.model.definitions.IModuleCreator#createModule(java.lang.String, java.lang.String, ch.hsr.ifs.pystructure.typeinference.model.definitions.IPackage)
-	 */
-	public Module createModule(String modulename, String source,
-			IPackage pkg) {
-		Module module = new Module(modulename, source, pkg);
-		prepareModule(module);
-		return module;	
-	}
 
 	private void prepareModule(Module module) {
 		DefinitionVisitor visitor = new DefinitionVisitor(importPaths, module);

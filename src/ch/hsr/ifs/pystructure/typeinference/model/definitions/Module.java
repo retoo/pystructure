@@ -41,15 +41,6 @@ public class Module extends Definition<org.python.pydev.parser.jython.ast.Module
 			throw new RuntimeException(e);
 		}
 	}
-	
-	public Module(String modulename, String source, IPackage pkg) {
-		/* create a fake file */
-		this.file = new File(modulename);
-		this.path = "created for test as " + modulename;
-		this.relativePath = file.getPath();
-		
-		init(pkg, source, modulename);
-	}
 
 	private void init(IPackage pkg, String source, String name) {
 		this.pkg = pkg;
