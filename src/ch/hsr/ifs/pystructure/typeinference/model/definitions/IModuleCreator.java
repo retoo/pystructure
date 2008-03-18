@@ -11,6 +11,6 @@ import java.io.File;
 
 public interface IModuleCreator {
 
-	Module createModule(File file, String relativePath, IPackage pkg);
+	Module createModule(File workspace, String relativePath, IPackage pkg);
 
 }
