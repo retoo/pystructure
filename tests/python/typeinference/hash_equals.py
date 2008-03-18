@@ -27,7 +27,7 @@ if random():
 else:
     y = Bar().get2()
 
-y ## type int                       
+y ## type int
 
 
         
@@ -51,11 +51,11 @@ if random():
 else:
     y = Baz().get2()
 
-y() ## type int                       
+y() ## type int
+
 
 a = Baz
 b = Baz
-
 
 if random():
     c = a
@@ -63,7 +63,5 @@ else:
     c = b
     
 c() ## type Baz
-
-
 
 
