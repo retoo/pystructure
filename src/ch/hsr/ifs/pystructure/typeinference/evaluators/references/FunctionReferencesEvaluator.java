@@ -33,7 +33,7 @@ public class FunctionReferencesEvaluator extends GoalEvaluator {
 		super(goal);
 		this.function = goal.getFunction();
 		
-		this.references = new ArrayList<FunctionReference>();
+		this.references = goal.references;
 	}
 
 	@Override
@@ -43,10 +43,11 @@ public class FunctionReferencesEvaluator extends GoalEvaluator {
 	}
 	
 	@Override
-	public List<IGoal> subGoalDone(IGoal subgoal, Object result, GoalState state) {
+	public List<IGoal> subGoalDone(IGoal subgoal, GoalState state) {
 		if (subgoal instanceof PossibleReferencesGoal) {
-			List<Use> possibleUses = (List<Use>) result;
-			for (Use use : possibleUses) {
+			PossibleReferencesGoal g = (PossibleReferencesGoal) subgoal;
+			
+			for (Use use : g.references) {
 				/*
 				 * The PossibleReferencesEvaluator might return AttributeUses
 				 * which we dont really need at this point

@@ -42,14 +42,11 @@ public abstract class GoalEvaluator {
 	 *
 	 * @param subgoal
 	 *            completed subgoal
-	 * @param result
-	 *            result of that subgoal
 	 * @param state
 	 *            final state of subgoal (DONE, PRUNED or RECURSION)
 	 * @return array of new required subgoals or <code>IGoal.NO_GOALS</code>
 	 */
-	public abstract List<IGoal> subGoalDone(IGoal subgoal, Object result,
-			GoalState state);
+	public abstract List<IGoal> subGoalDone(IGoal subgoal, GoalState state);
 
 	/**
 	 * Called when all posted subgoals are done

@@ -7,17 +7,23 @@
 
 package ch.hsr.ifs.pystructure.typeinference.goals.references;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import ch.hsr.ifs.pystructure.typeinference.contexts.ModuleContext;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.AbstractGoal;
 import ch.hsr.ifs.pystructure.typeinference.model.base.NameAdapter;
+import ch.hsr.ifs.pystructure.typeinference.model.definitions.Use;
 
 public class PossibleReferencesGoal extends AbstractGoal {
 
 	private NameAdapter name;
+	public final List<Use> references;
 	
 	public PossibleReferencesGoal(ModuleContext context, NameAdapter name) {
 		super(context);
 		this.name = name;
+		this.references = new ArrayList<Use>();
 	}
 	
 	public NameAdapter getName() {

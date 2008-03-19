@@ -47,7 +47,7 @@ public class AttributeTypeEvaluator extends GoalEvaluator {
 		super(goal);
 		this.attribute = attribute;
 
-		this.resultType = new CombinedType();
+		this.resultType = goal.resultType;
 	}
 
 	@Override
@@ -56,7 +56,7 @@ public class AttributeTypeEvaluator extends GoalEvaluator {
 	}
 
 	@Override
-	public List<IGoal> subGoalDone(IGoal subgoal, Object result, GoalState state) {
+	public List<IGoal> subGoalDone(IGoal subgoal, GoalState state) {
 		if (state == GoalState.RECURSIVE) {
 			// RECURSIVE could mean something like that:
 			//   self.attr = self.attr
@@ -67,9 +67,10 @@ public class AttributeTypeEvaluator extends GoalEvaluator {
 		List<IGoal> subgoals = new ArrayList<IGoal>();
 
 		if (subgoal instanceof ExpressionTypeGoal) {
+			ExpressionTypeGoal g = (ExpressionTypeGoal) subgoal;
 			
 			NameAdapter attributeName = new NameAdapter(attribute.attr);
-			for (IEvaluatedType type : EvaluatorUtils.extractTypes((IEvaluatedType) result)) {
+			for (IEvaluatedType type : g.resultType) {
 				if (type instanceof ClassType) {
 					// It's either a method or an attribute
 					ClassType classType = (ClassType) type;
@@ -121,7 +122,8 @@ public class AttributeTypeEvaluator extends GoalEvaluator {
 			}
 			
 		} else if (subgoal instanceof ClassAttributeTypeGoal) {
-			resultType.appendType((CombinedType) result);
+			ClassAttributeTypeGoal g = (ClassAttributeTypeGoal) subgoal;
+			resultType.appendType((CombinedType) g.resultType);
 			
 		} else {
 			throw new RuntimeException("Unknown subgoal");

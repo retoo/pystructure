@@ -14,10 +14,14 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.Map.Entry;
 
 import ch.hsr.ifs.pystructure.typeinference.evaluators.base.GoalEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.GoalState;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
+import ch.hsr.ifs.pystructure.typeinference.goals.types.AbstractTypeGoal;
+import ch.hsr.ifs.pystructure.typeinference.goals.types.DefinitionTypeGoal;
 import ch.hsr.ifs.pystructure.typeinference.inferencer.dispatcher.IEvaluatorFactory;
 import ch.hsr.ifs.pystructure.typeinference.inferencer.logger.GoalEngineNullLogger;
 import ch.hsr.ifs.pystructure.typeinference.inferencer.logger.IGoalEngineLogger;
@@ -54,7 +58,6 @@ public class GoalEngine {
 			this.timeCreated = System.currentTimeMillis();
 			totalSubgoals = subgoalsLeft;
 		}
-
 	}
 
 	private static class WorkingPair {
@@ -72,6 +75,11 @@ public class GoalEngine {
 		public GoalEvaluator creator;
 		public GoalState state;
 		public Object result;
+		
+		@Override
+		public String toString() {
+			return "Evaluation State: " + state;
+		}
 	}
 
 	public GoalEngine(IEvaluatorFactory evaluatorFactory) {
@@ -88,6 +96,23 @@ public class GoalEngine {
 		es.result = result;
 		es.state = state;
 		es.creator = creator;
+		
+		IGoal oldGoal = null;
+		for (Map.Entry<IGoal, GoalEvaluationState> entry : goalStates.entrySet()) {
+			IGoal curGoal = entry.getKey();
+			if (curGoal.equals(goal)) {
+				oldGoal = curGoal;
+				break;
+			}
+		}
+		
+		if (goal instanceof DefinitionTypeGoal) {
+			System.out.println(goal);
+//			DefinitionTypeGoal g = (DefinitionTypeGoal) goal;
+//			if (g.getDefinition().getName().getId().equals("A")) {
+//			}
+		}
+		
 		goalStates.put(goal, es);
 	}
 
@@ -100,7 +125,7 @@ public class GoalEngine {
 			state = GoalState.RECURSIVE;
 		}
 
-		List<IGoal> newGoals = evaluator.subGoalDone(subGoal, result, state);
+		List<IGoal> newGoals = evaluator.subGoalDone(subGoal, state);
 		assert newGoals != null : "please return IGoal.NO_GOALS if there are no goals";
 
 		for (IGoal newGoal : newGoals) {
@@ -128,7 +153,7 @@ public class GoalEngine {
 		}
 	}
 
-	public Object evaluateGoal(IGoal rootGoal, IPruner pruner) {
+	public Object evaluateGoal(AbstractTypeGoal rootGoal, IPruner pruner) {
 		logger.evaluationStarted(rootGoal);
 		
 		reset();
@@ -143,6 +168,9 @@ public class GoalEngine {
 			WorkingPair pair = workingQueue.removeFirst();
 			GoalEvaluationState state = goalStates.get(pair.goal);
 
+			
+			
+			
 			if (state != null && pair.creator != null) {
 				/*
 				 * Previous goal which reapppeared (because its subgoals are not
@@ -165,8 +193,20 @@ public class GoalEngine {
 
 					workingQueue.addLast(pair);
 				} else {
+					IGoal oldGoal = null;
+					for (Map.Entry<IGoal, GoalEvaluationState> entry : goalStates.entrySet()) {
+						IGoal curGoal = entry.getKey();
+						if (curGoal.equals(pair.goal)) {
+							oldGoal = curGoal;
+							break;
+						}
+					}
+					
+					assert oldGoal != null;
+					
+					
 					firstPostponed = null;
-					notifyEvaluator(pair.creator, pair.goal);
+					notifyEvaluator(pair.creator, oldGoal);
 				}
 			} else {
 				/* Goal just entered the loop */ 
@@ -219,7 +259,7 @@ public class GoalEngine {
 		
 		logger.evaluationFinished(rootGoal);
 		
-		return s.result;
+		return rootGoal.resultType;
 	}
 
 	private void reset() {

@@ -20,6 +20,7 @@ import org.python.pydev.parser.jython.ast.expr_contextType;
 import org.python.pydev.parser.jython.ast.name_contextType;
 import org.python.pydev.parser.jython.ast.operatorType;
 
+import ch.hsr.ifs.pystructure.typeinference.basetype.CombinedType;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.base.GoalEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.GoalState;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
@@ -32,7 +33,7 @@ public class BinOpTypeEvaluator extends GoalEvaluator {
 
 	private final BinOp binOp;
 	
-	private Object result;
+	private CombinedType result;
 	
 	private static final Map<Integer, String> METHODS = new HashMap<Integer, String>();
 	static {
@@ -55,6 +56,8 @@ public class BinOpTypeEvaluator extends GoalEvaluator {
 	public BinOpTypeEvaluator(ExpressionTypeGoal goal, BinOp binOp) {
 		super(goal);
 		this.binOp = binOp;
+		
+		this.result = goal.resultType;
 	}
 
 	@Override
@@ -75,8 +78,9 @@ public class BinOpTypeEvaluator extends GoalEvaluator {
 	}
 
 	@Override
-	public List<IGoal> subGoalDone(IGoal subgoal, Object result, GoalState state) {
-		this.result = result;
+	public List<IGoal> subGoalDone(IGoal subgoal, GoalState state) {
+		ExpressionTypeGoal g = (ExpressionTypeGoal) subgoal;
+		this.result.appendType(g.resultType);
 		return IGoal.NO_GOALS;
 	}
 

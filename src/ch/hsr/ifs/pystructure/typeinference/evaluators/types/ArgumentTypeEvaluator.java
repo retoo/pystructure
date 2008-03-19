@@ -17,6 +17,7 @@ import ch.hsr.ifs.pystructure.typeinference.contexts.CallContext;
 import ch.hsr.ifs.pystructure.typeinference.contexts.ModuleContext;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.GoalState;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
+import ch.hsr.ifs.pystructure.typeinference.goals.references.CallableGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.references.FunctionReferencesGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.references.MethodReferencesGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.DefinitionTypeGoal;
@@ -70,21 +71,23 @@ public class ArgumentTypeEvaluator extends DefinitionTypeEvaluator {
 	}
 
 	@Override
-	public List<IGoal> subGoalDone(IGoal subgoal, Object result, GoalState state) {
-		if (subgoal instanceof ExpressionTypeGoal && result instanceof IEvaluatedType) {
-			IEvaluatedType type = (IEvaluatedType) result;
+	public List<IGoal> subGoalDone(IGoal subgoal, GoalState state) {
+		//  FIXME if (subgoal instanceof ExpressionTypeGoal && result instanceof IEvaluatedType) {
+		if (subgoal instanceof ExpressionTypeGoal) {
+			
+			ExpressionTypeGoal g = (ExpressionTypeGoal) subgoal;
+			IEvaluatedType type =  g.resultType;
 			resultType.appendType(type);
 			return IGoal.NO_GOALS;
 		}
 		// TODO: Maybe only use one goal (CallableReferencesGoal) and do
 		// dispatching based on definition.
-		if (subgoal instanceof FunctionReferencesGoal 
-		 || subgoal instanceof MethodReferencesGoal) {
-			List<FunctionReference> references = (List<FunctionReference>) result;
+		if (subgoal instanceof CallableGoal) {
+			CallableGoal g = (CallableGoal) subgoal;
 			
 			List<IGoal> subgoals = new ArrayList<IGoal>();
 			
-			for (FunctionReference reference : references) {
+			for (FunctionReference reference : g.references) {
 				IGoal goal = getArgumentExpressionGoal(reference);
 				if (goal != null) {
 					subgoals.add(goal);

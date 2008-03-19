@@ -13,11 +13,13 @@ import java.util.List;
 import org.python.pydev.parser.jython.ast.Tuple;
 import org.python.pydev.parser.jython.ast.exprType;
 
+import ch.hsr.ifs.pystructure.typeinference.basetype.CombinedType;
 import ch.hsr.ifs.pystructure.typeinference.basetype.IEvaluatedType;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.base.EvaluatorUtils;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.base.GoalEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.GoalState;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
+import ch.hsr.ifs.pystructure.typeinference.goals.types.AbstractTypeGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.ExpressionTypeGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.TupleElementTypeGoal;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.TupleElement;
@@ -28,30 +30,33 @@ public class TupleElementTypeEvaluator extends GoalEvaluator {
 	private enum State { EXPRESSION_WAIT, RESULT_WAIT };
 	private State state;
 	private final TupleElement element;
-	
-	private Object result;
+	private CombinedType result;
 
 	public TupleElementTypeEvaluator(TupleElementTypeGoal goal) {
 		super(goal);
 		element = goal.getTupleElement();
+		
+		this.result = goal.resultType;
 	}
 
 	@Override
 	public List<IGoal> init() {
 		exprType expression = element.getExpression();
-		
+
 		state = State.EXPRESSION_WAIT;
 		return wrap(new ExpressionTypeGoal(getGoal().getContext(), expression));
 	}
 
 	@Override
-	public List<IGoal> subGoalDone(IGoal subgoal, Object result, GoalState state) {
-		
+	public List<IGoal> subGoalDone(IGoal subgoal, GoalState state) {
+		/* wie hier mit expression tuple goal umgehen */
 		if (this.state == State.EXPRESSION_WAIT) {
 			this.state = State.RESULT_WAIT;
 			List<IGoal> subgoals = new ArrayList<IGoal>();
-			
-			for (IEvaluatedType type : EvaluatorUtils.extractTypes((IEvaluatedType) result)) {
+
+			ExpressionTypeGoal g = (ExpressionTypeGoal) subgoal;
+
+			for (IEvaluatedType type : g.resultType) {
 				if (type instanceof TupleType) {
 					Tuple tuple = ((TupleType) type).getTuple();
 					exprType childExpression = tuple.elts[element.getFirstIndex()];
@@ -66,11 +71,13 @@ public class TupleElementTypeEvaluator extends GoalEvaluator {
 					// Maybe it's an array, we can't yet handle this.
 				}
 			}
-			
+
 			return subgoals;
-			
+
 		} else {
-			this.result = result;
+			AbstractTypeGoal g = (AbstractTypeGoal) subgoal;
+
+			this.result.appendType(g.resultType);
 			return IGoal.NO_GOALS;
 		}
 	}

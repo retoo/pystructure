@@ -15,7 +15,6 @@ import org.python.pydev.parser.jython.ast.exprType;
 import org.python.pydev.parser.visitors.scope.ReturnVisitor;
 
 import ch.hsr.ifs.pystructure.typeinference.basetype.CombinedType;
-import ch.hsr.ifs.pystructure.typeinference.basetype.IEvaluatedType;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.base.GoalEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.GoalState;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
@@ -29,35 +28,33 @@ import ch.hsr.ifs.pystructure.typeinference.model.definitions.Function;
 public class ReturnTypeEvaluator extends GoalEvaluator {
 
 	private final Function function;
-	
+
 	private CombinedType resultType;
-	
+
 	public ReturnTypeEvaluator(ReturnTypeGoal goal) {
 		super(goal);
 		function = goal.getFunction();
-		
-		resultType = new CombinedType(); 
+
+		resultType = goal.resultType; 
 	}
 
 	@Override
 	public List<IGoal> init() {
 		List<IGoal> subgoals = new ArrayList<IGoal>();
-		
+
 		List<Return> returns = ReturnVisitor.findReturns(function.getNode());
 		for (Return r : returns) {
 			exprType value = r.value;
 			subgoals.add(new ExpressionTypeGoal(getGoal().getContext(), value));
 		}
-		
+
 		return subgoals;
 	}
 
 	@Override
-	public List<IGoal> subGoalDone(IGoal subgoal, Object result, GoalState state) {
-		if (result instanceof IEvaluatedType) {
-			IEvaluatedType type = (IEvaluatedType) result;
-			resultType.appendType(type);
-		}
+	public List<IGoal> subGoalDone(IGoal subgoal, GoalState state) {
+		ExpressionTypeGoal g = (ExpressionTypeGoal) subgoal;
+		resultType.appendType(g.resultType);
 		return IGoal.NO_GOALS;
 	}
 

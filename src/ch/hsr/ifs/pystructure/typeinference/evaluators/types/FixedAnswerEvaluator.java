@@ -11,17 +11,25 @@ package ch.hsr.ifs.pystructure.typeinference.evaluators.types;
 
 import java.util.List;
 
+import ch.hsr.ifs.pystructure.typeinference.basetype.IEvaluatedType;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.base.GoalEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.GoalState;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
+import ch.hsr.ifs.pystructure.typeinference.goals.types.DefinitionTypeGoal;
+import ch.hsr.ifs.pystructure.typeinference.goals.types.ExpressionTypeGoal;
 
 public class FixedAnswerEvaluator extends GoalEvaluator {
 
-	private final Object result;
-
-	public FixedAnswerEvaluator(IGoal goal, Object result) {
+	public FixedAnswerEvaluator(DefinitionTypeGoal goal, IEvaluatedType result) {
 		super(goal);
-		this.result = result;
+		
+		goal.resultType.appendType(result);
+	}
+
+	public FixedAnswerEvaluator(ExpressionTypeGoal goal, IEvaluatedType classType) {
+		super(goal);
+		
+		goal.resultType.appendType(classType);
 	}
 
 	public List<IGoal> init() {
@@ -29,10 +37,10 @@ public class FixedAnswerEvaluator extends GoalEvaluator {
 	}
 
 	public Object produceResult() {
-		return result;
+		return null;
 	}
 
-	public List<IGoal> subGoalDone(IGoal subgoal, Object result, GoalState state) {
+	public List<IGoal> subGoalDone(IGoal subgoal, GoalState state) {
 		return IGoal.NO_GOALS;
 	}
 

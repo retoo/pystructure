@@ -34,7 +34,7 @@ public class ClassAttributeTypeEvaluator extends GoalEvaluator {
 		this.klass = classType.getKlass();
 		this.attributeName = goal.getAttributeName();
 
-		this.resultType = new CombinedType();
+		this.resultType = goal.resultType;
 	}
 
 	@Override
@@ -47,15 +47,13 @@ public class ClassAttributeTypeEvaluator extends GoalEvaluator {
 	
 	
 	@Override
-	public List<IGoal> subGoalDone(IGoal subgoal, Object result, GoalState state) {
+	public List<IGoal> subGoalDone(IGoal subgoal, GoalState state) {
 		ArrayList<IGoal> subgoals = new ArrayList<IGoal>();
 		
 		if (subgoal instanceof AttributeReferencesGoal) {
-			/* there's no way to */
-			@SuppressWarnings("unchecked")
-			List<AttributeReference> references = (List<AttributeReference>) result;
-
-			for (AttributeReference reference : references) {
+			AttributeReferencesGoal g = (AttributeReferencesGoal) subgoal;
+			
+			for (AttributeReference reference : g.references) {
 				SimpleNode node = reference.getNode();
 				if (node.parent instanceof Assign) {
 					Assign assign = (Assign) node.parent;
@@ -71,8 +69,8 @@ public class ClassAttributeTypeEvaluator extends GoalEvaluator {
 				} /* skip all non-assign nodes */
 			}
 		} else if (subgoal instanceof ExpressionTypeGoal) {
-			IEvaluatedType type = (IEvaluatedType) result;
-			resultType.appendType(type);
+			ExpressionTypeGoal g = (ExpressionTypeGoal) subgoal;
+			resultType.appendType(g.resultType);
 		} else {
 			throw new RuntimeException("Unknown subgoal");
 		}

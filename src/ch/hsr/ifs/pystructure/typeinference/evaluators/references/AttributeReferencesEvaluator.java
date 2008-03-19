@@ -7,7 +7,6 @@
 
 package ch.hsr.ifs.pystructure.typeinference.evaluators.references;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import ch.hsr.ifs.pystructure.typeinference.basetype.IEvaluatedType;
@@ -39,7 +38,7 @@ public class AttributeReferencesEvaluator extends GoalEvaluator {
 		this.attributeName = goal.getAttributeName();
 		this.attributeParent = goal.getAttributeParent();
 		
-		this.references = new ArrayList<AttributeReference>();
+		this.references = goal.references;
 	}
 
 	@Override
@@ -48,8 +47,10 @@ public class AttributeReferencesEvaluator extends GoalEvaluator {
 	}
 	
 	@Override
-	public List<IGoal> subGoalDone(IGoal subgoal, Object result, GoalState state) {
-		List<AttributeReference> possibleReferences = (List<AttributeReference>) result;
+	public List<IGoal> subGoalDone(IGoal subgoal, GoalState state) {
+		PossibleAttributeReferencesGoal g = (PossibleAttributeReferencesGoal) subgoal;
+		
+		List<AttributeReference> possibleReferences = g.possibleReferences;
 		
 		for (AttributeReference reference : possibleReferences) {
 			for (IEvaluatedType type : EvaluatorUtils.extractTypes(reference.getParent())) {

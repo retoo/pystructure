@@ -34,7 +34,7 @@ public class PossibleReferencesEvaluator extends GoalEvaluator {
 		super(goal);
 		name = goal.getName();
 		
-		uses = new ArrayList<Use>();
+		uses = goal.references;
 	}
 
 	@Override
@@ -53,7 +53,7 @@ public class PossibleReferencesEvaluator extends GoalEvaluator {
 	}
 
 	@Override
-	public List<IGoal> subGoalDone(IGoal subgoal, Object result, GoalState state) {
+	public List<IGoal> subGoalDone(IGoal subgoal, GoalState state) {
 		return IGoal.NO_GOALS;
 	}
 

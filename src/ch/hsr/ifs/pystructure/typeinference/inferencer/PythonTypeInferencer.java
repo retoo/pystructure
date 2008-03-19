@@ -29,10 +29,6 @@ public class PythonTypeInferencer implements ITypeInferencer {
 		return (IEvaluatedType) engine.evaluateGoal(goal, new TimelimitPruner(timeLimit));
 	}
 
-	public synchronized Object evaluateGoal(IGoal goal, IPruner pruner) {
-		return engine.evaluateGoal(goal, pruner);
-	}
-
 	public void shutdown() {
 		engine.shutdown();
 	}

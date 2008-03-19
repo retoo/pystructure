@@ -7,7 +7,6 @@
 
 package ch.hsr.ifs.pystructure.typeinference.evaluators.references;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.python.pydev.parser.jython.SimpleNode;
@@ -24,6 +23,7 @@ import ch.hsr.ifs.pystructure.typeinference.goals.references.PossibleAttributeRe
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Method;
 import ch.hsr.ifs.pystructure.typeinference.results.references.AttributeReference;
 import ch.hsr.ifs.pystructure.typeinference.results.references.ClassReference;
+import ch.hsr.ifs.pystructure.typeinference.results.references.FunctionReference;
 import ch.hsr.ifs.pystructure.typeinference.results.references.MethodReference;
 import ch.hsr.ifs.pystructure.typeinference.results.types.ClassType;
 import ch.hsr.ifs.pystructure.typeinference.results.types.MetaclassType;
@@ -37,13 +37,13 @@ public class MethodReferencesEvaluator extends GoalEvaluator {
 
 	private final Method method;
 	
-	private List<MethodReference> references;
+	private List<FunctionReference> references;
 	
 	public MethodReferencesEvaluator(MethodReferencesGoal goal) {
 		super(goal);
 		this.method = goal.getMethod();
 		
-		this.references = new ArrayList<MethodReference>();
+		this.references = goal.references;
 	}
 
 	@Override
@@ -58,29 +58,29 @@ public class MethodReferencesEvaluator extends GoalEvaluator {
 	}
 	
 	@Override
-	public List<IGoal> subGoalDone(IGoal subgoal, Object result, GoalState state) {
+	public List<IGoal> subGoalDone(IGoal subgoal, GoalState state) {
 		
 		if (subgoal instanceof ClassReferencesGoal) {
+			ClassReferencesGoal g = (ClassReferencesGoal) subgoal;
+			
 			// We were looking for a constructor.
 			
-			List<ClassReference> classReferences = (List<ClassReference>) result;
-			for (ClassReference classReference : classReferences) {
+			for (ClassReference classReference : g.references) {
 				references.add(new MethodReference(method, classReference.getNode(), true));
 			}
-		}
-		
-		if (subgoal instanceof PossibleAttributeReferencesGoal) {
+		} else 	if (subgoal instanceof PossibleAttributeReferencesGoal) {
+			PossibleAttributeReferencesGoal g = (PossibleAttributeReferencesGoal) subgoal; 
+			
 			// We were looking for a normal method.
 			
-			List<AttributeReference> attributeReferences = (List<AttributeReference>) result;
-			
-			for (AttributeReference reference : attributeReferences) {
+			for (AttributeReference reference : g.possibleReferences) {
 				SimpleNode attribute = reference.getNode();
 				
 				for (IEvaluatedType parentType : EvaluatorUtils.extractTypes(reference.getParent())) {
 					if (parentType instanceof ClassType) {
 						ClassType classType = (ClassType) parentType;
 						if (classType.getKlass() != null && classType.getKlass().equals(method.getKlass())) {
+							System.out.println("ref " + reference);
 							references.add(new MethodReference(method, attribute));
 						}
 					}
@@ -93,6 +93,8 @@ public class MethodReferencesEvaluator extends GoalEvaluator {
 
 				}
 			}
+		} else {
+			System.out.println("Unknown sub goal "  + subgoal);
 		}
 		
 		return IGoal.NO_GOALS;

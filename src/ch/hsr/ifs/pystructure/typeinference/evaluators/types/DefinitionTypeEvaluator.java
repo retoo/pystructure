@@ -13,7 +13,7 @@ public abstract class DefinitionTypeEvaluator extends GoalEvaluator {
 	public DefinitionTypeEvaluator(DefinitionTypeGoal goal, Definition<?> definition) {
 		super(goal);
 		this.definition = definition;
-		this.resultType = new CombinedType();
+		this.resultType = goal.resultType;
 	}
 	
 	public boolean isCached() {

@@ -17,7 +17,6 @@ import ch.hsr.ifs.pystructure.typeinference.basetype.CombinedType;
 import ch.hsr.ifs.pystructure.typeinference.basetype.IEvaluatedType;
 import ch.hsr.ifs.pystructure.typeinference.contexts.CallContext;
 import ch.hsr.ifs.pystructure.typeinference.contexts.ModuleContext;
-import ch.hsr.ifs.pystructure.typeinference.evaluators.base.EvaluatorUtils;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.base.GoalEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.GoalState;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
@@ -44,7 +43,7 @@ public class CallTypeEvaluator extends GoalEvaluator {
 		super(goal);
 		this.call = call;
 		
-		this.resultType = new CombinedType();
+		this.resultType = goal.resultType;
 	}
 
 	@Override
@@ -54,11 +53,12 @@ public class CallTypeEvaluator extends GoalEvaluator {
 	}
 
 	@Override
-	public List<IGoal> subGoalDone(IGoal subgoal, Object result, GoalState state) {
+	public List<IGoal> subGoalDone(IGoal subgoal, GoalState state) {
 		if (subgoal instanceof ExpressionTypeGoal) {
+			ExpressionTypeGoal expressionTypeGoal = (ExpressionTypeGoal) subgoal; 
 			List<IGoal> subgoals = new ArrayList<IGoal>();
 			
-			for (IEvaluatedType type : EvaluatorUtils.extractTypes((IEvaluatedType) result)) {
+			for (IEvaluatedType type : expressionTypeGoal.resultType) {
 				
 				if (type instanceof FunctionType) {
 					// It's function or method call.
@@ -89,11 +89,12 @@ public class CallTypeEvaluator extends GoalEvaluator {
 			}
 			
 			return subgoals;
-		}
-		
-		if (subgoal instanceof ReturnTypeGoal && result instanceof IEvaluatedType) {
-			IEvaluatedType type = (IEvaluatedType) result;
-			resultType.appendType(type);
+			
+		} else if (subgoal instanceof ReturnTypeGoal) {
+			ReturnTypeGoal g = (ReturnTypeGoal) subgoal;
+			resultType.appendType(g.resultType);
+		} else {
+			System.out.println("Unknown subgoal " + subgoal);
 		}
 		
 		return IGoal.NO_GOALS;
@@ -101,7 +102,8 @@ public class CallTypeEvaluator extends GoalEvaluator {
 
 	@Override
 	public Object produceResult() {
-		return resultType;
+		// TODO Auto-generated method stub
+		return null;
 	}
-
+	
 }

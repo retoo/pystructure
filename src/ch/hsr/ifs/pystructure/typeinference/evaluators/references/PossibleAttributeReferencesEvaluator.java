@@ -7,8 +7,7 @@
 
 package ch.hsr.ifs.pystructure.typeinference.evaluators.references;
 
-import java.util.ArrayList;
-import java.util.IdentityHashMap;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -16,7 +15,6 @@ import java.util.Map;
 import org.python.pydev.parser.jython.SimpleNode;
 import org.python.pydev.parser.jython.ast.Attribute;
 
-import ch.hsr.ifs.pystructure.typeinference.basetype.IEvaluatedType;
 import ch.hsr.ifs.pystructure.typeinference.contexts.ModuleContext;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.base.GoalEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.GoalState;
@@ -53,10 +51,10 @@ public class PossibleAttributeReferencesEvaluator extends GoalEvaluator {
 		// IdentityHashMap is used so that we have separate entries for equal
 		// goals, because it may happen when we have a IAttributeDefinition and
 		// we'll create the same goal twice but for different nodes.
-		attributeNames = new IdentityHashMap<IGoal, NameAdapter>();
-		attributeNodes = new IdentityHashMap<IGoal, SimpleNode>();
+		attributeNames = new HashMap<IGoal, NameAdapter>();
+		attributeNodes = new HashMap<IGoal, SimpleNode>();
 		
-		references = new ArrayList<AttributeReference>();
+		references = goal.possibleReferences;
 	}
 
 	@Override
@@ -65,13 +63,13 @@ public class PossibleAttributeReferencesEvaluator extends GoalEvaluator {
 	}
 
 	@Override
-	public List<IGoal> subGoalDone(IGoal subgoal, Object result, GoalState state) {
+	public List<IGoal> subGoalDone(IGoal subgoal, GoalState state) {
 		if (subgoal instanceof PossibleReferencesGoal) {
+			PossibleReferencesGoal g = (PossibleReferencesGoal) subgoal;
+			
 			List<IGoal> subgoals = new LinkedList<IGoal>();
 
-			List<Use> uses = (List<Use>) result;
-			
-			for (Use use : uses) {
+			for (Use use : g.references) {
 				SimpleNode node = use.getName().getNode();
 				ModuleContext parentContext = getGoal().getContext();
 				ModuleContext context = new ModuleContext(parentContext, use.getModule());
@@ -108,13 +106,15 @@ public class PossibleAttributeReferencesEvaluator extends GoalEvaluator {
 			
 			return subgoals;
 			
-		} else {
+		} else if (subgoal instanceof AbstractTypeGoal) {
 			AbstractTypeGoal typeGoal = (AbstractTypeGoal) subgoal;
-			IEvaluatedType type = (IEvaluatedType) result;
 			NameAdapter name = attributeNames.get(subgoal);
 			SimpleNode node = attributeNodes.get(subgoal);
 			Module module = typeGoal.getContext().getModule();
-			references.add(new AttributeReference(name, type, node, module));
+			AttributeReference ref = new AttributeReference(name, typeGoal.resultType, node, module);
+			references.add(ref);
+		} else {
+			System.out.println("Unknown goal " + subgoal);
 		}
 			
 		return IGoal.NO_GOALS;

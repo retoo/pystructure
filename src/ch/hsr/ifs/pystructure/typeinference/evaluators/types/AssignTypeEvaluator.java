@@ -9,17 +9,15 @@ package ch.hsr.ifs.pystructure.typeinference.evaluators.types;
 
 import java.util.List;
 
-import ch.hsr.ifs.pystructure.typeinference.basetype.CombinedType;
-import ch.hsr.ifs.pystructure.typeinference.basetype.IEvaluatedType;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.GoalState;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
+import ch.hsr.ifs.pystructure.typeinference.goals.types.AbstractTypeGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.DefinitionTypeGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.ExpressionTypeGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.TupleElementTypeGoal;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.AssignDefinition;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.TupleElement;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Value;
-import ch.hsr.ifs.pystructure.typeinference.results.types.ClassType;
 
 /**
  * Evaluator for assign nodes. For determining the type of the left hand side,
@@ -45,14 +43,12 @@ public class AssignTypeEvaluator extends DefinitionTypeEvaluator  {
 	}
 
 	@Override
-	public List<IGoal> subGoalDone(IGoal subgoal, Object result, GoalState state) {
-		if (result instanceof CombinedType) {
-			this.resultType = (CombinedType) result;
-		} else if (result instanceof IEvaluatedType) {
-			this.resultType.appendType((IEvaluatedType) result);
-		} else {
-			throw new RuntimeException("Upps, thought result is just combined type, check how else this can be done");
+	public List<IGoal> subGoalDone(IGoal subgoal, GoalState state) {
+		if (subgoal instanceof AbstractTypeGoal) {
+			AbstractTypeGoal g = (AbstractTypeGoal) subgoal;
+			resultType.appendType(g.resultType);
 		}
+		
 		return IGoal.NO_GOALS;
 	}
 

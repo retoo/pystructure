@@ -52,7 +52,7 @@ public class ImportTypeEvaluator extends DefinitionTypeEvaluator {
 	}
 
 	@Override
-	public List<IGoal> subGoalDone(IGoal subgoal, Object result, GoalState state) {
+	public List<IGoal> subGoalDone(IGoal subgoal, GoalState state) {
 		return IGoal.NO_GOALS;
 	}
 	

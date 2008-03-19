@@ -13,7 +13,6 @@ import java.util.List;
 import org.python.pydev.parser.jython.ast.Name;
 
 import ch.hsr.ifs.pystructure.typeinference.basetype.CombinedType;
-import ch.hsr.ifs.pystructure.typeinference.basetype.IEvaluatedType;
 import ch.hsr.ifs.pystructure.typeinference.contexts.ModuleContext;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.base.GoalEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.GoalState;
@@ -38,7 +37,7 @@ public class VariableReferenceEvaluator extends GoalEvaluator {
 		super(goal);
 		this.name = name;
 		
-		this.resultType = new CombinedType();
+		this.resultType = goal.resultType;
 	}
 
 	@Override
@@ -63,11 +62,10 @@ public class VariableReferenceEvaluator extends GoalEvaluator {
 	}
 
 	@Override
-	public List<IGoal> subGoalDone(IGoal subgoal, Object result, GoalState state) {
-		if (result instanceof IEvaluatedType) {
-			IEvaluatedType type = (IEvaluatedType) result;
-			resultType.appendType(type);
-		}
+	public List<IGoal> subGoalDone(IGoal subgoal, GoalState state) {
+		DefinitionTypeGoal g = (DefinitionTypeGoal) subgoal;
+		resultType.appendType(g.resultType);
+
 		return IGoal.NO_GOALS;
 	}
 
