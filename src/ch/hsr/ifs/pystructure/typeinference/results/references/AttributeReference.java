@@ -9,7 +9,7 @@ package ch.hsr.ifs.pystructure.typeinference.results.references;
 
 import org.python.pydev.parser.jython.SimpleNode;
 
-import ch.hsr.ifs.pystructure.typeinference.basetype.IEvaluatedType;
+import ch.hsr.ifs.pystructure.typeinference.basetype.CombinedType;
 import ch.hsr.ifs.pystructure.typeinference.model.base.NameAdapter;
 import ch.hsr.ifs.pystructure.typeinference.model.base.NodeUtils;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Module;
@@ -17,11 +17,11 @@ import ch.hsr.ifs.pystructure.typeinference.model.definitions.Module;
 public class AttributeReference {
 
 	private final NameAdapter name;
-	private final IEvaluatedType parent;
+	private final CombinedType parent;
 	private final SimpleNode node;
 	private final Module module;
 
-	public AttributeReference(NameAdapter name, IEvaluatedType parent, SimpleNode node, Module module) {
+	public AttributeReference(NameAdapter name, CombinedType parent, SimpleNode node, Module module) {
 		this.name = name;
 		this.parent = parent;
 		this.node = node;
@@ -35,7 +35,7 @@ public class AttributeReference {
 		return name;
 	}
 
-	public IEvaluatedType getParent() {
+	public CombinedType getParent() {
 		return parent;
 	}
 

@@ -10,7 +10,6 @@ package ch.hsr.ifs.pystructure.typeinference.evaluators.references;
 import java.util.List;
 
 import ch.hsr.ifs.pystructure.typeinference.basetype.IEvaluatedType;
-import ch.hsr.ifs.pystructure.typeinference.evaluators.base.EvaluatorUtils;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.base.GoalEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.GoalState;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
@@ -53,7 +52,7 @@ public class AttributeReferencesEvaluator extends GoalEvaluator {
 		List<AttributeReference> possibleReferences = g.references;
 		
 		for (AttributeReference reference : possibleReferences) {
-			for (IEvaluatedType type : EvaluatorUtils.extractTypes(reference.getParent())) {
+			for (IEvaluatedType type : reference.getParent()) {
 				if (type instanceof ClassType) {
 					checkPossibleReference(reference, ((ClassType) type).getKlass());
 				} else if (type instanceof ModuleType) {
