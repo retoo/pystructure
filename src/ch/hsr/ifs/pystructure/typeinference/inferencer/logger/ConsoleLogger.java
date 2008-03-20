@@ -3,19 +3,19 @@ package ch.hsr.ifs.pystructure.typeinference.inferencer.logger;
 import java.io.PrintStream;
 import java.util.IdentityHashMap;
 
-import ch.hsr.ifs.pystructure.typeinference.evaluators.base.GoalEvaluator;
+import ch.hsr.ifs.pystructure.typeinference.evaluators.base.AbstractEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
 import ch.hsr.ifs.pystructure.utils.StringUtils;
 
 public class ConsoleLogger implements IGoalEngineLogger {
 	private static final PrintStream OUT = System.out;
 	
-	private IdentityHashMap<GoalEvaluator, GoalEvaluator> creators;
+	private IdentityHashMap<AbstractEvaluator, AbstractEvaluator> creators;
 	private IdentityHashMap<Object, Integer> numbers;
 	private int curNr = 1;
 	
 	public ConsoleLogger() {
-		this.creators = new IdentityHashMap<GoalEvaluator, GoalEvaluator>(); 
+		this.creators = new IdentityHashMap<AbstractEvaluator, AbstractEvaluator>(); 
 		this.numbers = new IdentityHashMap<Object, Integer>();
 	}
 	
@@ -28,40 +28,40 @@ public class ConsoleLogger implements IGoalEngineLogger {
 		
 	}
 
-	public void goalCreated(IGoal goal, GoalEvaluator creator, GoalEvaluator evaluator) {
+	public void goalCreated(IGoal goal, AbstractEvaluator creator, AbstractEvaluator evaluator) {
 		numbers.put(evaluator, curNr++);
 		creators.put(evaluator, creator);
 		say(evaluator, "Created " + evaluator.getClass().getSimpleName() + " "  + goal);
 	}
 	
-	public void goalFinished(IGoal goal, GoalEvaluator evaluator) {
+	public void goalFinished(IGoal goal, AbstractEvaluator evaluator) {
 		say(evaluator, "Finished " + goal);
 	}
 
-	private void say(GoalEvaluator evaluator, String text) {
-		GoalEvaluator creator = getCreater(evaluator);
+	private void say(AbstractEvaluator evaluator, String text) {
+		AbstractEvaluator creator = getCreater(evaluator);
 		OUT.println(StringUtils.multiply(level(evaluator), "|   ")
 				+ getNumber(creator)
 				+ " " + getNumber(evaluator)
 				+ " " + text);
 	}
 
-	private int getNumber(GoalEvaluator evaluator) {
+	private int getNumber(AbstractEvaluator evaluator) {
 		Integer nr = numbers.get(evaluator);
 		return nr != null ? (int) nr : 0; 
 	}
 
-	private int level(GoalEvaluator evaluator) {
+	private int level(AbstractEvaluator evaluator) {
 		int level = 0;
 		
-		for (GoalEvaluator creator = evaluator; creator != null; creator = getCreater(creator)) {
+		for (AbstractEvaluator creator = evaluator; creator != null; creator = getCreater(creator)) {
 			level++;
 		} 
 		
 		return level;
 	}
 
-	private GoalEvaluator getCreater(GoalEvaluator creator) {
+	private AbstractEvaluator getCreater(AbstractEvaluator creator) {
 		return creators.get(creator);
 	}
 

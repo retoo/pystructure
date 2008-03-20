@@ -1,6 +1,6 @@
 package ch.hsr.ifs.pystructure.typeinference.inferencer.logger;
 
-import ch.hsr.ifs.pystructure.typeinference.evaluators.base.GoalEvaluator;
+import ch.hsr.ifs.pystructure.typeinference.evaluators.base.AbstractEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
 
 public class StatsLogger implements IGoalEngineLogger {
@@ -31,12 +31,12 @@ public class StatsLogger implements IGoalEngineLogger {
 
 	}
 
-	public void goalCreated(IGoal goal, GoalEvaluator creator, GoalEvaluator evaluator) {
+	public void goalCreated(IGoal goal, AbstractEvaluator creator, AbstractEvaluator evaluator) {
 		currentSubGoalsCounter++;
 		subGoalsCounter++;
 	}
 
-	public void goalFinished(IGoal goal, GoalEvaluator evaluator) {
+	public void goalFinished(IGoal goal, AbstractEvaluator evaluator) {
 	}
 
 	public void shutdown() {

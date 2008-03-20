@@ -8,7 +8,7 @@ import org.python.pydev.parser.jython.ast.Assign;
 
 import ch.hsr.ifs.pystructure.typeinference.basetype.CombinedType;
 import ch.hsr.ifs.pystructure.typeinference.contexts.ModuleContext;
-import ch.hsr.ifs.pystructure.typeinference.evaluators.base.GoalEvaluator;
+import ch.hsr.ifs.pystructure.typeinference.evaluators.base.AbstractEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.GoalState;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.references.AttributeReferencesGoal;
@@ -19,7 +19,7 @@ import ch.hsr.ifs.pystructure.typeinference.model.definitions.Class;
 import ch.hsr.ifs.pystructure.typeinference.results.references.AttributeReference;
 import ch.hsr.ifs.pystructure.typeinference.results.types.ClassType;
 
-public class ClassAttributeTypeEvaluator extends GoalEvaluator {
+public class ClassAttributeTypeEvaluator extends AbstractEvaluator {
 
 	private ClassType classType;
 	private NameAdapter attributeName;

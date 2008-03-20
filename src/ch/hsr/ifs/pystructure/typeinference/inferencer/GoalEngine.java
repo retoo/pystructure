@@ -15,7 +15,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import ch.hsr.ifs.pystructure.typeinference.evaluators.base.GoalEvaluator;
+import ch.hsr.ifs.pystructure.typeinference.evaluators.base.AbstractEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.GoalState;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.AbstractTypeGoal;
@@ -37,7 +37,7 @@ public class GoalEngine {
 
 	private final LinkedList<WorkingPair> workingQueue = new LinkedList<WorkingPair>();
 	private final Map<IGoal, GoalEvaluationState> goalStates = new HashMap<IGoal, GoalEvaluationState>();
-	private final Map<GoalEvaluator, EvaluatorState> evaluatorStates = new HashMap<GoalEvaluator, EvaluatorState>();
+	private final Map<AbstractEvaluator, EvaluatorState> evaluatorStates = new HashMap<AbstractEvaluator, EvaluatorState>();
 
 	private IGoalEngineLogger logger;
 	
@@ -60,9 +60,9 @@ public class GoalEngine {
 	private static final class WorkingPair {
 
 		private IGoal goal;
-		private GoalEvaluator creator;
+		private AbstractEvaluator creator;
 
-		private WorkingPair(IGoal goal, GoalEvaluator parent) {
+		private WorkingPair(IGoal goal, AbstractEvaluator parent) {
 			this.goal = goal;
 			this.creator = parent;
 		}
@@ -70,7 +70,7 @@ public class GoalEngine {
 	}
 
 	private static class GoalEvaluationState {
-		public GoalEvaluator creator;
+		public AbstractEvaluator creator;
 		public GoalState state;
 		
 		@Override
@@ -88,7 +88,7 @@ public class GoalEngine {
 		this.logger = logger;
 	}
 
-	private void storeGoal(IGoal goal, GoalState state, GoalEvaluator creator) {
+	private void storeGoal(IGoal goal, GoalState state, AbstractEvaluator creator) {
 		GoalEvaluationState es = new GoalEvaluationState();
 		es.state = state;
 		es.creator = creator;
@@ -96,7 +96,7 @@ public class GoalEngine {
 		goalStates.put(goal, es);
 	}
 
-	private void notifyEvaluator(GoalEvaluator evaluator, IGoal subGoal) {
+	private void notifyEvaluator(AbstractEvaluator evaluator, IGoal subGoal) {
 		GoalEvaluationState subGoalState = goalStates.get(subGoal);
 		GoalState state = subGoalState.state;
 
@@ -187,7 +187,7 @@ public class GoalEngine {
 				/* Goal just entered the loop */ 
 				firstPostponed = null;
 
-				GoalEvaluator evaluator = evaluatorFactory.createEvaluator(pair.goal);
+				AbstractEvaluator evaluator = evaluatorFactory.createEvaluator(pair.goal);
 				assert evaluator != null;
 				
 				logger.goalCreated(pair.goal, pair.creator, evaluator);

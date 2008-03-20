@@ -18,11 +18,11 @@ import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
 /**
  * Abstract goal evaluator.
  */
-public abstract class GoalEvaluator {
+public abstract class AbstractEvaluator {
 
 	protected final IGoal goal;
 
-	public GoalEvaluator(IGoal goal) {
+	public AbstractEvaluator(IGoal goal) {
 		this.goal = goal;
 	}
 

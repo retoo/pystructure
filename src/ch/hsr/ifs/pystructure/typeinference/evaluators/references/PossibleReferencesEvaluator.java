@@ -10,7 +10,7 @@ package ch.hsr.ifs.pystructure.typeinference.evaluators.references;
 import java.util.List;
 
 import ch.hsr.ifs.pystructure.typeinference.contexts.ModuleContext;
-import ch.hsr.ifs.pystructure.typeinference.evaluators.base.GoalEvaluator;
+import ch.hsr.ifs.pystructure.typeinference.evaluators.base.AbstractEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.GoalState;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.references.PossibleReferencesGoal;
@@ -23,7 +23,7 @@ import ch.hsr.ifs.pystructure.typeinference.visitors.Workspace;
  * Evaluator for finding uses of a name, which could be possible references to a
  * function or method.
  */
-public class PossibleReferencesEvaluator extends GoalEvaluator {
+public class PossibleReferencesEvaluator extends AbstractEvaluator {
 
 	private NameAdapter name;
 	

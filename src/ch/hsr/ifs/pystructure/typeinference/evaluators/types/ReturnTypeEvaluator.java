@@ -15,7 +15,7 @@ import org.python.pydev.parser.jython.ast.exprType;
 import org.python.pydev.parser.visitors.scope.ReturnVisitor;
 
 import ch.hsr.ifs.pystructure.typeinference.basetype.CombinedType;
-import ch.hsr.ifs.pystructure.typeinference.evaluators.base.GoalEvaluator;
+import ch.hsr.ifs.pystructure.typeinference.evaluators.base.AbstractEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.GoalState;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.ExpressionTypeGoal;
@@ -25,7 +25,7 @@ import ch.hsr.ifs.pystructure.typeinference.model.definitions.Function;
 /**
  * Evaluator for the return type of a function or method.
  */
-public class ReturnTypeEvaluator extends GoalEvaluator {
+public class ReturnTypeEvaluator extends AbstractEvaluator {
 
 	private final Function function;
 

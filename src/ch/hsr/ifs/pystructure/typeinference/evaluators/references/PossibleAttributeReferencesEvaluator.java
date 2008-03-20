@@ -16,7 +16,7 @@ import org.python.pydev.parser.jython.SimpleNode;
 import org.python.pydev.parser.jython.ast.Attribute;
 
 import ch.hsr.ifs.pystructure.typeinference.contexts.ModuleContext;
-import ch.hsr.ifs.pystructure.typeinference.evaluators.base.GoalEvaluator;
+import ch.hsr.ifs.pystructure.typeinference.evaluators.base.AbstractEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.GoalState;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.references.PossibleAttributeReferencesGoal;
@@ -37,7 +37,7 @@ import ch.hsr.ifs.pystructure.typeinference.results.references.AttributeReferenc
  * Evaluator for finding uses of a name, which could be possible references to a
  * function or method.
  */
-public class PossibleAttributeReferencesEvaluator extends GoalEvaluator {
+public class PossibleAttributeReferencesEvaluator extends AbstractEvaluator {
 
 	private NameAdapter name;
 	private Map<IGoal, NameAdapter> attributeNames;

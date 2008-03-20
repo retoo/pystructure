@@ -9,7 +9,7 @@ import org.jdom.Element;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 
-import ch.hsr.ifs.pystructure.typeinference.evaluators.base.GoalEvaluator;
+import ch.hsr.ifs.pystructure.typeinference.evaluators.base.AbstractEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
 import ch.hsr.ifs.pystructure.typeinference.inferencer.logger.IGoalEngineLogger;
 
@@ -23,13 +23,13 @@ public class Structure101Logger implements IGoalEngineLogger {
 	private Element dependencies;
 	private String modulePrefix;
 
-	private IdentityHashMap<GoalEvaluator, Integer> ids;
+	private IdentityHashMap<AbstractEvaluator, Integer> ids;
 
 	public Structure101Logger() {
 		outputter = new XMLOutputter(Format.getPrettyFormat());
 		
 		document = new Document();
-		ids = new IdentityHashMap<GoalEvaluator, Integer>();
+		ids = new IdentityHashMap<AbstractEvaluator, Integer>();
 		
 		Element root = new Element("data");
 		root.setAttribute("flavor", FLAVOR);
@@ -51,7 +51,7 @@ public class Structure101Logger implements IGoalEngineLogger {
 		// ignore
 	}
 
-	public void goalCreated(IGoal goal, GoalEvaluator creator, GoalEvaluator evaluator) {
+	public void goalCreated(IGoal goal, AbstractEvaluator creator, AbstractEvaluator evaluator) {
 		addEvaluator(creator);
 		addEvaluator(evaluator);
 		
@@ -62,11 +62,11 @@ public class Structure101Logger implements IGoalEngineLogger {
 		dependencies.addContent(dependency);
 	}
 
-	public void goalFinished(IGoal goal, GoalEvaluator evaluator) {
+	public void goalFinished(IGoal goal, AbstractEvaluator evaluator) {
 		// ignore
 	}
 
-	private void addEvaluator(GoalEvaluator creator) {
+	private void addEvaluator(AbstractEvaluator creator) {
 		if (!ids.containsKey(creator)) {
 			Element module = new Element("module");
 			module.setAttribute("name", modulePrefix + name(creator));
@@ -76,7 +76,7 @@ public class Structure101Logger implements IGoalEngineLogger {
 		}
 	}
 	
-	private static String name(GoalEvaluator evaluator) {
+	private static String name(AbstractEvaluator evaluator) {
 		// TODO: Add one "start" per test assertion
 		if (evaluator == null) {
 			return "start";
@@ -85,7 +85,7 @@ public class Structure101Logger implements IGoalEngineLogger {
 		}
 	}
 	
-	private String id(GoalEvaluator evaluator) {
+	private String id(AbstractEvaluator evaluator) {
 		if (ids.containsKey(evaluator)) {
 			return Integer.toString(ids.get(evaluator));
 		} else {

@@ -14,7 +14,7 @@ import org.python.pydev.parser.jython.ast.Attribute;
 
 import ch.hsr.ifs.pystructure.typeinference.basetype.CombinedType;
 import ch.hsr.ifs.pystructure.typeinference.basetype.IType;
-import ch.hsr.ifs.pystructure.typeinference.evaluators.base.GoalEvaluator;
+import ch.hsr.ifs.pystructure.typeinference.evaluators.base.AbstractEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.GoalState;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.ClassAttributeTypeGoal;
@@ -36,7 +36,7 @@ import ch.hsr.ifs.pystructure.typeinference.results.types.PackageType;
  * Evaluator for the type of an attribute node. For example, the result of
  * <code>instance.method</code> would be the method.
  */
-public class AttributeTypeEvaluator extends GoalEvaluator {
+public class AttributeTypeEvaluator extends AbstractEvaluator {
 
 	private final Attribute attribute;
 

@@ -14,7 +14,7 @@ import org.python.pydev.parser.jython.ast.Name;
 
 import ch.hsr.ifs.pystructure.typeinference.basetype.CombinedType;
 import ch.hsr.ifs.pystructure.typeinference.contexts.ModuleContext;
-import ch.hsr.ifs.pystructure.typeinference.evaluators.base.GoalEvaluator;
+import ch.hsr.ifs.pystructure.typeinference.evaluators.base.AbstractEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.GoalState;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.DefinitionTypeGoal;
@@ -27,7 +27,7 @@ import ch.hsr.ifs.pystructure.typeinference.model.definitions.Use;
 /**
  * Evaluator for the type of an unqualified name, like <code>var</code>.
  */
-public class VariableReferenceEvaluator extends GoalEvaluator {
+public class VariableReferenceEvaluator extends AbstractEvaluator {
 
 	private final Name name;
 	

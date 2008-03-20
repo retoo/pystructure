@@ -3,7 +3,7 @@ package ch.hsr.ifs.pystructure.typeinference.inferencer.logger;
 import java.util.Arrays;
 import java.util.List;
 
-import ch.hsr.ifs.pystructure.typeinference.evaluators.base.GoalEvaluator;
+import ch.hsr.ifs.pystructure.typeinference.evaluators.base.AbstractEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
 
 public class CombinedLogger implements IGoalEngineLogger {
@@ -26,13 +26,13 @@ public class CombinedLogger implements IGoalEngineLogger {
 		}
 	}
 
-	public void goalCreated(IGoal goal, GoalEvaluator creator, GoalEvaluator evaluator) {
+	public void goalCreated(IGoal goal, AbstractEvaluator creator, AbstractEvaluator evaluator) {
 		for (IGoalEngineLogger logger : loggers) {
 			logger.goalCreated(goal, creator, evaluator);
 		}
 	}
 
-	public void goalFinished(IGoal goal, GoalEvaluator evaluator) {
+	public void goalFinished(IGoal goal, AbstractEvaluator evaluator) {
 		for (IGoalEngineLogger logger : loggers) {
 			logger.goalFinished(goal, evaluator);
 		}

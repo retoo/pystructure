@@ -21,7 +21,7 @@ import org.python.pydev.parser.jython.ast.Str;
 import org.python.pydev.parser.jython.ast.Tuple;
 import org.python.pydev.parser.jython.ast.num_typeType;
 
-import ch.hsr.ifs.pystructure.typeinference.evaluators.base.GoalEvaluator;
+import ch.hsr.ifs.pystructure.typeinference.evaluators.base.AbstractEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.references.AttributeReferencesEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.references.ClassReferencesEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.references.FunctionReferencesEvaluator;
@@ -72,7 +72,7 @@ import ch.hsr.ifs.pystructure.typeinference.results.types.TupleType;
  */
 public class PythonEvaluatorFactory implements IEvaluatorFactory {
 
-	public GoalEvaluator createEvaluator(IGoal goal) {
+	public AbstractEvaluator createEvaluator(IGoal goal) {
 		if (goal instanceof PossibleReferencesGoal) {
 			return new PossibleReferencesEvaluator((PossibleReferencesGoal) goal);
 		}
@@ -115,7 +115,7 @@ public class PythonEvaluatorFactory implements IEvaluatorFactory {
 		throw new RuntimeException("Can't create Evaluator for " + goal);
 	}
 	
-	private GoalEvaluator createDefinitionEvaluator(DefinitionTypeGoal goal) {
+	private AbstractEvaluator createDefinitionEvaluator(DefinitionTypeGoal goal) {
 		Definition def = goal.getDefinition();
 		Module module = goal.getContext().getModule();
 		
@@ -152,7 +152,7 @@ public class PythonEvaluatorFactory implements IEvaluatorFactory {
 		throw new RuntimeException("Can't create evaluator for definition " + def + ", goal " + goal);
 	}
 	
-	private GoalEvaluator createExpressionEvaluator(ExpressionTypeGoal goal) {
+	private AbstractEvaluator createExpressionEvaluator(ExpressionTypeGoal goal) {
 		SimpleNode expr = goal.getExpression();
 
 		if (expr instanceof Name) {
@@ -175,7 +175,7 @@ public class PythonEvaluatorFactory implements IEvaluatorFactory {
 			return new BinOpTypeEvaluator(goal, (BinOp) expr);
 		}
 		
-		GoalEvaluator evaluator = createLiteralEvaluator(goal);
+		AbstractEvaluator evaluator = createLiteralEvaluator(goal);
 		if (evaluator != null) {
 			return evaluator;
 		}
@@ -184,7 +184,7 @@ public class PythonEvaluatorFactory implements IEvaluatorFactory {
 	}
 	
 	// TODO: Maybe move this into an ExpressionTypeEvaluator.
-	private GoalEvaluator createLiteralEvaluator(ExpressionTypeGoal goal) {
+	private AbstractEvaluator createLiteralEvaluator(ExpressionTypeGoal goal) {
 		SimpleNode expr = goal.getExpression();
 		
 		if (expr instanceof Num) {
