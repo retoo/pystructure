@@ -18,7 +18,7 @@ public class TupleElement extends Value {
 
 	public TupleElement(exprType expression, List<Integer> indexes) {
 		super(expression);
-		this.indexes = new LinkedList(indexes);
+		this.indexes = new LinkedList<Integer>(indexes);
 	}
 	
 	public int getFirstIndex() {
