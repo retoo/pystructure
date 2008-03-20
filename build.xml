@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 
-<project default="all">
+<project name="PyStructure" default="all">
 	<property file="build.properties"/>
 	<property file="build.properties.local"/>
 	
@@ -28,6 +28,7 @@
 		<pathelement location="${cobertura-dir}" />
 	</path>
 	
+	<!--- JDom. see also auxclasspath of the findbugs task (dont know how to include that one there ) -->
 	<path id="jdom.classpath">
 		<!-- I'm not that sure, but I think the ordering is important -->
 		<pathelement location="${jdom.dir}/xerces.jar" />
@@ -54,7 +55,7 @@
 	</target>
 	
 	<target name="build-parser" depends="init">
-		<javac srcdir="${parser-dir}" destdir="${build.parser}" />
+		<javac srcdir="${parser-dir}" destdir="${build.parser}" nowarn="false"/>
 		<jar destfile="${build.paser.jar}" basedir="${build.parser}" />
 	</target>
 
@@ -63,6 +64,7 @@
 			<classpath refid="project.classpath" />
 			<classpath refid="jdom.classpath" />
 			<classpath refid="junit.classpath" />
+			<compilerarg value="-Xlint:unchecked" />
 		</javac>
 	</target>
 	
@@ -171,7 +173,12 @@
 			outputFile="${output.findbugs-dir}/findbugs-${label}.html" >
 				<auxClasspath>
 					<pathelement location="${build.paser.jar}" />
-					<!-- FIXME <classpath refid="jdom.classpath" /> -->
+					
+					<!--- JDom. see also jdom classpath definition (dont know how to include that one here ) -->
+					<pathelement location="${jdom.dir}/xerces.jar" />
+					<pathelement location="${jdom.dir}/xalan.jar" />
+					<pathelement location="${jdom.dir}/xml-apis.jar" />
+					<pathelement location="${jdom.dir}/jdom.jar" />
 				</auxClasspath>
 				<sourcePath path="${src-dir}" />
 				<class location="${build.src}" />
