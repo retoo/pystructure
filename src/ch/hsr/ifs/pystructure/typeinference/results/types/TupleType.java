@@ -31,5 +31,4 @@ public class TupleType implements IType {
 		return false;
 	}
 	
-	// TODO: equals & hashCode
 }
