@@ -62,7 +62,7 @@ public class GoalEngine {
 		private IGoal goal;
 		private GoalEvaluator creator;
 
-		public WorkingPair(IGoal goal, GoalEvaluator parent) {
+		private WorkingPair(IGoal goal, GoalEvaluator parent) {
 			this.goal = goal;
 			this.creator = parent;
 		}
