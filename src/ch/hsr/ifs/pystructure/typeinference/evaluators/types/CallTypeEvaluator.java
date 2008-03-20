@@ -99,11 +99,5 @@ public class CallTypeEvaluator extends GoalEvaluator {
 		
 		return IGoal.NO_GOALS;
 	}
-
-	@Override
-	public Object produceResult() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 	
 }

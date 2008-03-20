@@ -36,10 +36,6 @@ public class FixedAnswerEvaluator extends GoalEvaluator {
 		return IGoal.NO_GOALS;
 	}
 
-	public Object produceResult() {
-		return null;
-	}
-
 	public List<IGoal> subGoalDone(IGoal subgoal, GoalState state) {
 		return IGoal.NO_GOALS;
 	}

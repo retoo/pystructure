@@ -15,7 +15,6 @@ import org.python.pydev.parser.jython.ast.exprType;
 
 import ch.hsr.ifs.pystructure.typeinference.basetype.CombinedType;
 import ch.hsr.ifs.pystructure.typeinference.basetype.IEvaluatedType;
-import ch.hsr.ifs.pystructure.typeinference.evaluators.base.EvaluatorUtils;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.base.GoalEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.GoalState;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
@@ -80,11 +79,6 @@ public class TupleElementTypeEvaluator extends GoalEvaluator {
 			this.result.appendType(g.resultType);
 			return IGoal.NO_GOALS;
 		}
-	}
-
-	@Override
-	public Object produceResult() {
-		return result;
 	}
 
 }

@@ -84,9 +84,4 @@ public class BinOpTypeEvaluator extends GoalEvaluator {
 		return IGoal.NO_GOALS;
 	}
 
-	@Override
-	public Object produceResult() {
-		return result;
-	}
-
 }

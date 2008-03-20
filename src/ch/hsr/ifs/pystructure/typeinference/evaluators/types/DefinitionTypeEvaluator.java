@@ -27,12 +27,4 @@ public abstract class DefinitionTypeEvaluator extends GoalEvaluator {
 		}
 	}
 	
-	public Object produceResult() {
-		if (definition.type == null) {
-			definition.type = resultType;
-		}
-		
-		return resultType;
-	}
-	
 }

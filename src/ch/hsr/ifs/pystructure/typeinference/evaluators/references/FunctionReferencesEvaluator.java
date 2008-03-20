@@ -7,7 +7,6 @@
 
 package ch.hsr.ifs.pystructure.typeinference.evaluators.references;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import ch.hsr.ifs.pystructure.typeinference.evaluators.base.GoalEvaluator;
@@ -64,11 +63,6 @@ public class FunctionReferencesEvaluator extends GoalEvaluator {
 			}
 		}
 		return IGoal.NO_GOALS;
-	}
-
-	@Override
-	public Object produceResult() {
-		return references;
 	}
 
 }

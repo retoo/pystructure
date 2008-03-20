@@ -67,11 +67,6 @@ public class AttributeReferencesEvaluator extends GoalEvaluator {
 		return IGoal.NO_GOALS;
 	}
 
-	@Override
-	public Object produceResult() {
-		return references;
-	}
-
 	private void checkPossibleReference(AttributeReference reference, Definition attributeParent) {
 		if (this.attributeParent.equals(attributeParent)) {
 			references.add(reference);

@@ -53,7 +53,9 @@ public abstract class GoalEvaluator {
 	 *
 	 * @return result of evaluation this goal
 	 */
-	public abstract Object produceResult();
+	public final Object produceResult() {
+		return null;
+	}
 
 	/**
 	 * Wraps a single goal in a list and returns it, for convenience.

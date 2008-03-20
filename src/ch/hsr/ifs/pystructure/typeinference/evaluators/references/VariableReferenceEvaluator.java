@@ -69,9 +69,4 @@ public class VariableReferenceEvaluator extends GoalEvaluator {
 		return IGoal.NO_GOALS;
 	}
 
-	@Override
-	public Object produceResult() {
-		return resultType;
-	}
-
 }

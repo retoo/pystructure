@@ -7,7 +7,6 @@ import org.python.pydev.parser.jython.SimpleNode;
 import org.python.pydev.parser.jython.ast.Assign;
 
 import ch.hsr.ifs.pystructure.typeinference.basetype.CombinedType;
-import ch.hsr.ifs.pystructure.typeinference.basetype.IEvaluatedType;
 import ch.hsr.ifs.pystructure.typeinference.contexts.ModuleContext;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.base.GoalEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.GoalState;
@@ -87,15 +86,6 @@ public class ClassAttributeTypeEvaluator extends GoalEvaluator {
 		} else {
 			return false;
 		}
-	}
-
-	@Override
-	public Object produceResult() {
-		if (klass.attributes.get(attributeName) == null) {
-			klass.attributes.put(attributeName, resultType);
-		}
-		
-		return resultType;
 	}
 
 }

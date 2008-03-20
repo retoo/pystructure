@@ -62,9 +62,4 @@ public class ClassReferencesEvaluator extends GoalEvaluator {
 		return IGoal.NO_GOALS;
 	}
 
-	@Override
-	public Object produceResult() {
-		return references;
-	}
-
 }

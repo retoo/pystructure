@@ -46,7 +46,13 @@ public class NameUse extends Use {
 		}
 	}
 
+	/* Currently not being used, but was used in PEPTIC, please recheck if 
+	 * method still does what should do, and think about removing deprecated */
+	@Deprecated
 	public List<NameUse> getRelated() {
+		/* Read comment */
+		/* Really, read comment above */
+		
 		/* Set with all nameUses in it */
 		Set<NameUse> nameUses = new HashSet<NameUse>();
 		/* Set of definitions we haven already seen */
@@ -55,10 +61,9 @@ public class NameUse extends Use {
 		Queue<Definition> toDoDefintions = new LinkedList<Definition>(definitions);
 		
 		while (!toDoDefintions.isEmpty()) {
-			Definition definition = toDoDefintions.poll();
+			Definition<?> definition = toDoDefintions.poll();
 			
-			List<NameUse> uses = definition.getUses();
-			for (NameUse nameUse : uses) {
+			for (NameUse nameUse : definition.getUses()) {
 				/* Have we already seen this nameUse? */
 				if (!nameUses.contains(nameUse)) {
 					/* IF not we register it in our set */
@@ -74,7 +79,7 @@ public class NameUse extends Use {
 			}
 		}
 		
-		return new LinkedList(nameUses);
+		return new LinkedList<NameUse>(nameUses);
 	}
 	
 	public String toString() {

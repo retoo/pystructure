@@ -14,7 +14,6 @@ import org.python.pydev.parser.jython.ast.Attribute;
 
 import ch.hsr.ifs.pystructure.typeinference.basetype.CombinedType;
 import ch.hsr.ifs.pystructure.typeinference.basetype.IEvaluatedType;
-import ch.hsr.ifs.pystructure.typeinference.evaluators.base.EvaluatorUtils;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.base.GoalEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.GoalState;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
@@ -130,11 +129,6 @@ public class AttributeTypeEvaluator extends GoalEvaluator {
 		}
 
 		return subgoals;
-	}
-
-	@Override
-	public Object produceResult() {
-		return resultType;
 	}
 
 }

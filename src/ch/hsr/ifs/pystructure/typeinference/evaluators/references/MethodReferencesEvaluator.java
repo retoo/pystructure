@@ -97,11 +97,6 @@ public class MethodReferencesEvaluator extends GoalEvaluator {
 		return IGoal.NO_GOALS;
 	}
 
-	@Override
-	public Object produceResult() {
-		return references;
-	}
-
 	private boolean isConstructor() {
 		return method.getName().getId().equals("__init__");
 	}

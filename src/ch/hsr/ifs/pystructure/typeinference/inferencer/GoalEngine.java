@@ -14,14 +14,11 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.Map.Entry;
 
 import ch.hsr.ifs.pystructure.typeinference.evaluators.base.GoalEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.GoalState;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.AbstractTypeGoal;
-import ch.hsr.ifs.pystructure.typeinference.goals.types.DefinitionTypeGoal;
 import ch.hsr.ifs.pystructure.typeinference.inferencer.dispatcher.IEvaluatorFactory;
 import ch.hsr.ifs.pystructure.typeinference.inferencer.logger.GoalEngineNullLogger;
 import ch.hsr.ifs.pystructure.typeinference.inferencer.logger.IGoalEngineLogger;
@@ -74,7 +71,6 @@ public class GoalEngine {
 	private static class GoalEvaluationState {
 		public GoalEvaluator creator;
 		public GoalState state;
-		public Object result;
 		
 		@Override
 		public String toString() {
@@ -91,9 +87,8 @@ public class GoalEngine {
 		this.logger = logger;
 	}
 
-	private void storeGoal(IGoal goal, GoalState state, Object result, GoalEvaluator creator) {
+	private void storeGoal(IGoal goal, GoalState state, GoalEvaluator creator) {
 		GoalEvaluationState es = new GoalEvaluationState();
-		es.result = result;
 		es.state = state;
 		es.creator = creator;
 		
@@ -102,7 +97,6 @@ public class GoalEngine {
 
 	private void notifyEvaluator(GoalEvaluator evaluator, IGoal subGoal) {
 		GoalEvaluationState subGoalState = goalStates.get(subGoal);
-		Object result = subGoalState.result;
 		GoalState state = subGoalState.state;
 
 		if (state == GoalState.WAITING) {
@@ -121,16 +115,14 @@ public class GoalEngine {
 		ev.subgoalsLeft += newGoals.size();
 		ev.totalSubgoals += newGoals.size();
 		ev.subgoals.addAll(newGoals);
-		if (state == GoalState.DONE && result != null) {
+		if (state == GoalState.DONE) {
 			ev.successfulSubgoals++;
 		}
 		if (ev.subgoalsLeft == 0) {
-			Object newRes = evaluator.produceResult();
 			logger.goalFinished(evaluator.getGoal(), evaluator);
 			GoalEvaluationState st = goalStates.get(evaluator.getGoal());
 			assert st != null;
 			st.state = GoalState.DONE;
-			st.result = newRes;
 			if (st.creator != null) {
 				notifyEvaluator(st.creator, evaluator.getGoal());
 			}
@@ -220,7 +212,7 @@ public class GoalEngine {
 						EvaluatorState evaluatorState = new EvaluatorState(newGoals.size());
 						evaluatorState.subgoals.addAll(newGoals);
 						evaluatorStates.put(evaluator, evaluatorState);
-						storeGoal(pair.goal, GoalState.WAITING, null, pair.creator);
+						storeGoal(pair.goal, GoalState.WAITING, pair.creator);
 					} else {
 						/* If there haven't been any sub goals the result is already known */
 						isFinished = true;
@@ -228,9 +220,8 @@ public class GoalEngine {
 				}
 
 				if (isFinished) {
-					Object result = evaluator.produceResult();
 					logger.goalFinished(pair.goal, evaluator);
-					storeGoal(pair.goal, GoalState.DONE, result, pair.creator);
+					storeGoal(pair.goal, GoalState.DONE, pair.creator);
 					if (pair.creator != null) {
 						notifyEvaluator(pair.creator, pair.goal);
 					}
