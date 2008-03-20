@@ -19,6 +19,9 @@ import org.python.pydev.parser.jython.TokenMgrError;
 import org.python.pydev.parser.jython.ast.Module;
 
 public final class Parser {
+	
+	private Parser() {
+	}
 
 	public static Module parse(String source) throws ParseException {
 		/* Convert the string into an char array and add a \n at the end

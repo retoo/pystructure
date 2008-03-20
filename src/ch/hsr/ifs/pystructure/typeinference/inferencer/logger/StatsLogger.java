@@ -44,8 +44,8 @@ public class StatsLogger implements IGoalEngineLogger {
 		System.out.println("Statistics");
 		System.out.println("");
 		System.out.println(out);
-		System.out.println("Total root goals: " + rootGoalsCounter );
-		System.out.println("Total SubGoals: " + subGoalsCounter );
+		System.out.println("Total root goals: " + rootGoalsCounter);
+		System.out.println("Total SubGoals: " + subGoalsCounter);
 		System.out.println("Average Subgoals / Goal: " + subGoalsCounter / rootGoalsCounter);
 	}
 	

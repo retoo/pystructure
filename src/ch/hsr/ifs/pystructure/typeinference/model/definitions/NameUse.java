@@ -17,6 +17,7 @@ import java.util.Set;
 import org.python.pydev.parser.jython.SimpleNode;
 
 import ch.hsr.ifs.pystructure.typeinference.model.base.NameAdapter;
+import ch.hsr.ifs.pystructure.typeinference.model.base.NodeUtils;
 
 /**
  * A use of a name, could also be called reference. It can have multiple
@@ -84,6 +85,6 @@ public class NameUse extends Use {
 	
 	public String toString() {
 		SimpleNode node = getName().getNode();
-		return getName() + " (L" + node.beginLine + "C" + node.beginColumn +")";
+		return getName() + " " + NodeUtils.nodePosition(node);
 	}
 }

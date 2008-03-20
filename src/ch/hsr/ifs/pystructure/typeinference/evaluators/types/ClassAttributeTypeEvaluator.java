@@ -39,9 +39,7 @@ public class ClassAttributeTypeEvaluator extends GoalEvaluator {
 	@Override
 	public List<IGoal> init() {
 		// It's probably a data attribute
-		return wrap(
-				new AttributeReferencesGoal( getGoal().getContext(),
-						attributeName, klass));
+		return wrap(new AttributeReferencesGoal(getGoal().getContext(), attributeName, klass));
 	}
 	
 	

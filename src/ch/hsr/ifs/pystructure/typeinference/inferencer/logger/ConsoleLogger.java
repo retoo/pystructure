@@ -8,7 +8,7 @@ import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
 import ch.hsr.ifs.pystructure.utils.StringUtils;
 
 public class ConsoleLogger implements IGoalEngineLogger {
-	private final static PrintStream out = System.out;
+	private static final PrintStream out = System.out;
 	
 	private IdentityHashMap<GoalEvaluator, GoalEvaluator> creators;
 	private IdentityHashMap<Object, Integer> numbers;
