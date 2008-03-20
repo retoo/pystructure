@@ -27,7 +27,7 @@ public final class Parser {
 		/* Convert the string into an char array and add a \n at the end
 		 * NOTE: the a final newline is necessary for the parser */
 		int count = source.length();
-		char sourceChars[] = new char[count + 1];
+		char[] sourceChars = new char[count + 1];
 		source.getChars(0, count, sourceChars, 0);
 		sourceChars[count] = '\n';
 
