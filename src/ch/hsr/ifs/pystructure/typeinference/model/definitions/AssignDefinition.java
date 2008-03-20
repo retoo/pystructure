@@ -15,7 +15,7 @@ import ch.hsr.ifs.pystructure.typeinference.model.base.NameAdapter;
 /**
  * Definition of a variable by an assignment.
  */
-public class AssignDefinition extends Definition<Assign> {
+public class AssignDefinition extends Definition {
 
 	private final Value value;
 	

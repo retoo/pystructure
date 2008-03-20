@@ -19,7 +19,7 @@ import ch.hsr.ifs.pystructure.typeinference.model.base.IModule;
 import ch.hsr.ifs.pystructure.typeinference.model.base.NameAdapter;
 import ch.hsr.ifs.pystructure.utils.FileUtils;
 
-public class Module extends Definition<org.python.pydev.parser.jython.ast.Module> implements PathElement, IModule {
+public class Module extends Definition implements PathElement, IModule {
 
 	private String path;
 	private ArrayList<Use> containedUses;

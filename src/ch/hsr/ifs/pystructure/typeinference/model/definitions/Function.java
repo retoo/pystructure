@@ -16,7 +16,7 @@ import ch.hsr.ifs.pystructure.typeinference.model.base.NameAdapter;
 /**
  * Definition of a function.
  */
-public class Function extends Definition<FunctionDef> implements IAttributeDefinition {
+public class Function extends Definition implements IAttributeDefinition {
 
 	private final Definition attributeParent;
 
@@ -30,13 +30,18 @@ public class Function extends Definition<FunctionDef> implements IAttributeDefin
 		exprType firstArgument = getNode().args.args[0];
 		return firstArgument.equals(argument.getName().getNode());
 	}
+	
+	@Override
+	public FunctionDef getNode() {
+		return (FunctionDef) super.getNode();
+	}
 
 	public Definition getAttributeParent() {
 		return attributeParent;
 	}
 
 	public String toString() {
-		return "Function " + getName() + " defined at line " + getNode().beginLine + ", column " + getNode().beginColumn;
+		return "Function " + getName() + " " + getNodePosition();
 	}
 
 }

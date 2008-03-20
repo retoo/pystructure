@@ -15,16 +15,15 @@ import org.python.pydev.parser.jython.SimpleNode;
 import ch.hsr.ifs.pystructure.typeinference.basetype.CombinedType;
 import ch.hsr.ifs.pystructure.typeinference.model.base.IModule;
 import ch.hsr.ifs.pystructure.typeinference.model.base.NameAdapter;
-import ch.hsr.ifs.pystructure.typeinference.model.base.NodeUtils;
 
 /**
  * Definition of a name, for example through an assignment, a def or a class
  * statement. Each definition has a scope (function, class, module) and a node.
  */
-public abstract class Definition<NodeType extends SimpleNode> {
+public abstract class Definition {
 
 	private NameAdapter name;
-	private NodeType node;
+	private SimpleNode  node;
 	private LinkedList<NameUse> uses;
 	private IModule module;
 	public CombinedType type;
@@ -34,12 +33,12 @@ public abstract class Definition<NodeType extends SimpleNode> {
 		this.type = null;
 	}
 	
-	public Definition(IModule module, NameAdapter name, NodeType node) {
+	public Definition(IModule module, NameAdapter name, SimpleNode node) {
 		this();
 		init(module, name, node);
 	}
 	
-	protected void init(IModule module, NameAdapter name, NodeType node) {
+	protected void init(IModule module, NameAdapter name, SimpleNode node) {
 		this.module = module;
 		this.name = name;
 		this.node = node;
@@ -50,7 +49,7 @@ public abstract class Definition<NodeType extends SimpleNode> {
 	}
 	
 	// TODO: Decide whether the generic node is useful at all?
-	public NodeType getNode() {
+	public SimpleNode getNode() {
 		return node;
 	}
 	
@@ -71,7 +70,7 @@ public abstract class Definition<NodeType extends SimpleNode> {
 	}
 	
 	public String getNodePosition() {
-		return NodeUtils.nodePosition(getNode());
+		return getNodePosition();
 	}
 
 	@Override

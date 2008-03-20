@@ -23,7 +23,7 @@ public final class StringUtils {
 	 * @param parts parts to join
 	 * @return string containing joined parts 
 	 */
-	public static String join(char delimiter, Iterable parts) {
+	public static String join(char delimiter, Iterable<?> parts) {
 		StringBuilder sb = new StringBuilder();
 		
 		boolean first = true;

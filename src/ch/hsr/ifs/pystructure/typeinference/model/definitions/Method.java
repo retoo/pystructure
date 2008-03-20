@@ -25,7 +25,7 @@ public class Method extends Function {
 	
 	@Override
 	public String toString() {
-		return "Method " + getName() + " defined at line " + getNode().beginLine + ", column " + getNode().beginColumn;
+		return "Method " + getName() + " " + getNodePosition();
 	}
 	
 	@Override

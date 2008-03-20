@@ -62,7 +62,7 @@ public class NameUse extends Use {
 		Queue<Definition> toDoDefintions = new LinkedList<Definition>(definitions);
 		
 		while (!toDoDefintions.isEmpty()) {
-			Definition<?> definition = toDoDefintions.poll();
+			Definition definition = toDoDefintions.poll();
 			
 			for (NameUse nameUse : definition.getUses()) {
 				/* Have we already seen this nameUse? */

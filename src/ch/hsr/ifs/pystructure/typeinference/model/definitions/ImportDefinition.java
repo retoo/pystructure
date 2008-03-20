@@ -7,12 +7,10 @@
 
 package ch.hsr.ifs.pystructure.typeinference.model.definitions;
 
-import org.python.pydev.parser.jython.SimpleNode;
-
 import ch.hsr.ifs.pystructure.typeinference.model.base.IModule;
 import ch.hsr.ifs.pystructure.typeinference.model.base.NameAdapter;
 
-public class ImportDefinition extends Definition<SimpleNode> implements IAttributeDefinition {
+public class ImportDefinition extends Definition implements IAttributeDefinition {
 
 	private Definition parent;
 	private Object element;

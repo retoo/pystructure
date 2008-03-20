@@ -15,7 +15,7 @@ import ch.hsr.ifs.pystructure.typeinference.model.base.NameAdapter;
 /**
  * Definition of an argument in the signature of a function or method.
  */
-public class Argument extends Definition<exprType> {
+public class Argument extends Definition {
 	
 	private final int position;
 	private final exprType defaultValue;

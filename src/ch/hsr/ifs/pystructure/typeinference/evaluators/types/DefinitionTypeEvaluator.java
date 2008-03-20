@@ -7,10 +7,10 @@ import ch.hsr.ifs.pystructure.typeinference.model.definitions.Definition;
 
 public abstract class DefinitionTypeEvaluator extends GoalEvaluator {
 
-	private Definition<?> definition;
+	private Definition definition;
 	protected CombinedType resultType;
 	
-	public DefinitionTypeEvaluator(DefinitionTypeGoal goal, Definition<?> definition) {
+	public DefinitionTypeEvaluator(DefinitionTypeGoal goal, Definition definition) {
 		super(goal);
 		this.definition = definition;
 		this.resultType = goal.resultType;

@@ -15,7 +15,7 @@ import ch.hsr.ifs.pystructure.typeinference.model.base.NameAdapter;
 /**
  * Definition of a loop variable by a for loop.
  */
-public class LoopVariableDefinition extends Definition<For> {
+public class LoopVariableDefinition extends Definition {
 
 	public LoopVariableDefinition(IModule module, NameAdapter name, For loop) {
 		super(module, name, loop);
