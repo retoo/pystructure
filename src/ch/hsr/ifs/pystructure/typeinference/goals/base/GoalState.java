@@ -10,6 +10,9 @@
 package ch.hsr.ifs.pystructure.typeinference.goals.base;
 
 public abstract class GoalState {
+	
+	
+	
 	public static final GoalState DONE = new GoalState() {
 		public String toString() {
 			return "DONE";

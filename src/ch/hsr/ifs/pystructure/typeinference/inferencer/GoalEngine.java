@@ -57,7 +57,8 @@ public class GoalEngine {
 		}
 	}
 
-	private static class WorkingPair {
+	private static final class WorkingPair {
+
 		private IGoal goal;
 		private GoalEvaluator creator;
 

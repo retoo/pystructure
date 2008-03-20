@@ -37,23 +37,30 @@ public class ClassAttributeTypeGoal extends AbstractTypeGoal {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()) {
 			return false;
+		}
 		final ClassAttributeTypeGoal other = (ClassAttributeTypeGoal) obj;
 		if (attributeName == null) {
-			if (other.attributeName != null)
+			if (other.attributeName != null) {
 				return false;
-		} else if (!attributeName.equals(other.attributeName))
+			}
+		} else if (!attributeName.equals(other.attributeName)) {
 			return false;
+		}
 		if (classType == null) {
-			if (other.classType != null)
+			if (other.classType != null) {
 				return false;
-		} else if (!classType.equals(other.classType))
+			}
+		} else if (!classType.equals(other.classType)) {
 			return false;
+		}
 		return true;
 	}
 

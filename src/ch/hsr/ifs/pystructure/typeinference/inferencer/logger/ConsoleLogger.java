@@ -8,7 +8,7 @@ import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
 import ch.hsr.ifs.pystructure.utils.StringUtils;
 
 public class ConsoleLogger implements IGoalEngineLogger {
-	private static final PrintStream out = System.out;
+	private static final PrintStream OUT = System.out;
 	
 	private IdentityHashMap<GoalEvaluator, GoalEvaluator> creators;
 	private IdentityHashMap<Object, Integer> numbers;
@@ -20,11 +20,11 @@ public class ConsoleLogger implements IGoalEngineLogger {
 	}
 	
 	public void evaluationFinished(IGoal rootGoal) {
-		out.println("Evaluation finished of " + rootGoal);
+		OUT.println("Evaluation finished of " + rootGoal);
 	}
 
 	public void evaluationStarted(IGoal rootGoal) {
-		out.println("Evaluation started of " + rootGoal);
+		OUT.println("Evaluation started of " + rootGoal);
 		
 	}
 
@@ -40,7 +40,7 @@ public class ConsoleLogger implements IGoalEngineLogger {
 
 	private void say(GoalEvaluator evaluator, String text) {
 		GoalEvaluator creator = getCreater(evaluator);
-		out.println(StringUtils.multiply(level(evaluator), "|   ")
+		OUT.println(StringUtils.multiply(level(evaluator), "|   ")
 				+ getNumber(creator)
 				+ " " + getNumber(evaluator)
 				+ " " + text);
@@ -66,7 +66,7 @@ public class ConsoleLogger implements IGoalEngineLogger {
 	}
 
 	public void shutdown() {
-		out.println("Engine Finsihed");
+		OUT.println("Engine Finsihed");
 	}
 
 }
