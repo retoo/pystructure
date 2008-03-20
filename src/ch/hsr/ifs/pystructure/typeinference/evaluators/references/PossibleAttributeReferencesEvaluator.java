@@ -114,7 +114,7 @@ public class PossibleAttributeReferencesEvaluator extends GoalEvaluator {
 			AttributeReference ref = new AttributeReference(name, typeGoal.resultType, node, module);
 			references.add(ref);
 		} else {
-			System.out.println("Unknown goal " + subgoal);
+			unexpectedSubGoal(subgoal);
 		}
 			
 		return IGoal.NO_GOALS;

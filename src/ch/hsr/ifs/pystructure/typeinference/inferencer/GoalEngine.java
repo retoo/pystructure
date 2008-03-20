@@ -97,22 +97,6 @@ public class GoalEngine {
 		es.state = state;
 		es.creator = creator;
 		
-		IGoal oldGoal = null;
-		for (Map.Entry<IGoal, GoalEvaluationState> entry : goalStates.entrySet()) {
-			IGoal curGoal = entry.getKey();
-			if (curGoal.equals(goal)) {
-				oldGoal = curGoal;
-				break;
-			}
-		}
-		
-		if (goal instanceof DefinitionTypeGoal) {
-			System.out.println(goal);
-//			DefinitionTypeGoal g = (DefinitionTypeGoal) goal;
-//			if (g.getDefinition().getName().getId().equals("A")) {
-//			}
-		}
-		
 		goalStates.put(goal, es);
 	}
 

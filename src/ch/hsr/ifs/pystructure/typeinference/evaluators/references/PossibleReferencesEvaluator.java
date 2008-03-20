@@ -7,7 +7,6 @@
 
 package ch.hsr.ifs.pystructure.typeinference.evaluators.references;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import ch.hsr.ifs.pystructure.typeinference.contexts.ModuleContext;

@@ -94,7 +94,7 @@ public class CallTypeEvaluator extends GoalEvaluator {
 			ReturnTypeGoal g = (ReturnTypeGoal) subgoal;
 			resultType.appendType(g.resultType);
 		} else {
-			System.out.println("Unknown subgoal " + subgoal);
+			unexpectedSubGoal(subgoal);
 		}
 		
 		return IGoal.NO_GOALS;

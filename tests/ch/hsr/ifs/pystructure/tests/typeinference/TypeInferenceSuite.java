@@ -41,7 +41,7 @@ public class TypeInferenceSuite extends TestSuite {
 		
 		
 		Structure101Logger s101log = new Structure101Logger();
-		IGoalEngineLogger logger = new CombinedLogger(s101log, new StatsLogger());
+		IGoalEngineLogger logger = new CombinedLogger(s101log);
 		inferencer = new PythonTypeInferencer(logger);
 		
 		LinkedList<String> sysPath = new LinkedList<String>();

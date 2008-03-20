@@ -64,7 +64,6 @@ public class MethodReferencesEvaluator extends GoalEvaluator {
 			ClassReferencesGoal g = (ClassReferencesGoal) subgoal;
 			
 			// We were looking for a constructor.
-			
 			for (ClassReference classReference : g.references) {
 				references.add(new MethodReference(method, classReference.getNode(), true));
 			}
@@ -72,7 +71,6 @@ public class MethodReferencesEvaluator extends GoalEvaluator {
 			PossibleAttributeReferencesGoal g = (PossibleAttributeReferencesGoal) subgoal; 
 			
 			// We were looking for a normal method.
-			
 			for (AttributeReference reference : g.possibleReferences) {
 				SimpleNode attribute = reference.getNode();
 				
@@ -80,7 +78,6 @@ public class MethodReferencesEvaluator extends GoalEvaluator {
 					if (parentType instanceof ClassType) {
 						ClassType classType = (ClassType) parentType;
 						if (classType.getKlass() != null && classType.getKlass().equals(method.getKlass())) {
-							System.out.println("ref " + reference);
 							references.add(new MethodReference(method, attribute));
 						}
 					}
@@ -94,7 +91,7 @@ public class MethodReferencesEvaluator extends GoalEvaluator {
 				}
 			}
 		} else {
-			System.out.println("Unknown sub goal "  + subgoal);
+			unexpectedSubGoal(subgoal);
 		}
 		
 		return IGoal.NO_GOALS;

@@ -70,4 +70,9 @@ public abstract class GoalEvaluator {
 		return false;
 	}
 
+	protected void unexpectedSubGoal(IGoal goal) {
+		throw new RuntimeException(this + " got an unexpected subgoal" + goal);
+		
+	}
+
 }
