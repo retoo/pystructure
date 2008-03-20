@@ -7,33 +7,9 @@
  *
 
  *******************************************************************************/
+
 package ch.hsr.ifs.pystructure.typeinference.goals.base;
 
-public abstract class GoalState {
-	
-	
-	
-	public static final GoalState DONE = new GoalState() {
-		public String toString() {
-			return "DONE";
-		}
-	};
-
-	public static final GoalState WAITING = new GoalState() {
-		public String toString() {
-			return "WAITING";
-		}
-	};
-
-	public static final GoalState PRUNED = new GoalState() {
-		public String toString() {
-			return "PRUNED";
-		}
-	};
-
-	public static final GoalState RECURSIVE = new GoalState() {
-		public String toString() {
-			return "RECURSIVE";
-		}
-	};
+public enum GoalState {
+	DONE, WAITING, PRUNED, RECURSIVE
 }
