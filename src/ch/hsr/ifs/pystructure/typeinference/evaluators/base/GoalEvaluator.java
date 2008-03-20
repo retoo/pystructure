@@ -77,4 +77,7 @@ public abstract class GoalEvaluator {
 		
 	}
 
+	public void finish() {
+	}
+
 }

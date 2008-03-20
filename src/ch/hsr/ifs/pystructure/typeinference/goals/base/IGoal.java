@@ -27,4 +27,5 @@ public interface IGoal {
 	 *         none.
 	 */
 	ModuleContext getContext();
+
 }

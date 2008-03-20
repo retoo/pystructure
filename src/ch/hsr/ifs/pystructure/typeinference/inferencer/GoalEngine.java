@@ -120,6 +120,7 @@ public class GoalEngine {
 			ev.successfulSubgoals++;
 		}
 		if (ev.subgoalsLeft == 0) {
+			evaluator.finish();
 			logger.goalFinished(evaluator.getGoal(), evaluator);
 			GoalEvaluationState st = goalStates.get(evaluator.getGoal());
 			assert st != null;
@@ -144,9 +145,6 @@ public class GoalEngine {
 		while (!workingQueue.isEmpty()) {
 			WorkingPair pair = workingQueue.removeFirst();
 			GoalEvaluationState state = goalStates.get(pair.goal);
-
-			
-			
 			
 			if (state != null && pair.creator != null) {
 				/*
@@ -221,6 +219,7 @@ public class GoalEngine {
 				}
 
 				if (isFinished) {
+					evaluator.finish();
 					logger.goalFinished(pair.goal, evaluator);
 					storeGoal(pair.goal, GoalState.DONE, pair.creator);
 					if (pair.creator != null) {
