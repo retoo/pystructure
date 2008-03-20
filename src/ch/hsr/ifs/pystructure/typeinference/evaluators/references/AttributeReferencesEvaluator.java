@@ -50,7 +50,7 @@ public class AttributeReferencesEvaluator extends GoalEvaluator {
 	public List<IGoal> subGoalDone(IGoal subgoal, GoalState state) {
 		PossibleAttributeReferencesGoal g = (PossibleAttributeReferencesGoal) subgoal;
 		
-		List<AttributeReference> possibleReferences = g.possibleReferences;
+		List<AttributeReference> possibleReferences = g.references;
 		
 		for (AttributeReference reference : possibleReferences) {
 			for (IEvaluatedType type : EvaluatorUtils.extractTypes(reference.getParent())) {

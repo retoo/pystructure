@@ -74,11 +74,10 @@ public class PythonEvaluatorFactory implements IEvaluatorFactory {
 
 	public GoalEvaluator createEvaluator(IGoal goal) {
 		if (goal instanceof PossibleReferencesGoal) {
-			if (goal instanceof PossibleAttributeReferencesGoal) {
-				return new PossibleAttributeReferencesEvaluator((PossibleAttributeReferencesGoal) goal);
-			} else {
-				return new PossibleReferencesEvaluator((PossibleReferencesGoal) goal);
-			}
+			return new PossibleReferencesEvaluator((PossibleReferencesGoal) goal);
+		}
+		if (goal instanceof PossibleAttributeReferencesGoal) {
+			return new PossibleAttributeReferencesEvaluator((PossibleAttributeReferencesGoal) goal);
 		}
 		if (goal instanceof MethodReferencesGoal) {
 			return new MethodReferencesEvaluator((MethodReferencesGoal) goal);

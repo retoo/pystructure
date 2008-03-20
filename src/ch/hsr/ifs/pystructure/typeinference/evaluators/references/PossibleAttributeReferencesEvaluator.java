@@ -54,7 +54,7 @@ public class PossibleAttributeReferencesEvaluator extends GoalEvaluator {
 		attributeNames = new HashMap<IGoal, NameAdapter>();
 		attributeNodes = new HashMap<IGoal, SimpleNode>();
 		
-		references = goal.possibleReferences;
+		references = goal.references;
 	}
 
 	@Override

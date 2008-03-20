@@ -1,13 +1,16 @@
 package ch.hsr.ifs.pystructure.typeinference.inferencer.logger;
 
+import java.util.Arrays;
+import java.util.List;
+
 import ch.hsr.ifs.pystructure.typeinference.evaluators.base.GoalEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
 
 public class CombinedLogger implements IGoalEngineLogger {
-	private final IGoalEngineLogger[] loggers;
+	private final List<IGoalEngineLogger> loggers;
 
 	public CombinedLogger(IGoalEngineLogger... loggers) {
-		this.loggers = loggers;
+		this.loggers = Arrays.asList(loggers);
 	}
 	
 

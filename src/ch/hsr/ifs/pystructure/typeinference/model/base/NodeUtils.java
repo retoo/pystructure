@@ -8,7 +8,10 @@ public final class NodeUtils {
 	}
 
 	public static String nodePosition(SimpleNode node) {
-		return "(L" + node.beginLine + " C" + node.beginColumn + ")";
+		return 
+			node != null
+				? "(L" + node.beginLine + " C" + node.beginColumn + ")"
+				: "";
 	}
 	
 }

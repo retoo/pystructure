@@ -48,7 +48,7 @@ public class ExpressionTypeGoal extends AbstractTypeGoal {
 	@Override
 	public String toString() {
 		return "ExpressionTypeGoal: "
-				+ ((expression != null) ? expression.toString() : "null")
+				+ expression.toString()
 				+ NodeUtils.nodePosition(expression)
 				+ " context: " + context;
 	}

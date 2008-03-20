@@ -71,7 +71,7 @@ public class MethodReferencesEvaluator extends GoalEvaluator {
 			PossibleAttributeReferencesGoal g = (PossibleAttributeReferencesGoal) subgoal; 
 			
 			// We were looking for a normal method.
-			for (AttributeReference reference : g.possibleReferences) {
+			for (AttributeReference reference : g.references) {
 				SimpleNode attribute = reference.getNode();
 				
 				for (IEvaluatedType parentType : EvaluatorUtils.extractTypes(reference.getParent())) {
