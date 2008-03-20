@@ -19,12 +19,17 @@ public abstract class DefinitionTypeEvaluator extends GoalEvaluator {
 	public boolean isCached() {
 		
 		if (definition.type != null) {
-			this.resultType = definition.type;
+			this.resultType.appendType(definition.type);
 			
 			return true;
 		} else {
 			return false;
 		}
+	}
+	
+	@Override
+	public void finish() {
+		definition.type = this.resultType;
 	}
 	
 }

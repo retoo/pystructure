@@ -41,7 +41,7 @@ public class GoalEngine {
 
 	private IGoalEngineLogger logger;
 	
-	private static final boolean CACHING_ENABLED = false;
+	private static final boolean CACHING_ENABLED = true;
 
 	private static class EvaluatorState {
 		public long timeCreated;

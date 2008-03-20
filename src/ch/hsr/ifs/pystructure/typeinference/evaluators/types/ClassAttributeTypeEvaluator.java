@@ -79,11 +79,16 @@ public class ClassAttributeTypeEvaluator extends GoalEvaluator {
 	public boolean isCached() {
 		CombinedType cachedType = klass.attributes.get(attributeName);
 		if (cachedType != null) {
-			resultType = cachedType;
+			resultType.appendType(cachedType);
 			return true;
 		} else {
 			return false;
 		}
+	}
+	
+	@Override
+	public void finish() {
+		klass.attributes.put(attributeName, resultType);
 	}
 
 }
