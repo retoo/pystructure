@@ -7,7 +7,7 @@
 
 package ch.hsr.ifs.pystructure.typeinference.inferencer;
 
-import ch.hsr.ifs.pystructure.typeinference.basetype.IEvaluatedType;
+import ch.hsr.ifs.pystructure.typeinference.basetype.IType;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.AbstractTypeGoal;
 import ch.hsr.ifs.pystructure.typeinference.inferencer.dispatcher.PythonEvaluatorFactory;
 import ch.hsr.ifs.pystructure.typeinference.inferencer.logger.IGoalEngineLogger;
@@ -24,8 +24,8 @@ public class PythonTypeInferencer implements ITypeInferencer {
 		engine = new GoalEngine(new PythonEvaluatorFactory(), logger);
 	}
 
-	public synchronized IEvaluatedType evaluateType(AbstractTypeGoal goal, int timeLimit) {
-		return (IEvaluatedType) engine.evaluateGoal(goal, new TimelimitPruner(timeLimit));
+	public synchronized IType evaluateType(AbstractTypeGoal goal, int timeLimit) {
+		return (IType) engine.evaluateGoal(goal, new TimelimitPruner(timeLimit));
 	}
 
 	public void shutdown() {

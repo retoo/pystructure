@@ -12,7 +12,7 @@ import java.util.List;
 
 import org.python.pydev.parser.jython.ast.exprType;
 
-import ch.hsr.ifs.pystructure.typeinference.basetype.IEvaluatedType;
+import ch.hsr.ifs.pystructure.typeinference.basetype.IType;
 import ch.hsr.ifs.pystructure.typeinference.contexts.CallContext;
 import ch.hsr.ifs.pystructure.typeinference.contexts.ModuleContext;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.GoalState;
@@ -76,7 +76,7 @@ public class ArgumentTypeEvaluator extends DefinitionTypeEvaluator {
 		if (subgoal instanceof ExpressionTypeGoal) {
 			
 			ExpressionTypeGoal g = (ExpressionTypeGoal) subgoal;
-			IEvaluatedType type =  g.resultType;
+			IType type =  g.resultType;
 			resultType.appendType(type);
 			return IGoal.NO_GOALS;
 		}

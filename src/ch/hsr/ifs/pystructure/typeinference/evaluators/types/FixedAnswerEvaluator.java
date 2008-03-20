@@ -11,7 +11,7 @@ package ch.hsr.ifs.pystructure.typeinference.evaluators.types;
 
 import java.util.List;
 
-import ch.hsr.ifs.pystructure.typeinference.basetype.IEvaluatedType;
+import ch.hsr.ifs.pystructure.typeinference.basetype.IType;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.base.GoalEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.GoalState;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
@@ -20,13 +20,13 @@ import ch.hsr.ifs.pystructure.typeinference.goals.types.ExpressionTypeGoal;
 
 public class FixedAnswerEvaluator extends GoalEvaluator {
 
-	public FixedAnswerEvaluator(DefinitionTypeGoal goal, IEvaluatedType result) {
+	public FixedAnswerEvaluator(DefinitionTypeGoal goal, IType result) {
 		super(goal);
 		
 		goal.resultType.appendType(result);
 	}
 
-	public FixedAnswerEvaluator(ExpressionTypeGoal goal, IEvaluatedType classType) {
+	public FixedAnswerEvaluator(ExpressionTypeGoal goal, IType classType) {
 		super(goal);
 		
 		goal.resultType.appendType(classType);

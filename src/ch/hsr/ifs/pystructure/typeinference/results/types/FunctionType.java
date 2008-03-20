@@ -7,11 +7,11 @@
 
 package ch.hsr.ifs.pystructure.typeinference.results.types;
 
-import ch.hsr.ifs.pystructure.typeinference.basetype.IEvaluatedType;
+import ch.hsr.ifs.pystructure.typeinference.basetype.IType;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Function;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Module;
 
-public class FunctionType implements IEvaluatedType {
+public class FunctionType implements IType {
 
 	private Module module;
 	private Function function;
@@ -33,7 +33,7 @@ public class FunctionType implements IEvaluatedType {
 		return "function";
 	}
 
-	public boolean subtypeOf(IEvaluatedType type) {
+	public boolean subtypeOf(IType type) {
 		return false;
 	}
 }

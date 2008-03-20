@@ -13,7 +13,7 @@ import java.util.List;
 import org.python.pydev.parser.jython.ast.Attribute;
 
 import ch.hsr.ifs.pystructure.typeinference.basetype.CombinedType;
-import ch.hsr.ifs.pystructure.typeinference.basetype.IEvaluatedType;
+import ch.hsr.ifs.pystructure.typeinference.basetype.IType;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.base.GoalEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.GoalState;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
@@ -69,7 +69,7 @@ public class AttributeTypeEvaluator extends GoalEvaluator {
 			ExpressionTypeGoal g = (ExpressionTypeGoal) subgoal;
 			
 			NameAdapter attributeName = new NameAdapter(attribute.attr);
-			for (IEvaluatedType type : g.resultType) {
+			for (IType type : g.resultType) {
 				if (type instanceof ClassType) {
 					// It's either a method or an attribute
 					ClassType classType = (ClassType) type;

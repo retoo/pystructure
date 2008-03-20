@@ -14,7 +14,7 @@ import org.python.pydev.parser.jython.ast.Call;
 import org.python.pydev.parser.jython.ast.exprType;
 
 import ch.hsr.ifs.pystructure.typeinference.basetype.CombinedType;
-import ch.hsr.ifs.pystructure.typeinference.basetype.IEvaluatedType;
+import ch.hsr.ifs.pystructure.typeinference.basetype.IType;
 import ch.hsr.ifs.pystructure.typeinference.contexts.CallContext;
 import ch.hsr.ifs.pystructure.typeinference.contexts.ModuleContext;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.base.GoalEvaluator;
@@ -58,7 +58,7 @@ public class CallTypeEvaluator extends GoalEvaluator {
 			ExpressionTypeGoal expressionTypeGoal = (ExpressionTypeGoal) subgoal; 
 			List<IGoal> subgoals = new ArrayList<IGoal>();
 			
-			for (IEvaluatedType type : expressionTypeGoal.resultType) {
+			for (IType type : expressionTypeGoal.resultType) {
 				
 				if (type instanceof FunctionType) {
 					// It's function or method call.

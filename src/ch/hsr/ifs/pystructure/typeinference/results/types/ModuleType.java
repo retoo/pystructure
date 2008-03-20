@@ -7,7 +7,7 @@
 
 package ch.hsr.ifs.pystructure.typeinference.results.types;
 
-import ch.hsr.ifs.pystructure.typeinference.basetype.IEvaluatedType;
+import ch.hsr.ifs.pystructure.typeinference.basetype.IType;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Module;
 
 public class ModuleType extends AbstractType {
@@ -19,7 +19,7 @@ public class ModuleType extends AbstractType {
 		this.module = module;
 	}
 	
-	public boolean subtypeOf(IEvaluatedType type) {
+	public boolean subtypeOf(IType type) {
 		return false; //TODO
 	}
 

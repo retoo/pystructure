@@ -15,15 +15,15 @@ import java.util.TreeSet;
 
 import ch.hsr.ifs.pystructure.utils.StringUtils;
 
-public class CombinedType implements IEvaluatedType, Iterable<IEvaluatedType> {
+public class CombinedType implements IType, Iterable<IType> {
 
-	private Set<IEvaluatedType> types;
+	private Set<IType> types;
 	
 	public CombinedType() {
-		types = new HashSet<IEvaluatedType>();
+		types = new HashSet<IType>();
 	}
 	
-	public void appendType(IEvaluatedType type) {
+	public void appendType(IType type) {
 		if (type instanceof CombinedType) {
 			CombinedType combinedType = (CombinedType) type;
 			types.addAll(combinedType.types);
@@ -32,19 +32,19 @@ public class CombinedType implements IEvaluatedType, Iterable<IEvaluatedType> {
 		}
 	}
 	
-	public Set<IEvaluatedType> getTypes() {
+	public Set<IType> getTypes() {
 		return types;
 	}
 	
 	public String getTypeName() {
 		SortedSet<String> set = new TreeSet<String>();
-		for (IEvaluatedType type : types) {
+		for (IType type : types) {
 			set.add(type.getTypeName());
 		}
 		return StringUtils.join('|', set);
 	}
 
-	public boolean subtypeOf(IEvaluatedType type) {
+	public boolean subtypeOf(IType type) {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -54,7 +54,7 @@ public class CombinedType implements IEvaluatedType, Iterable<IEvaluatedType> {
 		return getTypeName();
 	}
 
-	public Iterator<IEvaluatedType> iterator() {
+	public Iterator<IType> iterator() {
 		return types.iterator();
 	}
 }

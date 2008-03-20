@@ -11,7 +11,7 @@ import java.util.List;
 
 import org.python.pydev.parser.jython.SimpleNode;
 
-import ch.hsr.ifs.pystructure.typeinference.basetype.IEvaluatedType;
+import ch.hsr.ifs.pystructure.typeinference.basetype.IType;
 import ch.hsr.ifs.pystructure.typeinference.contexts.ModuleContext;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.base.GoalEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.GoalState;
@@ -73,7 +73,7 @@ public class MethodReferencesEvaluator extends GoalEvaluator {
 			for (AttributeReference reference : g.references) {
 				SimpleNode attribute = reference.getNode();
 				
-				for (IEvaluatedType parentType : reference.getParent()) {
+				for (IType parentType : reference.getParent()) {
 					if (parentType instanceof ClassType) {
 						ClassType classType = (ClassType) parentType;
 						if (classType.getKlass() != null && classType.getKlass().equals(method.getKlass())) {

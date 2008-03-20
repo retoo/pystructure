@@ -14,7 +14,7 @@ import org.python.pydev.parser.jython.ast.Tuple;
 import org.python.pydev.parser.jython.ast.exprType;
 
 import ch.hsr.ifs.pystructure.typeinference.basetype.CombinedType;
-import ch.hsr.ifs.pystructure.typeinference.basetype.IEvaluatedType;
+import ch.hsr.ifs.pystructure.typeinference.basetype.IType;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.base.GoalEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.GoalState;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
@@ -55,7 +55,7 @@ public class TupleElementTypeEvaluator extends GoalEvaluator {
 
 			ExpressionTypeGoal g = (ExpressionTypeGoal) subgoal;
 
-			for (IEvaluatedType type : g.resultType) {
+			for (IType type : g.resultType) {
 				if (type instanceof TupleType) {
 					Tuple tuple = ((TupleType) type).getTuple();
 					exprType childExpression = tuple.elts[element.getFirstIndex()];

@@ -9,12 +9,12 @@
  *******************************************************************************/
 package ch.hsr.ifs.pystructure.typeinference.basetype;
 
-public interface IEvaluatedType {
+public interface IType {
 
 	String getTypeName();
 
 	/**
 	 * Returns <code>true</code> if it is subtype of a given type
 	 */
-	boolean subtypeOf(IEvaluatedType type);
+	boolean subtypeOf(IType type);
 }
