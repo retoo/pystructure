@@ -15,6 +15,7 @@ import org.python.pydev.parser.jython.SimpleNode;
 import ch.hsr.ifs.pystructure.typeinference.basetype.CombinedType;
 import ch.hsr.ifs.pystructure.typeinference.model.base.IModule;
 import ch.hsr.ifs.pystructure.typeinference.model.base.NameAdapter;
+import ch.hsr.ifs.pystructure.typeinference.model.base.NodeUtils;
 
 /**
  * Definition of a name, for example through an assignment, a def or a class
@@ -70,7 +71,7 @@ public abstract class Definition {
 	}
 	
 	public String getNodePosition() {
-		return getNodePosition();
+		return NodeUtils.nodePosition(node);
 	}
 
 	@Override
