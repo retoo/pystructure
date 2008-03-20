@@ -3,7 +3,7 @@
    <property name="hide-externals" value="true" />
    <property name="detail-mode" value="true" />
    <classpath>
-      <classpathentry kind="lib" path="../../bin" />
+     <classpathentry kind="lib" path="../../bin" />
    </classpath>
    <excludes>
       <exclude expression="org.python.pydev.*" />
@@ -17,97 +17,23 @@
                      <cell name="typeinference" pattern="ch.hsr.ifs.pystructure.typeinference.*" vexpanded="true" visibility="public">
                         <grid>
                            <row>
-                              <cell name="inferencer" pattern="ch.hsr.ifs.pystructure.typeinference.inferencer.?" vexpanded="true" visibility="public" />
+                              <cell name="inferencer" pattern="ch.hsr.ifs.pystructure.typeinference.inferencer.*" vexpanded="true" visibility="public" />
                            </row>
                            <row>
-                              <cell name="evaluators" pattern="ch.hsr.ifs.pystructure.typeinference.evaluators.?" vexpanded="true" visibility="public" />
+                              <cell name="evaluators" pattern="ch.hsr.ifs.pystructure.typeinference.evaluators.*" vexpanded="true" visibility="public" />
                            </row>
                            <row>
-                              <cell name="goals" pattern="ch.hsr.ifs.pystructure.typeinference.goals.*" vexpanded="false" visibility="public">
-                                 <grid>
-                                    <row>
-                                       <cell name="types" pattern="ch.hsr.ifs.pystructure.typeinference.goals.types.?" vexpanded="true" visibility="public" />
-                                       <cell name="references" pattern="ch.hsr.ifs.pystructure.typeinference.goals.references.?" vexpanded="true" visibility="public" />
-                                    </row>
-                                    <row>
-                                       <cell name="base" pattern="ch.hsr.ifs.pystructure.typeinference.goals.base.?" vexpanded="true" visibility="public" />
-                                    </row>
-                                 </grid>
-                              </cell>
+                              <cell name="goals" pattern="ch.hsr.ifs.pystructure.typeinference.goals.*" vexpanded="true" visibility="public" />
                            </row>
                            <row>
                               <cell name="contexts" pattern="ch.hsr.ifs.pystructure.typeinference.contexts.?" vexpanded="true" visibility="public" />
                            </row>
                            <row>
-                              <cell name="results" pattern="ch.hsr.ifs.pystructure.typeinference.results.*" vexpanded="false" visibility="public">
-                                 <grid>
-                                    <row>
-                                       <cell name="types" pattern="ch.hsr.ifs.pystructure.typeinference.results.types.?" vexpanded="true" visibility="public">
-                                          <grid>
-                                             <row>
-                                                <cell name="ModuleType" pattern="ch.hsr.ifs.pystructure.typeinference.results.types.ModuleType" vexpanded="true" visibility="public" />
-                                                <cell name="ClassType" pattern="ch.hsr.ifs.pystructure.typeinference.results.types.ClassType" vexpanded="true" visibility="public" />
-                                                <cell name="PackageType" pattern="ch.hsr.ifs.pystructure.typeinference.results.types.PackageType" vexpanded="true" visibility="public" />
-                                                <cell name="TupleType" pattern="ch.hsr.ifs.pystructure.typeinference.results.types.TupleType" vexpanded="true" visibility="public" />
-                                                <cell name="MethodType" pattern="ch.hsr.ifs.pystructure.typeinference.results.types.MethodType" vexpanded="true" visibility="public" />
-                                                <cell name="MetaclassType" pattern="ch.hsr.ifs.pystructure.typeinference.results.types.MetaclassType" vexpanded="true" visibility="public" />
-                                             </row>
-                                             <row>
-                                                <cell name="FunctionType" pattern="ch.hsr.ifs.pystructure.typeinference.results.types.FunctionType" vexpanded="true" visibility="public" />
-                                             </row>
-                                          </grid>
-                                       </cell>
-                                       <cell name="references" pattern="ch.hsr.ifs.pystructure.typeinference.results.references.?" vexpanded="true" visibility="public" />
-                                    </row>
-                                 </grid>
-                              </cell>
+                              <cell name="results" pattern="ch.hsr.ifs.pystructure.typeinference.results.*" vexpanded="true" visibility="public" />
                               <cell name="visitors" pattern="ch.hsr.ifs.pystructure.typeinference.visitors.?" vexpanded="true" visibility="public" />
                            </row>
                            <row>
-                              <cell name="model" pattern="ch.hsr.ifs.pystructure.typeinference.model.*" vexpanded="false" visibility="public">
-                                 <grid>
-                                    <row>
-                                       <cell name="scopes" pattern="ch.hsr.ifs.pystructure.typeinference.model.scopes.?" vexpanded="true" visibility="public" />
-                                    </row>
-                                    <row>
-                                       <cell name="definitions" pattern="ch.hsr.ifs.pystructure.typeinference.model.definitions.?" vexpanded="true" visibility="public" />
-                                    </row>
-                                    <row>
-                                       <cell name="base" pattern="ch.hsr.ifs.pystructure.typeinference.model.base.?" vexpanded="true" visibility="public" />
-                                    </row>
-                                 </grid>
-                              </cell>
-                              <cell name="dltk" pattern="ch.hsr.ifs.pystructure.typeinference.dltk.*" vexpanded="false" visibility="public">
-                                 <grid>
-                                    <row>
-                                       <cell name="inferencer" pattern="ch.hsr.ifs.pystructure.typeinference.dltk.inferencer.?" vexpanded="true" visibility="public" />
-                                    </row>
-                                    <row>
-                                       <cell name="types" pattern="ch.hsr.ifs.pystructure.typeinference.dltk.types.?" vexpanded="true" visibility="public">
-                                          <grid>
-                                             <row>
-                                                <cell name="ClassType" pattern="ch.hsr.ifs.pystructure.typeinference.dltk.types.ClassType" vexpanded="true" visibility="public" />
-                                                <cell name="CombinedType" pattern="ch.hsr.ifs.pystructure.typeinference.dltk.types.CombinedType" vexpanded="true" visibility="public" />
-                                                <cell name="RecursionTypeCall" pattern="ch.hsr.ifs.pystructure.typeinference.dltk.types.RecursionTypeCall" vexpanded="true" visibility="public" />
-                                                <cell name="IClassType" pattern="ch.hsr.ifs.pystructure.typeinference.dltk.types.IClassType" vexpanded="true" visibility="public" />
-                                                <cell name="UnknownType" pattern="ch.hsr.ifs.pystructure.typeinference.dltk.types.UnknownType" vexpanded="true" visibility="public" />
-                                                <cell name="AtomicType" pattern="ch.hsr.ifs.pystructure.typeinference.dltk.types.AtomicType" vexpanded="true" visibility="public" />
-                                             </row>
-                                             <row>
-                                                <cell name="MostSpecificType" pattern="ch.hsr.ifs.pystructure.typeinference.dltk.types.MostSpecificType" vexpanded="true" visibility="public" />
-                                             </row>
-                                          </grid>
-                                       </cell>
-                                       <cell name="evaluators" pattern="ch.hsr.ifs.pystructure.typeinference.dltk.evaluators.?" vexpanded="true" visibility="public" />
-                                    </row>
-                                    <row>
-                                       <cell name="goals" pattern="ch.hsr.ifs.pystructure.typeinference.dltk.goals.?" vexpanded="true" visibility="public" />
-                                    </row>
-                                    <row>
-                                       <cell name="contexts" pattern="ch.hsr.ifs.pystructure.typeinference.dltk.contexts.?" vexpanded="true" visibility="public" />
-                                    </row>
-                                 </grid>
-                              </cell>
+                              <cell name="model" pattern="ch.hsr.ifs.pystructure.typeinference.model.*" vexpanded="true" visibility="public" />
                            </row>
                            <row>
                               <cell name="basetype" pattern="ch.hsr.ifs.pystructure.typeinference.basetype.?" vexpanded="true" visibility="public" />
