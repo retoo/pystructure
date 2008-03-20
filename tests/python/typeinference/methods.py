@@ -19,3 +19,5 @@ o = object()
 o.test("*perplex*")
 
 A.test(a, True)
+
+a.test ## type method
