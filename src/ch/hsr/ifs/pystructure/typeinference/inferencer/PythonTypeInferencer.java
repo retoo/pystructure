@@ -30,7 +30,7 @@ public class PythonTypeInferencer implements ITypeInferencer {
 		engine = new GoalEngine(new PythonEvaluatorFactory(), logger);
 	}
 
-	public synchronized IType evaluateType(AbstractTypeGoal goal, int timeLimit) {
+	private synchronized IType evaluateType(AbstractTypeGoal goal, int timeLimit) {
 		return engine.evaluateGoal(goal, new TimelimitPruner(timeLimit));
 	}
 

@@ -6,8 +6,6 @@ import org.python.pydev.parser.jython.SimpleNode;
 import org.python.pydev.parser.jython.ast.Expr;
 
 import ch.hsr.ifs.pystructure.typeinference.basetype.IType;
-import ch.hsr.ifs.pystructure.typeinference.contexts.ModuleContext;
-import ch.hsr.ifs.pystructure.typeinference.goals.types.ExpressionTypeGoal;
 import ch.hsr.ifs.pystructure.typeinference.inferencer.PythonTypeInferencer;
 import ch.hsr.ifs.pystructure.typeinference.inferencer.logger.CombinedLogger;
 import ch.hsr.ifs.pystructure.typeinference.inferencer.logger.ConsoleLogger;
@@ -36,13 +34,9 @@ public final class Swush {
 		
 		for (int line : lines) {
 			Expr expression = getExpressionAtLine(module, line);
-			
-			ModuleContext context = new ModuleContext(workspace, module);
-			ExpressionTypeGoal goal = new ExpressionTypeGoal(context, expression.value);
-			IType type = inferencer.evaluateType(goal, -1);
+			IType type = inferencer.evaluateType(workspace, module, expression.value);
 			
 			System.out.println("Type is: " + type);
-			
 		}
 		
 		inferencer.shutdown();

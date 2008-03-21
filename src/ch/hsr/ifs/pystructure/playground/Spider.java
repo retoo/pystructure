@@ -2,6 +2,7 @@ package ch.hsr.ifs.pystructure.playground;
 
 import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -41,6 +42,33 @@ public class Spider extends VisitorBase {
 	protected Object unhandled_node(SimpleNode node) throws Exception {
 		return null;
 	}
+	
+	private static final class Result implements Comparable<Result> {
+
+		public final SimpleNode node;
+		public final IType type;
+
+		public Result(SimpleNode node, IType type) {
+			this.node = node;
+			this.type = type;
+		}
+
+		public int compareTo(Result o) {
+			if (this.node.beginColumn < o.node.beginColumn) {
+				return -1;
+			} else if (this.node.beginColumn > o.node.beginColumn) {
+				return +1;
+			} else {
+				return 0;
+			}
+		}
+		
+		@Override
+		public String toString() {
+			return this.type.toString();
+		}
+		
+	}
 
 	public static void main(String[] args) throws Exception {
 		String path = "s101g/examples/pydoku/";
@@ -50,7 +78,7 @@ public class Spider extends VisitorBase {
 		PythonTypeInferencer inferencer = new PythonTypeInferencer(new StatsLogger(false));
 		
 		for (Module module : workspace.getModules()) {
-			HashMap<Integer, List<IType>> types = new HashMap<Integer, List<IType>>();
+			HashMap<Integer, List<Result>> types = new HashMap<Integer, List<Result>>();
 			
 			Spider spider = new Spider();
 			module.getNode().accept(spider);
@@ -61,13 +89,13 @@ public class Spider extends VisitorBase {
 				IType type = inferencer.evaluateType(workspace, module, node);
 //				System.out.println(" T: "  + type);
 				
-				List<IType> l = types.get(node.beginLine);
+				List<Result> l = types.get(node.beginLine);
 				if (l == null) {
-					l = new LinkedList<IType>();
+					l = new LinkedList<Result>();
 					types.put(node.beginLine, l);
 				}
 				
-				l.add(type);
+				l.add(new Result(node, type));
 			}
 			
 			/* print out source */
@@ -77,9 +105,10 @@ public class Spider extends VisitorBase {
 			for (String line : new LineIterator(new StringReader(source))) {
 				System.out.print(line);
 				
-				List<IType> lineType = types.get(i);
+				List<Result> lineType = types.get(i);
 
 				if (lineType != null) {
+					Collections.sort(lineType);
 					System.out.println(" # " + lineType);
 				} else {
 					System.out.println();

@@ -9,8 +9,11 @@
  *******************************************************************************/
 package ch.hsr.ifs.pystructure.typeinference.inferencer;
 
+import org.python.pydev.parser.jython.SimpleNode;
+
 import ch.hsr.ifs.pystructure.typeinference.basetype.IType;
-import ch.hsr.ifs.pystructure.typeinference.goals.types.AbstractTypeGoal;
+import ch.hsr.ifs.pystructure.typeinference.model.definitions.Module;
+import ch.hsr.ifs.pystructure.typeinference.visitors.Workspace;
 
 /**
  *
@@ -18,18 +21,7 @@ import ch.hsr.ifs.pystructure.typeinference.goals.types.AbstractTypeGoal;
  */
 public interface ITypeInferencer {
 
-	/**
-	 * Should evaluate type for a "type goal". Type goal is an abstract thing
-	 * with a context, that represents some kind of evaluation (expression type,
-	 * method return type, etc.) So, inferencer should know about kinds of tasks
-	 * it should do.
-	 *
-	 * @param goal
-	 * @param timeLimit
-	 *            time in milliseconds, or -1 if no limits.
-	 * @return
-	 */
-	IType evaluateType(AbstractTypeGoal goal, int timeLimit);
+	IType evaluateType(Workspace workspace, Module module, SimpleNode node);
 	
 	void shutdown();
 }
