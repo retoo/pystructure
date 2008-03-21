@@ -8,6 +8,7 @@
 package ch.hsr.ifs.pystructure.utils;
 
 import java.util.LinkedList;
+import java.util.Locale;
 import java.util.regex.Pattern;
 
 
@@ -50,7 +51,7 @@ public final class StringUtils {
 		if (string.length() == 0) {
 			return string; 
 		} else {
-			return string.substring(0, 1).toUpperCase() + string.substring(1);
+			return string.substring(0, 1).toUpperCase(Locale.ENGLISH) + string.substring(1);
 		}
 	}
 
