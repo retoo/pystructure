@@ -169,6 +169,7 @@
 			home="${findbugs.dir}"
 			output="html"
 			effort="max"
+			reportLevel="low"
 			jvmargs="-Xms256m -Xmx256m -XX:MaxPermSize=256m"
 			outputFile="${output.findbugs-dir}/findbugs-${label}.html" >
 				<auxClasspath>
