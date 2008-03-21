@@ -7,10 +7,16 @@
 
 package ch.hsr.ifs.pystructure.typeinference.inferencer;
 
+import org.python.pydev.parser.jython.SimpleNode;
+
 import ch.hsr.ifs.pystructure.typeinference.basetype.IType;
+import ch.hsr.ifs.pystructure.typeinference.contexts.ModuleContext;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.AbstractTypeGoal;
+import ch.hsr.ifs.pystructure.typeinference.goals.types.ExpressionTypeGoal;
 import ch.hsr.ifs.pystructure.typeinference.inferencer.dispatcher.PythonEvaluatorFactory;
 import ch.hsr.ifs.pystructure.typeinference.inferencer.logger.IGoalEngineLogger;
+import ch.hsr.ifs.pystructure.typeinference.model.definitions.Module;
+import ch.hsr.ifs.pystructure.typeinference.visitors.Workspace;
 
 public class PythonTypeInferencer implements ITypeInferencer {
 
@@ -30,6 +36,13 @@ public class PythonTypeInferencer implements ITypeInferencer {
 
 	public void shutdown() {
 		engine.shutdown();
+	}
+
+	public IType evaluateType(Workspace workspace, Module module, SimpleNode node) {
+		ModuleContext context = new ModuleContext(workspace, module);
+		ExpressionTypeGoal goal = new ExpressionTypeGoal(context, node);
+		
+		return this.evaluateType(goal, -1);
 	}
 
 }
