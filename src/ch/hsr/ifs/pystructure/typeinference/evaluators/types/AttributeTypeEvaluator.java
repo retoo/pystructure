@@ -75,12 +75,18 @@ public class AttributeTypeEvaluator extends AbstractEvaluator {
 					ClassType classType = (ClassType) type;
 					Class klass = classType.getKlass();
 	
-					Method method = klass.getMethodNamed(attributeName);
-					if (method != null) {
-						resultType.appendType(new MethodType(classType.getModule(), method));
+					if (klass != null) {
+						Method method = klass.getMethodNamed(attributeName);
+						if (method != null) {
+							resultType.appendType(new MethodType(classType.getModule(), method));
+						} else {
+							subgoals.add(new ClassAttributeTypeGoal(getGoal().getContext(), classType, attributeName));
+		
+						}
 					} else {
-						subgoals.add(new ClassAttributeTypeGoal(getGoal().getContext(), classType, attributeName));
-	
+						/* klass is null, this probably means that we are talking about 
+						 * an internal or unknown class */
+						
 					}
 					
 				} else if (type instanceof PackageType) {
