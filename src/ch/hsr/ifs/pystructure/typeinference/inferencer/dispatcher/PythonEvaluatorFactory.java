@@ -16,6 +16,7 @@ import org.python.pydev.parser.jython.ast.BoolOp;
 import org.python.pydev.parser.jython.ast.Call;
 import org.python.pydev.parser.jython.ast.Compare;
 import org.python.pydev.parser.jython.ast.Dict;
+import org.python.pydev.parser.jython.ast.IfExp;
 import org.python.pydev.parser.jython.ast.List;
 import org.python.pydev.parser.jython.ast.ListComp;
 import org.python.pydev.parser.jython.ast.Name;
@@ -243,6 +244,10 @@ public class PythonEvaluatorFactory implements IEvaluatorFactory {
 		}
 		if (expr instanceof BoolOp) {
 			return new FixedAnswerEvaluator(goal, new ClassType("boolean"));
+		}
+		if (expr instanceof IfExp) {
+			/* FIXME */
+			return new FixedAnswerEvaluator(goal, new ClassType("fixme ifexp"));
 		}
 		
 		throw new RuntimeException("Can't create evaluator for literal expression " + expr +  ", goal " + goal);

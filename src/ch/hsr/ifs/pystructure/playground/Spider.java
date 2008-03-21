@@ -1,11 +1,12 @@
 package ch.hsr.ifs.pystructure.playground;
 
+import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
 import org.python.pydev.parser.jython.SimpleNode;
-import org.python.pydev.parser.jython.ast.IfExp;
 import org.python.pydev.parser.jython.ast.VisitorBase;
 import org.python.pydev.parser.jython.ast.exprType;
 
@@ -30,11 +31,7 @@ public class Spider extends VisitorBase {
 	@Override
 	public void traverse(SimpleNode node) throws Exception {
 		if (node instanceof exprType) {
-			if (node instanceof IfExp) {
-				/* SKIP */
-			} else {
-				typables.add((exprType) node);
-			}
+			typables.add((exprType) node);
 		}
 		node.traverse(this);
 	}
@@ -49,11 +46,11 @@ public class Spider extends VisitorBase {
 		LinkedList<String> sysPath = new LinkedList<String>();
 		Workspace workspace = new Workspace(path, sysPath);
 		
-
-		
 		PythonTypeInferencer inferencer = new PythonTypeInferencer(new StatsLogger());
 		
 		for (Module module : workspace.getModules()) {
+			HashMap<Integer, List<IType>> types = new HashMap<Integer, List<IType>>();
+			
 			Spider spider = new Spider();
 			module.getNode().accept(spider);
 			
@@ -62,7 +59,33 @@ public class Spider extends VisitorBase {
 				
 				IType type = inferencer.evaluateType(workspace, module, node);
 				System.out.println(" T: "  + type);
+				
+				List<IType> l = types.get(node.beginLine);
+				if (l == null) {
+					l = new LinkedList<IType>();
+					types.put(node.beginLine, l);
+				}
+				
+				l.add(type);
 			}
+			
+			/* print out source */
+			String source = module.getSource();
+			
+			int i = 1;
+			for (String line : new LineIterator(new StringReader(source))) {
+				System.out.print(line);
+				
+				List<IType> lineType = types.get(i);
+
+				if (lineType != null) {
+					System.out.println(" # " + lineType);
+				} else {
+					System.out.println();
+				}
+				i++;
+			}
+			throw new RuntimeException("args");
 		}
 		
 		inferencer.shutdown();
