@@ -12,13 +12,18 @@ package ch.hsr.ifs.pystructure.typeinference.inferencer.dispatcher;
 import org.python.pydev.parser.jython.SimpleNode;
 import org.python.pydev.parser.jython.ast.Attribute;
 import org.python.pydev.parser.jython.ast.BinOp;
+import org.python.pydev.parser.jython.ast.BoolOp;
 import org.python.pydev.parser.jython.ast.Call;
+import org.python.pydev.parser.jython.ast.Compare;
 import org.python.pydev.parser.jython.ast.Dict;
 import org.python.pydev.parser.jython.ast.List;
+import org.python.pydev.parser.jython.ast.ListComp;
 import org.python.pydev.parser.jython.ast.Name;
 import org.python.pydev.parser.jython.ast.Num;
 import org.python.pydev.parser.jython.ast.Str;
+import org.python.pydev.parser.jython.ast.Subscript;
 import org.python.pydev.parser.jython.ast.Tuple;
+import org.python.pydev.parser.jython.ast.UnaryOp;
 import org.python.pydev.parser.jython.ast.num_typeType;
 
 import ch.hsr.ifs.pystructure.typeinference.evaluators.base.AbstractEvaluator;
@@ -217,6 +222,27 @@ public class PythonEvaluatorFactory implements IEvaluatorFactory {
 		}
 		if (expr instanceof Dict) {
 			return new FixedAnswerEvaluator(goal, new ClassType("dict"));
+		}
+		if (expr instanceof Subscript) {
+			return new FixedAnswerEvaluator(goal, new ClassType("list-element"));
+		}
+		if (expr instanceof ListComp) {
+			/* FIXME: this is a expression like:
+			 *  [field for field in self.fields if field.isempty()
+			 *  
+			 *  we could use the generators.iter to find out what kind of 
+			 *  list we have to expect here, but for now we have no idea about lists anyway
+			 */
+			return new FixedAnswerEvaluator(goal, new ClassType("list"));
+		}
+		if (expr instanceof Compare) {
+			return new FixedAnswerEvaluator(goal, new ClassType("boolean"));
+		}
+		if (expr instanceof UnaryOp) {
+			return new FixedAnswerEvaluator(goal, new ClassType("boolean"));
+		}
+		if (expr instanceof BoolOp) {
+			return new FixedAnswerEvaluator(goal, new ClassType("boolean"));
 		}
 		
 		throw new RuntimeException("Can't create evaluator for literal expression " + expr +  ", goal " + goal);
