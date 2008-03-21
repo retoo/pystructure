@@ -9,11 +9,14 @@ public class StatsLogger implements IGoalEngineLogger {
 	private StringBuilder out;
 	private int rootGoalsCounter;
 	private int subGoalsCounter;
+	private long start;
 	
 	public StatsLogger() {
 		this.out = new StringBuilder();
 		this.rootGoalsCounter = 0;
 		this.subGoalsCounter = 0;
+		
+		this.start = System.currentTimeMillis();
 	}
 	
 	public void evaluationStarted(IGoal rootGoal) {
@@ -40,13 +43,24 @@ public class StatsLogger implements IGoalEngineLogger {
 	}
 
 	public void shutdown() {
+		long delta = System.currentTimeMillis() - start;
+		
 		System.out.println("");
 		System.out.println("Statistics");
 		System.out.println("");
 		System.out.println(out);
+		
 		System.out.println("Total root goals: " + rootGoalsCounter);
 		System.out.println("Total SubGoals: " + subGoalsCounter);
 		System.out.println("Average Subgoals / Goal: " + subGoalsCounter / rootGoalsCounter);
+		System.out.println();
+		System.out.println("Time: " + delta);
+		System.out.println("Avg Time/SubGoal: " + delta / subGoalsCounter);
+		System.out.println("Avg Time/root goal: " + delta / rootGoalsCounter);
+		System.out.println("Avg subgoal/s: " + subGoalsCounter * 1000 / delta);
+		System.out.println("Avg rootgoal/s: " + rootGoalsCounter * 1000 / delta);
+		System.out.println("(Note: bencharmking might be broken on windows due to some problems with its timer");
+		
 	}
 	
 }
