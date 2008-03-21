@@ -15,6 +15,7 @@ import ch.hsr.ifs.pystructure.typeinference.inferencer.PythonTypeInferencer;
 import ch.hsr.ifs.pystructure.typeinference.inferencer.logger.StatsLogger;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Module;
 import ch.hsr.ifs.pystructure.typeinference.visitors.Workspace;
+import ch.hsr.ifs.pystructure.utils.LineIterator;
 
 public class Spider extends VisitorBase {
 	
@@ -46,7 +47,7 @@ public class Spider extends VisitorBase {
 		LinkedList<String> sysPath = new LinkedList<String>();
 		Workspace workspace = new Workspace(path, sysPath);
 		
-		PythonTypeInferencer inferencer = new PythonTypeInferencer(new StatsLogger());
+		PythonTypeInferencer inferencer = new PythonTypeInferencer(new StatsLogger(false));
 		
 		for (Module module : workspace.getModules()) {
 			HashMap<Integer, List<IType>> types = new HashMap<Integer, List<IType>>();
@@ -55,10 +56,10 @@ public class Spider extends VisitorBase {
 			module.getNode().accept(spider);
 			
 			for (SimpleNode node : spider.getTypables()) {
-				System.out.println(node);
+//				System.out.println(node);
 				
 				IType type = inferencer.evaluateType(workspace, module, node);
-				System.out.println(" T: "  + type);
+//				System.out.println(" T: "  + type);
 				
 				List<IType> l = types.get(node.beginLine);
 				if (l == null) {
@@ -85,7 +86,6 @@ public class Spider extends VisitorBase {
 				}
 				i++;
 			}
-			throw new RuntimeException("args");
 		}
 		
 		inferencer.shutdown();

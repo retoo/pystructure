@@ -10,8 +10,10 @@ public class StatsLogger implements IGoalEngineLogger {
 	private int rootGoalsCounter;
 	private int subGoalsCounter;
 	private long start;
+	private boolean showRootGoalStatsl;
 	
-	public StatsLogger() {
+	public StatsLogger(boolean showRootGoalStatsl) {
+		this.showRootGoalStatsl = showRootGoalStatsl;
 		this.out = new StringBuilder();
 		this.rootGoalsCounter = 0;
 		this.subGoalsCounter = 0;
@@ -19,6 +21,10 @@ public class StatsLogger implements IGoalEngineLogger {
 		this.start = System.currentTimeMillis();
 	}
 	
+	public StatsLogger() {
+		this(true);
+	}
+
 	public void evaluationStarted(IGoal rootGoal) {
 		assert currentGoal == null;
 		this.currentGoal = rootGoal;
@@ -48,7 +54,10 @@ public class StatsLogger implements IGoalEngineLogger {
 		System.out.println("");
 		System.out.println("Statistics");
 		System.out.println("");
-		System.out.println(out);
+		
+		if (showRootGoalStatsl) {
+			System.out.println(out);
+		}
 		
 		System.out.println("Total root goals: " + rootGoalsCounter);
 		System.out.println("Total SubGoals: " + subGoalsCounter);

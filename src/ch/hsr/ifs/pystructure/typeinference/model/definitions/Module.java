@@ -27,6 +27,7 @@ public class Module extends Definition implements PathElement, IModule {
 	private IPackage pkg;
 	private File file;
 	private String relativePath;
+	private String source;
 
 	public Module(File workspace, String relativePath, IPackage pkg) {
 		this.relativePath = relativePath;
@@ -47,6 +48,7 @@ public class Module extends Definition implements PathElement, IModule {
 
 		this.containedUses = new ArrayList<Use>();
 		this.definitions  = new ArrayList<Definition>();
+		this.source = source;
 
 		org.python.pydev.parser.jython.ast.Module module;
 		try {
@@ -116,6 +118,10 @@ public class Module extends Definition implements PathElement, IModule {
 	
 	public String getRelativePath() {
 		return this.relativePath;
+	}
+
+	public String getSource() {
+		return source;
 	}
 
 }
