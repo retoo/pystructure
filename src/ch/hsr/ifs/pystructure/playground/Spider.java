@@ -5,28 +5,36 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.python.pydev.parser.jython.SimpleNode;
+import org.python.pydev.parser.jython.ast.IfExp;
 import org.python.pydev.parser.jython.ast.VisitorBase;
 import org.python.pydev.parser.jython.ast.exprType;
 
+import ch.hsr.ifs.pystructure.typeinference.basetype.IType;
+import ch.hsr.ifs.pystructure.typeinference.inferencer.PythonTypeInferencer;
+import ch.hsr.ifs.pystructure.typeinference.inferencer.logger.StatsLogger;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Module;
 import ch.hsr.ifs.pystructure.typeinference.visitors.Workspace;
 
 public class Spider extends VisitorBase {
 	
-	private List<SimpleNode> typables;
+	private List<exprType> typables;
 
 	public Spider() {
-		typables = new ArrayList<SimpleNode>();
+		typables = new ArrayList<exprType>();
 	}
 	
-	public List<SimpleNode> getTypables() {
+	public List<exprType> getTypables() {
 		return typables;
 	}
 	
 	@Override
 	public void traverse(SimpleNode node) throws Exception {
 		if (node instanceof exprType) {
-			typables.add(node);
+			if (node instanceof IfExp) {
+				/* SKIP */
+			} else {
+				typables.add((exprType) node);
+			}
 		}
 		node.traverse(this);
 	}
@@ -41,14 +49,25 @@ public class Spider extends VisitorBase {
 		LinkedList<String> sysPath = new LinkedList<String>();
 		Workspace workspace = new Workspace(path, sysPath);
 		
-		Module module = workspace.getModule("pydoku");
 
-		Spider spider = new Spider();
-		module.getNode().accept(spider);
 		
-		for (SimpleNode node : spider.getTypables()) {
-			System.out.println(node);
+		PythonTypeInferencer inferencer = new PythonTypeInferencer(new StatsLogger());
+		
+		for (Module module : workspace.getModules()) {
+			Spider spider = new Spider();
+			module.getNode().accept(spider);
+			
+			for (SimpleNode node : spider.getTypables()) {
+				System.out.println(node);
+				
+				IType type = inferencer.evaluateType(workspace, module, node);
+				System.out.println(" T: "  + type);
+			}
 		}
+		
+		inferencer.shutdown();
+		
+		
 	}
 
 }
