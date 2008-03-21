@@ -169,15 +169,7 @@ public class GoalEngine {
 
 					workingQueue.addLast(pair);
 				} else {
-					IGoal oldGoal = null;
-					for (Map.Entry<IGoal, GoalEvaluationState> entry : goalStates.entrySet()) {
-						IGoal curGoal = entry.getKey();
-						if (curGoal.equals(pair.goal)) {
-							oldGoal = curGoal;
-							break;
-						}
-					}
-					
+					IGoal oldGoal = fetchOldGOal(pair.goal);
 					assert oldGoal != null;
 					
 					
@@ -236,6 +228,22 @@ public class GoalEngine {
 		logger.evaluationFinished(rootGoal);
 		
 		return rootGoal.resultType;
+	}
+
+	/** 
+	 * This function is kinda strange (and will probably disappear). When there
+	 * are two equal goals it usually means that a given goal was already solved (or
+	 * already worked on). So now e need to discard the newer goal and keep the old one.
+	 * But for that we also have to fetch it (we have to get the key, that is).
+	 * 
+	 */
+	private IGoal fetchOldGOal(IGoal goal) {
+		for (IGoal curGoal : goalStates.keySet()) {
+			if (curGoal.equals(goal)) {
+				return curGoal;
+			}
+		}
+		throw new RuntimeException("Unable to fetch 'old goal' for " + goal);
 	}
 
 	private void reset() {
