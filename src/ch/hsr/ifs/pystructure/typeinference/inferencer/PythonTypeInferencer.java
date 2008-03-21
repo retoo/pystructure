@@ -31,11 +31,7 @@ public class PythonTypeInferencer implements ITypeInferencer {
 	}
 
 	public synchronized IType evaluateType(AbstractTypeGoal goal, int timeLimit) {
-		return (IType) engine.evaluateGoal(goal, new TimelimitPruner(timeLimit));
-	}
-
-	public void shutdown() {
-		engine.shutdown();
+		return engine.evaluateGoal(goal, new TimelimitPruner(timeLimit));
 	}
 
 	public IType evaluateType(Workspace workspace, Module module, SimpleNode node) {
@@ -44,5 +40,10 @@ public class PythonTypeInferencer implements ITypeInferencer {
 		
 		return this.evaluateType(goal, -1);
 	}
+	
+	public void shutdown() {
+		engine.shutdown();
+	}
+
 
 }
