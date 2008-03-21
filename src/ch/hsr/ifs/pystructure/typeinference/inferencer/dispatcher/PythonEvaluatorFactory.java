@@ -181,12 +181,7 @@ public class PythonEvaluatorFactory implements IEvaluatorFactory {
 			return new BinOpTypeEvaluator(goal, (BinOp) expr);
 		}
 		
-		AbstractEvaluator evaluator = createLiteralEvaluator(goal);
-		if (evaluator != null) {
-			return evaluator;
-		}
-		
-		throw new RuntimeException("Can't create Evaluator for " + goal);
+		return createLiteralEvaluator(goal);
 	}
 	
 	// TODO: Maybe move this into an ExpressionTypeEvaluator.
