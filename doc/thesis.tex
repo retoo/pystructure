@@ -1,0 +1,353 @@
+\documentclass[12pt,halfparskip]{scrreprt}
+
+\usepackage{pystructure}
+
+\usepackage{svn} % For handling of SVN keywords
+\SVN $LastChangedDate: 2008-01-25 14:34:07 +0100 (Fr, 25 Jan 2008) $
+
+\begin{document}
+
+\begin{titlepage}
+\begin{center}
+\thispagestyle{empty}
+
+\begin{figure}[h]
+ \centering
+ \vspace{0,5cm}
+ \includegraphics[width=\textwidth]{img/hsr_logo}
+\end{figure}
+
+\vspace{1cm}
+{\Large \bfseries HSR -- University of Applied Sciences Rapperswil}
+
+\vspace{0,5cm}
+{\Large \bfseries Institute for Software}
+
+\vspace{2cm}
+{\Huge \bfseries PyStructure -- Autmated structural analysis of Python aplications}
+\vspace{2cm}
+
+{\Large \bfseries Bachelor Thesis: Spring 2008}
+
+\vspace{0,5cm}
+\SVNDate
+
+
+\vspace{1cm}
+Reto Schüttel \\ \url{reto@schuettel.ch}
+
+\vspace{0,5cm}
+Robin Stocker \\ \url{robin@nibor.org}
+
+\vspace{0,5cm}
+Supervised by Prof. Peter Sommerlad
+
+% FIXME external partner
+
+\vspace{1cm}
+\url{http://pystructure.ifs.hsr.ch/}
+
+\end{center}
+\end{titlepage}
+
+
+\pagenumbering{roman}
+\pagestyle{plain}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter*{Abstract}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter*{Management Summary}
+
+\section*{Motivation}
+
+\section*{Goal}
+
+\section*{Results}
+
+\section*{Outlook}
+
+
+\newpage
+
+\tableofcontents
+
+\newpage
+\pagenumbering{arabic}
+\pagestyle{scrheadings}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Introduction}
+
+\section{What is Refactoring?}
+
+
+\section{Automatic Code Refactoring}
+
+\section{Roadmap}
+
+\subsection{Milestone 1}
+
+
+\textbf{Result}
+
+\subsection{Milestone 2}
+
+\textbf{Goal}
+
+\textbf{Result}
+
+\subsection{Milestone 3}
+
+\textbf{Result}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Architecture}
+
+
+\section{User Interface}
+
+\section{Refactoring Engine}
+
+\section{Type Inference Engine}
+
+\section{Abstract Syntax Tree}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Existing Infrastructure}
+
+
+\section{PyDev}
+
+\subsection{AST – Abstract Syntax Tree}\label{ast}
+
+
+
+\subsection{Adapters}
+
+
+\subsection{Visitors}
+
+
+\subsection{Rewriter}
+
+
+\section{Eclipse LTK}
+
+
+\subsection{Refactoring Procedure}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Implemented Refactorings \& Generators}
+
+
+\section{Generate Docstring}
+
+
+\subsubsection{Example}
+
+\subsubsection{Goal}
+
+
+\subsubsection{Special Cases}
+
+\subsubsection{Implementation}
+
+
+\section{Extract Local Variable}
+
+\subsubsection{Example}
+
+\subsubsection{Goal}
+
+\subsubsection{Special Cases}
+
+\subsubsection{Implementation}
+
+\subsubsection{Possible Extensions}
+
+\section{Inline Local Variable}
+
+
+\subsubsection{Example}
+
+
+\subsubsection{Goal}
+
+\subsubsection{Special Cases}
+
+\subsubsection{Limitation}
+
+
+\subsubsection{Implementation}
+
+\section{Rename}
+
+
+\subsection{Rename Local Variable}
+
+
+\subsubsection{Example}
+
+\subsubsection{Goal}
+
+\subsubsection{Special Cases}
+
+
+\subsection{Rename Class or Function}
+
+
+\subsection{Rename Method or Attribute}
+
+
+\subsection{Implementation}
+
+
+\subsubsection{Local Variables}
+
+
+\subsubsection{Classes and Functions}
+
+
+\subsubsection{Methods and Attributes}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Type Inference}
+
+
+\section{Uses of Type Inference}
+
+
+\section{Terminology}
+
+\subsection{Types}
+
+
+\subsection{Correctness and Usefulness}
+
+
+\section{Implementation}
+
+
+\subsection{Design}
+
+
+\subsection{Flow Analysis}
+
+\subsubsection{Branches}
+
+
+\subsubsection{Scopes}
+
+
+\subsubsection{Global Variables}
+
+
+\subsubsection{Implementation}
+
+
+\subsection{Limitations}
+
+\subsubsection{Type of Collection Elements}
+
+
+\subsubsection{Built-in Types and Functions}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Structural Improvements}
+
+
+\section{Size Over Time}
+
+\section{Overall Structure}
+
+
+\section{Type Inference Engine}
+
+
+\section{Quality Assurance Infrastructure}
+
+
+\subsection{Continuous Integration}
+
+
+\subsection{Automatic Unit Testing}
+
+
+\subsection{Checkstyle}
+
+
+\subsection{Findbugs}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Summary}
+
+\section{Results}
+
+
+
+\section{Outlook}
+
+\subsection{PEPTIC in General}
+
+
+\subsection{Type Inference}
+
+
+\subsubsection{Common IDE Features}
+
+
+\subsubsection{Type Checking}
+
+
+\subsubsection{Structural Analysis}
+
+
+\subsubsection{Unused Code}
+
+
+\subsubsection{Compiler Optimisations}
+
+
+\clearpage
+
+\section{Effort Diagram}
+
+\clearpage
+
+\section{Our Experiences}
+
+\subsection{Robin Stocker}
+
+
+\subsection{Reto Schüttel}
+
+
+\section{Thanks}
+
+\begin{itemize}
+	\item to Peter Sommerlad and Thomas Corbat for their support during the project
+	\item to Christian Bachmann for the life-saving coffee machine in our study room. 
+	\item NOT to HSR for their banning of the above mentioned life-saving coffee machine out of the study room
+\end{itemize}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\listoffigures
+
+\bibliographystyle{alphadin}
+\bibliography{bibliography}
+
+
+\end{document}
