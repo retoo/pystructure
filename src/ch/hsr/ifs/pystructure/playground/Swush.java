@@ -23,14 +23,17 @@ public final class Swush {
 	public static void main(String[] args) {
 		LinkedList<String> sysPath = new LinkedList<String>();
 
-		IGoalEngineLogger logger = new CombinedLogger(new ConsoleLogger(), new StatsLogger());
+		
+		Structure101Logger s101 = new Structure101Logger();
+		s101.testStarted("simple", "print x", 12);
+		IGoalEngineLogger logger = new CombinedLogger(new ConsoleLogger(), new StatsLogger(), s101);
 		
 		PythonTypeInferencer inferencer = new PythonTypeInferencer(logger);
 		String path = "s101g/examples/simple/";
 		Workspace workspace = new Workspace(path, sysPath);
 		Module module = workspace.getModule("simple");
 		
-		int[] lines = {13, 14, 15, 16};
+		int[] lines = {13};
 		
 		for (int line : lines) {
 			Expr expression = getExpressionAtLine(module, line);
@@ -40,24 +43,6 @@ public final class Swush {
 		}
 		
 		inferencer.shutdown();
-		
-		
-//		for (Definition<?> x : module.getDefinitions()) {
-//			if (x instanceof AssignDefinition) {
-//				AssignDefinition assign = (AssignDefinition) x;
-//				
-//				exprType node = assign.getNode().targets[0];
-//				
-//				ExpressionTypeGoal goal = new ExpressionTypeGoal(context, node);
-//				IEvaluatedType type = inferencer.evaluateType(goal, -1);
-//				if (type == null) {
-//					System.out.println("Type inferencer returned null for " + x + " / " + x.getNode());
-//				} else {
-//					System.out.println(" type " + type.getTypeName()) ;
-//				}
-//			}
-//		}
-		
 	}
 
 	private static Expr getExpressionAtLine(Module module, int line) {
