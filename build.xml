@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 
-<!-- I'm a useless comment, please give me some purpose! -->
+<!--	I'm a useless comment, please give me some purpose! 
+			For example use me to force cc builds!-->
 
 <project name="PyStructure" default="all">
 	<property file="build.properties"/>
