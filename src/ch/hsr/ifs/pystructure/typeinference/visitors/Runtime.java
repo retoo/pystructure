@@ -42,7 +42,7 @@ public class Runtime implements IModuleCreator {
 	}
 
 	private void prepareModule(Module module) {
-		DefinitionVisitor visitor = new DefinitionVisitor(importPaths, module);
+		DefinitionVisitor visitor = new DefinitionVisitor(module);
 		visitor.run();
 	}
 
@@ -54,5 +54,8 @@ public class Runtime implements IModuleCreator {
 		return new ImportPath(workspaceDir, path, this);
 	}
 
+	public List<ImportPath> getImportPaths() {
+		return importPaths;
+	}
 
 }

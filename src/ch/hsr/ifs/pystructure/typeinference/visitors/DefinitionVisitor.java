@@ -47,16 +47,11 @@ import ch.hsr.ifs.pystructure.typeinference.model.definitions.Class;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Definition;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.ExceptDefinition;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Function;
-import ch.hsr.ifs.pystructure.typeinference.model.definitions.IPackage;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.ImportDefinition;
-import ch.hsr.ifs.pystructure.typeinference.model.definitions.ImportPath;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.LoopVariableDefinition;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Method;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Module;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.NameUse;
-import ch.hsr.ifs.pystructure.typeinference.model.definitions.Package;
-import ch.hsr.ifs.pystructure.typeinference.model.definitions.Path;
-import ch.hsr.ifs.pystructure.typeinference.model.definitions.PathElement;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.TupleElement;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Use;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Value;
@@ -74,11 +69,9 @@ public class DefinitionVisitor extends ParentVisitor {
 	private Stack<List<SimpleNode>> nodesToVisitLater;
 	private Map<SimpleNode, Definition> scopeDefinitions;
 	private Module module;
-	private List<ImportPath> importPaths;
 
-	public DefinitionVisitor(List<ImportPath> importPaths, Module module) {
+	public DefinitionVisitor(Module module) {
 		this.module = module;
-		this.importPaths = importPaths;
 		init();
 	}
 
@@ -459,147 +452,85 @@ public class DefinitionVisitor extends ParentVisitor {
 	public List<Use> getUses() {
 		return uses;
 	}
+	
+	/* import stuff */
 
-	/* module resolution stuff */
-
+	/*
+	 * Examples:
+	 * 
+	 * import pkg.module
+	 * import pkg.module as module
+	 * import pkg.module, pkg2.module2
+	 * import pkg
+	 * 
+	 * Doesn't work:
+	 * 
+	 * import pkg.module.Class
+	 */
 	@Override
 	public Object visitImport(Import node) throws Exception {
 		for (aliasType entry : node.names) {
-			NameAdapter moduleName = new NameAdapter(entry.name);
-
-			Path path = resolve(moduleName, 0);
+			ImportDefinition definition;
 			
-			if (path == null) {
-				return null;
-			}
-
-			if (entry.asname != null) {
-				/* import package.module as Alias, registers module as Alias*/
-				NameAdapter alias = new NameAdapter(entry.asname);
-				PathElement module = path.top();
-
-				if (module instanceof Module) {
-					registerPackage(alias, module);
-				} else {
-					throw new RuntimeException("Import didn't import a module");
-				}
+			if (entry.asname == null) {
+				/* import package.module  # package -> package */
+				
+				// TODO: Create ModulePath class or something like that
+				NameAdapter path = new NameAdapter(entry.name);
+				NameAdapter name = new NameAdapter(path.getId().split("\\.", 2)[0]);
+				definition = new ImportDefinition(module, node, name, null, name);
 			} else {
-				/* import package.module registers package as package*/
-				PathElement pkg = path.base();
-
-				if (pkg instanceof Package || pkg instanceof Module) {
-					registerPackage(pkg.getName(), pkg);
-				} else {
-					throw new RuntimeException("Import didn't import a package or a module.");
-				}
+				/* import package.module as alias  # alias -> package.module */
+				
+				NameAdapter alias = new NameAdapter(entry.asname);
+				NameAdapter path = new NameAdapter(entry.name);
+				definition = new ImportDefinition(module, node, path, null, alias);
 			}
+			
+			addDefinition(definition);
 		}
 		
 		return super.visitImport(node);
 	}
 
+	/*
+	 * Examples:
+	 * 
+	 * from pkg.module import Class
+	 * from pkg.module import Class as C1, ClassTwo as C2
+	 * from pkg.module import *  # grrr
+	 * from pkg import module
+	 * from pkg import *  # doesn't import all modules, but everything in __init__.py
+	 * from .module import Class
+	 * from . import module
+	 * 
+	 * TODO: Support wildcard imports
+	 */
 	@Override
 	public Object visitImportFrom(ImportFrom node) throws Exception {
-		NameAdapter moduleName = new NameAdapter(node.module);
-
-		Path path = resolve(moduleName, node.level);
+		NameAdapter path = new NameAdapter(node.module);
 		
-		if (path == null) {
-			return null;
-		}
-
 		for (aliasType entry : node.names) {
-			NameAdapter name = new NameAdapter(entry.name);
+			NameAdapter element = new NameAdapter(entry.name);
 			NameAdapter alias = new NameAdapter(entry.asname == null ? entry.name : entry.asname);
-
-			PathElement pe = path.top();
-
 			
-			/* Are we importing something from a package or a module
-			 * import some-module from package
-			 *  vs.
-			 * import some-class from` package.module
-			 * 
-			 * TODO: it probably would be nicer and easier if we could handle these 
-			 * cases without making a 'difference'
-			 */
-			if (pe instanceof Module) {
-				Module module = (Module) pe;
-				/* get the class/global variable in this particular module */
-				Definition definition = module.getChild(name);
-				
-				if (definition == null) {
-					throw new RuntimeException("Imported entitiy by a import from didn't exist in the module");
-				}
+			ImportDefinition definition = new ImportDefinition(module, node, path, element, alias, node.level);
+			addDefinition(definition);
 			
-				registerDefinition(alias, definition, module);
-				
-				if (entry.asname != null) {
-					/* case: from module import Class as Alias
-					 * We have to add a name use for Class, because otherwise it
-					 * can't be found by reference finders. */
-					NameUse use = new NameUse(name, this.module);
-					use.addDefinition(definition);
-					addNameUse(use);
-				}
-			} else if (pe instanceof Package) {
-				Package pkg = (Package) pe;
-				
-				/* this case looks like: from a_package import module_or_package 
-				 * the problem is that the module_or_package hasn't been loaded by the 
-				 * resolve() call above, so we have to do that now.
-				 * we discard the actual output, hopefully something was found, 
-				 * otherwise we can't do anything against it anyway */
-				pkg.lookFor(name.getId());
-				
-				PathElement child = pkg.getChild(name);
-				registerPackage(alias, child);
-			} else {
-				throw new RuntimeException("ImportFrom doesn't import from a package or module");
+			if (entry.asname != null) {
+				/*
+				 * In the following case, we have to add a name use for Class,
+				 * because otherwise it can't be found by reference finders:
+				 * 
+				 * from module import Class as Alias
+				 */
+				NameUse use = new NameUse(element, this.module);
+				use.addDefinition(definition);
+				addNameUse(use);
 			}
-			
 		}
+		
 		return super.visitImportFrom(node);
-	}
-
-	private void registerDefinition(NameAdapter alias, Definition def, Definition parent) {
-		ImportDefinition definition = new ImportDefinition(module, alias, def, parent);
-		addDefinition(definition);
-	}
-
-	private void registerPackage(NameAdapter alias, PathElement child) {
-		ImportDefinition definition = new ImportDefinition(module, alias, child);
-		addDefinition(definition);
-	}
-	
-	private Path resolve(NameAdapter moduleName, int level) {
-		/* first we try to look if it is a relative lookup*/
-		IPackage parentPath = module.getPackage(); 
-
-		if (level > 1) {
-			for (int i = 1; i < level; i++) {
-				parentPath = parentPath.getParent();
-			}
-		}
-		
-		Path found = parentPath.lookFor(moduleName.getId());
-
-		if (found != null) {
-			return found;
-		}
-
-		/* second, if we haven't found anything yet, walk through the sys.path */
-		for (ImportPath importPath : importPaths) {
-			found = importPath.lookFor(moduleName.getId());
-
-			if (found != null) {
-				return found;
-			}
-		}
-		
-		// Probably from Python standard library or built-in.
-		// System.err.println("Warning: Unable to find " + moduleName + " imported by " + module.getPath());
-		return null;
 	}
 
 }

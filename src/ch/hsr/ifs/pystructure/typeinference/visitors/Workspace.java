@@ -79,7 +79,11 @@ public class Workspace {
 	public List<Module> getModules() {
 		return modules;
 	}
-
+	
+	public List<ImportPath> getImportPaths() {
+		return runtime.getImportPaths();
+	}
+	
 	// TODO: Use Map?
 	public Module getModule(File file) {
 		for (Module module : getModules()) {
