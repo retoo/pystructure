@@ -5,11 +5,11 @@ from .areas import Area
 class Board(object):
     def __init__(self, filename):
         self.filename = filename
-        self.fields = list()
+        self.fields = []
 
-        self.rows = list()
-        self.cols = list()
-        self.blocks = list()
+        self.rows = []
+        self.cols = []
+        self.blocks = []
         
         for i in range(9*9):
             self.fields.append(Field(i))
