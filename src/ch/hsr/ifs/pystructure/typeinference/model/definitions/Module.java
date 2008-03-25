@@ -54,7 +54,7 @@ public class Module extends Definition implements PathElement, IModule {
 		try {
 			module = Parser.parse(source);
 		} catch (ParseException e) {
-			throw new RuntimeException(e);
+			throw new RuntimeException("Unable to parse module " + this, e);
 		}
 		
 		super.init(this, new NameAdapter(name), module);
@@ -87,7 +87,10 @@ public class Module extends Definition implements PathElement, IModule {
 
 	@Override
 	public String toString() {
-		return getName().getId();
+		NameAdapter name = getName();
+		return name != null 
+			? name.getId()
+			: relativePath;
 	}
 
 	public List<Use> getContainedUses() {
