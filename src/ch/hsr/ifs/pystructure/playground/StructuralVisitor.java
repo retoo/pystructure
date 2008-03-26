@@ -32,7 +32,7 @@ import ch.hsr.ifs.pystructure.typeinference.visitors.ParentVisitor;
  */
 public abstract class StructuralVisitor extends ParentVisitor {
 
-	private StructureDefinition currentlyVisiting;
+	private StructureDefinition currentStructureDefinition;
 	private Map<SimpleNode, StructureDefinition> definitionForNode;
 
 	public StructuralVisitor() {
@@ -41,6 +41,7 @@ public abstract class StructuralVisitor extends ParentVisitor {
 	
 	protected void run(Module module) {
 		try {
+			definitionForNode.put(module.getNode(), module);
 			visitChild(module);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
@@ -53,7 +54,18 @@ public abstract class StructuralVisitor extends ParentVisitor {
 	 * or descend).
 	 */
 	protected boolean isFirstVisit(StructureDefinition definition) {
-		return definition != currentlyVisiting;
+		return definition != currentStructureDefinition;
+	}
+	
+	protected StructureDefinition getCurrentStructureDefinition() {
+		return currentStructureDefinition;
+	}
+
+	/**
+	 * Get the Module definition corresponding to the node.
+	 */
+	protected Module getDefinitionFor(org.python.pydev.parser.jython.ast.Module node) {
+		return (Module) definitionForNode.get(node);
 	}
 
 	/**
@@ -85,7 +97,7 @@ public abstract class StructuralVisitor extends ParentVisitor {
 		for (StructureDefinition def : child.getChildren()) {
 			definitionForNode.put(def.getNode(), def);
 		}
-		currentlyVisiting = child;
+		currentStructureDefinition = child;
 		child.getNode().accept(this);
 	}
 
