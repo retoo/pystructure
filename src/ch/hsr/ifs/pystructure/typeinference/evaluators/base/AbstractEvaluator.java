@@ -49,20 +49,11 @@ public abstract class AbstractEvaluator {
 	public abstract List<IGoal> subGoalDone(IGoal subgoal, GoalState state);
 
 	/**
-	 * Called when all posted subgoals are done
-	 *
-	 * @return result of evaluation this goal
-	 */
-	public final Object produceResult() {
-		return null;
-	}
-
-	/**
 	 * Wraps a single goal in a list and returns it, for convenience.
 	 * @param goal
 	 * @return a list with the goal as the only element
 	 */
-	protected List<IGoal> wrap(IGoal goal) {
+	protected static List<IGoal> wrap(IGoal goal) {
 		List<IGoal> goals = new ArrayList<IGoal>();
 		goals.add(goal);
 		return goals;
@@ -74,7 +65,6 @@ public abstract class AbstractEvaluator {
 
 	protected void unexpectedSubGoal(IGoal goal) {
 		throw new RuntimeException(this + " got an unexpected subgoal" + goal);
-		
 	}
 
 	public void finish() {
