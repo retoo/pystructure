@@ -7,7 +7,6 @@
 
 package ch.hsr.ifs.pystructure.typeinference.visitors;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -15,7 +14,6 @@ import java.util.Map;
 import java.util.Stack;
 import java.util.Map.Entry;
 
-import org.python.pydev.parser.jython.SimpleNode;
 import org.python.pydev.parser.jython.ast.Assign;
 import org.python.pydev.parser.jython.ast.Attribute;
 import org.python.pydev.parser.jython.ast.ClassDef;
@@ -39,6 +37,7 @@ import org.python.pydev.parser.jython.ast.exprType;
 import org.python.pydev.parser.jython.ast.stmtType;
 import org.python.pydev.parser.jython.ast.suiteType;
 
+import ch.hsr.ifs.pystructure.playground.StructuralVisitor;
 import ch.hsr.ifs.pystructure.typeinference.model.base.NameAdapter;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Argument;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.AssignDefinition;
@@ -60,31 +59,24 @@ import ch.hsr.ifs.pystructure.typeinference.model.scopes.BuiltInScope;
 import ch.hsr.ifs.pystructure.typeinference.model.scopes.ModuleScope;
 import ch.hsr.ifs.pystructure.typeinference.model.scopes.Scope;
 
-public class DefinitionVisitor extends ParentVisitor {
+public class DefinitionVisitor extends StructuralVisitor {
 
+	private final Module module;
+	
 	private ModuleScope moduleScope;
-	private List<Use> uses;
-
 	private Stack<Block> blocks;
-	private Stack<List<SimpleNode>> nodesToVisitLater;
-	private Map<SimpleNode, Definition> scopeDefinitions;
-	private Module module;
+	
+	private List<Use> uses;
 
 	public DefinitionVisitor(Module module) {
 		this.module = module;
-		init();
-	}
-
-	private void init() {
 		uses = module.getContainedUses();
 		blocks = new Stack<Block>();
-		nodesToVisitLater = new Stack<List<SimpleNode>>();
-		scopeDefinitions = new HashMap<SimpleNode, Definition>();
 	}
 
 	public void run() {
 		try {
-			module.getNode().accept(this);
+			super.run(module);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
@@ -94,9 +86,10 @@ public class DefinitionVisitor extends ParentVisitor {
 	public Object visitModule(org.python.pydev.parser.jython.ast.Module node) throws Exception {
 		moduleScope = new ModuleScope(new BuiltInScope(), module);
 
-		beginScope(moduleScope);
+		blocks.push(moduleScope);
 		super.visitModule(node);
-		endScope();
+		visitChildren(module);
+		blocks.pop();
 
 		moduleScope.connectGlobals();
 		module.getDefinitions().addAll(moduleScope.getCurrentBlockDefinitions());
@@ -106,43 +99,45 @@ public class DefinitionVisitor extends ParentVisitor {
 
 	@Override
 	public Object visitClassDef(ClassDef node) throws Exception {
-		if (visitLater(node)) {
-			NameAdapter name = new NameAdapter(node.name);
-			Class klass = new Class(name, node, module);
+		Class klass = getDefinitionFor(node);
+		
+		if (isFirstVisit(klass)) {
 			addDefinition(klass);
-			return null;
+		} else {
+			blocks.push(new Scope(getBlock(), klass));
+			super.visitClassDef(node);
+			visitChildren(klass);
+			blocks.pop();
 		}
-
-		beginScope(new Scope(getBlock(), scopeDefinitions.get(node)));
-		super.visitClassDef(node);
-		endScope();
 
 		return null;
 	}
 
 	@Override
 	public Object visitFunctionDef(FunctionDef node) throws Exception {
-		if (visitLater(node)) {
-			NameAdapter name = new NameAdapter(node.name);
-			if (getScope().getDefinition() instanceof Class) {
+		Function function = getDefinitionFor(node);
+		
+		if (isFirstVisit(function)) {
+			if (function instanceof Method) {
 				Class klass = (Class) getScope().getDefinition();
-				Method method = new Method(module, name, node, klass);
-				klass.addMethod(method);
-				addDefinition(method);
-			} else {
-				Definition parentDefinition = getScopeOf(name).getDefinition();
-				addDefinition(new Function(module, name, node, parentDefinition));
+				klass.addMethod((Method) function);
 			}
-			return null;
+			/*
+			 * TODO: What about this?
+			 * 
+			 * global func
+			 * def func():
+			 *     print "I'm global"
+			 */
+			addDefinition(function);
+		} else {
+			Scope functionScope = new Scope(getBlock(), function);
+			blocks.push(functionScope);
+			addArgumentDefinitions(node.args, function);
+			super.visitFunctionDef(node);
+			visitChildren(function);
+			blocks.pop();
 		}
-
-		Function function = (Function) scopeDefinitions.get(node);
-
-		Scope functionScope = new Scope(getBlock(), function);
-		beginScope(functionScope);
-		addArgumentDefinitions(node.args, function);
-		super.visitFunctionDef(node);
-		endScope();
 
 		return null;
 	}
@@ -161,28 +156,6 @@ public class DefinitionVisitor extends ParentVisitor {
 				addDefinition(new Argument(module, name, argument,
 						position, defaultValue, function));
 			}
-		}
-	}
-
-	private void beginScope(Scope scope) {
-		blocks.push(scope);
-		nodesToVisitLater.push(new ArrayList<SimpleNode>());
-	}
-
-	private void endScope() throws Exception {
-		for (SimpleNode node : nodesToVisitLater.peek()) {
-			node.accept(this);
-		}
-		nodesToVisitLater.pop();
-		blocks.pop();
-	}
-
-	private boolean visitLater(SimpleNode node) {
-		if (nodesToVisitLater.peek().contains(node)) {
-			return false;
-		} else {
-			nodesToVisitLater.peek().add(node);
-			return true;
 		}
 	}
 
@@ -409,10 +382,6 @@ public class DefinitionVisitor extends ParentVisitor {
 	}
 
 	private void addDefinition(Definition definition) {
-		if (definition instanceof Function || definition instanceof Class) {
-			scopeDefinitions.put(definition.getNode(), definition);
-		}
-
 		if (getScope().isGlobal(definition.getName())) {
 			moduleScope.addGlobalDefinition(definition);
 		} else {
@@ -439,14 +408,6 @@ public class DefinitionVisitor extends ParentVisitor {
 			scope = scope.getParent();
 		}
 		return (Scope) scope;
-	}
-
-    private Scope getScopeOf(NameAdapter name) {
-		if (getScope().isGlobal(name)) {
-			return moduleScope;
-		} else {
-			return getScope();
-		}
 	}
 
 	public List<Use> getUses() {

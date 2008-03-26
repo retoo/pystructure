@@ -42,8 +42,10 @@ public class Runtime implements IModuleCreator {
 	}
 
 	private void prepareModule(Module module) {
-		DefinitionVisitor visitor = new DefinitionVisitor(module);
-		visitor.run();
+		StructureDefinitionVisitor structureDefinitionVisitor = new StructureDefinitionVisitor();
+		structureDefinitionVisitor.run(module);
+		DefinitionVisitor definitionVisitor = new DefinitionVisitor(module);
+		definitionVisitor.run();
 	}
 
 	public void registerImportPath(ImportPath importPath) {

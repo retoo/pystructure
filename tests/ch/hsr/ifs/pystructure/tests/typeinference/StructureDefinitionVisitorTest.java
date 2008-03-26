@@ -5,7 +5,6 @@ import java.util.LinkedList;
 import junit.framework.TestCase;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Module;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.StructureDefinition;
-import ch.hsr.ifs.pystructure.typeinference.visitors.StructureDefinitionVisitor;
 import ch.hsr.ifs.pystructure.typeinference.visitors.Workspace;
 
 // TODO: Maybe move this test somewhere else?
@@ -28,9 +27,6 @@ public class StructureDefinitionVisitorTest extends TestCase {
 	}
 	
 	public void testChildren() {
-		StructureDefinitionVisitor visitor = new StructureDefinitionVisitor();
-		visitor.run(module);
-		
 		assertEquals(3, module.getChildren().size());
 		
 		StructureDefinition classA = module.getChildren().get(0);
