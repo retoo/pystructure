@@ -16,7 +16,7 @@ import ch.hsr.ifs.pystructure.typeinference.model.base.NameAdapter;
 /**
  * Definition of a function.
  */
-public class Function extends Definition implements IAttributeDefinition {
+public class Function extends StructureDefinition implements IAttributeDefinition {
 
 	private final Definition attributeParent;
 

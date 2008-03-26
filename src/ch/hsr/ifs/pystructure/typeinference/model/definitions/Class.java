@@ -19,7 +19,7 @@ import ch.hsr.ifs.pystructure.typeinference.model.base.NameAdapter;
 /**
  * Definition of a class.
  */
-public class Class extends Definition implements IAttributeDefinition {
+public class Class extends StructureDefinition implements IAttributeDefinition {
 
 	private List<Method> methods;
 	private Module module;
