@@ -44,7 +44,12 @@ public class ImportTypeEvaluator extends DefinitionTypeEvaluator {
 		Path parent = resolve(path, importDefinition.getLevel());
 		
 		if (parent == null) {
-			throw new RuntimeException("Invalid import: " + path);
+			/* this was a module/package which we don't know. Usually 
+			 * this is just some sort of external library and it isn't that
+			 * bad if we can't import it. Some day we have to generate some warnings here
+			 * to let the user know that perhaps his syspath isnt set correctly.
+			 */
+			return IGoal.NO_GOALS;
 		}
 		
 		PathElement pathElement = parent.top();
