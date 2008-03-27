@@ -68,4 +68,8 @@ public class Class extends StructureDefinition implements IAttributeDefinition {
 		return module;
 	}
 
+	public HashMap<NameAdapter, CombinedType> getAttributes() {
+		return attributes;
+	}
+
 }

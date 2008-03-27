@@ -3,14 +3,22 @@ package ch.hsr.ifs.pystructure.playground;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
+import org.python.pydev.parser.jython.ast.exprType;
 
+import ch.hsr.ifs.pystructure.typeinference.inferencer.PythonTypeInferencer;
+import ch.hsr.ifs.pystructure.typeinference.inferencer.logger.StatsLogger;
+import ch.hsr.ifs.pystructure.typeinference.model.base.NameAdapter;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Class;
+import ch.hsr.ifs.pystructure.typeinference.model.definitions.Method;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Module;
+import ch.hsr.ifs.pystructure.typeinference.model.definitions.StructureDefinition;
 import ch.hsr.ifs.pystructure.typeinference.visitors.Workspace;
 
 public class Exporter {
@@ -54,7 +62,33 @@ public class Exporter {
 		element.setAttribute("type", "class");
 		String fullName = klass.getModule().getFullName() + "." + klass.getName();
 		element.setAttribute("name", fullName);
+		element.setAttribute("id", klass.getUniqueIdentifier());
 		modules.addContent(element);
+		
+		exportMethods(element, klass);
+		exportAttributes(element, klass);
+	}
+
+	private void exportAttributes(Element element, Class klass) {
+		for (NameAdapter name : klass.getAttributes().keySet()) {
+			Element attribute = new Element("submodule");
+			attribute.setAttribute("type", "attribute");
+			attribute.setAttribute("name", name.getId());
+			attribute.setAttribute("id", String.valueOf(name.hashCode()));
+			element.addContent(attribute);
+		}
+		
+	}
+
+	private void exportMethods(Element element, Class klass) {
+		for (Method method : klass.getMethods()) {
+			Element submodule = new Element("submodule");
+			submodule.setAttribute("type", "method");
+			submodule.setAttribute("name", method.getName().getId());
+			submodule.setAttribute("id", method.getUniqueIdentifier());
+			
+			element.addContent(submodule);
+		}
 	}
 
 	public static void main(String[] args) throws IOException {
@@ -63,7 +97,31 @@ public class Exporter {
 		String path = "s101g/examples/pydoku";
 		Workspace workspace = new Workspace(path, sysPath);
 		
+		PythonTypeInferencer inferencer = new PythonTypeInferencer(new StatsLogger(false));
+		
+		for (Module module : workspace.getModules()) {
+			
+//			List<Result> results = new ArrayList<Result>();
+			
+			Spider spider = new Spider();
+			spider.run(module);
+			
+			for (Map.Entry<StructureDefinition, List<exprType>> entry : spider.getTypables().entrySet()) {
+				List<exprType> expressions = entry.getValue();
+				
+				for (exprType node : expressions) {
+					inferencer.evaluateType(workspace, module, node);
+				}
+			}
+			
+			
+		}
+		inferencer.shutdown();
+
+		
 		Exporter exporter = new Exporter(System.out);
 		exporter.export(workspace);
+		
+		
 	}
 }

@@ -28,5 +28,9 @@ public abstract class StructureDefinition extends Definition {
 	public List<StructureDefinition> getChildren() {
 		return children;
 	}
+	
+	public String getUniqueIdentifier() {
+		return String.valueOf(this.hashCode());
+	}
 
 }
