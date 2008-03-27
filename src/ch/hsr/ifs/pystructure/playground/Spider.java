@@ -75,12 +75,14 @@ public class Spider extends StructuralVisitor {
 	public void traverse(SimpleNode node) throws Exception {
 		if (node instanceof exprType) {
 			exprType expression = (exprType) node;
-			StructureDefinition currentStructureDefinition = getCurrentStructureDefinition();
-			List<exprType> list = typables.get(currentStructureDefinition);
+			
+			StructureDefinition definition = getCurrentStructureDefinition();
+			
+			List<exprType> list = typables.get(definition);
 			
 			if (list == null) {
 				list = new ArrayList<exprType>();
-				typables.put(currentStructureDefinition, list);
+				typables.put(definition, list);
 			}
 			
 			list.add(expression);
@@ -124,7 +126,8 @@ public class Spider extends StructuralVisitor {
 		PythonTypeInferencer inferencer = new PythonTypeInferencer(new StatsLogger(false));
 		
 		for (Module module : workspace.getModules()) {
-			HashMap<Integer, List<Result>> types = new HashMap<Integer, List<Result>>();
+			
+			List<Result> results = new ArrayList<Result>();
 			
 			Spider spider = new Spider();
 			spider.run(module);
@@ -134,40 +137,49 @@ public class Spider extends StructuralVisitor {
 				List<exprType> expressions = entry.getValue();
 				
 				for (exprType node : expressions) {
-//					System.out.println(node);
-					
 					IType type = inferencer.evaluateType(workspace, module, node);
-//					System.out.println(" T: "  + type);
-					
-					List<Result> l = types.get(node.beginLine);
-					if (l == null) {
-						l = new LinkedList<Result>();
-						types.put(node.beginLine, l);
-					}
-					
-					l.add(new Result(definition, node, type));
+					results.add(new Result(definition, node, type));
 				}
 			}
 			
-			/* print out source */
-			String source = module.getSource();
 			
-			int i = 1;
-			for (String line : new LineIterator(new StringReader(source))) {
-				System.out.print(line);
-				
-				List<Result> lineType = types.get(i);
-
-				if (lineType != null) {
-					Collections.sort(lineType);
-					System.out.println(" # " + lineType);
-				} else {
-					System.out.println();
-				}
-				i++;
-			}
+			System.out.println(generateDebugSourceOutput(module, results));
 		}
 		inferencer.shutdown();
+	}
+
+	private static String generateDebugSourceOutput(Module module, List<Result> results) {
+		StringBuilder sb = new StringBuilder();
+		
+		/* group results by line nr */
+		HashMap<Integer, List<Result>> types = new HashMap<Integer, List<Result>>();
+		for (Result result : results) {
+			List<Result> l = types.get(result.node.beginLine);
+			if (l == null) {
+				l = new LinkedList<Result>();
+				types.put(result.node.beginLine, l);
+			}
+			l.add(result);
+		}
+		
+		
+		/* print out source */
+		int i = 1;
+		for (String line : new LineIterator(new StringReader(module.getSource()))) {
+			sb.append(line);
+			
+			List<Result> lineType = types.get(i);
+
+			if (lineType != null) {
+				Collections.sort(lineType);
+				sb.append(" # " + lineType + "\n");
+			} else {
+				sb.append("\n");
+			}
+			i++;
+		}
+		
+		return sb.toString();
 	}
 
 }
