@@ -17,7 +17,6 @@ public abstract class DefinitionTypeEvaluator extends AbstractEvaluator {
 	}
 	
 	public boolean isCached() {
-		
 		if (definition.type != null) {
 			this.resultType.appendType(definition.type);
 			
