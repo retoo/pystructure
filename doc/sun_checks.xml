@@ -3,9 +3,8 @@
     This configuration file was written by the eclipse-cs plugin configuration editor
 -->
 <!--
-    Checkstyle-Configuration: PEPTIC Sun Checks (Eclipse)
-    Description: 
-Leicht veränderte Version von Sun Checks, die besser mit den Default-Codeformatierungseinstellungen von Eclipse harmoniert.
+    Checkstyle-Configuration: PyStructure
+    Description: none
 -->
 <!DOCTYPE module PUBLIC "-//Puppy Crawl//DTD Check Configuration 1.2//EN" "http://www.puppycrawl.com/dtds/configuration_1_2.dtd">
 <module name="Checker">
