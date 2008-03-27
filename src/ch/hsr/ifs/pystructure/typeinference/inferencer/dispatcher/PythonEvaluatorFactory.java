@@ -9,6 +9,9 @@
  *******************************************************************************/
 package ch.hsr.ifs.pystructure.typeinference.inferencer.dispatcher;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.python.pydev.parser.jython.SimpleNode;
 import org.python.pydev.parser.jython.ast.Attribute;
 import org.python.pydev.parser.jython.ast.BinOp;
@@ -59,7 +62,6 @@ import ch.hsr.ifs.pystructure.typeinference.goals.types.ReturnTypeGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.TupleElementTypeGoal;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Argument;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.AssignDefinition;
-import ch.hsr.ifs.pystructure.typeinference.model.definitions.Class;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Definition;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.ExceptDefinition;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Function;
@@ -77,36 +79,33 @@ import ch.hsr.ifs.pystructure.typeinference.results.types.TupleType;
  * can be seen as a kind of dispatcher.
  */
 public class PythonEvaluatorFactory implements IEvaluatorFactory {
+	
+	private final Map<Class<? extends IGoal>, Class<? extends AbstractEvaluator>> evaluators;
+	
+	public PythonEvaluatorFactory() {
+		evaluators = new HashMap<Class<? extends IGoal>, Class<? extends AbstractEvaluator>>();
+		initEvaluatorMap();
+	}
+
+	private void initEvaluatorMap() {
+		evaluators.put(PossibleReferencesGoal.class, PossibleReferencesEvaluator.class);
+		evaluators.put(PossibleAttributeReferencesGoal.class, PossibleAttributeReferencesEvaluator.class);
+		evaluators.put(MethodReferencesGoal.class, MethodReferencesEvaluator.class);
+		evaluators.put(FunctionReferencesGoal.class, FunctionReferencesEvaluator.class);
+		evaluators.put(AttributeReferencesGoal.class, AttributeReferencesEvaluator.class);
+		evaluators.put(ClassReferencesGoal.class, ClassReferencesEvaluator.class);
+		evaluators.put(ReturnTypeGoal.class, ReturnTypeEvaluator.class);
+		evaluators.put(TupleElementTypeGoal.class, TupleElementTypeEvaluator.class);
+		evaluators.put(ClassAttributeTypeGoal.class, ClassAttributeTypeEvaluator.class);
+		evaluators.put(PossibleReferencesGoal.class, PossibleReferencesEvaluator.class);
+		evaluators.put(PossibleReferencesGoal.class, PossibleReferencesEvaluator.class);
+	}
 
 	public AbstractEvaluator createEvaluator(IGoal goal) {
-		if (goal instanceof PossibleReferencesGoal) {
-			return new PossibleReferencesEvaluator((PossibleReferencesGoal) goal);
+		AbstractEvaluator evaluator = createEvaluatorFromMap(goal);
+		if (evaluator != null) {
+			return evaluator;
 		}
-		if (goal instanceof PossibleAttributeReferencesGoal) {
-			return new PossibleAttributeReferencesEvaluator((PossibleAttributeReferencesGoal) goal);
-		}
-		if (goal instanceof MethodReferencesGoal) {
-			return new MethodReferencesEvaluator((MethodReferencesGoal) goal);
-		}
-		if (goal instanceof FunctionReferencesGoal) {
-			return new FunctionReferencesEvaluator((FunctionReferencesGoal) goal);
-		}
-		if (goal instanceof AttributeReferencesGoal) {
-			return new AttributeReferencesEvaluator((AttributeReferencesGoal) goal);
-		}
-		if (goal instanceof ClassReferencesGoal) {
-			return new ClassReferencesEvaluator((ClassReferencesGoal) goal);
-		}
-		if (goal instanceof ReturnTypeGoal) {
-			return new ReturnTypeEvaluator((ReturnTypeGoal) goal);
-		}
-		if (goal instanceof TupleElementTypeGoal) {
-			return new TupleElementTypeEvaluator((TupleElementTypeGoal) goal);
-		}
-		if (goal instanceof ClassAttributeTypeGoal) {
-			return new ClassAttributeTypeEvaluator((ClassAttributeTypeGoal) goal);
-		}
-		
 		
 		if (goal instanceof DefinitionTypeGoal) {
 			DefinitionTypeGoal defGoal = (DefinitionTypeGoal) goal;
@@ -121,6 +120,25 @@ public class PythonEvaluatorFactory implements IEvaluatorFactory {
 		throw new RuntimeException("Can't create Evaluator for " + goal);
 	}
 	
+	private AbstractEvaluator createEvaluatorFromMap(IGoal goal) {
+		Class<? extends IGoal> goalClass = goal.getClass();
+		Class<? extends AbstractEvaluator> evaluatorClass = evaluators.get(goalClass);
+		if (evaluatorClass == null) {
+			return null;
+		}
+		
+		try {
+			AbstractEvaluator evaluator = evaluatorClass.getConstructor(goalClass).newInstance(goal);
+			return evaluator;
+		} catch (Exception e) {
+			if (e instanceof RuntimeException) {
+				throw (RuntimeException) e;
+			} else {
+				throw new RuntimeException(e);
+			}
+		}
+	}
+
 	private AbstractEvaluator createDefinitionEvaluator(DefinitionTypeGoal goal) {
 		Definition def = goal.getDefinition();
 		Module module = goal.getContext().getModule();
@@ -138,8 +156,8 @@ public class PythonEvaluatorFactory implements IEvaluatorFactory {
 			Function function = (Function) def;
 			return new FixedAnswerEvaluator(goal, new FunctionType(module, function));
 		}
-		if (def instanceof Class) {
-			Class klass = (Class) def;
+		if (def instanceof ch.hsr.ifs.pystructure.typeinference.model.definitions.Class) {
+			ch.hsr.ifs.pystructure.typeinference.model.definitions.Class klass = (ch.hsr.ifs.pystructure.typeinference.model.definitions.Class) def;
 			return new FixedAnswerEvaluator(goal, new MetaclassType(module, klass));
 		}
 		if (def instanceof Module) {
