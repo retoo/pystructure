@@ -45,6 +45,7 @@ import ch.hsr.ifs.pystructure.typeinference.evaluators.types.BinOpTypeEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.types.CallTypeEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.types.ClassAttributeTypeEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.types.FixedAnswerEvaluator;
+import ch.hsr.ifs.pystructure.typeinference.evaluators.types.IfExpTypeEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.types.ImportTypeEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.types.ReturnTypeEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.types.TupleElementTypeEvaluator;
@@ -198,6 +199,9 @@ public class PythonEvaluatorFactory implements IEvaluatorFactory {
 		if (expr instanceof BinOp) {
 			return new BinOpTypeEvaluator(goal, (BinOp) expr);
 		}
+		if (expr instanceof IfExp) {
+			return new IfExpTypeEvaluator(goal, (IfExp) expr);
+		}
 		
 		return createLiteralEvaluator(goal);
 	}
@@ -257,10 +261,6 @@ public class PythonEvaluatorFactory implements IEvaluatorFactory {
 		}
 		if (expr instanceof BoolOp) {
 			return new FixedAnswerEvaluator(goal, new ClassType("boolean"));
-		}
-		if (expr instanceof IfExp) {
-			/* FIXME */
-			return new FixedAnswerEvaluator(goal, new ClassType("fixme ifexp"));
 		}
 		
 		throw new RuntimeException("Can't create evaluator for literal expression " + expr +  ", goal " + goal);
