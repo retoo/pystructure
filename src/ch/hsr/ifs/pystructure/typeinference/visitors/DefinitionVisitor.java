@@ -69,8 +69,10 @@ public class DefinitionVisitor extends StructuralVisitor {
 
 	public DefinitionVisitor(Module module) {
 		this.module = module;
-		uses = module.getContainedUses();
-		blocks = new Stack<Block>();
+		
+		this.moduleScope = new ModuleScope(new BuiltInScope(), module);
+		this.blocks = new Stack<Block>();
+		this.uses = module.getContainedUses();
 	}
 
 	public void run() {
@@ -83,8 +85,6 @@ public class DefinitionVisitor extends StructuralVisitor {
 
 	@Override
 	public Object visitModule(org.python.pydev.parser.jython.ast.Module node) throws Exception {
-		moduleScope = new ModuleScope(new BuiltInScope(), module);
-
 		blocks.push(moduleScope);
 		super.visitModule(node);
 		visitChildren(module);
