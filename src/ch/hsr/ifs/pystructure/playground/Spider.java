@@ -74,10 +74,16 @@ public class Spider extends StructuralVisitor {
 	@Override
 	public void traverse(SimpleNode node) throws Exception {
 		if (node instanceof exprType) {
-			if (!typables.containsKey(getCurrentStructureDefinition())) {
-				typables.put(getCurrentStructureDefinition(), new ArrayList<exprType>());
+			exprType expression = (exprType) node;
+			StructureDefinition currentStructureDefinition = getCurrentStructureDefinition();
+			List<exprType> list = typables.get(currentStructureDefinition);
+			
+			if (list == null) {
+				list = new ArrayList<exprType>();
+				typables.put(currentStructureDefinition, list);
 			}
-			typables.get(getCurrentStructureDefinition()).add((exprType) node);
+			
+			list.add(expression);
 		}
 		node.traverse(this);
 	}
@@ -108,7 +114,6 @@ public class Spider extends StructuralVisitor {
 		public String toString() {
 			return definition.toString() + " " + this.type.toString();
 		}
-		
 	}
 
 	public static void main(String[] args) throws Exception {
@@ -162,10 +167,7 @@ public class Spider extends StructuralVisitor {
 				i++;
 			}
 		}
-		
 		inferencer.shutdown();
-		
-		
 	}
 
 }
