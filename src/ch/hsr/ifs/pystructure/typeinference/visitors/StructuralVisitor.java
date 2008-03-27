@@ -1,4 +1,4 @@
-package ch.hsr.ifs.pystructure.playground;
+package ch.hsr.ifs.pystructure.typeinference.visitors;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,7 +11,6 @@ import ch.hsr.ifs.pystructure.typeinference.model.definitions.Class;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Function;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Module;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.StructureDefinition;
-import ch.hsr.ifs.pystructure.typeinference.visitors.ParentVisitor;
 
 /**
  * Base class for intelligently visiting a hierarchy consisting of nested

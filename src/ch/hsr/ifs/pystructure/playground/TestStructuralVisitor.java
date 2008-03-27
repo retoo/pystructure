@@ -8,6 +8,7 @@ import org.python.pydev.parser.jython.ast.FunctionDef;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Class;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Function;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Module;
+import ch.hsr.ifs.pystructure.typeinference.visitors.StructuralVisitor;
 import ch.hsr.ifs.pystructure.typeinference.visitors.StructureDefinitionVisitor;
 import ch.hsr.ifs.pystructure.typeinference.visitors.Workspace;
 
