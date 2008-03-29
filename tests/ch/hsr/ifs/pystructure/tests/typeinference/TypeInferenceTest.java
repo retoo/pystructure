@@ -44,10 +44,6 @@ public class TypeInferenceTest extends TestCase {
 	protected void runTest() throws Throwable {
 		List<ExpressionTypeAssertion> assertions = extractAssertions();
 
-		if (assertions.size() == 0) {
-			return;
-		}
-
 		for (ExpressionTypeAssertion assertion : assertions) {
 			logger.testStarted(assertion.filename, assertion.expression, assertion.line);
 			assertion.check(file, inferencer, workspace);
