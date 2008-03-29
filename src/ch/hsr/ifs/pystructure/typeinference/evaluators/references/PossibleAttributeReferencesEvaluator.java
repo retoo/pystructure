@@ -48,9 +48,7 @@ public class PossibleAttributeReferencesEvaluator extends AbstractEvaluator {
 	public PossibleAttributeReferencesEvaluator(PossibleAttributeReferencesGoal goal) {
 		super(goal);
 		name = goal.getName();
-		// IdentityHashMap is used so that we have separate entries for equal
-		// goals, because it may happen when we have a IAttributeDefinition and
-		// we'll create the same goal twice but for different nodes.
+		
 		attributeNames = new HashMap<IGoal, NameAdapter>();
 		attributeNodes = new HashMap<IGoal, SimpleNode>();
 		
