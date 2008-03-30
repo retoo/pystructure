@@ -27,8 +27,8 @@ public class NameUse extends Use {
 	
 	private List<Definition> definitions;
 	
-	public NameUse(NameAdapter name, Module module) {
-		super(name, name.getNode(), module);
+	public NameUse(NameAdapter name, SimpleNode node, Module module) {
+		super(name, node, module);
 		this.definitions = new ArrayList<Definition>();
 	}
 	
@@ -84,7 +84,6 @@ public class NameUse extends Use {
 	}
 	
 	public String toString() {
-		SimpleNode node = getName().getNode();
-		return getName() + " " + NodeUtils.nodePosition(node);
+		return getName() + " " + NodeUtils.nodePosition(getNode());
 	}
 }

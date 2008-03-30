@@ -68,7 +68,7 @@ public class PossibleAttributeReferencesEvaluator extends AbstractEvaluator {
 			List<IGoal> subgoals = new LinkedList<IGoal>();
 
 			for (Use use : g.references) {
-				SimpleNode node = use.getName().getNode();
+				SimpleNode node = use.getNode();
 				ModuleContext parentContext = getGoal().getContext();
 				ModuleContext context = new ModuleContext(parentContext, use.getModule());
 				

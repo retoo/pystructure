@@ -28,7 +28,7 @@ public class Function extends StructureDefinition implements IAttributeDefinitio
 
 	public boolean isFirstArgument(Argument argument) {
 		exprType firstArgument = getNode().args.args[0];
-		return firstArgument.equals(argument.getName().getNode());
+		return firstArgument.equals(argument.getNode());
 	}
 	
 	@Override

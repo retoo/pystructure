@@ -207,7 +207,7 @@ public class DefinitionVisitor extends StructuralVisitor {
 	@Override
 
 	public Object visitName(Name node) throws Exception {
-		NameUse use = new NameUse(new NameAdapter(node), module);
+		NameUse use = new NameUse(new NameAdapter(node), node, module);
 		addNameUse(use);
 		super.visitName(node);
 		return null;
@@ -215,7 +215,7 @@ public class DefinitionVisitor extends StructuralVisitor {
 
 	@Override
 	public Object visitNameTok(NameTok node) throws Exception {
-		NameUse use = new NameUse(new NameAdapter(node), module);
+		NameUse use = new NameUse(new NameAdapter(node), node, module);
 		addNameUse(use);
 		super.visitNameTok(node);
 		return null;
@@ -484,7 +484,7 @@ public class DefinitionVisitor extends StructuralVisitor {
 				 * 
 				 * from module import Class as Alias
 				 */
-				NameUse use = new NameUse(element, this.module);
+				NameUse use = new NameUse(element, entry.name, this.module);
 				use.addDefinition(definition);
 				addNameUse(use);
 			}

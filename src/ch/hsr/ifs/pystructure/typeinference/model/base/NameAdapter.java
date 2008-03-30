@@ -7,7 +7,6 @@
 
 package ch.hsr.ifs.pystructure.typeinference.model.base;
 
-import org.python.pydev.parser.jython.SimpleNode;
 import org.python.pydev.parser.jython.ast.Name;
 import org.python.pydev.parser.jython.ast.NameTok;
 import org.python.pydev.parser.jython.ast.NameTokType;
@@ -17,28 +16,20 @@ import org.python.pydev.parser.jython.ast.NameTokType;
  * (FunctionDef, ClassDef).
  */
 public class NameAdapter implements Comparable<NameAdapter> {
-	private SimpleNode node;
 	private String name;
 
 	public NameAdapter(Name node) {
-		this.node = node;
 		this.name = node.id;
 	}
 	
 	public NameAdapter(NameTokType node) {
-		this.node = node;
 		this.name = ((NameTok) node).id;
 	}
 	
 	public NameAdapter(String name) {
-		this.node = null;
 		this.name = name;
 	}
 	
-	public SimpleNode getNode() {
-		return node;
-	}
-
 	public int compareTo(NameAdapter other) {
 		return getId().compareTo(other.getId());
 	}
