@@ -30,11 +30,19 @@ public class SourceFolder implements PathElementContainer {
 		sourceDir.traverse();
 	}
 	
+	public void addChild(PathElement child) {
+		children.put(child.getName(), child);
+	}
+	
 	public PathElement getChild(String name) {
 		return children.get(name);
 	}
 	
 	public PathElementContainer getParent() {
+		return null;
+	}
+	
+	public NamePath getNamePath() {
 		return null;
 	}
 	
@@ -49,40 +57,38 @@ public class SourceFolder implements PathElementContainer {
 	public void traverse() {
 		if (sourceDirectory.isDirectory()) {
 			for (File file : sourceDirectory.listFiles()) {
-				traverse(file, null, this);
+				traverse(file, this);
 			}
 		}
 	}
 	
-	private void traverse(File file, NamePath parentName, PathElementContainer parent) {
+	private void traverse(File file, PathElementContainer parent) {
 		String fileName = file.getName();
 		
 		if (file.isFile()) {
 			if (fileName.matches(PYTHON_FILES)) {
 				String name = fileName.replaceAll("\\.py$", "");
-				NamePath namePath = new NamePath(parentName, name);
-				addModule(namePath, parent, file);
+				addModule(name, parent, file);
 			}
 			
 		} else if (file.isDirectory()) {
 			File initFile = new File(file, "__init__.py");
 			if (initFile.exists()) {
-				NamePath namePath = new NamePath(parentName, fileName);
-				Package pkg = addPackage(namePath, parent, file, initFile);
+				Package pkg = addPackage(fileName, parent, file, initFile);
 				
 				for (File child : file.listFiles()) {
 					if (child.equals(initFile)) {
 						// Don't register __init__.py files as modules
 						continue;
 					}
-					traverse(child, namePath, pkg);
+					traverse(child, pkg);
 				}
 			}
 		}
 	}
 	
-	private void addModule(NamePath namePath, PathElementContainer parent, File file) {
-		Module module = new Module(namePath, parent, file);
+	private void addModule(String name, PathElementContainer parent, File file) {
+		Module module = new Module(name, parent, file);
 		
 		StructureDefinitionVisitor structureDefinitionVisitor = new StructureDefinitionVisitor();
 		structureDefinitionVisitor.run(module);
@@ -93,15 +99,11 @@ public class SourceFolder implements PathElementContainer {
 		filesToModules.put(file, module);
 	}
 
-	private Package addPackage(NamePath namePath, PathElementContainer parent, File dir, File initFile) {
-		Package pkg = new Package(namePath, parent, dir, initFile);
+	private Package addPackage(String name, PathElementContainer parent, File dir, File initFile) {
+		Package pkg = new Package(name, parent, dir, initFile);
 		
 		parent.addChild(pkg);
 		return pkg;
-	}
-	
-	public void addChild(PathElement child) {
-		this.children.put(child.getName(), child);
 	}
 
 }

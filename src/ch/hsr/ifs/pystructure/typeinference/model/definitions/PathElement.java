@@ -13,6 +13,7 @@ public interface PathElement {
 
 	String getName();
 	NamePath getNamePath();
+	
 	PathElementContainer getParent();
 
 }

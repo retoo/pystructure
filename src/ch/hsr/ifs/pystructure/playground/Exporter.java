@@ -59,7 +59,7 @@ public class Exporter {
 	private void exportClass(Element modules, Class klass) {
 		Element element = new Element("module");
 		element.setAttribute("type", "class");
-		String fullName = klass.getModule().getFullName() + "." + klass.getName();
+		String fullName = klass.getModule().getNamePath() + "." + klass.getName();
 		element.setAttribute("name", fullName);
 		element.setAttribute("id", klass.getUniqueIdentifier());
 		modules.addContent(element);

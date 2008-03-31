@@ -29,28 +29,19 @@ public class Module extends StructureDefinition implements PathElement, IModule 
 	private ArrayList<Definition> definitions;
 	private String source;
 
-	public Module(NamePath namePath, PathElementContainer parent, File file) {
-		this.namePath = namePath;
+	public Module(String name, PathElementContainer parent, File file) {
+		this.namePath = new NamePath(parent.getNamePath(), name);
 		this.parent = parent;
 		this.file = file;
 		
 		try {
 			String source = FileUtils.read(file);
-			String name = FileUtils.stripExtension(file.getName());
 			init(source, name);
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
 	}
 	
-	public NamePath getNamePath() {
-		return namePath;
-	}
-	
-	public PathElementContainer getParent() {
-		return parent;
-	}
-
 	private void init(String source, String name) {
 		this.containedUses = new ArrayList<Use>();
 		this.definitions  = new ArrayList<Definition>();
@@ -66,6 +57,14 @@ public class Module extends StructureDefinition implements PathElement, IModule 
 		super.init(this, name, module);
 	}
 
+	public NamePath getNamePath() {
+		return namePath;
+	}
+	
+	public PathElementContainer getParent() {
+		return parent;
+	}
+	
 	// TODO: Should return all possible definitions, not just one.
 	public Definition getChild(String name) {
 		for (Definition definition : definitions) {
@@ -75,11 +74,6 @@ public class Module extends StructureDefinition implements PathElement, IModule 
 		}
 
 		throw new RuntimeException("Object " + name + " not defined in " + this);
-	}
-
-	// TODO: FIXME
-	public String getFullName() {
-		return namePath.toString();
 	}
 
 	@Override

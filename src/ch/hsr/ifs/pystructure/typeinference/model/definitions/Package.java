@@ -15,19 +15,25 @@ import ch.hsr.ifs.pystructure.typeinference.model.base.NamePath;
 
 public class Package implements PathElement, PathElementContainer {
 	
+	private final String name;
 	private final NamePath namePath;
 	private final PathElementContainer parent;
 	
 	private Map<String, PathElement> children;
 
-	public Package(NamePath namePath, PathElementContainer parent, File dir, File initFile) {
-		this.namePath = namePath;
+	public Package(String name, PathElementContainer parent, File dir, File initFile) {
+		this.name = name;
+		this.namePath = new NamePath(parent.getNamePath(), name);
 		this.parent = parent;
 		this.children = new HashMap<String, PathElement>();
 	}
 	
 	public String getName() {
-		return namePath.getLastPart();
+		return name;
+	}
+	
+	public NamePath getNamePath() {
+		return namePath;
 	}
 	
 	public void addChild(PathElement child) {
@@ -36,10 +42,6 @@ public class Package implements PathElement, PathElementContainer {
 	
 	public PathElement getChild(String name) {
 		return children.get(name);
-	}
-	
-	public NamePath getNamePath() {
-		return namePath;
 	}
 	
 	public PathElementContainer getParent() {
