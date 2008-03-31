@@ -1,5 +1,7 @@
 package ch.hsr.ifs.pystructure.typeinference.model.base;
 
+import java.util.List;
+
 import ch.hsr.ifs.pystructure.utils.StringUtils;
 
 public class NamePath {
@@ -19,6 +21,14 @@ public class NamePath {
 		}
 	}
 	
+	public List<String> getParts() {
+		return StringUtils.dotSplitter(path);
+	}
+
+	public String getFirstPart() {
+		return StringUtils.dotSplitter(path).getFirst();
+	}
+
 	public String getLastPart() {
 		return StringUtils.dotSplitter(path).getLast();
 	}

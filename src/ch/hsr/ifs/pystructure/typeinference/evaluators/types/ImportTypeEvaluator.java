@@ -12,6 +12,7 @@ import java.util.List;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.GoalState;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.DefinitionTypeGoal;
+import ch.hsr.ifs.pystructure.typeinference.model.base.NamePath;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Class;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.ImportDefinition;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Module;
@@ -38,7 +39,7 @@ public class ImportTypeEvaluator extends DefinitionTypeEvaluator {
 
 	@Override
 	public List<IGoal> init() {
-		String path = importDefinition.getPath();
+		NamePath path = importDefinition.getPath();
 		PathElement pathElement = resolve(path, importDefinition.getLevel());
 		
 		if (pathElement == null) {
@@ -85,7 +86,7 @@ public class ImportTypeEvaluator extends DefinitionTypeEvaluator {
 		return IGoal.NO_GOALS;
 	}
 
-	private PathElement resolve(String path, int level) {
+	private PathElement resolve(NamePath path, int level) {
 		/* first we try to look if it is a relative lookup*/
 		Workspace workspace = getGoal().getContext().getWorkspace();
 		Module module = getGoal().getContext().getModule();

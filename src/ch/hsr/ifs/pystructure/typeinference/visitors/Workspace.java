@@ -11,6 +11,7 @@ import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
 
+import ch.hsr.ifs.pystructure.typeinference.model.base.NamePath;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Module;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Package;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.PathElement;
@@ -35,9 +36,9 @@ public class Workspace {
 		}
 	}
 	
-	public PathElement resolve(String path, PathElementContainer parent) {
-		String[] parts = path.split("\\.");
-		String last = parts[parts.length - 1];
+	public PathElement resolve(NamePath path, PathElementContainer parent) {
+		List<String> parts = path.getParts();
+		String last = parts.get(parts.size() - 1);
 		
 		PathElementContainer pkg = parent;
 		
@@ -54,8 +55,8 @@ public class Workspace {
 		return null;
 	}
 	
-	public PathElement resolve(String path) {
-		String first = path.split("\\.", 2)[0];
+	public PathElement resolve(NamePath path) {
+		String first = path.getFirstPart();
 
 		for (SourceFolder sourceFolder : sourceFolders) {
 			if (sourceFolder.getChild(first) != null) {

@@ -37,6 +37,7 @@ import org.python.pydev.parser.jython.ast.exprType;
 import org.python.pydev.parser.jython.ast.stmtType;
 import org.python.pydev.parser.jython.ast.suiteType;
 
+import ch.hsr.ifs.pystructure.typeinference.model.base.NamePath;
 import ch.hsr.ifs.pystructure.typeinference.model.base.NodeUtils;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Argument;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.AssignDefinition;
@@ -436,15 +437,14 @@ public class DefinitionVisitor extends StructuralVisitor {
 			if (entry.asname == null) {
 				/* import package.module  # package -> package */
 				
-				// TODO: Use NamePath
-				String path = NodeUtils.getId(entry.name);
-				String name = path.split("\\.", 2)[0];
-				definition = new ImportDefinition(module, node, name, null, name);
+				NamePath fullPath = new NamePath(NodeUtils.getId(entry.name));
+				NamePath name = new NamePath(fullPath.getFirstPart());
+				definition = new ImportDefinition(module, node, name, null, name.toString());
 			} else {
 				/* import package.module as alias  # alias -> package.module */
 				
 				String alias = NodeUtils.getId(entry.asname);
-				String path = NodeUtils.getId(entry.name);
+				NamePath path = new NamePath(NodeUtils.getId(entry.name));
 				definition = new ImportDefinition(module, node, path, null, alias);
 			}
 			
@@ -469,7 +469,7 @@ public class DefinitionVisitor extends StructuralVisitor {
 	 */
 	@Override
 	public Object visitImportFrom(ImportFrom node) throws Exception {
-		String path = NodeUtils.getId(node.module);
+		NamePath path = new NamePath(NodeUtils.getId(node.module));
 		
 		for (aliasType entry : node.names) {
 			String element = NodeUtils.getId(entry.name);
