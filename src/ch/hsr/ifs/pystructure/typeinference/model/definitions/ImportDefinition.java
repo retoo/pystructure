@@ -49,30 +49,4 @@ public class ImportDefinition extends Definition implements IAttributeDefinition
 		return null;
 	}
 
-//	private Definition parent;
-//	private Object element;
-//
-//	public ImportDefinition(IModule module, NameAdapter alias, Object element, Definition parent) {
-//		this(module, alias, element);
-//		this.parent = parent;
-//	}
-//	
-//	public ImportDefinition(IModule module, NameAdapter alias, Object element) {
-//		super(module, alias, null);
-//		this.element = element;
-//	}
-//
-//	public Object getElement() {
-//		return element;
-//	}
-//
-//	public Definition getAttributeParent() {
-//		return parent;
-//	}
-//	
-//	@Override
-//	public String toString() {
-//		return "Import of " + element + " aliased as " + getName();
-//	}
-
 }
