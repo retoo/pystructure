@@ -37,7 +37,7 @@ import org.python.pydev.parser.jython.ast.exprType;
 import org.python.pydev.parser.jython.ast.stmtType;
 import org.python.pydev.parser.jython.ast.suiteType;
 
-import ch.hsr.ifs.pystructure.typeinference.model.base.NameAdapter;
+import ch.hsr.ifs.pystructure.typeinference.model.base.NodeUtils;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Argument;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.AssignDefinition;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.AttributeUse;
@@ -147,7 +147,7 @@ public class DefinitionVisitor extends StructuralVisitor {
 		for (int position = 0; position < args.args.length; ++position) {
 			exprType argument = args.args[position];
 			if (argument instanceof Name) {
-				NameAdapter name = new NameAdapter((Name) argument);
+				String name = ((Name) argument).id;
 				exprType defaultValue = null;
 				if (position >= firstDefault) {
 					defaultValue = args.defaults[position - firstDefault];
@@ -163,9 +163,9 @@ public class DefinitionVisitor extends StructuralVisitor {
 		node.value.accept(this);
 		node.value.parent = node;
 		for (exprType target : node.targets) {
-			Map<NameAdapter, Value> values = getValues(target, node.value);
-			for (Entry<NameAdapter, Value> entry : values.entrySet()) {
-				NameAdapter name = entry.getKey();
+			Map<String, Value> values = getValues(target, node.value);
+			for (Entry<String, Value> entry : values.entrySet()) {
+				String name = entry.getKey();
 				Definition d = new AssignDefinition(module, name, node, entry.getValue());
 				addDefinition(d);
 			}
@@ -176,14 +176,14 @@ public class DefinitionVisitor extends StructuralVisitor {
 	}
 
 	// TODO: Move this out of DefinitionVisitor
-	private Map<NameAdapter, Value> getValues(exprType target, exprType value) {
-		Map<NameAdapter, Value> values = new HashMap<NameAdapter, Value>();
+	private Map<String, Value> getValues(exprType target, exprType value) {
+		Map<String, Value> values = new HashMap<String, Value>();
 		LinkedList<Integer> indexes = new LinkedList<Integer>();
 		getValues(values, indexes, target, value);
 		return values;
 	}
 	
-	private void getValues(Map<NameAdapter, Value> values, LinkedList<Integer> indexes, exprType target, exprType value) {
+	private void getValues(Map<String, Value> values, LinkedList<Integer> indexes, exprType target, exprType value) {
 		if (target instanceof Tuple) {
 			Tuple tuple = (Tuple) target;
 			for (int i = 0; i < tuple.elts.length; i++) {
@@ -193,7 +193,7 @@ public class DefinitionVisitor extends StructuralVisitor {
 				indexes.removeLast();
 			}
 		} else if (target instanceof Name) {
-			NameAdapter name = new NameAdapter((Name) target);
+			String name = ((Name) target).id;
 			Value v;
 			if (indexes.size() == 0) {
 				v = new Value(value);
@@ -207,7 +207,7 @@ public class DefinitionVisitor extends StructuralVisitor {
 	@Override
 
 	public Object visitName(Name node) throws Exception {
-		NameUse use = new NameUse(new NameAdapter(node), node, module);
+		NameUse use = new NameUse(node.id, node, module);
 		addNameUse(use);
 		super.visitName(node);
 		return null;
@@ -215,7 +215,7 @@ public class DefinitionVisitor extends StructuralVisitor {
 
 	@Override
 	public Object visitNameTok(NameTok node) throws Exception {
-		NameUse use = new NameUse(new NameAdapter(node), node, module);
+		NameUse use = new NameUse(node.id, node, module);
 		addNameUse(use);
 		super.visitNameTok(node);
 		return null;
@@ -235,9 +235,10 @@ public class DefinitionVisitor extends StructuralVisitor {
 
 	@Override
 	public Object visitGlobal(Global node) throws Exception {
-		for (NameTokType name : node.names) {
-			getScope().setGlobal(new NameAdapter(name));
-			name.accept(this);
+		for (NameTokType nameTok : node.names) {
+			String name = NodeUtils.getId(nameTok);
+			getScope().setGlobal(name);
+			nameTok.accept(this);
 		}
 		return null;
 	}
@@ -269,7 +270,7 @@ public class DefinitionVisitor extends StructuralVisitor {
 
 		// TODO: What about tuples?
 		if (node.target instanceof Name) {
-			NameAdapter name = new NameAdapter((Name) node.target);
+			String name = ((Name) node.target).id;
 			Definition definition = new LoopVariableDefinition(module, name, node);
 			bodyBlock.setCurrentDefinition(definition);
 			parent.addToCurrentDefinitions(definition);
@@ -322,7 +323,7 @@ public class DefinitionVisitor extends StructuralVisitor {
 
 			// TODO: What about tuples?
 			if (handler.name instanceof Name) {
-				NameAdapter name = new NameAdapter((Name) handler.name);
+				String name = ((Name) handler.name).id;
 				ExceptDefinition definition = new ExceptDefinition(module, name, handler);
 				handlerBlock.setCurrentDefinition(definition);
 			}
@@ -436,14 +437,14 @@ public class DefinitionVisitor extends StructuralVisitor {
 				/* import package.module  # package -> package */
 				
 				// TODO: Create ModulePath class or something like that
-				NameAdapter path = new NameAdapter(entry.name);
-				NameAdapter name = new NameAdapter(path.getId().split("\\.", 2)[0]);
+				String path = NodeUtils.getId(entry.name);
+				String name = path.split("\\.", 2)[0];
 				definition = new ImportDefinition(module, node, name, null, name);
 			} else {
 				/* import package.module as alias  # alias -> package.module */
 				
-				NameAdapter alias = new NameAdapter(entry.asname);
-				NameAdapter path = new NameAdapter(entry.name);
+				String alias = NodeUtils.getId(entry.asname);
+				String path = NodeUtils.getId(entry.name);
 				definition = new ImportDefinition(module, node, path, null, alias);
 			}
 			
@@ -468,11 +469,11 @@ public class DefinitionVisitor extends StructuralVisitor {
 	 */
 	@Override
 	public Object visitImportFrom(ImportFrom node) throws Exception {
-		NameAdapter path = new NameAdapter(node.module);
+		String path = NodeUtils.getId(node.module);
 		
 		for (aliasType entry : node.names) {
-			NameAdapter element = new NameAdapter(entry.name);
-			NameAdapter alias = new NameAdapter(entry.asname == null ? entry.name : entry.asname);
+			String element = NodeUtils.getId(entry.name);
+			String alias = NodeUtils.getId(entry.asname == null ? entry.name : entry.asname);
 			
 			ImportDefinition definition = new ImportDefinition(module, node, path, element, alias, node.level);
 			addDefinition(definition);

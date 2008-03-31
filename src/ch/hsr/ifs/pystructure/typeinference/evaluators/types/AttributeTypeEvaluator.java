@@ -19,7 +19,7 @@ import ch.hsr.ifs.pystructure.typeinference.goals.base.GoalState;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.ClassAttributeTypeGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.ExpressionTypeGoal;
-import ch.hsr.ifs.pystructure.typeinference.model.base.NameAdapter;
+import ch.hsr.ifs.pystructure.typeinference.model.base.NodeUtils;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Class;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Definition;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Method;
@@ -68,7 +68,7 @@ public class AttributeTypeEvaluator extends AbstractEvaluator {
 		if (subgoal instanceof ExpressionTypeGoal) {
 			ExpressionTypeGoal g = (ExpressionTypeGoal) subgoal;
 			
-			NameAdapter attributeName = new NameAdapter(attribute.attr);
+			String attributeName = NodeUtils.getId(attribute.attr);
 			for (IType type : g.resultType) {
 				if (type instanceof ClassType) {
 					// It's either a method or an attribute

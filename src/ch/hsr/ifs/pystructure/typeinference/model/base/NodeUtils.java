@@ -1,6 +1,8 @@
 package ch.hsr.ifs.pystructure.typeinference.model.base;
 
 import org.python.pydev.parser.jython.SimpleNode;
+import org.python.pydev.parser.jython.ast.NameTok;
+import org.python.pydev.parser.jython.ast.NameTokType;
 
 public final class NodeUtils {
 
@@ -14,6 +16,9 @@ public final class NodeUtils {
 				: "";
 	}
 
+	public static String getId(NameTokType name) {
+		return ((NameTok) name).id;
+	}
 
 	/**
 	 * Pretty-print the given AST node to stdout.

@@ -9,12 +9,12 @@ package ch.hsr.ifs.pystructure.typeinference.model.definitions;
 
 import org.python.pydev.parser.jython.ast.Attribute;
 
-import ch.hsr.ifs.pystructure.typeinference.model.base.NameAdapter;
+import ch.hsr.ifs.pystructure.typeinference.model.base.NodeUtils;
 
 public class AttributeUse extends Use {
 
 	public AttributeUse(Attribute node, Module module) {
-		super(new NameAdapter(node.attr), node, module);
+		super(NodeUtils.getId(node.attr), node, module);
 	}
 
 }

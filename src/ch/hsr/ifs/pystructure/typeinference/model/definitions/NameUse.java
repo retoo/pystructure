@@ -16,7 +16,6 @@ import java.util.Set;
 
 import org.python.pydev.parser.jython.SimpleNode;
 
-import ch.hsr.ifs.pystructure.typeinference.model.base.NameAdapter;
 import ch.hsr.ifs.pystructure.typeinference.model.base.NodeUtils;
 
 /**
@@ -27,7 +26,7 @@ public class NameUse extends Use {
 	
 	private List<Definition> definitions;
 	
-	public NameUse(NameAdapter name, SimpleNode node, Module module) {
+	public NameUse(String name, SimpleNode node, Module module) {
 		super(name, node, module);
 		this.definitions = new ArrayList<Definition>();
 	}

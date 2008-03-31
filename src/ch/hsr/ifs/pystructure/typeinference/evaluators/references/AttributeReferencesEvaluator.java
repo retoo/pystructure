@@ -15,7 +15,6 @@ import ch.hsr.ifs.pystructure.typeinference.goals.base.GoalState;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.references.AttributeReferencesGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.references.PossibleAttributeReferencesGoal;
-import ch.hsr.ifs.pystructure.typeinference.model.base.NameAdapter;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Definition;
 import ch.hsr.ifs.pystructure.typeinference.results.references.AttributeReference;
 import ch.hsr.ifs.pystructure.typeinference.results.types.ClassType;
@@ -27,7 +26,7 @@ import ch.hsr.ifs.pystructure.typeinference.results.types.ModuleType;
  */
 public class AttributeReferencesEvaluator extends AbstractEvaluator {
 
-	private final NameAdapter attributeName;
+	private final String attributeName;
 	private final Definition attributeParent;
 	
 	private List<AttributeReference> references;

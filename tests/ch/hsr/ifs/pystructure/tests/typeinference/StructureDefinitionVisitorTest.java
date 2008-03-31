@@ -30,15 +30,15 @@ public class StructureDefinitionVisitorTest extends TestCase {
 		assertEquals(3, module.getChildren().size());
 		
 		StructureDefinition classA = module.getChildren().get(0);
-		assertEquals("A", classA.getName().getId());
+		assertEquals("A", classA.getName());
 		assertEquals(2, classA.getChildren().size());
 		
 		StructureDefinition methodInit = (StructureDefinition) classA.getChildren().get(0);
-		assertEquals("__init__", methodInit.getName().getId());
+		assertEquals("__init__", methodInit.getName());
 		assertEquals(0, methodInit.getChildren().size());
 		
 		StructureDefinition methodFoo = (StructureDefinition) classA.getChildren().get(1);
-		assertEquals("foo", methodFoo.getName().getId());
+		assertEquals("foo", methodFoo.getName());
 		assertEquals(1, methodFoo.getChildren().size());
 		
 		StructureDefinition functionBar = (StructureDefinition) methodFoo.getChildren().get(0);

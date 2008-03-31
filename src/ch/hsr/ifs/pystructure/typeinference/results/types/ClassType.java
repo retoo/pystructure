@@ -23,7 +23,7 @@ public class ClassType extends AbstractType {
 	}
 
 	public ClassType(Module module, Class klass) {
-		super(klass.getName().getId());
+		super(klass.getName());
 		this.module = module;
 		this.klass = klass;
 	}

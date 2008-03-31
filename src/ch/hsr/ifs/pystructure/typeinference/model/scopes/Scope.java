@@ -10,24 +10,23 @@ package ch.hsr.ifs.pystructure.typeinference.model.scopes;
 import java.util.ArrayList;
 import java.util.List;
 
-import ch.hsr.ifs.pystructure.typeinference.model.base.NameAdapter;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Definition;
 
 public class Scope extends Block {
 	private Definition definition;
-	private List<NameAdapter> globals;
+	private List<String> globals;
 	
 	public Scope(Block parent, Definition definition) {
 		super(parent);
 		this.definition = definition;
-		this.globals = new ArrayList<NameAdapter>();
+		this.globals = new ArrayList<String>();
 	}
 	
-	public void setGlobal(NameAdapter global) {
-		globals.add(global);
+	public void setGlobal(String name) {
+		globals.add(name);
 	}
 	
-	public boolean isGlobal(NameAdapter name) {
+	public boolean isGlobal(String name) {
 		return globals.contains(name);
 	}
 	
@@ -36,7 +35,7 @@ public class Scope extends Block {
 	}
 	
 	@Override
-	protected List<Definition> getParentDefinitions(NameAdapter name) {
+	protected List<Definition> getParentDefinitions(String name) {
 		return getParent().getAllDefinitions(name);
 	}
 }

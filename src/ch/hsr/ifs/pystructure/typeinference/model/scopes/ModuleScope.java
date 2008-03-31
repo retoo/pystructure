@@ -13,20 +13,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import ch.hsr.ifs.pystructure.typeinference.model.base.NameAdapter;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Definition;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Module;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.NameUse;
 
 public class ModuleScope extends Scope {
 
-	private Map<NameAdapter, List<Definition>> globalDefinitions;
-	private Map<NameAdapter, List<NameUse>> globalNameUses;
+	private Map<String, List<Definition>> globalDefinitions;
+	private Map<String, List<NameUse>> globalNameUses;
 	
 	public ModuleScope(Block parent, Module module) {
 		super(parent, module);
-		globalDefinitions = new HashMap<NameAdapter, List<Definition>>();
-		globalNameUses = new HashMap<NameAdapter, List<NameUse>>();
+		globalDefinitions = new HashMap<String, List<Definition>>();
+		globalNameUses = new HashMap<String, List<NameUse>>();
 	}
 	
 	public void addGlobalDefinition(Definition definition) {
@@ -48,8 +47,8 @@ public class ModuleScope extends Scope {
 	}
 	
 	public void connectGlobals() {
-		for (Entry<NameAdapter, List<NameUse>> entry : globalNameUses.entrySet()) {
-			NameAdapter name = entry.getKey();
+		for (Entry<String, List<NameUse>> entry : globalNameUses.entrySet()) {
+			String name = entry.getKey();
 			List<NameUse> nameUses = entry.getValue();
 			for (NameUse nameUse : nameUses) {
 				List<Definition> definitions = globalDefinitions.get(name);

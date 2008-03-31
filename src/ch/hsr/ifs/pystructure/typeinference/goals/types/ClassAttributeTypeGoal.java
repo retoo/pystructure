@@ -1,15 +1,14 @@
 package ch.hsr.ifs.pystructure.typeinference.goals.types;
 
 import ch.hsr.ifs.pystructure.typeinference.contexts.ModuleContext;
-import ch.hsr.ifs.pystructure.typeinference.model.base.NameAdapter;
 import ch.hsr.ifs.pystructure.typeinference.results.types.ClassType;
 
 public class ClassAttributeTypeGoal extends AbstractTypeGoal {
 
 	private final ClassType classType;
-	private final NameAdapter attributeName;
+	private final String attributeName;
 
-	public ClassAttributeTypeGoal(ModuleContext context, ClassType classType, NameAdapter attributeName) {
+	public ClassAttributeTypeGoal(ModuleContext context, ClassType classType, String attributeName) {
 		super(context);
 
 		this.classType = classType;
@@ -20,7 +19,7 @@ public class ClassAttributeTypeGoal extends AbstractTypeGoal {
 		return classType;
 	}
 
-	public NameAdapter getAttributeName() {
+	public String getAttributeName() {
 		return attributeName;
 	}
 

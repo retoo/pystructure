@@ -10,33 +10,32 @@ package ch.hsr.ifs.pystructure.typeinference.model.definitions;
 import org.python.pydev.parser.jython.SimpleNode;
 
 import ch.hsr.ifs.pystructure.typeinference.model.base.IModule;
-import ch.hsr.ifs.pystructure.typeinference.model.base.NameAdapter;
 
 public class ImportDefinition extends Definition implements IAttributeDefinition {
 
-	private final NameAdapter path;
-	private final NameAdapter element;
+	private final String path;
+	private final String element;
 	private final int level;
 
-	public ImportDefinition(IModule module, SimpleNode node, NameAdapter path, NameAdapter element, NameAdapter alias) {
+	public ImportDefinition(IModule module, SimpleNode node, String path, String element, String alias) {
 		super(module, alias, node);
 		this.path = path;
 		this.element = element;
 		this.level = 0;
 	}
 	
-	public ImportDefinition(IModule module, SimpleNode node, NameAdapter path, NameAdapter element, NameAdapter alias, int level) {
+	public ImportDefinition(IModule module, SimpleNode node, String path, String element, String alias, int level) {
 		super(module, alias, node);
 		this.path = path;
 		this.element = element;
 		this.level = level;
 	}
 
-	public NameAdapter getPath() {
+	public String getPath() {
 		return path;
 	}
 	
-	public NameAdapter getElement() {
+	public String getElement() {
 		return element;
 	}
 	

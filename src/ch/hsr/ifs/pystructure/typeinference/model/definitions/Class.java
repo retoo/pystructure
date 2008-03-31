@@ -14,7 +14,6 @@ import java.util.List;
 import org.python.pydev.parser.jython.ast.ClassDef;
 
 import ch.hsr.ifs.pystructure.typeinference.basetype.CombinedType;
-import ch.hsr.ifs.pystructure.typeinference.model.base.NameAdapter;
 
 /**
  * Definition of a class.
@@ -23,20 +22,20 @@ public class Class extends StructureDefinition implements IAttributeDefinition {
 
 	private List<Method> methods;
 	private Module module;
-	public HashMap<NameAdapter, CombinedType> attributes;
+	public HashMap<String, CombinedType> attributes;
 
-	public Class(NameAdapter name, ClassDef classDef, Module module) {
+	public Class(String name, ClassDef classDef, Module module) {
 		super(module, name, classDef);
 		this.methods = new ArrayList<Method>();
 		this.module = module;
-		this.attributes = new HashMap<NameAdapter, CombinedType>();
+		this.attributes = new HashMap<String, CombinedType>();
 	}
 	
 	public void addMethod(Method method) {
 		methods.add(method);
 	}
 	
-	public Method getMethodNamed(NameAdapter name) {
+	public Method getMethodNamed(String name) {
 		for (Method method : methods) {
 			if (method.getName().equals(name)) {
 				return method;
@@ -68,7 +67,7 @@ public class Class extends StructureDefinition implements IAttributeDefinition {
 		return module;
 	}
 
-	public HashMap<NameAdapter, CombinedType> getAttributes() {
+	public HashMap<String, CombinedType> getAttributes() {
 		return attributes;
 	}
 

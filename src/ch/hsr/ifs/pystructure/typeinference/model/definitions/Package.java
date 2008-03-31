@@ -11,14 +11,13 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.LinkedList;
 
-
-import ch.hsr.ifs.pystructure.typeinference.model.base.NameAdapter;
 import ch.hsr.ifs.pystructure.utils.StringUtils;
 
 public class Package implements IPackage, PathElement {
+
 	private File workspacePath;
 	private String relativePath;
-	private NameAdapter name;
+	private String name;
 	
 	private File path;
 	
@@ -28,7 +27,7 @@ public class Package implements IPackage, PathElement {
 	protected IModuleCreator runtime;
 
 	public Package(String name, File workspacePath, String relPath, Package parent, IModuleCreator runtime) {
-		this.name = new NameAdapter(name);
+		this.name = name;
 		this.relativePath = relPath;
 		
 		this.workspacePath = workspacePath;
@@ -122,15 +121,10 @@ public class Package implements IPackage, PathElement {
 	}
 
 	protected void registerChild(PathElement element) {
-		children.put(element.getName().getId(), element);
+		children.put(element.getName(), element);
 	}
 	
-	public PathElement getChild(NameAdapter attribName) {
-		return children.get(attribName.getId()); /* TODO */
-	}
-	
-	@Deprecated
-	private PathElement getChild(String childName) {
+	public PathElement getChild(String childName) {
 		return children.get(childName);
 	}
 
@@ -150,7 +144,7 @@ public class Package implements IPackage, PathElement {
 		return null;
 	}
 
-	public NameAdapter getName() {
+	public String getName() {
 		return name;
 	}
 

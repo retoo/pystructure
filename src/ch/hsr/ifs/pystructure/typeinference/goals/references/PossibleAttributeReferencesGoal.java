@@ -12,22 +12,21 @@ import java.util.List;
 
 import ch.hsr.ifs.pystructure.typeinference.contexts.ModuleContext;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.AbstractGoal;
-import ch.hsr.ifs.pystructure.typeinference.model.base.NameAdapter;
 import ch.hsr.ifs.pystructure.typeinference.results.references.AttributeReference;
 
 public class PossibleAttributeReferencesGoal extends AbstractGoal {
 
-	private final NameAdapter name;
+	private final String name;
 
 	public final List<AttributeReference> references;
 
-	public PossibleAttributeReferencesGoal(ModuleContext context, NameAdapter name) {
+	public PossibleAttributeReferencesGoal(ModuleContext context, String name) {
 		super(context);
 		this.name = name;
 		this.references = new ArrayList<AttributeReference>();
 	}
 
-	public NameAdapter getName() {
+	public String getName() {
 		return name;
 	}
 

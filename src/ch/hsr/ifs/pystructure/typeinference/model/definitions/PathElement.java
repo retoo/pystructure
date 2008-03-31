@@ -7,8 +7,6 @@
 
 package ch.hsr.ifs.pystructure.typeinference.model.definitions;
 
-import ch.hsr.ifs.pystructure.typeinference.model.base.NameAdapter;
-
 public interface PathElement {
 
 	/**
@@ -17,6 +15,6 @@ public interface PathElement {
 	 * 
 	 * @return
 	 */
-	NameAdapter getName();
+	String getName();
 
 }

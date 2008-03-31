@@ -14,7 +14,6 @@ import ch.hsr.ifs.pystructure.typeinference.evaluators.base.AbstractEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.GoalState;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.references.PossibleReferencesGoal;
-import ch.hsr.ifs.pystructure.typeinference.model.base.NameAdapter;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Module;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Use;
 import ch.hsr.ifs.pystructure.typeinference.visitors.Workspace;
@@ -25,7 +24,7 @@ import ch.hsr.ifs.pystructure.typeinference.visitors.Workspace;
  */
 public class PossibleReferencesEvaluator extends AbstractEvaluator {
 
-	private NameAdapter name;
+	private String name;
 	
 	private List<Use> uses;
 

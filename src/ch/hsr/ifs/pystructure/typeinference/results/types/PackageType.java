@@ -15,7 +15,7 @@ public class PackageType extends AbstractType {
 	private Package pkg;
 
 	public PackageType(Package pkg) {
-		super(pkg.getName().getId());
+		super(pkg.getName());
 		this.pkg = pkg;
 	}
 	

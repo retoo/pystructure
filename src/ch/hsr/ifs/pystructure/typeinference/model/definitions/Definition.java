@@ -14,7 +14,6 @@ import org.python.pydev.parser.jython.SimpleNode;
 
 import ch.hsr.ifs.pystructure.typeinference.basetype.CombinedType;
 import ch.hsr.ifs.pystructure.typeinference.model.base.IModule;
-import ch.hsr.ifs.pystructure.typeinference.model.base.NameAdapter;
 import ch.hsr.ifs.pystructure.typeinference.model.base.NodeUtils;
 
 /**
@@ -23,7 +22,7 @@ import ch.hsr.ifs.pystructure.typeinference.model.base.NodeUtils;
  */
 public abstract class Definition {
 
-	private NameAdapter name;
+	private String name;
 	private SimpleNode  node;
 	private LinkedList<NameUse> uses;
 	private IModule module;
@@ -34,18 +33,18 @@ public abstract class Definition {
 		this.type = null;
 	}
 	
-	public Definition(IModule module, NameAdapter name, SimpleNode node) {
+	public Definition(IModule module, String name, SimpleNode node) {
 		this();
 		init(module, name, node);
 	}
 	
-	protected void init(IModule module, NameAdapter name, SimpleNode node) {
+	protected void init(IModule module, String name, SimpleNode node) {
 		this.module = module;
 		this.name = name;
 		this.node = node;
 	}
 	
-	public NameAdapter getName() {
+	public String getName() {
 		return name;
 	}
 	

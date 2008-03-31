@@ -97,7 +97,7 @@ public class MethodReferencesEvaluator extends AbstractEvaluator {
 	}
 
 	private boolean isConstructor() {
-		return method.getName().getId().equals("__init__");
+		return method.getName().equals("__init__");
 	}
 
 }

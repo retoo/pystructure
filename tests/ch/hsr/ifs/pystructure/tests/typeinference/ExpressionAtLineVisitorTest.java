@@ -13,9 +13,9 @@ import org.python.pydev.parser.jython.SimpleNode;
 import org.python.pydev.parser.jython.ast.Attribute;
 import org.python.pydev.parser.jython.ast.Expr;
 import org.python.pydev.parser.jython.ast.Name;
-import org.python.pydev.parser.jython.ast.NameTok;
 
 import ch.hsr.ifs.pystructure.parser.Parser;
+import ch.hsr.ifs.pystructure.typeinference.model.base.NodeUtils;
 import ch.hsr.ifs.pystructure.typeinference.visitors.ExpressionAtLineVisitor;
 
 public class ExpressionAtLineVisitorTest extends TestCase {
@@ -41,8 +41,7 @@ public class ExpressionAtLineVisitorTest extends TestCase {
 		Expr expression = getExpression(source, "name.attribute", 2);
 		assertNotNull(expression);
 		Attribute attribute = (Attribute) expression.value;
-		NameTok name = (NameTok) attribute.attr;
-		assertEquals("attribute", name.id);
+		assertEquals("attribute", NodeUtils.getId(attribute.attr));
 	}
 
 	private Expr getExpression(String source, String wantedExpression, int line) throws Exception {

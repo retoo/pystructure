@@ -7,13 +7,10 @@
 
 package ch.hsr.ifs.pystructure.typeinference.model.definitions;
 
-import ch.hsr.ifs.pystructure.typeinference.model.base.NameAdapter;
-
-
 public interface IPackage {
 
 	Path lookFor(String string);
 	IPackage getParent();
-	NameAdapter getName();
+	String getName();
 	
 }

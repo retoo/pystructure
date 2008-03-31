@@ -12,23 +12,22 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import ch.hsr.ifs.pystructure.typeinference.model.base.NameAdapter;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Definition;
 
 public class Block {
 	private final Block parent;
 	
 	private List<Definition> allDefinitions;
-	private Map<NameAdapter, List<Definition>> currentDefinitions;
+	private Map<String, List<Definition>> currentDefinitions;
 
 	public Block(Block parent) {
 		this.parent = parent;
 		this.allDefinitions = new ArrayList<Definition>();
-		this.currentDefinitions = new TreeMap<NameAdapter, List<Definition>>();
+		this.currentDefinitions = new TreeMap<String, List<Definition>>();
 	}
 	
 	public void addToCurrentDefinitions(Definition definition) {
-		NameAdapter name = definition.getName();
+		String name = definition.getName();
 		List<Definition> definitions = currentDefinitions.get(name);
 		if (definitions != null) {
 			definitions.add(definition);
@@ -69,7 +68,7 @@ public class Block {
 		}
 	}
 	
-	public List<Definition> getDefinitions(NameAdapter name) {
+	public List<Definition> getDefinitions(String name) {
 		List<Definition> definitions = currentDefinitions.get(name);
 		if (definitions != null) {
 			return definitions;
@@ -78,11 +77,11 @@ public class Block {
 		}
 	}
 	
-	protected List<Definition> getParentDefinitions(NameAdapter name) {
+	protected List<Definition> getParentDefinitions(String name) {
 		return getParent().getDefinitions(name);
 	}
 	
-	protected List<Definition> getAllDefinitions(NameAdapter name) {
+	protected List<Definition> getAllDefinitions(String name) {
 		List<Definition> definitions = new ArrayList<Definition>();
 		for (Definition definition : allDefinitions) {
 			if (name.equals(definition.getName())) {

@@ -14,7 +14,6 @@ import org.python.pydev.parser.jython.ast.exprType;
 
 import ch.hsr.ifs.pystructure.typeinference.inferencer.PythonTypeInferencer;
 import ch.hsr.ifs.pystructure.typeinference.inferencer.logger.StatsLogger;
-import ch.hsr.ifs.pystructure.typeinference.model.base.NameAdapter;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Class;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Method;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Module;
@@ -70,10 +69,10 @@ public class Exporter {
 	}
 
 	private void exportAttributes(Element element, Class klass) {
-		for (NameAdapter name : klass.getAttributes().keySet()) {
+		for (String name : klass.getAttributes().keySet()) {
 			Element attribute = new Element("submodule");
 			attribute.setAttribute("type", "attribute");
-			attribute.setAttribute("name", name.getId());
+			attribute.setAttribute("name", name);
 			attribute.setAttribute("id", String.valueOf(name.hashCode()));
 			element.addContent(attribute);
 		}
@@ -84,7 +83,7 @@ public class Exporter {
 		for (Method method : klass.getMethods()) {
 			Element submodule = new Element("submodule");
 			submodule.setAttribute("type", "method");
-			submodule.setAttribute("name", method.getName().getId());
+			submodule.setAttribute("name", method.getName());
 			submodule.setAttribute("id", method.getUniqueIdentifier());
 			
 			element.addContent(submodule);

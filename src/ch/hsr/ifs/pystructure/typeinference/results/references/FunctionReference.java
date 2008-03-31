@@ -12,7 +12,7 @@ import org.python.pydev.parser.jython.ast.Call;
 import org.python.pydev.parser.jython.ast.exprType;
 import org.python.pydev.parser.jython.ast.keywordType;
 
-import ch.hsr.ifs.pystructure.typeinference.model.base.NameAdapter;
+import ch.hsr.ifs.pystructure.typeinference.model.base.NodeUtils;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Argument;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Function;
 
@@ -54,7 +54,7 @@ public class FunctionReference extends Reference {
 
 		// Is it passed as a keyword argument?
 		for (keywordType keyword : call.keywords) {
-			NameAdapter keywordName = new NameAdapter(keyword.arg);
+			String keywordName = NodeUtils.getId(keyword.arg);
 			if (keywordName.equals(argument.getName())) {
 				return keyword.value;
 			}

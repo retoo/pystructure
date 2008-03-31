@@ -9,8 +9,6 @@ package ch.hsr.ifs.pystructure.typeinference.model.definitions;
 
 import org.python.pydev.parser.jython.ast.FunctionDef;
 
-import ch.hsr.ifs.pystructure.typeinference.model.base.NameAdapter;
-
 /**
  * Definition of a method of a class.
  */
@@ -18,7 +16,7 @@ public class Method extends Function {
 
 	private final Class klass;
 
-	public Method(Module module, NameAdapter name, FunctionDef functionDef, Class klass) {
+	public Method(Module module, String name, FunctionDef functionDef, Class klass) {
 		super(module, name, functionDef, klass);
 		this.klass = klass;
 	}

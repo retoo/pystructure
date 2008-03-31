@@ -16,7 +16,6 @@ import org.python.pydev.parser.jython.ParseException;
 
 import ch.hsr.ifs.pystructure.parser.Parser;
 import ch.hsr.ifs.pystructure.typeinference.model.base.IModule;
-import ch.hsr.ifs.pystructure.typeinference.model.base.NameAdapter;
 import ch.hsr.ifs.pystructure.utils.FileUtils;
 
 public class Module extends StructureDefinition implements PathElement, IModule {
@@ -57,18 +56,18 @@ public class Module extends StructureDefinition implements PathElement, IModule 
 			throw new RuntimeException("Unable to parse module " + this, e);
 		}
 		
-		super.init(this, new NameAdapter(name), module);
+		super.init(this, name, module);
 	}
 
 	// TODO: Should return all possible definitions, not just one.
-	public Definition getChild(NameAdapter nameAdapter) {
+	public Definition getChild(String name) {
 		for (Definition definition : definitions) {
-			if (definition.getName().equals(nameAdapter)) {
+			if (definition.getName().equals(name)) {
 				return definition;
 			}
 		}
 
-		throw new RuntimeException("Object " + nameAdapter + " not defined in " + this);
+		throw new RuntimeException("Object " + name + " not defined in " + this);
 	}
 
 	public String getPath() {
@@ -80,17 +79,15 @@ public class Module extends StructureDefinition implements PathElement, IModule 
 		StringBuilder s = new StringBuilder();
 		s.append(getName());
 		for (IPackage pkg = this.pkg; !(pkg instanceof ImportPath); pkg = pkg.getParent()) {
-			s.insert(0, pkg.getName().getId() + ".");
+			s.insert(0, pkg.getName() + ".");
 		}
 		return s.toString();
 	}
 
 	@Override
 	public String toString() {
-		NameAdapter name = getName();
-		return name != null 
-			? name.getId()
-			: relativePath;
+		String name = getName();
+		return name != null ? name : relativePath;
 	}
 
 	public List<Use> getContainedUses() {

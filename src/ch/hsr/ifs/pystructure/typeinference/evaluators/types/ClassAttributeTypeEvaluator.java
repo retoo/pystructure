@@ -14,7 +14,6 @@ import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.references.AttributeReferencesGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.ClassAttributeTypeGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.ExpressionTypeGoal;
-import ch.hsr.ifs.pystructure.typeinference.model.base.NameAdapter;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Class;
 import ch.hsr.ifs.pystructure.typeinference.results.references.AttributeReference;
 import ch.hsr.ifs.pystructure.typeinference.results.types.ClassType;
@@ -22,7 +21,7 @@ import ch.hsr.ifs.pystructure.typeinference.results.types.ClassType;
 public class ClassAttributeTypeEvaluator extends AbstractEvaluator {
 
 	private ClassType classType;
-	private NameAdapter attributeName;
+	private String attributeName;
 	private CombinedType resultType;
 	private Class klass;
 

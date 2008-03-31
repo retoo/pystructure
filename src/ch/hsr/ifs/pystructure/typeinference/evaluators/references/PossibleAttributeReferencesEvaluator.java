@@ -24,7 +24,6 @@ import ch.hsr.ifs.pystructure.typeinference.goals.references.PossibleReferencesG
 import ch.hsr.ifs.pystructure.typeinference.goals.types.AbstractTypeGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.DefinitionTypeGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.ExpressionTypeGoal;
-import ch.hsr.ifs.pystructure.typeinference.model.base.NameAdapter;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.AttributeUse;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Definition;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.IAttributeDefinition;
@@ -39,8 +38,8 @@ import ch.hsr.ifs.pystructure.typeinference.results.references.AttributeReferenc
  */
 public class PossibleAttributeReferencesEvaluator extends AbstractEvaluator {
 
-	private NameAdapter name;
-	private Map<IGoal, NameAdapter> attributeNames;
+	private String name;
+	private Map<IGoal, String> attributeNames;
 	private Map<IGoal, SimpleNode> attributeNodes;
 	
 	private List<AttributeReference> references;
@@ -49,7 +48,7 @@ public class PossibleAttributeReferencesEvaluator extends AbstractEvaluator {
 		super(goal);
 		name = goal.getName();
 		
-		attributeNames = new HashMap<IGoal, NameAdapter>();
+		attributeNames = new HashMap<IGoal, String>();
 		attributeNodes = new HashMap<IGoal, SimpleNode>();
 		
 		references = goal.references;
@@ -106,7 +105,7 @@ public class PossibleAttributeReferencesEvaluator extends AbstractEvaluator {
 			
 		} else if (subgoal instanceof AbstractTypeGoal) {
 			AbstractTypeGoal typeGoal = (AbstractTypeGoal) subgoal;
-			NameAdapter name = attributeNames.get(subgoal);
+			String name = attributeNames.get(subgoal);
 			SimpleNode node = attributeNodes.get(subgoal);
 			Module module = typeGoal.getContext().getModule();
 			AttributeReference ref = new AttributeReference(name, typeGoal.resultType, node, module);

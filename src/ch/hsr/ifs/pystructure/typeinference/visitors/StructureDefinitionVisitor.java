@@ -6,7 +6,7 @@ import org.python.pydev.parser.jython.Visitor;
 import org.python.pydev.parser.jython.ast.ClassDef;
 import org.python.pydev.parser.jython.ast.FunctionDef;
 
-import ch.hsr.ifs.pystructure.typeinference.model.base.NameAdapter;
+import ch.hsr.ifs.pystructure.typeinference.model.base.NodeUtils;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Class;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Function;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Method;
@@ -41,7 +41,7 @@ public class StructureDefinitionVisitor extends Visitor {
 
 	@Override
 	public Object visitClassDef(ClassDef node) throws Exception {
-		Class klass = new Class(new NameAdapter(node.name), node, module);
+		Class klass = new Class(NodeUtils.getId(node.name), node, module);
 		parents.peek().addChild(klass);
 
 		parents.push(klass);
@@ -55,18 +55,17 @@ public class StructureDefinitionVisitor extends Visitor {
 		StructureDefinition parent = parents.peek();
 		StructureDefinition newParent;
 
+		String name = NodeUtils.getId(node.name);
 		if (parent instanceof Class) {
 			// TODO: What about staticmethod, etc.?
 			Class klass = (Class) parent;
-			Method method = new Method(module, new NameAdapter(node.name),
-					node, klass);
+			Method method = new Method(module, name, node, klass);
 			klass.addMethod(method);
 			parent.addChild(method);
 
 			newParent = method;
 		} else {
-			Function function = new Function(module,
-					new NameAdapter(node.name), node, parents.peek());
+			Function function = new Function(module, name, node, parents.peek());
 			parent.addChild(function);
 
 			newParent = function;

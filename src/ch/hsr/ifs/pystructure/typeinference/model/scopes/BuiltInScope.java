@@ -10,7 +10,6 @@ package ch.hsr.ifs.pystructure.typeinference.model.scopes;
 import java.util.ArrayList;
 import java.util.List;
 
-import ch.hsr.ifs.pystructure.typeinference.model.base.NameAdapter;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Definition;
 
 public class BuiltInScope extends Scope {
@@ -19,7 +18,7 @@ public class BuiltInScope extends Scope {
 	}
 	
 	@Override
-	protected List<Definition> getAllDefinitions(NameAdapter name) {
+	protected List<Definition> getAllDefinitions(String name) {
 		return new ArrayList<Definition>();
 	}
 }

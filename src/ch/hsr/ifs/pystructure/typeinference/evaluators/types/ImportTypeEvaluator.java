@@ -12,7 +12,6 @@ import java.util.List;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.GoalState;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.DefinitionTypeGoal;
-import ch.hsr.ifs.pystructure.typeinference.model.base.NameAdapter;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Class;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.IPackage;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.ImportDefinition;
@@ -40,7 +39,7 @@ public class ImportTypeEvaluator extends DefinitionTypeEvaluator {
 
 	@Override
 	public List<IGoal> init() {
-		NameAdapter path = importDefinition.getPath();
+		String path = importDefinition.getPath();
 		Path parent = resolve(path, importDefinition.getLevel());
 		
 		if (parent == null) {
@@ -88,7 +87,7 @@ public class ImportTypeEvaluator extends DefinitionTypeEvaluator {
 		return IGoal.NO_GOALS;
 	}
 
-	private Path resolve(NameAdapter moduleName, int level) {
+	private Path resolve(String moduleName, int level) {
 		/* first we try to look if it is a relative lookup*/
 		Module module = getGoal().getContext().getModule();
 		IPackage parentPath = module.getPackage(); 
@@ -99,7 +98,7 @@ public class ImportTypeEvaluator extends DefinitionTypeEvaluator {
 			}
 		}
 		
-		Path found = parentPath.lookFor(moduleName.getId());
+		Path found = parentPath.lookFor(moduleName);
 
 		if (found != null) {
 			return found;
@@ -108,7 +107,7 @@ public class ImportTypeEvaluator extends DefinitionTypeEvaluator {
 		/* second, if we haven't found anything yet, walk through the sys.path */
 		List<ImportPath> importPaths = getGoal().getContext().getWorkspace().getImportPaths();
 		for (ImportPath importPath : importPaths) {
-			found = importPath.lookFor(moduleName.getId());
+			found = importPath.lookFor(moduleName);
 
 			if (found != null) {
 				return found;

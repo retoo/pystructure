@@ -15,7 +15,7 @@ public class ModuleType extends AbstractType {
 	private Module module;
 
 	public ModuleType(Module module) {
-		super(module.getName().getId());
+		super(module.getName());
 		this.module = module;
 	}
 	

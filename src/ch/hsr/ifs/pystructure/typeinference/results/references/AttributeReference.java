@@ -10,18 +10,17 @@ package ch.hsr.ifs.pystructure.typeinference.results.references;
 import org.python.pydev.parser.jython.SimpleNode;
 
 import ch.hsr.ifs.pystructure.typeinference.basetype.CombinedType;
-import ch.hsr.ifs.pystructure.typeinference.model.base.NameAdapter;
 import ch.hsr.ifs.pystructure.typeinference.model.base.NodeUtils;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Module;
 
 public class AttributeReference {
 
-	private final NameAdapter name;
+	private final String name;
 	private final CombinedType parent;
 	private final SimpleNode node;
 	private final Module module;
 
-	public AttributeReference(NameAdapter name, CombinedType parent, SimpleNode node, Module module) {
+	public AttributeReference(String name, CombinedType parent, SimpleNode node, Module module) {
 		this.name = name;
 		this.parent = parent;
 		this.node = node;
@@ -31,7 +30,7 @@ public class AttributeReference {
 	/* (non-Javadoc)
 	 * @see ch.hsr.ifs.pystructure.typeinference.results.references.IThing#getName()
 	 */
-	public NameAdapter getName() {
+	public String getName() {
 		return name;
 	}
 
