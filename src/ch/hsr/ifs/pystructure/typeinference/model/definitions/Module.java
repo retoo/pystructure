@@ -16,35 +16,42 @@ import org.python.pydev.parser.jython.ParseException;
 
 import ch.hsr.ifs.pystructure.parser.Parser;
 import ch.hsr.ifs.pystructure.typeinference.model.base.IModule;
+import ch.hsr.ifs.pystructure.typeinference.model.base.NamePath;
 import ch.hsr.ifs.pystructure.utils.FileUtils;
 
 public class Module extends StructureDefinition implements PathElement, IModule {
 
-	private String path;
+	private final NamePath namePath;
+	private final PathElementContainer parent;
+	private final File file;
+	
 	private ArrayList<Use> containedUses;
 	private ArrayList<Definition> definitions;
-	private IPackage pkg;
-	private File file;
-	private String relativePath;
 	private String source;
 
-	public Module(File workspace, String relativePath, IPackage pkg) {
-		this.relativePath = relativePath;
-		this.file = new File(workspace, relativePath);
-		this.path = file.getPath();
-			
+	public Module(NamePath namePath, PathElementContainer parent, File file) {
+		this.namePath = namePath;
+		this.parent = parent;
+		this.file = file;
+		
 		try {
 			String source = FileUtils.read(file);
 			String name = FileUtils.stripExtension(file.getName());
-			init(pkg, source, name);
+			init(source, name);
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
 	}
+	
+	public NamePath getNamePath() {
+		return namePath;
+	}
+	
+	public PathElementContainer getParent() {
+		return parent;
+	}
 
-	private void init(IPackage pkg, String source, String name) {
-		this.pkg = pkg;
-
+	private void init(String source, String name) {
 		this.containedUses = new ArrayList<Use>();
 		this.definitions  = new ArrayList<Definition>();
 		this.source = source;
@@ -70,24 +77,14 @@ public class Module extends StructureDefinition implements PathElement, IModule 
 		throw new RuntimeException("Object " + name + " not defined in " + this);
 	}
 
-	public String getPath() {
-		return path;
-	}
-	
-	// TODO: Package also needs a getFullName()
+	// TODO: FIXME
 	public String getFullName() {
-		StringBuilder s = new StringBuilder();
-		s.append(getName());
-		for (IPackage pkg = this.pkg; !(pkg instanceof ImportPath); pkg = pkg.getParent()) {
-			s.insert(0, pkg.getName() + ".");
-		}
-		return s.toString();
+		return namePath.toString();
 	}
 
 	@Override
 	public String toString() {
-		String name = getName();
-		return name != null ? name : relativePath;
+		return namePath.toString();
 	}
 
 	public List<Use> getContainedUses() {
@@ -108,18 +105,10 @@ public class Module extends StructureDefinition implements PathElement, IModule 
 		return classes;
 	}
 
-	public IPackage getPackage() {
-		return pkg;
-	}
-
 	public File getFile() {
 		return file;
 	}
 	
-	public String getRelativePath() {
-		return this.relativePath;
-	}
-
 	public String getSource() {
 		return source;
 	}

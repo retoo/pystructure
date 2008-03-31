@@ -13,16 +13,15 @@ import ch.hsr.ifs.pystructure.typeinference.goals.base.GoalState;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.DefinitionTypeGoal;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Class;
-import ch.hsr.ifs.pystructure.typeinference.model.definitions.IPackage;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.ImportDefinition;
-import ch.hsr.ifs.pystructure.typeinference.model.definitions.ImportPath;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Module;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Package;
-import ch.hsr.ifs.pystructure.typeinference.model.definitions.Path;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.PathElement;
+import ch.hsr.ifs.pystructure.typeinference.model.definitions.PathElementContainer;
 import ch.hsr.ifs.pystructure.typeinference.results.types.MetaclassType;
 import ch.hsr.ifs.pystructure.typeinference.results.types.ModuleType;
 import ch.hsr.ifs.pystructure.typeinference.results.types.PackageType;
+import ch.hsr.ifs.pystructure.typeinference.visitors.Workspace;
 
 /**
  * Evaluator for the type of an import, which could be a module, a class, a
@@ -40,9 +39,9 @@ public class ImportTypeEvaluator extends DefinitionTypeEvaluator {
 	@Override
 	public List<IGoal> init() {
 		String path = importDefinition.getPath();
-		Path parent = resolve(path, importDefinition.getLevel());
+		PathElement pathElement = resolve(path, importDefinition.getLevel());
 		
-		if (parent == null) {
+		if (pathElement == null) {
 			/* this was a module/package which we don't know. Usually 
 			 * this is just some sort of external library and it isn't that
 			 * bad if we can't import it. Some day we have to generate some warnings here
@@ -51,7 +50,6 @@ public class ImportTypeEvaluator extends DefinitionTypeEvaluator {
 			return IGoal.NO_GOALS;
 		}
 		
-		PathElement pathElement = parent.top();
 		Object result;
 		
 		if (importDefinition.getElement() == null) {
@@ -87,36 +85,43 @@ public class ImportTypeEvaluator extends DefinitionTypeEvaluator {
 		return IGoal.NO_GOALS;
 	}
 
-	private Path resolve(String moduleName, int level) {
+	private PathElement resolve(String path, int level) {
 		/* first we try to look if it is a relative lookup*/
+		Workspace workspace = getGoal().getContext().getWorkspace();
 		Module module = getGoal().getContext().getModule();
-		IPackage parentPath = module.getPackage(); 
+		
+		PathElementContainer parent = module.getParent();
 
-		if (level > 1) {
+		boolean isRelativeImport = (level != 0);
+		
+		if (isRelativeImport && level > 1) {
 			for (int i = 1; i < level; i++) {
-				parentPath = parentPath.getParent();
+				if (parent == null) {
+					throw new RuntimeException("Relative Invalid relative import.");
+				}
+				parent = parent.getParent();
 			}
 		}
 		
-		Path found = parentPath.lookFor(moduleName);
-
-		if (found != null) {
-			return found;
-		}
-
-		/* second, if we haven't found anything yet, walk through the sys.path */
-		List<ImportPath> importPaths = getGoal().getContext().getWorkspace().getImportPaths();
-		for (ImportPath importPath : importPaths) {
-			found = importPath.lookFor(moduleName);
-
-			if (found != null) {
-				return found;
-			}
+		if (isRelativeImport && !(parent instanceof Package)) {
+			throw new RuntimeException("Relative import not inside package");
 		}
 		
-		// Probably from Python standard library or built-in.
-		// System.err.println("Warning: Unable to find " + moduleName + " imported by " + module.getPath());
-		return null;
+		PathElement result = workspace.resolve(path, parent);
+		if (result != null) {
+			return result;
+		}
+
+		if (isRelativeImport) {
+			throw new RuntimeException("Invalid relative import.");
+		}
+		
+		/* Search absolute in all source folders */
+		result = workspace.resolve(path);
+		
+		/* If result is null, the import failed. A warning might be useful here. */
+		
+		return result;
 	}
 
 }

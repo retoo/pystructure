@@ -1,6 +1,6 @@
 package ch.hsr.ifs.pystructure.tests.typeinference;
 
-import java.util.LinkedList;
+import java.io.File;
 
 import junit.framework.TestCase;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Module;
@@ -18,10 +18,8 @@ public class StructureDefinitionVisitorTest extends TestCase {
 	
 	@Override
 	protected void setUp() throws Exception {
-		String path = "tests/python/typeinference/structure";
-		
-		LinkedList<String> sysPath = new LinkedList<String>();
-		Workspace workspace = new Workspace(path, sysPath);
+		File path = new File("tests/python/typeinference/structure");
+		Workspace workspace = new Workspace(path);
 		
 		module = workspace.getModule("module");
 	}

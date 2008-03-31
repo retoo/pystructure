@@ -1,6 +1,6 @@
 package ch.hsr.ifs.pystructure.playground;
 
-import java.util.LinkedList;
+import java.io.File;
 
 import org.python.pydev.parser.jython.SimpleNode;
 import org.python.pydev.parser.jython.ast.Expr;
@@ -21,16 +21,13 @@ public final class Swush {
 	}
 	
 	public static void main(String[] args) {
-		LinkedList<String> sysPath = new LinkedList<String>();
-
-		
 		Structure101Logger s101 = new Structure101Logger();
 		s101.testStarted("simple", "print x", 12);
 		IGoalEngineLogger logger = new CombinedLogger(new ConsoleLogger(), new StatsLogger(), s101);
 		
 		PythonTypeInferencer inferencer = new PythonTypeInferencer(logger);
-		String path = "s101g/examples/simple/";
-		Workspace workspace = new Workspace(path, sysPath);
+		File path = new File("s101g/examples/simple/");
+		Workspace workspace = new Workspace(path);
 		Module module = workspace.getModule("simple");
 		
 		int[] lines = {13};

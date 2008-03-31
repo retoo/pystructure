@@ -1,8 +1,8 @@
 package ch.hsr.ifs.pystructure.playground;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -91,10 +91,8 @@ public class Exporter {
 	}
 
 	public static void main(String[] args) throws IOException {
-		LinkedList<String> sysPath = new LinkedList<String>();
-
-		String path = "s101g/examples/pydoku";
-		Workspace workspace = new Workspace(path, sysPath);
+		File path = new File("s101g/examples/pydoku");
+		Workspace workspace = new Workspace(path);
 		
 		PythonTypeInferencer inferencer = new PythonTypeInferencer(new StatsLogger(false));
 		

@@ -13,8 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import junit.framework.TestCase;
-
-
 import ch.hsr.ifs.pystructure.playground.Structure101Logger;
 import ch.hsr.ifs.pystructure.typeinference.inferencer.ITypeInferencer;
 import ch.hsr.ifs.pystructure.typeinference.visitors.Workspace;

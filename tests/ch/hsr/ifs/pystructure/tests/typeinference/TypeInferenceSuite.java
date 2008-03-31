@@ -12,7 +12,6 @@ package ch.hsr.ifs.pystructure.tests.typeinference;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
-import java.util.LinkedList;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
@@ -47,8 +46,7 @@ public class TypeInferenceSuite extends TestSuite {
 		IGoalEngineLogger logger = new CombinedLogger(s101log);
 		inferencer = new PythonTypeInferencer(logger);
 		
-		LinkedList<String> sysPath = new LinkedList<String>();
-		Workspace workspace = new Workspace(testsDirectory, sysPath);
+		Workspace workspace = new Workspace(new File(testsDirectory));
 		
 		for (File file : files) {
 			try {

@@ -12,6 +12,5 @@ import java.io.File;
 public interface IModule {
 	
 	File getFile();
-	String getRelativePath();
 	
 }

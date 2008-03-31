@@ -436,7 +436,7 @@ public class DefinitionVisitor extends StructuralVisitor {
 			if (entry.asname == null) {
 				/* import package.module  # package -> package */
 				
-				// TODO: Create ModulePath class or something like that
+				// TODO: Use NamePath
 				String path = NodeUtils.getId(entry.name);
 				String name = path.split("\\.", 2)[0];
 				definition = new ImportDefinition(module, node, name, null, name);

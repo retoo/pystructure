@@ -1,5 +1,6 @@
 package ch.hsr.ifs.pystructure.playground;
 
+import java.io.File;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -52,9 +53,8 @@ public final class Burp {
 	}
 
 	public static void main(String[] args) throws Exception {
-		String path = "s101g/examples/pydoku/";
-		LinkedList<String> sysPath = new LinkedList<String>();
-		Workspace workspace = new Workspace(path, sysPath);
+		File path = new File("s101g/examples/pydoku/");
+		Workspace workspace = new Workspace(path);
 		
 		PythonTypeInferencer inferencer = new PythonTypeInferencer(new StatsLogger(false));
 		

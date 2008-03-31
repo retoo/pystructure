@@ -10,87 +10,90 @@ package ch.hsr.ifs.pystructure.typeinference.visitors;
 import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.regex.Pattern;
 
-
-import ch.hsr.ifs.pystructure.typeinference.model.definitions.ImportPath;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Module;
-import ch.hsr.ifs.pystructure.typeinference.model.definitions.Path;
+import ch.hsr.ifs.pystructure.typeinference.model.definitions.Package;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.PathElement;
-import ch.hsr.ifs.pystructure.utils.DirectoryTraverser;
-import ch.hsr.ifs.pystructure.utils.FileUtils;
+import ch.hsr.ifs.pystructure.typeinference.model.definitions.PathElementContainer;
 import ch.hsr.ifs.pystructure.utils.ListUtils;
-import ch.hsr.ifs.pystructure.utils.StringUtils;
 
 public class Workspace {
 
-	private static final Pattern PYTHON_FILES = Pattern.compile(".*\\.py");
-	protected Runtime runtime;
-	protected LinkedList<Module> modules;
+	private final List<SourceFolder> sourceFolders;
 
-	public Workspace(String workspacePath, List<String> importPaths) {
-		this(new File(workspacePath), ListUtils.wrap(""), importPaths);
+	public Workspace(File sourceDirectory) {
+		this(ListUtils.wrap(sourceDirectory));
 	}
 	
-	public Workspace(File workspaceDir, List<String> sourcefolders, List<String> importPaths) {
-		this.modules = new LinkedList<Module>();
-		this.runtime = new Runtime(workspaceDir, importPaths);
-
-		for (String sourceFolder : sourcefolders) {
-			ImportPath importPath = runtime.createImportPath(workspaceDir, sourceFolder);
-			runtime.registerImportPath(importPath);
-			
-			File srcDir = new File(workspaceDir, sourceFolder);
-			DirectoryTraverser directoryTraverser = new DirectoryTraverser(srcDir, PYTHON_FILES);
-			List<String> files = directoryTraverser.getAllFiles();
-			for (String moduleFile : files) {
-				String modulePath = FileUtils.stripExtension(moduleFile);
-				LinkedList<String> parts = StringUtils.slashSplitter(modulePath);
-				
-				Path result = importPath.lookFor(parts);
-				
-				if (result == null) {
-					throw new RuntimeException("Inernal error, was uanble to resolve " + parts + " while initialising the workspace");
-				}
-				
-				PathElement element = result.top();
-				
-				if (element instanceof Module) {
-					Module module = (Module) element;
-					
-					modules.add(module);
-				} else {
-					/* internal error */
-					throw new RuntimeException("Loading a file in the workspace didn't yield a module");
-				}
+	public Workspace(List<File> sourceDirs) {
+		this.sourceFolders = new LinkedList<SourceFolder>();
+		
+		for (File sourceDir : sourceDirs) {
+			SourceFolder sourceFolder = new SourceFolder(sourceDir);
+			sourceFolder.traverse();
+			sourceFolders.add(sourceFolder);
+		}
+	}
+	
+	public PathElement resolve(String path, PathElementContainer parent) {
+		String[] parts = path.split("\\.");
+		String last = parts[parts.length - 1];
+		
+		PathElementContainer pkg = parent;
+		
+		for (String part : parts) {
+			PathElement child = pkg.getChild(part);
+			if (part == last) {
+				return child;
+			} else if (child instanceof Package) {
+				pkg = (Package) child;
+			} else {
+				return null;
 			}
 		}
+		return null;
+	}
+	
+	public PathElement resolve(String path) {
+		String first = path.split("\\.", 2)[0];
+
+		for (SourceFolder sourceFolder : sourceFolders) {
+			if (sourceFolder.getChild(first) != null) {
+				return this.resolve(path, sourceFolder);
+			}
+		}
+		
+		return null;
 	}
 
 	public Module getModule(String name) {
-		for (Module module : getModules()) {
-			if (name.equals(module.getName().toString())) {
-				return module;
+		for (SourceFolder sourceFolder : sourceFolders) {
+			PathElement child = sourceFolder.getChild(name);
+			if (child instanceof Module) {
+				return (Module) child;
 			}
 		}
 		throw new RuntimeException("Unable to get module " + name);
 	}
 
+	@Deprecated
 	public List<Module> getModules() {
+		List<Module> modules = new LinkedList<Module>();
+		for (SourceFolder sourceFolder : sourceFolders) {
+			modules.addAll(sourceFolder.getModules());
+		}
 		return modules;
 	}
 	
-	public List<ImportPath> getImportPaths() {
-		return runtime.getImportPaths();
-	}
-	
-	// TODO: Use Map?
+	@Deprecated
 	public Module getModule(File file) {
-		for (Module module : getModules()) {
-			if (file.equals(module.getFile())) {
+		for (SourceFolder sourceFolder : sourceFolders) {
+			Module module = sourceFolder.getModule(file);
+			if (module != null) {
 				return module;
 			}
 		}
+
 		throw new RuntimeException("Unable to get module " + file);
 	}
 

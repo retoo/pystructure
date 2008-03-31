@@ -7,14 +7,12 @@
 
 package ch.hsr.ifs.pystructure.typeinference.model.definitions;
 
+import ch.hsr.ifs.pystructure.typeinference.model.base.NamePath;
+
 public interface PathElement {
 
-	/**
-	 * Human readable name of the path element. For modules this is the module
-	 * name, for packages the actual package name.
-	 * 
-	 * @return
-	 */
 	String getName();
+	NamePath getNamePath();
+	PathElementContainer getParent();
 
 }

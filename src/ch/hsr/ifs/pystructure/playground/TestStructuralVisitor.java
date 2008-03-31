@@ -1,6 +1,6 @@
 package ch.hsr.ifs.pystructure.playground;
 
-import java.util.LinkedList;
+import java.io.File;
 
 import org.python.pydev.parser.jython.ast.ClassDef;
 import org.python.pydev.parser.jython.ast.FunctionDef;
@@ -63,9 +63,8 @@ public class TestStructuralVisitor extends StructuralVisitor {
 	}
 
 	public static void main(String[] args) {
-		String path = "tests/python/typeinference/structure/";
-		LinkedList<String> sysPath = new LinkedList<String>();
-		Workspace workspace = new Workspace(path, sysPath);
+		File path = new File("tests/python/typeinference/structure/");
+		Workspace workspace = new Workspace(path);
 		
 		Module module = workspace.getModule("module");
 		
