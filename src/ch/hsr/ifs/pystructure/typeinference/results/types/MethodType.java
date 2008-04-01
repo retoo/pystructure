@@ -20,6 +20,7 @@ public class MethodType extends FunctionType {
 		return (Method) super.getFunction();
 	}
 	
+	@Override
 	public String getTypeName() {
 		return "method";
 	}

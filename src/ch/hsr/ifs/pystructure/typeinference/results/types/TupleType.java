@@ -9,13 +9,12 @@ package ch.hsr.ifs.pystructure.typeinference.results.types;
 
 import org.python.pydev.parser.jython.ast.Tuple;
 
-import ch.hsr.ifs.pystructure.typeinference.basetype.IType;
-
-public class TupleType implements IType {
+public class TupleType extends AbstractType {
 
 	private Tuple tuple;
 	
 	public TupleType(Tuple tuple) {
+		super("tuple");
 		this.tuple = tuple;
 	}
 	
@@ -23,8 +22,4 @@ public class TupleType implements IType {
 		return tuple;
 	}
 	
-	public String getTypeName() {
-		return "tuple";
-	}
-
 }
