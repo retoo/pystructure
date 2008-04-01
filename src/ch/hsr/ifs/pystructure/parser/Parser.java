@@ -27,9 +27,17 @@ public final class Parser {
 		/* Convert the string into an char array and add a \n at the end
 		 * NOTE: the a final newline is necessary for the parser */
 		int count = source.length();
-		char[] sourceChars = new char[count + 1];
+		char[] sourceChars = new char[count + 5];
 		source.getChars(0, count, sourceChars, 0);
-		sourceChars[count] = '\n';
+		sourceChars[count + 0] = '\n';
+		/* yap, I agree, a very nice way to do that, isnt it? This fixes a 
+		 * strange bug in the jython parser, it appears to dislike comments at the 
+		 * end of the file */ 
+		sourceChars[count + 1] = 'p';
+		sourceChars[count + 2] = 'a';
+		sourceChars[count + 3] = 's';
+		sourceChars[count + 4] = 's';
+		
 
 		CharStream sourceStream = new FastCharStream(sourceChars);
 
