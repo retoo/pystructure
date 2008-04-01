@@ -8,6 +8,8 @@ import ch.hsr.ifs.pystructure.typeinference.model.definitions.StructureDefinitio
 import ch.hsr.ifs.pystructure.typeinference.results.types.ClassType;
 import ch.hsr.ifs.pystructure.typeinference.results.types.FunctionType;
 import ch.hsr.ifs.pystructure.typeinference.results.types.MetaclassType;
+import ch.hsr.ifs.pystructure.typeinference.results.types.ModuleType;
+import ch.hsr.ifs.pystructure.typeinference.results.types.TupleType;
 
 public class EDependency extends Element {
 
@@ -73,6 +75,12 @@ public class EDependency extends Element {
 		} else if (type instanceof FunctionType) {
 			FunctionType functionType = (FunctionType) type;
 			return functionType.getFunction();
+		} else if (type instanceof ModuleType) {
+			ModuleType moduleType = (ModuleType) type;
+			return moduleType.getModule();
+		} else if (type instanceof TupleType) {
+//			TupleType tupleType = (TupleType) type;
+			return null;
 		} else {
 			throw new RuntimeException("Unknown type" + type);
 		}
