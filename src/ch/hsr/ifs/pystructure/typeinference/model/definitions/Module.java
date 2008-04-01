@@ -103,6 +103,11 @@ public class Module extends StructureDefinition implements PathElement, IModule 
 		return file;
 	}
 	
+	@Override
+	public String getUniqueIdentifier() {
+		return getNamePath().toString();
+	}
+
 	public String getSource() {
 		return source;
 	}

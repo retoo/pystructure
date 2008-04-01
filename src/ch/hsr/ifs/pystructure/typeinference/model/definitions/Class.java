@@ -70,5 +70,9 @@ public class Class extends StructureDefinition implements IAttributeDefinition {
 	public HashMap<String, CombinedType> getAttributes() {
 		return attributes;
 	}
+	
+	public String getFullName() {
+		return getModule().getNamePath().toString() + "." + getName();
+	}
 
 }
