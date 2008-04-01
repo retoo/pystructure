@@ -61,11 +61,17 @@ public class StatsLogger implements IGoalEngineLogger {
 		
 		System.out.println("Total root goals: " + rootGoalsCounter);
 		System.out.println("Total SubGoals: " + subGoalsCounter);
-		System.out.println("Average Subgoals / Goal: " + subGoalsCounter / rootGoalsCounter);
+		if (rootGoalsCounter != 0) {
+			System.out.println("Average Subgoals / Goal: " + subGoalsCounter / rootGoalsCounter);
+		}
 		System.out.println();
 		System.out.println("Time: " + delta);
-		System.out.println("Avg Time/SubGoal: " + delta / subGoalsCounter);
-		System.out.println("Avg Time/root goal: " + delta / rootGoalsCounter);
+		if (subGoalsCounter != 0) {
+			System.out.println("Avg Time/SubGoal: " + delta / subGoalsCounter);
+		}
+		if  (rootGoalsCounter != 0) {
+			System.out.println("Avg Time/root goal: " + delta / rootGoalsCounter);
+		}
 		System.out.println("Avg subgoal/s: " + subGoalsCounter * 1000L / delta);
 		System.out.println("Avg rootgoal/s: " + rootGoalsCounter * 1000L / delta);
 		System.out.println("(Note: bencharmking might be broken on windows due to some problems with its timer");
