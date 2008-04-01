@@ -27,3 +27,6 @@ k, l = func()
 j ## type tuple
 k ## type float
 l ## type str
+
+z = 1, 2
+z ## type list
