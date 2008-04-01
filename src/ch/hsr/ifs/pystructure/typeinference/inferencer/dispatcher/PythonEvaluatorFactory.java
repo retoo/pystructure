@@ -259,13 +259,13 @@ public class PythonEvaluatorFactory implements IEvaluatorFactory {
 			return new FixedAnswerEvaluator(goal, new ClassType("list"));
 		}
 		if (expr instanceof Compare) {
-			return new FixedAnswerEvaluator(goal, new ClassType("boolean"));
+			return new FixedAnswerEvaluator(goal, new ClassType("bool"));
 		}
 		if (expr instanceof UnaryOp) {
-			return new FixedAnswerEvaluator(goal, new ClassType("boolean"));
+			return new FixedAnswerEvaluator(goal, new ClassType("bool"));
 		}
 		if (expr instanceof BoolOp) {
-			return new FixedAnswerEvaluator(goal, new ClassType("boolean"));
+			return new FixedAnswerEvaluator(goal, new ClassType("bool"));
 		}
 		
 		throw new RuntimeException("Can't create evaluator for literal expression " + expr +  ", goal " + goal);
