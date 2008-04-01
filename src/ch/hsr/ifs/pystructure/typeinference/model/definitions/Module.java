@@ -66,14 +66,16 @@ public class Module extends StructureDefinition implements PathElement, IModule 
 	}
 	
 	// TODO: Should return all possible definitions, not just one.
+
 	public Definition getChild(String name) {
 		for (Definition definition : definitions) {
 			if (definition.getName().equals(name)) {
 				return definition;
 			}
 		}
-
-		throw new RuntimeException("Object " + name + " not defined in " + this);
+		
+		return new NoDefintion(this, name);
+//		throw new RuntimeException("Object " + name + " not defined in " + this);
 	}
 
 	@Override
