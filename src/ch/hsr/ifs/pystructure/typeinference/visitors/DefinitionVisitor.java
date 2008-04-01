@@ -48,7 +48,6 @@ import ch.hsr.ifs.pystructure.typeinference.model.definitions.ExceptDefinition;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Function;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.ImportDefinition;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.LoopVariableDefinition;
-import ch.hsr.ifs.pystructure.typeinference.model.definitions.Method;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Module;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.NameUse;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.TupleElement;
@@ -118,10 +117,6 @@ public class DefinitionVisitor extends StructuralVisitor {
 		Function function = getDefinitionFor(node);
 		
 		if (isFirstVisit(function)) {
-			if (function instanceof Method) {
-				Class klass = (Class) getScope().getDefinition();
-				klass.addMethod((Method) function);
-			}
 			/*
 			 * TODO: What about this?
 			 * 
