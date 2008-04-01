@@ -59,6 +59,8 @@ public class SourceFolder implements PathElementContainer {
 			for (File file : sourceDirectory.listFiles()) {
 				traverse(file, this);
 			}
+		} else {
+			throw new RuntimeException("Invalid source directory specified: " + sourceDirectory);
 		}
 	}
 	
