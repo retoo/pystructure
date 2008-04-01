@@ -28,3 +28,8 @@ q ## type Qux
 aq = Xuuq()
 aq ## type Quux
 
+from import_package.foo import external_function
+
+z = external_function()
+z ## type int
+print z
