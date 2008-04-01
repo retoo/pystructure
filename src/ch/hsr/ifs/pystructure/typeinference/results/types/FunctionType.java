@@ -33,7 +33,4 @@ public class FunctionType implements IType {
 		return "function";
 	}
 
-	public boolean subtypeOf(IType type) {
-		return false;
-	}
 }

@@ -7,7 +7,6 @@
 
 package ch.hsr.ifs.pystructure.typeinference.results.types;
 
-import ch.hsr.ifs.pystructure.typeinference.basetype.IType;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Method;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Module;
 
@@ -25,7 +24,4 @@ public class MethodType extends FunctionType {
 		return "method";
 	}
 
-	public boolean subtypeOf(IType type) {
-		return false;
-	}
 }

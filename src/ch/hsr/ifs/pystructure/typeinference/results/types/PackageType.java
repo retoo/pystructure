@@ -7,7 +7,6 @@
 
 package ch.hsr.ifs.pystructure.typeinference.results.types;
 
-import ch.hsr.ifs.pystructure.typeinference.basetype.IType;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Package;
 
 public class PackageType extends AbstractType {
@@ -19,10 +18,6 @@ public class PackageType extends AbstractType {
 		this.pkg = pkg;
 	}
 	
-	public boolean subtypeOf(IType type) {
-		return false; //TODO
-	}
-
 	public String getTypeName() {
 		return getModelKey();
 	}

@@ -9,7 +9,6 @@
  *******************************************************************************/
 package ch.hsr.ifs.pystructure.typeinference.results.types;
 
-import ch.hsr.ifs.pystructure.typeinference.basetype.IType;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Class;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Module;
 
@@ -30,10 +29,6 @@ public class MetaclassType extends AbstractType {
 	
 	public Class getKlass() {
 		return klass;
-	}
-
-	public boolean subtypeOf(IType type) {
-		return false; //TODO
 	}
 
 	public String getTypeName() {

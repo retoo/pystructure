@@ -27,8 +27,4 @@ public class TupleType implements IType {
 		return "tuple";
 	}
 
-	public boolean subtypeOf(IType type) {
-		return false;
-	}
-	
 }

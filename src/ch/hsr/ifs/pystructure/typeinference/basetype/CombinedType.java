@@ -44,11 +44,6 @@ public class CombinedType implements IType, Iterable<IType> {
 		return StringUtils.join('|', set);
 	}
 
-	public boolean subtypeOf(IType type) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
 	@Override
 	public String toString() {
 		return getTypeName();
