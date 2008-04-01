@@ -11,7 +11,9 @@ import org.python.pydev.parser.jython.SimpleNode;
 
 import ch.hsr.ifs.pystructure.typeinference.model.base.NamePath;
 
-public class ImportDefinition extends Definition implements IAttributeDefinition {
+
+/* TODO: as ordered by robin, there used to be a implements Iattribute something which is now removed */
+public class ImportDefinition extends Definition {
 
 	private final NamePath path;
 	private final String element;
