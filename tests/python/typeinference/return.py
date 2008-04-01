@@ -100,3 +100,9 @@ u = x.recursive_horror(9)
 u ## type int
 
 
+def voidmethod():
+    return
+    
+r = voidmethod()
+r ## type None
+

@@ -21,6 +21,7 @@ import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.ExpressionTypeGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.ReturnTypeGoal;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Function;
+import ch.hsr.ifs.pystructure.typeinference.results.types.ClassType;
 
 /**
  * Evaluator for the return type of a function or method.
@@ -45,7 +46,15 @@ public class ReturnTypeEvaluator extends AbstractEvaluator {
 		List<Return> returns = ReturnVisitor.findReturns(function.getNode());
 		for (Return r : returns) {
 			exprType value = r.value;
-			subgoals.add(new ExpressionTypeGoal(getGoal().getContext(), value));
+			/* there might be nothing being returned */
+			if (value != null) {
+				subgoals.add(new ExpressionTypeGoal(getGoal().getContext(), value));
+			}
+		}
+		
+		/* well if there are no returns or if there are just empty returns we return None */
+		if (subgoals.isEmpty()) {
+			resultType.appendType(new ClassType("None"));
 		}
 
 		return subgoals;
