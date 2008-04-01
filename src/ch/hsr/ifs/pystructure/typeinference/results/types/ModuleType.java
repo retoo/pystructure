@@ -18,10 +18,6 @@ public class ModuleType extends AbstractType {
 		this.module = module;
 	}
 	
-	public String getTypeName() {
-		return getModelKey();
-	}
-	
 	public Module getModule() {
 		return module;
 	}

@@ -18,10 +18,6 @@ public class PackageType extends AbstractType {
 		this.pkg = pkg;
 	}
 	
-	public String getTypeName() {
-		return getModelKey();
-	}
-	
 	public Package getPackage() {
 		return pkg;
 	}

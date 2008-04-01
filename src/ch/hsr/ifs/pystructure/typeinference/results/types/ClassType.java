@@ -17,8 +17,8 @@ public class ClassType extends AbstractType {
 	private Module module;
 	private Class klass;
 	
-	public ClassType(String modelKey) {
-		super(modelKey);
+	public ClassType(String typeName) {
+		super(typeName);
 	}
 
 	public ClassType(Module module, Class klass) {
@@ -33,10 +33,6 @@ public class ClassType extends AbstractType {
 	
 	public Class getKlass() {
 		return klass;
-	}
-
-	public String getTypeName() {
-		return getModelKey();
 	}
 
 }

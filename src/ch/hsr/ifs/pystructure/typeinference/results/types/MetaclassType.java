@@ -31,8 +31,4 @@ public class MetaclassType extends AbstractType {
 		return klass;
 	}
 
-	public String getTypeName() {
-		return getModelKey();
-	}
-
 }
