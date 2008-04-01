@@ -3,6 +3,7 @@ package ch.hsr.ifs.pystructure.playground.representation;
 import org.jdom.Element;
 
 import ch.hsr.ifs.pystructure.typeinference.basetype.IType;
+import ch.hsr.ifs.pystructure.typeinference.model.definitions.Definition;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.StructureDefinition;
 import ch.hsr.ifs.pystructure.typeinference.results.types.ClassType;
 import ch.hsr.ifs.pystructure.typeinference.results.types.FunctionType;
@@ -21,17 +22,32 @@ public class EDependency extends Element {
 		
 		this.setAttribute("type", "references");
 	}
-
-	public EDependency(StructureDefinition definition, IType type) {
+	
+	public EDependency(String from, IType type) {
 		this();
-		
-		this.setFrom(definition);
+		this.setFrom(from);
 		this.setTo(type);
 	}
 
-	private void setTo(IType type) {
-		StructureDefinition to = getTypeIdentifier(type);
+	public EDependency(StructureDefinition from, IType to) {
+		this();
 		
+		this.setFrom(from);
+		this.setTo(to);
+	}
+	
+	public EDependency(StructureDefinition from, Definition to) {
+		this();
+		
+		this.setFrom(from);
+		this.setTo(to);
+	}
+
+	private void setTo(IType type) {
+		setTo(getTypeIdentifier(type));
+	}
+	
+	private void setTo(Definition to) {
 		if (to == null) {
 			this.valid = false;
 		} else {
@@ -45,12 +61,6 @@ public class EDependency extends Element {
 	
 	private void setFrom(String from) {
 		this.setAttribute("from", from);
-	}
-	
-	public EDependency(String from, IType type) {
-		this();
-		this.setFrom(from);
-		this.setTo(type);
 	}
 
 	private StructureDefinition  getTypeIdentifier(IType type) {

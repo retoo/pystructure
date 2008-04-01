@@ -21,10 +21,12 @@ import ch.hsr.ifs.pystructure.typeinference.basetype.CombinedType;
 import ch.hsr.ifs.pystructure.typeinference.basetype.IType;
 import ch.hsr.ifs.pystructure.typeinference.inferencer.PythonTypeInferencer;
 import ch.hsr.ifs.pystructure.typeinference.inferencer.logger.StatsLogger;
+import ch.hsr.ifs.pystructure.typeinference.model.definitions.Attribute;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Class;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Method;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Module;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.StructureDefinition;
+import ch.hsr.ifs.pystructure.typeinference.results.types.AbstractType;
 import ch.hsr.ifs.pystructure.typeinference.visitors.Workspace;
 
 public class Exporter {
@@ -64,7 +66,16 @@ public class Exporter {
 					IType type = inferencer.evaluateType(workspace, module, node);
 					
 					if (type instanceof CombinedType) {
-						for (IType t : (CombinedType) type) {
+						CombinedType combinedType = (CombinedType) type;
+						for (IType t : combinedType) {
+							if (t instanceof AbstractType) {
+								AbstractType abstractType = (AbstractType) t;
+								if (abstractType.location instanceof Attribute) {
+									Attribute attribute = (Attribute) abstractType.location;
+									dependencies.addContent(new EDependency(definition, attribute));
+								}
+							}
+							
 							EDependency dependency = new EDependency(definition, t);
 							if (dependency.isValid()) {
 								dependencies.addContent(dependency);
@@ -97,16 +108,17 @@ public class Exporter {
 					eclass.addContent(emethod);
 				}
 				
-				for (Map.Entry<String, CombinedType> attribute : klass.getAttributes().entrySet()) {
-					String name = attribute.getKey();
-					CombinedType types = attribute.getValue();
+				for (Map.Entry<String, Attribute> entry : klass.getAttributes().entrySet()) {
+					String name = entry.getKey();
+					Attribute attribute = entry.getValue();
+					CombinedType types = attribute.getType();
 					
-					String attribId = klass.getFullName() + "." + name;
-					EAttribute eattribute = new EAttribute(name, attribId);
+					String attributeId = attribute.getUniqueIdentifier();
+					EAttribute eattribute = new EAttribute(name, attributeId);
 					eclass.addContent(eattribute);
 					
 					for (IType type : types) {
-						EDependency dependency = new EDependency(attribId, type);
+						EDependency dependency = new EDependency(attributeId, type);
 						
 						if (dependency.isValid()) {
 							dependencies.addContent(dependency);

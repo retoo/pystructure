@@ -48,6 +48,11 @@ public abstract class Definition {
 		return name;
 	}
 	
+	// TODO: Merge this with getNamePath or getFullName
+	public String getUniqueIdentifier() {
+		return String.valueOf(this.hashCode());
+	}
+	
 	// TODO: Decide whether the generic node is useful at all?
 	public SimpleNode getNode() {
 		return node;

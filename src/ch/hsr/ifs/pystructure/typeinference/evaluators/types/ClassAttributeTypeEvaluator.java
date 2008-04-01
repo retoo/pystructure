@@ -7,6 +7,7 @@ import org.python.pydev.parser.jython.SimpleNode;
 import org.python.pydev.parser.jython.ast.Assign;
 
 import ch.hsr.ifs.pystructure.typeinference.basetype.CombinedType;
+import ch.hsr.ifs.pystructure.typeinference.basetype.IType;
 import ch.hsr.ifs.pystructure.typeinference.contexts.ModuleContext;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.base.AbstractEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.GoalState;
@@ -14,8 +15,10 @@ import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.references.AttributeReferencesGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.ClassAttributeTypeGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.ExpressionTypeGoal;
+import ch.hsr.ifs.pystructure.typeinference.model.definitions.Attribute;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Class;
 import ch.hsr.ifs.pystructure.typeinference.results.references.AttributeReference;
+import ch.hsr.ifs.pystructure.typeinference.results.types.AbstractType;
 import ch.hsr.ifs.pystructure.typeinference.results.types.ClassType;
 
 public class ClassAttributeTypeEvaluator extends AbstractEvaluator {
@@ -40,7 +43,6 @@ public class ClassAttributeTypeEvaluator extends AbstractEvaluator {
 		// It's probably a data attribute
 		return wrap(new AttributeReferencesGoal(getGoal().getContext(), attributeName, klass));
 	}
-	
 	
 	@Override
 	public List<IGoal> subGoalDone(IGoal subgoal, GoalState state) {
@@ -76,9 +78,9 @@ public class ClassAttributeTypeEvaluator extends AbstractEvaluator {
 	
 	@Override
 	public boolean isCached() {
-		CombinedType cachedType = klass.attributes.get(attributeName);
-		if (cachedType != null) {
-			resultType.appendType(cachedType);
+		Attribute attribute = klass.getAttribute(attributeName);
+		if (attribute != null && attribute.getType() != null) {
+			resultType.appendType(attribute.getType());
 			return true;
 		} else {
 			return false;
@@ -87,7 +89,13 @@ public class ClassAttributeTypeEvaluator extends AbstractEvaluator {
 	
 	@Override
 	public void finish() {
-		klass.attributes.put(attributeName, resultType);
+		Attribute attribute = new Attribute(attributeName, klass, resultType);
+		for (IType type : resultType) {
+			if (type instanceof AbstractType) {
+				((AbstractType) type).location = attribute;
+			}
+		}
+		klass.addAttribute(attribute);
 	}
 
 }

@@ -10,32 +10,31 @@ package ch.hsr.ifs.pystructure.typeinference.model.definitions;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.python.pydev.parser.jython.ast.ClassDef;
-
-import ch.hsr.ifs.pystructure.typeinference.basetype.CombinedType;
 
 /**
  * Definition of a class.
  */
 public class Class extends StructureDefinition implements IAttributeDefinition {
 
-	private List<Method> methods;
-	private Module module;
-	public HashMap<String, CombinedType> attributes;
+	private final Module module;
+	private final List<Method> methods;
+	private final Map<String, Attribute> attributes;
 
 	public Class(String name, ClassDef classDef, Module module) {
 		super(module, name, classDef);
 		this.methods = new ArrayList<Method>();
 		this.module = module;
-		this.attributes = new HashMap<String, CombinedType>();
+		this.attributes = new HashMap<String, Attribute>();
 	}
 	
 	public void addMethod(Method method) {
 		methods.add(method);
 	}
-	
-	public Method getMethodNamed(String name) {
+
+	public Method getMethod(String name) {
 		for (Method method : methods) {
 			if (method.getName().equals(name)) {
 				return method;
@@ -44,11 +43,18 @@ public class Class extends StructureDefinition implements IAttributeDefinition {
 		return null;
 	}
 	
+	public void addAttribute(Attribute attribute) {
+		attributes.put(attribute.getName(), attribute);
+	}
+	
+	public Attribute getAttribute(String name) {
+		return attributes.get(name);
+	}
+	
 	public List<Method> getMethods() {
 		return methods;
 	}
 
-	
 	@Override
 	public String getDescription() {
 		return "class '" + getName() + "'";
@@ -67,7 +73,7 @@ public class Class extends StructureDefinition implements IAttributeDefinition {
 		return module;
 	}
 
-	public HashMap<String, CombinedType> getAttributes() {
+	public Map<String, Attribute> getAttributes() {
 		return attributes;
 	}
 	

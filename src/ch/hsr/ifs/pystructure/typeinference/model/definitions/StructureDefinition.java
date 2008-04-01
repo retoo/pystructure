@@ -28,8 +28,4 @@ public abstract class StructureDefinition extends Definition {
 		return children;
 	}
 	
-	public String getUniqueIdentifier() {
-		return String.valueOf(this.hashCode());
-	}
-
 }

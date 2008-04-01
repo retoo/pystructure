@@ -76,7 +76,7 @@ public class AttributeTypeEvaluator extends AbstractEvaluator {
 					Class klass = classType.getKlass();
 	
 					if (klass != null) {
-						Method method = klass.getMethodNamed(attributeName);
+						Method method = klass.getMethod(attributeName);
 						if (method != null) {
 							resultType.appendType(new MethodType(classType.getModule(), method));
 						} else {

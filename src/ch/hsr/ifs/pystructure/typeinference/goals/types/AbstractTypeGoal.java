@@ -12,6 +12,7 @@ import ch.hsr.ifs.pystructure.typeinference.contexts.ModuleContext;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.AbstractGoal;
 
 public abstract class AbstractTypeGoal extends AbstractGoal {
+
 	public final CombinedType resultType;
 	
 	public AbstractTypeGoal(ModuleContext context) {
