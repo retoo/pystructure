@@ -69,6 +69,7 @@ import ch.hsr.ifs.pystructure.typeinference.model.definitions.Function;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.ImportDefinition;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.LoopVariableDefinition;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Module;
+import ch.hsr.ifs.pystructure.typeinference.model.definitions.NoDefintion;
 import ch.hsr.ifs.pystructure.typeinference.results.types.ClassType;
 import ch.hsr.ifs.pystructure.typeinference.results.types.FunctionType;
 import ch.hsr.ifs.pystructure.typeinference.results.types.MetaclassType;
@@ -173,6 +174,9 @@ public class PythonEvaluatorFactory implements IEvaluatorFactory {
 			// TODO: Implement ExceptTypeEvaluator
 			return new FixedAnswerEvaluator(goal, new ClassType("object"));
 		}
+		if (def instanceof NoDefintion) {
+			return new FixedAnswerEvaluator(goal, new ClassType("object"));
+		}
 		
 		throw new RuntimeException("Can't create evaluator for definition " + def + ", goal " + goal);
 	}
@@ -183,6 +187,7 @@ public class PythonEvaluatorFactory implements IEvaluatorFactory {
 		if (expr instanceof Name) {
 			Name name = (Name) expr;
 			if (name.id.equals("None")) {
+				/* FIXME: shoudln't we create a new class for NoneType? */
 				return new FixedAnswerEvaluator(goal, new ClassType("NoneType"));
 			}
 			if (name.id.equals("True") || name.id.equals("False")) {
