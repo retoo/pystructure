@@ -1,6 +1,7 @@
 package ch.hsr.ifs.pystructure.playground;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
@@ -12,6 +13,12 @@ import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 import org.python.pydev.parser.jython.ast.exprType;
 
+import ch.hsr.ifs.pystructure.playground.representation.EClass;
+import ch.hsr.ifs.pystructure.playground.representation.EDependency;
+import ch.hsr.ifs.pystructure.playground.representation.EMethod;
+import ch.hsr.ifs.pystructure.playground.representation.EModule;
+import ch.hsr.ifs.pystructure.typeinference.basetype.CombinedType;
+import ch.hsr.ifs.pystructure.typeinference.basetype.IType;
 import ch.hsr.ifs.pystructure.typeinference.inferencer.PythonTypeInferencer;
 import ch.hsr.ifs.pystructure.typeinference.inferencer.logger.StatsLogger;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Class;
@@ -41,84 +48,85 @@ public class Exporter {
 		document.addContent(root);
 		
 		Element modules = new Element("modules");
-		root.addContent(modules);
+		Element dependencies = new Element("dependencies");
+		
+		PythonTypeInferencer inferencer = new PythonTypeInferencer(new StatsLogger(false));
 		
 		for (Module module : workspace.getModules()) {
-			exportModule(modules, module);
+			Spider spider = new Spider();
+			spider.run(module);
+			
+			for (Map.Entry<StructureDefinition, List<exprType>> entry : spider.getTypables().entrySet()) {
+				StructureDefinition definition = entry.getKey();
+				List<exprType> expressions = entry.getValue();
+				
+				for (exprType node : expressions) {
+					IType type = inferencer.evaluateType(workspace, module, node);
+					
+					if (type instanceof CombinedType) {
+						for (IType t : (CombinedType) type) {
+							EDependency dependency = new EDependency(definition, t);
+							if (dependency.isValid()) {
+								dependencies.addContent(dependency);
+							}
+						}
+					} else {
+						throw new RuntimeException("Not combined");
+					}
+				}
+			}
+		}
+		
+		inferencer.shutdown();
+		
+		root.addContent(modules);
+		root.addContent(dependencies);
+		
+		for (Module module : workspace.getModules()) {
+			EModule emodule = new EModule(module.getNamePath().toString(), module.getUniqueIdentifier());
+
+			modules.addContent(emodule);
+			
+			
+			for (Class klass : module.getClasses()) {
+				EClass eclass = new EClass(klass.getFullName(), klass.getUniqueIdentifier()); 
+				modules.addContent(eclass);
+				
+				for (Method method : klass.getMethods()) {
+					EMethod emethod = new EMethod(method.getName(), method.getUniqueIdentifier());
+					eclass.addContent(emethod);
+				}
+				
+				for (Map.Entry<String, CombinedType> attribute : klass.getAttributes().entrySet()) {
+					String name = attribute.getKey();
+					CombinedType types = attribute.getValue();
+					
+					String attribId = klass.getFullName() + "." + name;
+					EAttribute eattribute = new EAttribute(name, attribId);
+					eclass.addContent(eattribute);
+					
+					for (IType type : types) {
+						EDependency dependency = new EDependency(attribId, type);
+						
+						if (dependency.isValid()) {
+							dependencies.addContent(dependency);
+						}
+					}
+				}
+			}
 		}
 		
 		outputter.output(document, outputStream);
 	}
 	
-	private void exportModule(Element modules, Module module) {
-		for (Class klass : module.getClasses()) {
-			exportClass(modules, klass);
-		}
-	}
-
-	private void exportClass(Element modules, Class klass) {
-		Element element = new Element("module");
-		element.setAttribute("type", "class");
-		String fullName = klass.getModule().getNamePath() + "." + klass.getName();
-		element.setAttribute("name", fullName);
-		element.setAttribute("id", klass.getUniqueIdentifier());
-		modules.addContent(element);
-		
-		exportMethods(element, klass);
-		exportAttributes(element, klass);
-	}
-
-	private void exportAttributes(Element element, Class klass) {
-		for (String name : klass.getAttributes().keySet()) {
-			Element attribute = new Element("submodule");
-			attribute.setAttribute("type", "attribute");
-			attribute.setAttribute("name", name);
-			attribute.setAttribute("id", String.valueOf(name.hashCode()));
-			element.addContent(attribute);
-		}
-		
-	}
-
-	private void exportMethods(Element element, Class klass) {
-		for (Method method : klass.getMethods()) {
-			Element submodule = new Element("submodule");
-			submodule.setAttribute("type", "method");
-			submodule.setAttribute("name", method.getName());
-			submodule.setAttribute("id", method.getUniqueIdentifier());
-			
-			element.addContent(submodule);
-		}
-	}
 
 	public static void main(String[] args) throws IOException {
-		File path = new File("s101g/examples/pydoku");
-		Workspace workspace = new Workspace(path);
+		String path = "s101g/examples/pydoku";
+		Workspace workspace = new Workspace(new File(path));
 		
-		PythonTypeInferencer inferencer = new PythonTypeInferencer(new StatsLogger(false));
+		FileOutputStream stream = new FileOutputStream("s101g/examples/test.xml", false);
 		
-		for (Module module : workspace.getModules()) {
-			
-//			List<Result> results = new ArrayList<Result>();
-			
-			Spider spider = new Spider();
-			spider.run(module);
-			
-			for (Map.Entry<StructureDefinition, List<exprType>> entry : spider.getTypables().entrySet()) {
-				List<exprType> expressions = entry.getValue();
-				
-				for (exprType node : expressions) {
-					inferencer.evaluateType(workspace, module, node);
-				}
-			}
-			
-			
-		}
-		inferencer.shutdown();
-
-		
-		Exporter exporter = new Exporter(System.out);
+		Exporter exporter = new Exporter(stream);
 		exporter.export(workspace);
-		
-		
 	}
 }

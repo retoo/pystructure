@@ -8,6 +8,7 @@ import java.util.Map;
 import org.python.pydev.parser.jython.SimpleNode;
 import org.python.pydev.parser.jython.ast.ClassDef;
 import org.python.pydev.parser.jython.ast.FunctionDef;
+import org.python.pydev.parser.jython.ast.Tuple;
 import org.python.pydev.parser.jython.ast.exprType;
 
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Class;
@@ -67,6 +68,11 @@ public class Spider extends StructuralVisitor {
 	public void traverse(SimpleNode node) throws Exception {
 		if (node instanceof exprType) {
 			exprType expression = (exprType) node;
+			
+			/* Skip Tuples */
+			if (expression instanceof Tuple) {
+				return;
+			}
 			
 			StructureDefinition definition = getCurrentStructureDefinition();
 			
