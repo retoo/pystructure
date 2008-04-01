@@ -16,6 +16,9 @@ public class DefinitionTypeGoal extends AbstractTypeGoal {
 
 	public DefinitionTypeGoal(ModuleContext context, Definition definition) {
 		super(context);
+		if (definition == null) {
+			throw new RuntimeException("definition has to be set");
+		}
 		this.definition = definition;
 	}
 

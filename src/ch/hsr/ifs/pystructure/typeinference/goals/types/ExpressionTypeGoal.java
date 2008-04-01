@@ -18,6 +18,9 @@ public class ExpressionTypeGoal extends AbstractTypeGoal {
 	
 	public ExpressionTypeGoal(ModuleContext context, SimpleNode expression) {
 		super(context);
+		if (expression == null) {
+			throw new RuntimeException("expression must not be null");
+		}
 		this.expression = expression;
 	}
 
@@ -48,7 +51,7 @@ public class ExpressionTypeGoal extends AbstractTypeGoal {
 	@Override
 	public String toString() {
 		return "ExpressionTypeGoal: "
-				+ expression.toString()
+				+ expression
 				+ NodeUtils.nodePosition(expression)
 				+ " context: " + context;
 	}
