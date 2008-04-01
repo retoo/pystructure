@@ -18,6 +18,7 @@ import ch.hsr.ifs.pystructure.typeinference.evaluators.base.AbstractEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.GoalState;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.ClassAttributeTypeGoal;
+import ch.hsr.ifs.pystructure.typeinference.goals.types.DefinitionTypeGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.ExpressionTypeGoal;
 import ch.hsr.ifs.pystructure.typeinference.model.base.NodeUtils;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Class;
@@ -27,7 +28,6 @@ import ch.hsr.ifs.pystructure.typeinference.model.definitions.Module;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Package;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.PathElement;
 import ch.hsr.ifs.pystructure.typeinference.results.types.ClassType;
-import ch.hsr.ifs.pystructure.typeinference.results.types.MetaclassType;
 import ch.hsr.ifs.pystructure.typeinference.results.types.MethodType;
 import ch.hsr.ifs.pystructure.typeinference.results.types.ModuleType;
 import ch.hsr.ifs.pystructure.typeinference.results.types.PackageType;
@@ -115,12 +115,7 @@ public class AttributeTypeEvaluator extends AbstractEvaluator {
 					Module module = moduleType.getModule();
 	
 					Definition child = module.getChild(attributeName);
-	
-					if (child instanceof Class) {
-						resultType.appendType(new MetaclassType(module, (Class) child));
-					} else {
-						throw new RuntimeException("Unexpected child type");
-					}
+					subgoals.add(new DefinitionTypeGoal(getGoal().getContext(), child));
 				}
 				
 				// TODO: PythonMetaclassType
@@ -129,7 +124,10 @@ public class AttributeTypeEvaluator extends AbstractEvaluator {
 		} else if (subgoal instanceof ClassAttributeTypeGoal) {
 			ClassAttributeTypeGoal g = (ClassAttributeTypeGoal) subgoal;
 			resultType.appendType((CombinedType) g.resultType);
-			
+		} else if (subgoal instanceof DefinitionTypeGoal) {
+			/* Was invoked by the ModuleType case above, might be used by other cases as well, later */
+			DefinitionTypeGoal g = (DefinitionTypeGoal) subgoal;
+			resultType.appendType(g.resultType);
 		} else {
 			throw new RuntimeException("Unknown subgoal");
 		}
