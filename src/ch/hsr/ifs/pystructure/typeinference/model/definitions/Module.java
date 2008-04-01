@@ -15,11 +15,10 @@ import java.util.List;
 import org.python.pydev.parser.jython.ParseException;
 
 import ch.hsr.ifs.pystructure.parser.Parser;
-import ch.hsr.ifs.pystructure.typeinference.model.base.IModule;
 import ch.hsr.ifs.pystructure.typeinference.model.base.NamePath;
 import ch.hsr.ifs.pystructure.utils.FileUtils;
 
-public class Module extends StructureDefinition implements PathElement, IModule {
+public class Module extends StructureDefinition implements PathElement {
 
 	private final NamePath namePath;
 	private final PathElementContainer parent;

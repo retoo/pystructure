@@ -9,8 +9,6 @@ package ch.hsr.ifs.pystructure.typeinference.model.definitions;
 
 import org.python.pydev.parser.jython.ast.exprType;
 
-import ch.hsr.ifs.pystructure.typeinference.model.base.IModule;
-
 /**
  * Definition of an argument in the signature of a function or method.
  */
@@ -20,7 +18,7 @@ public class Argument extends Definition {
 	private final exprType defaultValue;
 	private final Function function;
 	
-	public Argument(IModule module, String name, exprType argument, int position, exprType defaultValue, Function function) {
+	public Argument(Module module, String name, exprType argument, int position, exprType defaultValue, Function function) {
 		super(module, name, argument);
 		this.position = position;
 		this.defaultValue = defaultValue;

@@ -9,14 +9,12 @@ package ch.hsr.ifs.pystructure.typeinference.model.definitions;
 
 import org.python.pydev.parser.jython.ast.excepthandlerType;
 
-import ch.hsr.ifs.pystructure.typeinference.model.base.IModule;
-
 /**
  * Definition of a variable by an except handler.
  */
 public class ExceptDefinition extends Definition {
 	
-	public ExceptDefinition(IModule module, String name, excepthandlerType handler) {
+	public ExceptDefinition(Module module, String name, excepthandlerType handler) {
 		super(module, name, handler);
 	}
 	

@@ -10,8 +10,6 @@ package ch.hsr.ifs.pystructure.typeinference.model.definitions;
 import org.python.pydev.parser.jython.ast.FunctionDef;
 import org.python.pydev.parser.jython.ast.exprType;
 
-import ch.hsr.ifs.pystructure.typeinference.model.base.IModule;
-
 /**
  * Definition of a function.
  */
@@ -19,7 +17,7 @@ public class Function extends StructureDefinition implements IAttributeDefinitio
 
 	private final Definition attributeParent;
 
-	public Function(IModule module, String name, FunctionDef functionDef, Definition attributeParent) {
+	public Function(Module module, String name, FunctionDef functionDef, Definition attributeParent) {
 		super(module, name, functionDef);
 		assert attributeParent != null;
 		this.attributeParent = attributeParent;

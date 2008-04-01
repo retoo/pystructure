@@ -14,11 +14,13 @@ import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.DefinitionTypeGoal;
 import ch.hsr.ifs.pystructure.typeinference.model.base.NamePath;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Class;
+import ch.hsr.ifs.pystructure.typeinference.model.definitions.Function;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.ImportDefinition;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Module;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Package;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.PathElement;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.PathElementContainer;
+import ch.hsr.ifs.pystructure.typeinference.results.types.FunctionType;
 import ch.hsr.ifs.pystructure.typeinference.results.types.MetaclassType;
 import ch.hsr.ifs.pystructure.typeinference.results.types.ModuleType;
 import ch.hsr.ifs.pystructure.typeinference.results.types.PackageType;
@@ -76,6 +78,9 @@ public class ImportTypeEvaluator extends DefinitionTypeEvaluator {
 		} else if (result instanceof Class) {
 			Class klass = (Class) result;
 			resultType.appendType(new MetaclassType(klass.getModule(), klass));
+		} else if (result instanceof Function) {
+			Function function = (Function) result;
+			resultType.appendType(new FunctionType(function.getModule(), function));
 		}
 
 		return IGoal.NO_GOALS;

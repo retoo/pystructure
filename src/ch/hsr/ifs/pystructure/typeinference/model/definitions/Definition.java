@@ -13,7 +13,6 @@ import java.util.List;
 import org.python.pydev.parser.jython.SimpleNode;
 
 import ch.hsr.ifs.pystructure.typeinference.basetype.CombinedType;
-import ch.hsr.ifs.pystructure.typeinference.model.base.IModule;
 import ch.hsr.ifs.pystructure.typeinference.model.base.NodeUtils;
 
 /**
@@ -25,7 +24,7 @@ public abstract class Definition {
 	private String name;
 	private SimpleNode  node;
 	private LinkedList<NameUse> uses;
-	private IModule module;
+	private Module module;
 	public CombinedType type;
 
 	protected Definition() {
@@ -33,12 +32,12 @@ public abstract class Definition {
 		this.type = null;
 	}
 	
-	public Definition(IModule module, String name, SimpleNode node) {
+	public Definition(Module module, String name, SimpleNode node) {
 		this();
 		init(module, name, node);
 	}
 	
-	protected void init(IModule module, String name, SimpleNode node) {
+	protected void init(Module module, String name, SimpleNode node) {
 		this.module = module;
 		this.name = name;
 		this.node = node;
@@ -66,7 +65,7 @@ public abstract class Definition {
 		return uses;
 	}
 	
-	public IModule getModule() {
+	public Module getModule() {
 		return module;
 	}
 	

@@ -5,8 +5,6 @@ import java.util.List;
 
 import org.python.pydev.parser.jython.SimpleNode;
 
-import ch.hsr.ifs.pystructure.typeinference.model.base.IModule;
-
 public abstract class StructureDefinition extends Definition {
 	
 	private final List<StructureDefinition> children;
@@ -15,7 +13,7 @@ public abstract class StructureDefinition extends Definition {
 		children = new ArrayList<StructureDefinition>();
 	}
 	
-	public StructureDefinition(IModule module, String name, SimpleNode node) {
+	public StructureDefinition(Module module, String name, SimpleNode node) {
 		super(module, name, node);
 		children = new ArrayList<StructureDefinition>();
 	}

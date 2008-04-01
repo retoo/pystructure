@@ -19,14 +19,12 @@ import org.python.pydev.parser.jython.ast.ClassDef;
  */
 public class Class extends StructureDefinition implements IAttributeDefinition {
 
-	private final Module module;
 	private final List<Method> methods;
 	private final Map<String, Attribute> attributes;
 
 	public Class(String name, ClassDef classDef, Module module) {
 		super(module, name, classDef);
 		this.methods = new ArrayList<Method>();
-		this.module = module;
 		this.attributes = new HashMap<String, Attribute>();
 	}
 	
@@ -65,12 +63,8 @@ public class Class extends StructureDefinition implements IAttributeDefinition {
 		return "Class " + getName() + " " + getNodePosition();
 	}
 
-	public Module getModule() {
-		return module;
-	}
-	
 	public Definition getAttributeParent() {
-		return module;
+		return getModule();
 	}
 
 	public Map<String, Attribute> getAttributes() {
