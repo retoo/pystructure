@@ -14,6 +14,7 @@ import org.python.pydev.parser.jython.ast.Attribute;
 
 import ch.hsr.ifs.pystructure.typeinference.basetype.CombinedType;
 import ch.hsr.ifs.pystructure.typeinference.basetype.IType;
+import ch.hsr.ifs.pystructure.typeinference.contexts.ModuleContext;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.base.AbstractEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.GoalState;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
@@ -80,8 +81,8 @@ public class AttributeTypeEvaluator extends AbstractEvaluator {
 						if (method != null) {
 							resultType.appendType(new MethodType(classType.getModule(), method));
 						} else {
-							subgoals.add(new ClassAttributeTypeGoal(getGoal().getContext(), classType, attributeName));
-		
+							ModuleContext context = new ModuleContext(getGoal().getContext(), klass.getModule());
+							subgoals.add(new ClassAttributeTypeGoal(context, classType, attributeName));
 						}
 					} else {
 						/* klass is null, this probably means that we are talking about 
@@ -115,7 +116,8 @@ public class AttributeTypeEvaluator extends AbstractEvaluator {
 					Module module = moduleType.getModule();
 	
 					Definition child = module.getChild(attributeName);
-					subgoals.add(new DefinitionTypeGoal(getGoal().getContext(), child));
+					ModuleContext context = new ModuleContext(getGoal().getContext(), module);
+					subgoals.add(new DefinitionTypeGoal(context, child));
 				}
 				
 				// TODO: PythonMetaclassType
