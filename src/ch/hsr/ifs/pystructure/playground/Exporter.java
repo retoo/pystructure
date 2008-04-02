@@ -100,8 +100,8 @@ public class Exporter {
 			
 			
 			for (Class klass : module.getClasses()) {
-				EClass eclass = new EClass(klass.getFullName(), klass.getUniqueIdentifier()); 
-				modules.addContent(eclass);
+				EClass eclass = new EClass(klass.getName(), klass.getUniqueIdentifier()); 
+				emodule.addContent(eclass);
 				
 				for (Method method : klass.getMethods()) {
 					EMethod emethod = new EMethod(method.getName(), method.getUniqueIdentifier());
@@ -133,8 +133,8 @@ public class Exporter {
 	
 
 	public static void main(String[] args) throws IOException {
-		String path = "s101g/examples/simple";
-//		String path = "s101g/examples/pydoku";
+//		String path = "s101g	/examples/simple";
+		String path = "s101g/examples/pydoku";
 //		String path = "/Users/reto/Downloads/simple_go/";
 		Workspace workspace = new Workspace(new File(path));
 		

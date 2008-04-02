@@ -7,7 +7,7 @@ public class EClass extends Element {
 	private static final long serialVersionUID = 1L;
 
 	public EClass(String name, String id) {
-		super("module");
+		super("submodule");
 		
 		this.setAttribute("type", "class");
 		this.setAttribute("name", name);

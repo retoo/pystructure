@@ -10,6 +10,7 @@
 			<module-type name="class"/>
 		</module-types>
 		<nested-types>
+			<nested-type name="class"/>
 			<nested-type name="method"/>
 			<nested-type name="attribute"/>
 		</nested-types>
