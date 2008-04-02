@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.python.pydev.parser.jython.SimpleNode;
 import org.python.pydev.parser.jython.ast.ClassDef;
@@ -20,14 +21,15 @@ import ch.hsr.ifs.pystructure.typeinference.model.definitions.StructureDefinitio
 import ch.hsr.ifs.pystructure.typeinference.visitors.StructuralVisitor;
 
 public class Spider extends StructuralVisitor {
-	private static final HashSet<java.lang.Class<?>> IGNORE = new HashSet<java.lang.Class<?>>();
+
+	private static final Set<java.lang.Class<? extends SimpleNode>> IGNORE = new HashSet<java.lang.Class<? extends SimpleNode>>();
 
 	static {
 		IGNORE.add(Tuple.class);
 		IGNORE.add(Yield.class);
 	}
 
-	private Map<StructureDefinition, List<exprType>> typables;
+	private final Map<StructureDefinition, List<exprType>> typables;
 
 	public Spider() {
 		typables = new HashMap<StructureDefinition, List<exprType>>();
@@ -77,6 +79,7 @@ public class Spider extends StructuralVisitor {
 		if (node instanceof exprType) {
 
 			if (IGNORE.contains(node.getClass())) {
+				// Ignore it.
 			} else {
 				exprType expression = (exprType) node;
 
