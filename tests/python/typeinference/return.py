@@ -103,6 +103,9 @@ u ## type int
 def voidmethod():
     return
     
-r = voidmethod()
-r ## type None
+voidmethod() ## type None
 
+def voidmethod2():
+    pass
+
+voidmethod2() ## type None
