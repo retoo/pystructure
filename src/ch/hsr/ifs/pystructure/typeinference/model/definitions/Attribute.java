@@ -1,21 +1,25 @@
 package ch.hsr.ifs.pystructure.typeinference.model.definitions;
 
+import java.util.List;
+
 import ch.hsr.ifs.pystructure.typeinference.basetype.CombinedType;
 import ch.hsr.ifs.pystructure.typeinference.model.base.NamePath;
+import ch.hsr.ifs.pystructure.typeinference.results.references.AttributeReference;
 
 public class Attribute extends Definition {
 	
 	private final String name;
 	private final NamePath namePath;
 	private final Class klass;
-	private final CombinedType type;
+	public CombinedType type;
+	public List<AttributeReference> references;
 
-	public Attribute(String name, Class klass, CombinedType type) {
+	public Attribute(String name, Class klass) {
 		super();
 		this.name = name;
 		this.namePath = new NamePath(new NamePath(klass.getFullName()), name);
 		this.klass = klass;
-		this.type = type;
+		this.type = null;
 	}
 
 	@Override
@@ -23,14 +27,14 @@ public class Attribute extends Definition {
 		return name;
 	}
 	
+	public Class getKlass() {
+		return klass;
+	}
+	
 	public NamePath getNamePath() {
 		return namePath;
 	}
 	
-	public CombinedType getType() {
-		return type;
-	}
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -68,5 +72,6 @@ public class Attribute extends Definition {
 		}
 		return true;
 	}
-	
+
+
 }

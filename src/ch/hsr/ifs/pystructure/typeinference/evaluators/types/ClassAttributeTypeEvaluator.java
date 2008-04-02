@@ -27,6 +27,7 @@ public class ClassAttributeTypeEvaluator extends AbstractEvaluator {
 	private String attributeName;
 	private CombinedType resultType;
 	private Class klass;
+	private Attribute attribute;
 
 	public ClassAttributeTypeEvaluator(ClassAttributeTypeGoal goal) {
 		super(goal);
@@ -34,14 +35,22 @@ public class ClassAttributeTypeEvaluator extends AbstractEvaluator {
 		this.classType = goal.getClassType();
 		this.klass = classType.getKlass();
 		this.attributeName = goal.getAttributeName();
-
+		
+		/* fetch the attribute (and create one if there isnt one */
+		attribute = klass.getAttribute(attributeName);
+		
+		if (attribute == null) {
+			attribute = new Attribute(attributeName, klass);
+			klass.addAttribute(attribute);
+		}
+		
 		this.resultType = goal.resultType;
 	}
 
 	@Override
 	public List<IGoal> init() {
 		// It's probably a data attribute
-		return wrap(new AttributeReferencesGoal(getGoal().getContext(), attributeName, klass));
+		return wrap(new AttributeReferencesGoal(getGoal().getContext(), attribute));
 	}
 	
 	@Override
@@ -78,9 +87,8 @@ public class ClassAttributeTypeEvaluator extends AbstractEvaluator {
 	
 	@Override
 	public boolean isCached() {
-		Attribute attribute = klass.getAttribute(attributeName);
-		if (attribute != null && attribute.getType() != null) {
-			resultType.appendType(attribute.getType());
+		if (attribute.type != null) {
+			resultType.appendType(attribute.type);
 			return true;
 		} else {
 			return false;
@@ -89,13 +97,12 @@ public class ClassAttributeTypeEvaluator extends AbstractEvaluator {
 	
 	@Override
 	public void finish() {
-		Attribute attribute = new Attribute(attributeName, klass, resultType);
 		for (IType type : resultType) {
 			if (type instanceof AbstractType) {
 				((AbstractType) type).location = attribute;
 			}
 		}
-		klass.addAttribute(attribute);
+		attribute.type = resultType;
 	}
 
 }

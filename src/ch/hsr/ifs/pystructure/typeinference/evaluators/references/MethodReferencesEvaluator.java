@@ -95,6 +95,22 @@ public class MethodReferencesEvaluator extends AbstractEvaluator {
 		
 		return IGoal.NO_GOALS;
 	}
+	
+	@Override
+	public boolean isCached() {
+		if (method.references != null) {
+			this.references.addAll(references);
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	@Override
+	public void finish() {
+		method.references = this.references;
+	}
+	
 
 	private boolean isConstructor() {
 		return method.getName().equals("__init__");

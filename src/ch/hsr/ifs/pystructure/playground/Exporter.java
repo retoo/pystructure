@@ -111,7 +111,7 @@ public class Exporter {
 				for (Map.Entry<String, Attribute> entry : klass.getAttributes().entrySet()) {
 					String name = entry.getKey();
 					Attribute attribute = entry.getValue();
-					CombinedType types = attribute.getType();
+					CombinedType types = attribute.type;
 					
 					String attributeId = attribute.getUniqueIdentifier();
 					EAttribute eattribute = new EAttribute(name, attributeId);
@@ -133,7 +133,9 @@ public class Exporter {
 	
 
 	public static void main(String[] args) throws IOException {
-		String path = "s101g/examples/pydoku";
+		String path = "s101g/examples/simple";
+//		String path = "s101g/examples/pydoku";
+//		String path = "/Users/reto/Downloads/simple_go/";
 		Workspace workspace = new Workspace(new File(path));
 		
 		FileOutputStream stream = new FileOutputStream("s101g/examples/test.xml", false);

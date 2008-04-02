@@ -15,6 +15,7 @@ import ch.hsr.ifs.pystructure.typeinference.goals.base.GoalState;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.references.AttributeReferencesGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.references.PossibleAttributeReferencesGoal;
+import ch.hsr.ifs.pystructure.typeinference.model.definitions.Attribute;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Definition;
 import ch.hsr.ifs.pystructure.typeinference.results.references.AttributeReference;
 import ch.hsr.ifs.pystructure.typeinference.results.types.ClassType;
@@ -30,9 +31,11 @@ public class AttributeReferencesEvaluator extends AbstractEvaluator {
 	private final Definition attributeParent;
 	
 	private List<AttributeReference> references;
+	private Attribute attribute;
 	
 	public AttributeReferencesEvaluator(AttributeReferencesGoal goal) {
 		super(goal);
+		this.attribute = goal.getAttribute();
 		this.attributeName = goal.getAttributeName();
 		this.attributeParent = goal.getAttributeParent();
 		
@@ -63,6 +66,21 @@ public class AttributeReferencesEvaluator extends AbstractEvaluator {
 		}
 		
 		return IGoal.NO_GOALS;
+	}
+	
+	@Override
+	public boolean isCached() {
+		if (attribute.references != null) {
+			this.references.addAll(attribute.references);
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	@Override
+	public void finish() {
+		attribute.references = this.references;
 	}
 
 	private void checkPossibleReference(AttributeReference reference, Definition attributeParent) {

@@ -7,7 +7,11 @@
 
 package ch.hsr.ifs.pystructure.typeinference.model.definitions;
 
+import java.util.List;
+
 import org.python.pydev.parser.jython.ast.FunctionDef;
+
+import ch.hsr.ifs.pystructure.typeinference.results.references.FunctionReference;
 
 /**
  * Definition of a method of a class.
@@ -15,10 +19,12 @@ import org.python.pydev.parser.jython.ast.FunctionDef;
 public class Method extends Function {
 
 	private final Class klass;
+	public List<FunctionReference> references;
 
 	public Method(Module module, String name, FunctionDef functionDef, Class klass) {
 		super(module, name, functionDef, klass);
 		this.klass = klass;
+		this.references = null;
 	}
 	
 	@Override

@@ -10,31 +10,43 @@ package ch.hsr.ifs.pystructure.typeinference.goals.references;
 import java.util.ArrayList;
 import java.util.List;
 
+import ch.hsr.ifs.pystructure.typeinference.model.definitions.Class; 
 import ch.hsr.ifs.pystructure.typeinference.contexts.ModuleContext;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.AbstractGoal;
+import ch.hsr.ifs.pystructure.typeinference.model.definitions.Attribute;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Definition;
 import ch.hsr.ifs.pystructure.typeinference.results.references.AttributeReference;
 
 public class AttributeReferencesGoal extends AbstractGoal {
 
+	@Deprecated
 	private final String attributeName;
-	private final Definition attributeParent;
+	@Deprecated
+	private final Class attributeParent;
 	public final List<AttributeReference> references;
+	private Attribute attribute;
 
 	public AttributeReferencesGoal(ModuleContext context,
-			String attributeName, Definition attributeParent) {
+			Attribute attribute) {
 		super(context);
-		this.attributeName = attributeName;
-		this.attributeParent = attributeParent;
+		this.attribute = attribute;
+		this.attributeName = attribute.getName();
+		this.attributeParent = attribute.getKlass();
 		this.references = new ArrayList<AttributeReference>();
 	}
 
+	@Deprecated
 	public String getAttributeName() {
 		return attributeName;
 	}
 
+	@Deprecated
 	public Definition getAttributeParent() {
 		return attributeParent;
+	}
+	
+	public Attribute getAttribute() {
+		return attribute;
 	}
 	
 	@Override
