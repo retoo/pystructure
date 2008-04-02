@@ -31,7 +31,7 @@ public final class Parser {
 		source.getChars(0, count, sourceChars, 0);
 		sourceChars[count + 0] = '\n';
 		/* yap, I agree, a very nice way to do that, isnt it? This fixes a 
-		 * strange bug in the jython parser, it appears to dislike comments at the 
+		 * strange bug in the PyDev Jython parser, it appears to dislike comments at the 
 		 * end of the file */ 
 		sourceChars[count + 1] = 'p';
 		sourceChars[count + 2] = 'a';
