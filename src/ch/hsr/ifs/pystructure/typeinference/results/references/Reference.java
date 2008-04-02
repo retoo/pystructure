@@ -9,6 +9,7 @@ package ch.hsr.ifs.pystructure.typeinference.results.references;
 
 import org.python.pydev.parser.jython.SimpleNode;
 
+import ch.hsr.ifs.pystructure.typeinference.model.base.NodeUtils;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Definition;
 
 public class Reference {
@@ -29,4 +30,8 @@ public class Reference {
 		return definition;
 	}
 
+	@Override
+	public String toString() {
+		return "Reference of " + definition + " at " + NodeUtils.nodePosition(node) + " node " + node;
+	}
 }
