@@ -27,3 +27,16 @@ k, l = func()
 j ## type tuple
 k ## type float
 l ## type str
+
+
+# Test that only the tuple elements of returns with the right number of elements are considered
+def bad(a):
+    if a:
+        return 1, 1.2, "s"
+    else:
+        return 1, 2
+
+m, n, o = bad(True)
+m ## type int
+n ## type float|int
+o ## type str

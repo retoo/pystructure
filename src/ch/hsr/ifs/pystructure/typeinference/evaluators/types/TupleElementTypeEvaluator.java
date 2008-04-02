@@ -58,7 +58,18 @@ public class TupleElementTypeEvaluator extends AbstractEvaluator {
 			for (IType type : g.resultType) {
 				if (type instanceof TupleType) {
 					Tuple tuple = ((TupleType) type).getTuple();
-					exprType childExpression = tuple.elts[element.getFirstIndex()];
+					
+					int index = element.getFirstIndex();
+					if (index >= tuple.elts.length) {
+						// More tuple elements are unpacked than are available
+						// in the right hand side tuple. This only happens in
+						// complex situations and then we ignore this tuple
+						// element. Example:
+						// 
+						// a, b, c = 1, 2
+						continue;
+					}
+					exprType childExpression = tuple.elts[index];
 
 					if (element.getIndexesCount() == 1) {
 						subgoals.add(new ExpressionTypeGoal(getGoal().getContext(), childExpression));
