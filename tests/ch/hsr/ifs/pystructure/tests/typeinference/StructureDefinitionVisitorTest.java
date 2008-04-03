@@ -12,10 +12,6 @@ public class StructureDefinitionVisitorTest extends TestCase {
 
 	private Module module;
 	
-	public StructureDefinitionVisitorTest(String testToRun) {
-		super(testToRun);
-	}
-	
 	@Override
 	protected void setUp() throws Exception {
 		File path = new File("tests/python/typeinference/structure");

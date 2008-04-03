@@ -15,8 +15,7 @@ public class AllTests extends TestCase {
 	public static Test suite() {
 		TestSuite suite = new TestSuite("Type Inference Tests");
 		suite.addTest(new TypeInferenceSuite("tests/python/typeinference/"));
-		// TODO: Find another solution (maybe JUnit 4?), this is ugly :(
-		suite.addTest(new StructureDefinitionVisitorTest("testChildren"));
+		suite.addTestSuite(StructureDefinitionVisitorTest.class);
 		return suite;
 	}
 }
