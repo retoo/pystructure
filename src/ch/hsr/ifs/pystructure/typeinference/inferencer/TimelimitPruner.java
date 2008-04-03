@@ -20,18 +20,16 @@ public class TimelimitPruner implements IPruner {
 	private final long timeLimit;
 
 	public TimelimitPruner(long timeLimit) {
-		super();
 		this.timeLimit = timeLimit;
 	}
 
 	public void init() {
-		this.timeStart = System.currentTimeMillis();
+		timeStart = System.currentTimeMillis();
 	}
 
 	public boolean prune(IGoal goal) {
-		if (timeLimit > 0 && System.currentTimeMillis() - timeStart > timeLimit) {
-			return true;
-		}
-		return false;
+		long timeElapsed = System.currentTimeMillis() - timeStart;
+		return (timeLimit > 0 && timeElapsed > timeLimit);
 	}
+
 }
