@@ -11,7 +11,6 @@ import org.python.pydev.parser.jython.SimpleNode;
 
 import ch.hsr.ifs.pystructure.typeinference.basetype.IType;
 import ch.hsr.ifs.pystructure.typeinference.contexts.ModuleContext;
-import ch.hsr.ifs.pystructure.typeinference.goals.types.AbstractTypeGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.ExpressionTypeGoal;
 import ch.hsr.ifs.pystructure.typeinference.inferencer.dispatcher.PythonEvaluatorFactory;
 import ch.hsr.ifs.pystructure.typeinference.inferencer.logger.IGoalEngineLogger;
@@ -30,15 +29,11 @@ public class PythonTypeInferencer implements ITypeInferencer {
 		engine = new GoalEngine(new PythonEvaluatorFactory(), logger);
 	}
 
-	private synchronized IType evaluateType(AbstractTypeGoal goal, int timeLimit) {
-		return engine.evaluateGoal(goal, new TimelimitPruner(timeLimit));
-	}
-
 	public IType evaluateType(Workspace workspace, Module module, SimpleNode node) {
 		ModuleContext context = new ModuleContext(workspace, module);
 		ExpressionTypeGoal goal = new ExpressionTypeGoal(context, node);
 		
-		return this.evaluateType(goal, -1);
+		return engine.evaluateGoal(goal, null);
 	}
 	
 	public void shutdown() {
