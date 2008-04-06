@@ -5,33 +5,37 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-public class IteratorChain<T> implements Iterator<T> {
+public class IteratorChain<E> implements Iterator<E> {
 
-	private List<Iterator<T>> iterators;
-	private Iterator<T> currentIterator;
-	private int index;
+	private List<Iterator<E>> iterators;
+	private Iterator<E> currentIterator;
+	private int nextIndex;
 	
 	public IteratorChain() {
-		iterators = new LinkedList<Iterator<T>>();
-		index = 0;
+		iterators = new LinkedList<Iterator<E>>();
+		nextIndex = 1;
 	}
 	
-	public void addIterator(Iterator<T> iterator) {
+	public void addIterator(Iterator<E> iterator) {
 		iterators.add(iterator);
+		if (currentIterator == null) {
+			currentIterator = iterator;
+		}
 	}
 	
 	public boolean hasNext() {
-		return !iterators.isEmpty() && iterators.get(index).hasNext();
+		return currentIterator != null && (currentIterator.hasNext() || nextIndex < iterators.size());
 	}
 
-	public T next() {
+	public E next() {
 		if (!hasNext()) {
 			throw new NoSuchElementException();
 		}
-		T result = iterators.get(index).next();
-//		if (!currentIterator.hasNext() && iteratorsIterator.hasNext()) {
-//			currentIterator = iteratorsIterator.next();
-//		}
+		E result = currentIterator.next();
+		if (!currentIterator.hasNext() && nextIndex < iterators.size()) {
+			currentIterator = iterators.get(nextIndex);
+			nextIndex++;
+		}
 		return result;
 	}
 
