@@ -11,7 +11,7 @@ import java.util.Arrays;
 import java.util.NoSuchElementException;
 
 import junit.framework.TestCase;
-import ch.hsr.ifs.pystructure.playground.IteratorChain;
+import ch.hsr.ifs.pystructure.utils.IteratorChain;
 
 public class IteratorChainTest extends TestCase {
 

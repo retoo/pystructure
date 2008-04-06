@@ -16,6 +16,8 @@ import ch.hsr.ifs.pystructure.typeinference.model.definitions.Module;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Package;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.PathElement;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.PathElementContainer;
+import ch.hsr.ifs.pystructure.utils.IterableIterator;
+import ch.hsr.ifs.pystructure.utils.IteratorChain;
 import ch.hsr.ifs.pystructure.utils.ListUtils;
 
 public class Workspace {
@@ -77,13 +79,12 @@ public class Workspace {
 		throw new RuntimeException("Unable to get module " + name);
 	}
 
-	@Deprecated
-	public List<Module> getModules() {
-		List<Module> modules = new LinkedList<Module>();
+	public Iterable<Module> getModules() {
+		IteratorChain<Module> iterator = new IteratorChain<Module>();
 		for (SourceFolder sourceFolder : sourceFolders) {
-			modules.addAll(sourceFolder.getModules());
+			iterator.addIterator(sourceFolder.getModules().iterator());
 		}
-		return modules;
+		return new IterableIterator<Module>(iterator);
 	}
 	
 	@Deprecated

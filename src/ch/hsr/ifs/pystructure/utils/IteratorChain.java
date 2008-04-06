@@ -1,4 +1,4 @@
-package ch.hsr.ifs.pystructure.playground;
+package ch.hsr.ifs.pystructure.utils;
 
 import java.util.Iterator;
 import java.util.LinkedList;
