@@ -111,7 +111,7 @@ public class PossibleAttributeReferencesEvaluator extends AbstractEvaluator {
 			AttributeReference ref = new AttributeReference(name, typeGoal.resultType, node, module);
 			references.add(ref);
 		} else {
-			unexpectedSubGoal(subgoal);
+			unexpectedSubgoal(subgoal);
 		}
 			
 		return IGoal.NO_GOALS;

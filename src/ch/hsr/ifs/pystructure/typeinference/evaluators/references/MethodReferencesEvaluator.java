@@ -90,7 +90,7 @@ public class MethodReferencesEvaluator extends AbstractEvaluator {
 				}
 			}
 		} else {
-			unexpectedSubGoal(subgoal);
+			unexpectedSubgoal(subgoal);
 		}
 		
 		return IGoal.NO_GOALS;

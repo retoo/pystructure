@@ -63,7 +63,7 @@ public abstract class AbstractEvaluator {
 		return false;
 	}
 
-	protected void unexpectedSubGoal(IGoal goal) {
+	protected void unexpectedSubgoal(IGoal goal) {
 		throw new RuntimeException(this + " got an unexpected subgoal" + goal);
 	}
 

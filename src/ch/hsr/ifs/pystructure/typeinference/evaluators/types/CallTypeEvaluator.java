@@ -94,7 +94,7 @@ public class CallTypeEvaluator extends AbstractEvaluator {
 			ReturnTypeGoal g = (ReturnTypeGoal) subgoal;
 			resultType.appendType(g.resultType);
 		} else {
-			unexpectedSubGoal(subgoal);
+			unexpectedSubgoal(subgoal);
 		}
 		
 		return IGoal.NO_GOALS;
