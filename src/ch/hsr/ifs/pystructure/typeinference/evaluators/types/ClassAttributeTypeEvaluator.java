@@ -36,7 +36,7 @@ public class ClassAttributeTypeEvaluator extends AbstractEvaluator {
 		this.klass = classType.getKlass();
 		this.attributeName = goal.getAttributeName();
 		
-		/* fetch the attribute (and create one if there isnt one */
+		/* fetch the attribute (and create one if there isn't already one) */
 		attribute = klass.getAttribute(attributeName);
 		
 		if (attribute == null) {
@@ -49,7 +49,6 @@ public class ClassAttributeTypeEvaluator extends AbstractEvaluator {
 
 	@Override
 	public List<IGoal> init() {
-		// It's probably a data attribute
 		return wrap(new AttributeReferencesGoal(getGoal().getContext(), attribute));
 	}
 	
@@ -75,11 +74,13 @@ public class ClassAttributeTypeEvaluator extends AbstractEvaluator {
 					}
 				} /* skip all non-assign nodes */
 			}
+			
 		} else if (subgoal instanceof ExpressionTypeGoal) {
 			ExpressionTypeGoal g = (ExpressionTypeGoal) subgoal;
 			resultType.appendType(g.resultType);
+			
 		} else {
-			throw new RuntimeException("Unknown subgoal");
+			unexpectedSubgoal(subgoal);
 		}
 
 		return subgoals;

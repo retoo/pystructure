@@ -44,11 +44,8 @@ public class AssignTypeEvaluator extends DefinitionTypeEvaluator  {
 
 	@Override
 	public List<IGoal> subGoalDone(IGoal subgoal, GoalState state) {
-		if (subgoal instanceof AbstractTypeGoal) {
-			AbstractTypeGoal g = (AbstractTypeGoal) subgoal;
-			resultType.appendType(g.resultType);
-		}
-		
+		AbstractTypeGoal g = (AbstractTypeGoal) subgoal;
+		resultType.appendType(g.resultType);
 		return IGoal.NO_GOALS;
 	}
 

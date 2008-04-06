@@ -58,7 +58,11 @@ public class ClassReferencesEvaluator extends AbstractEvaluator {
 					// TODO: Check if it's in the right module etc.
 				}
 			}
+			
+		} else {
+			unexpectedSubgoal(subgoal);
 		}
+		
 		return IGoal.NO_GOALS;
 	}
 

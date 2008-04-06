@@ -43,25 +43,24 @@ public class FunctionReferencesEvaluator extends AbstractEvaluator {
 	
 	@Override
 	public List<IGoal> subGoalDone(IGoal subgoal, GoalState state) {
-		if (subgoal instanceof PossibleReferencesGoal) {
-			PossibleReferencesGoal g = (PossibleReferencesGoal) subgoal;
-			
-			for (Use use : g.references) {
-				/*
-				 * The PossibleReferencesEvaluator might return AttributeUses
-				 * which we dont really need at this point
-				 */
-				if (use instanceof NameUse) {
-					NameUse nameUse = (NameUse) use;
-					if (nameUse.getDefinitions().contains(function)) {
-						references.add(new FunctionReference(function, use.getNode()));
-					}
-					// TODO: Check if it's in the right module etc.
-				} else {
-					/* skip */
+		PossibleReferencesGoal g = (PossibleReferencesGoal) subgoal;
+
+		for (Use use : g.references) {
+			/*
+			 * The PossibleReferencesEvaluator might return AttributeUses
+			 * which we dont really need at this point
+			 */
+			if (use instanceof NameUse) {
+				NameUse nameUse = (NameUse) use;
+				if (nameUse.getDefinitions().contains(function)) {
+					references.add(new FunctionReference(function, use.getNode()));
 				}
+				// TODO: Check if it's in the right module etc.
+			} else {
+				/* skip */
 			}
 		}
+
 		return IGoal.NO_GOALS;
 	}
 

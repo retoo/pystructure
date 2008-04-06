@@ -65,7 +65,6 @@ public class VariableReferenceEvaluator extends AbstractEvaluator {
 	public List<IGoal> subGoalDone(IGoal subgoal, GoalState state) {
 		DefinitionTypeGoal g = (DefinitionTypeGoal) subgoal;
 		resultType.appendType(g.resultType);
-
 		return IGoal.NO_GOALS;
 	}
 

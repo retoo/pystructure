@@ -61,6 +61,7 @@ public class PossibleAttributeReferencesEvaluator extends AbstractEvaluator {
 
 	@Override
 	public List<IGoal> subGoalDone(IGoal subgoal, GoalState state) {
+		
 		if (subgoal instanceof PossibleReferencesGoal) {
 			PossibleReferencesGoal g = (PossibleReferencesGoal) subgoal;
 			
@@ -110,6 +111,7 @@ public class PossibleAttributeReferencesEvaluator extends AbstractEvaluator {
 			Module module = typeGoal.getContext().getModule();
 			AttributeReference ref = new AttributeReference(name, typeGoal.resultType, node, module);
 			references.add(ref);
+			
 		} else {
 			unexpectedSubgoal(subgoal);
 		}

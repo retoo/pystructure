@@ -78,11 +78,10 @@ public class ArgumentTypeEvaluator extends DefinitionTypeEvaluator {
 			ExpressionTypeGoal g = (ExpressionTypeGoal) subgoal;
 			IType type =  g.resultType;
 			resultType.appendType(type);
-			return IGoal.NO_GOALS;
-		}
-		// TODO: Maybe only use one goal (CallableReferencesGoal) and do
-		// dispatching based on definition.
-		if (subgoal instanceof CallableGoal) {
+			
+		} else if (subgoal instanceof CallableGoal) {
+			// TODO: Maybe only use one goal (CallableReferencesGoal) and do
+			// dispatching based on definition.
 			CallableGoal g = (CallableGoal) subgoal;
 			
 			List<IGoal> subgoals = new ArrayList<IGoal>();
@@ -95,7 +94,11 @@ public class ArgumentTypeEvaluator extends DefinitionTypeEvaluator {
 			}
 			
 			return subgoals;
+			
+		} else {
+			unexpectedSubgoal(subgoal);
 		}
+		
 		return IGoal.NO_GOALS;
 	}
 	

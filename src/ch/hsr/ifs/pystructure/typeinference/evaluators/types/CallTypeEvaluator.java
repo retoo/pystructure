@@ -54,6 +54,7 @@ public class CallTypeEvaluator extends AbstractEvaluator {
 
 	@Override
 	public List<IGoal> subGoalDone(IGoal subgoal, GoalState state) {
+		
 		if (subgoal instanceof ExpressionTypeGoal) {
 			ExpressionTypeGoal expressionTypeGoal = (ExpressionTypeGoal) subgoal; 
 			List<IGoal> subgoals = new ArrayList<IGoal>();
@@ -93,6 +94,7 @@ public class CallTypeEvaluator extends AbstractEvaluator {
 		} else if (subgoal instanceof ReturnTypeGoal) {
 			ReturnTypeGoal g = (ReturnTypeGoal) subgoal;
 			resultType.appendType(g.resultType);
+			
 		} else {
 			unexpectedSubgoal(subgoal);
 		}

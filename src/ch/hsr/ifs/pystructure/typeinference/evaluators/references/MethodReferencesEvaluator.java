@@ -66,6 +66,7 @@ public class MethodReferencesEvaluator extends AbstractEvaluator {
 			for (ClassReference classReference : g.references) {
 				references.add(new MethodReference(method, classReference.getNode(), true));
 			}
+			
 		} else 	if (subgoal instanceof PossibleAttributeReferencesGoal) {
 			PossibleAttributeReferencesGoal g = (PossibleAttributeReferencesGoal) subgoal; 
 			
@@ -89,6 +90,7 @@ public class MethodReferencesEvaluator extends AbstractEvaluator {
 
 				}
 			}
+			
 		} else {
 			unexpectedSubgoal(subgoal);
 		}

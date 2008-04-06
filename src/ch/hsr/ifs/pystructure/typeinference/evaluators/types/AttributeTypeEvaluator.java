@@ -126,12 +126,14 @@ public class AttributeTypeEvaluator extends AbstractEvaluator {
 		} else if (subgoal instanceof ClassAttributeTypeGoal) {
 			ClassAttributeTypeGoal g = (ClassAttributeTypeGoal) subgoal;
 			resultType.appendType((CombinedType) g.resultType);
+			
 		} else if (subgoal instanceof DefinitionTypeGoal) {
 			/* Was invoked by the ModuleType case above, might be used by other cases as well, later */
 			DefinitionTypeGoal g = (DefinitionTypeGoal) subgoal;
 			resultType.appendType(g.resultType);
+			
 		} else {
-			throw new RuntimeException("Unknown subgoal");
+			unexpectedSubgoal(subgoal);
 		}
 
 		return subgoals;
