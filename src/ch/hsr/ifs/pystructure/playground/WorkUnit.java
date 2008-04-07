@@ -1,8 +1,10 @@
 package ch.hsr.ifs.pystructure.playground;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import ch.hsr.ifs.pystructure.typeinference.evaluators.base.AbstractEvaluator;
+import ch.hsr.ifs.pystructure.typeinference.goals.base.GoalState;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
 
 public class WorkUnit {
@@ -10,7 +12,7 @@ public class WorkUnit {
 	
 	public final IGoal goal;
 	public final AbstractEvaluator evaluator;
-	final WorkUnit parent;
+	public final List<WorkUnit> parents;
 	
 	State state;
 	
@@ -20,8 +22,15 @@ public class WorkUnit {
 	public WorkUnit(IGoal goal, AbstractEvaluator createEvaluator, WorkUnit parent) {
 		this.state = State.NEW;
 		this.goal = goal;
-		this.parent = parent;
 		this.evaluator = createEvaluator;
+		this.parents = new LinkedList<WorkUnit>();
+		if (parent != null) {
+			addParent(parent);
+		}
+	}
+	
+	public void addParent(WorkUnit parent) {
+		parents.add(parent);
 	}
 
 	public boolean isNew() {
@@ -47,11 +56,15 @@ public class WorkUnit {
 		return subgoalsDoneCount == subgoalsCount;
 	}
 
-	List<IGoal> subGoalDone(IGoal goal) {
-		List<IGoal> newSubGoals = evaluator.subGoalDone(goal, null);
+	List<IGoal> subGoalDone(IGoal goal, GoalState state) {
+		List<IGoal> newSubGoals = evaluator.subGoalDone(goal, state);
 		subgoalsDoneCount++;
 		subgoalsCount += newSubGoals.size();
 		return newSubGoals;
+	}
+	
+	List<IGoal> subGoalDone(IGoal goal) {
+		return subGoalDone(goal, null);
 	}
 
 	boolean isDone() {
