@@ -42,7 +42,7 @@ public class ReturnTypeGoal extends AbstractTypeGoal {
 	}
 
 	public String toString() {
-		return "ExpressionTypeGoal: "
+		return "ReturnTypeGoal: "
 		+ ((function != null) ? function.toString() : "null")
 		+ " context: "
 		+ ((context != null) ? context.hashCode() : "null");
