@@ -2,7 +2,6 @@ package ch.hsr.ifs.pystructure.typeinference.model.definitions;
 
 import java.util.List;
 
-import ch.hsr.ifs.pystructure.typeinference.basetype.CombinedType;
 import ch.hsr.ifs.pystructure.typeinference.model.base.NamePath;
 
 public class Attribute extends Definition {
@@ -10,7 +9,6 @@ public class Attribute extends Definition {
 	private final String name;
 	private final NamePath namePath;
 	private final Class klass;
-	public CombinedType type;
 	public List<? extends Reference> references;
 
 	public Attribute(String name, Class klass) {
@@ -18,7 +16,6 @@ public class Attribute extends Definition {
 		this.name = name;
 		this.namePath = new NamePath(new NamePath(klass.getFullName()), name);
 		this.klass = klass;
-		this.type = null;
 	}
 
 	@Override
