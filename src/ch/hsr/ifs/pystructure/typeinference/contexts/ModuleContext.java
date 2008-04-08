@@ -59,7 +59,7 @@ public class ModuleContext {
 	
 	@Override
 	public String toString() {
-		return "Module " + module.getName().toString();
+		return "Module " + module.getName();
 	}
 
 }

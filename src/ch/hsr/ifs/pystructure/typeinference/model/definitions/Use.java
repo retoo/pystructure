@@ -34,7 +34,7 @@ public abstract class Use {
 	}
 	
 	public String getDescription() {
-		return "'" + getName().toString() + "'";
+		return "'" + getName() + "'";
 	}
 
 }
