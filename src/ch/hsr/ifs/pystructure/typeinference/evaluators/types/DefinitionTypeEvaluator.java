@@ -16,7 +16,7 @@ public abstract class DefinitionTypeEvaluator extends AbstractEvaluator {
 		this.resultType = goal.resultType;
 	}
 	
-	public boolean isCached() {
+	public boolean checkCache() {
 		if (definition.type != null) {
 			this.resultType.appendType(definition.type);
 			

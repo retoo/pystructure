@@ -48,7 +48,7 @@ public class AttributeReferencesEvaluator extends AbstractEvaluator {
 	}
 	
 	@Override
-	public List<IGoal> subGoalDone(IGoal subgoal, GoalState state) {
+	public List<IGoal> subgoalDone(IGoal subgoal, GoalState state) {
 		PossibleAttributeReferencesGoal g = (PossibleAttributeReferencesGoal) subgoal;
 		
 		List<AttributeReference> possibleReferences = g.references;
@@ -69,7 +69,7 @@ public class AttributeReferencesEvaluator extends AbstractEvaluator {
 	}
 	
 	@Override
-	public boolean isCached() {
+	public boolean checkCache() {
 		if (attribute.references != null) {
 			this.references.addAll(attribute.references);
 			return true;

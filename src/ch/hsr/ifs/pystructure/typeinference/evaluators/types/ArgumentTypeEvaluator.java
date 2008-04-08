@@ -71,7 +71,7 @@ public class ArgumentTypeEvaluator extends DefinitionTypeEvaluator {
 	}
 
 	@Override
-	public List<IGoal> subGoalDone(IGoal subgoal, GoalState state) {
+	public List<IGoal> subgoalDone(IGoal subgoal, GoalState state) {
 		//  FIXME if (subgoal instanceof ExpressionTypeGoal && result instanceof IEvaluatedType) {
 		if (subgoal instanceof ExpressionTypeGoal) {
 			
@@ -103,7 +103,7 @@ public class ArgumentTypeEvaluator extends DefinitionTypeEvaluator {
 	}
 	
 	@Override
-	public boolean isCached() {
+	public boolean checkCache() {
 		return false;
 //		return super.isCached();
 	}

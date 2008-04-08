@@ -57,7 +57,7 @@ public class MethodReferencesEvaluator extends AbstractEvaluator {
 	}
 	
 	@Override
-	public List<IGoal> subGoalDone(IGoal subgoal, GoalState state) {
+	public List<IGoal> subgoalDone(IGoal subgoal, GoalState state) {
 		
 		if (subgoal instanceof ClassReferencesGoal) {
 			ClassReferencesGoal g = (ClassReferencesGoal) subgoal;
@@ -99,7 +99,7 @@ public class MethodReferencesEvaluator extends AbstractEvaluator {
 	}
 	
 	@Override
-	public boolean isCached() {
+	public boolean checkCache() {
 		if (method.references != null) {
 			this.references.addAll(references);
 			return true;

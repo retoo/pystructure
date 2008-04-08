@@ -42,7 +42,7 @@ public class FunctionReferencesEvaluator extends AbstractEvaluator {
 	}
 	
 	@Override
-	public List<IGoal> subGoalDone(IGoal subgoal, GoalState state) {
+	public List<IGoal> subgoalDone(IGoal subgoal, GoalState state) {
 		PossibleReferencesGoal g = (PossibleReferencesGoal) subgoal;
 
 		for (Use use : g.references) {

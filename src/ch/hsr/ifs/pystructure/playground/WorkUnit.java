@@ -57,7 +57,7 @@ public class WorkUnit {
 	}
 
 	List<IGoal> subGoalDone(IGoal goal, GoalState state) {
-		List<IGoal> newSubGoals = evaluator.subGoalDone(goal, state);
+		List<IGoal> newSubGoals = evaluator.subgoalDone(goal, state);
 		subgoalsDoneCount++;
 		subgoalsCount += newSubGoals.size();
 		return newSubGoals;

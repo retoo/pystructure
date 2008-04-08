@@ -53,7 +53,7 @@ public class CallTypeEvaluator extends AbstractEvaluator {
 	}
 
 	@Override
-	public List<IGoal> subGoalDone(IGoal subgoal, GoalState state) {
+	public List<IGoal> subgoalDone(IGoal subgoal, GoalState state) {
 		
 		if (subgoal instanceof ExpressionTypeGoal) {
 			ExpressionTypeGoal expressionTypeGoal = (ExpressionTypeGoal) subgoal; 

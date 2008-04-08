@@ -32,7 +32,7 @@ public class IfExpTypeEvaluator extends AbstractEvaluator {
 	}
 
 	@Override
-	public List<IGoal> subGoalDone(IGoal subgoal, GoalState state) {
+	public List<IGoal> subgoalDone(IGoal subgoal, GoalState state) {
 		ExpressionTypeGoal g = (ExpressionTypeGoal) subgoal;
 		resultType.appendType(g.resultType);
 		return IGoal.NO_GOALS;

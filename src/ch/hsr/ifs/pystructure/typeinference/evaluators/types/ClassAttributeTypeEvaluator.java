@@ -53,7 +53,7 @@ public class ClassAttributeTypeEvaluator extends AbstractEvaluator {
 	}
 	
 	@Override
-	public List<IGoal> subGoalDone(IGoal subgoal, GoalState state) {
+	public List<IGoal> subgoalDone(IGoal subgoal, GoalState state) {
 		ArrayList<IGoal> subgoals = new ArrayList<IGoal>();
 		
 		if (subgoal instanceof AttributeReferencesGoal) {
@@ -87,7 +87,7 @@ public class ClassAttributeTypeEvaluator extends AbstractEvaluator {
 	}
 	
 	@Override
-	public boolean isCached() {
+	public boolean checkCache() {
 		if (attribute.type != null) {
 			resultType.appendType(attribute.type);
 			return true;

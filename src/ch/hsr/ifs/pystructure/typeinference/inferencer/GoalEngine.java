@@ -105,7 +105,7 @@ public class GoalEngine {
 			state = GoalState.RECURSIVE;
 		}
 
-		List<IGoal> newGoals = evaluator.subGoalDone(subGoal, state);
+		List<IGoal> newGoals = evaluator.subgoalDone(subGoal, state);
 		assert newGoals != null : "please return IGoal.NO_GOALS if there are no goals";
 
 		for (IGoal newGoal : newGoals) {
@@ -188,7 +188,7 @@ public class GoalEngine {
 				/* Check if there are any cached results */
 				boolean isFinished = false;
 
-				if (CACHING_ENABLED && evaluator.isCached()) {
+				if (CACHING_ENABLED && evaluator.checkCache()) {
 					isFinished = true;
 				} else {
 					List<IGoal> newGoals = evaluator.init();

@@ -36,7 +36,7 @@ public class FixedAnswerEvaluator extends AbstractEvaluator {
 		return IGoal.NO_GOALS;
 	}
 
-	public List<IGoal> subGoalDone(IGoal subgoal, GoalState state) {
+	public List<IGoal> subgoalDone(IGoal subgoal, GoalState state) {
 		return IGoal.NO_GOALS;
 	}
 

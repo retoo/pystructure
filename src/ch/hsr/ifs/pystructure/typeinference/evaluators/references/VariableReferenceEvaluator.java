@@ -62,7 +62,7 @@ public class VariableReferenceEvaluator extends AbstractEvaluator {
 	}
 
 	@Override
-	public List<IGoal> subGoalDone(IGoal subgoal, GoalState state) {
+	public List<IGoal> subgoalDone(IGoal subgoal, GoalState state) {
 		DefinitionTypeGoal g = (DefinitionTypeGoal) subgoal;
 		resultType.appendType(g.resultType);
 		return IGoal.NO_GOALS;
