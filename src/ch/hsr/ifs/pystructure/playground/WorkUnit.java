@@ -8,7 +8,7 @@ import ch.hsr.ifs.pystructure.typeinference.goals.base.GoalState;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
 
 public class WorkUnit {
-	public enum State { NEW, INITIALIZED, DONE };
+	public enum State { NEW, INITIALIZED, FINISHED };
 	
 	public final IGoal goal;
 	public final AbstractEvaluator evaluator;
@@ -37,14 +37,14 @@ public class WorkUnit {
 		return state == State.NEW;
 	}
 
-	public void setInitialized() {
-		state = State.INITIALIZED;
-	}
-
 	public boolean isInitialized() {
 		return state == State.INITIALIZED;
 	}
 
+	boolean isFinished() {
+		return state == State.FINISHED;
+	}
+	
 	public List<IGoal> init() {
 		List<IGoal> subgoals = evaluator.init();
 		state = State.INITIALIZED;
@@ -65,10 +65,6 @@ public class WorkUnit {
 	
 	List<IGoal> subGoalDone(IGoal goal) {
 		return subGoalDone(goal, null);
-	}
-
-	boolean isDone() {
-		return state == State.DONE;
 	}
 	
 }

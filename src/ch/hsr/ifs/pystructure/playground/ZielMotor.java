@@ -47,18 +47,10 @@ public class ZielMotor {
 			}
 			
 			if (current.isInitialized() && current.areAllSubgoalsDone()) {
-				goalDone(queue, current);
-//				current.evaluator.finish();
-//				current.state = State.DONE;
-//				for (WorkUnit parent : current.parents) {
-//					if (parent != null) {
-//						List<IGoal> newGoals = parent.subGoalDone(current.goal);
-//						registerWorkUnits(queue, newGoals, parent);
-//					}
-//				}
+				finishGoal(queue, current);
 			}
 			
-			if (current.isDone()) {
+			if (current.isFinished()) {
 				logger.goalFinished(current.goal, current.evaluator);
 				// Don't add to the queue again because it's done.
 			} else {
@@ -69,14 +61,14 @@ public class ZielMotor {
 		logger.evaluationFinished(rootGoal);
 	}
 
-	private void goalDone(List<WorkUnit> queue, WorkUnit workUnit) {
+	private void finishGoal(List<WorkUnit> queue, WorkUnit workUnit) {
 		workUnit.evaluator.finish();
-		workUnit.state = State.DONE;
+		workUnit.state = State.FINISHED;
 		for (WorkUnit parent : workUnit.parents) {
 			List<IGoal> subgoals = parent.subGoalDone(workUnit.goal);
 			registerWorkUnits(queue, subgoals, parent);
 			if (parent.areAllSubgoalsDone()) {
-				goalDone(queue, parent);
+				finishGoal(queue, parent);
 			}
 		}
 	}
@@ -100,7 +92,7 @@ public class ZielMotor {
 			workUnits.put(goal, workUnit);
 			queue.add(workUnit);
 		} else {
-			if (workUnit.isDone()) {
+			if (workUnit.isFinished()) {
 				List<IGoal> subgoals = parent.subGoalDone(workUnit.goal);
 				registerWorkUnits(queue, subgoals, parent);
 			} else {
