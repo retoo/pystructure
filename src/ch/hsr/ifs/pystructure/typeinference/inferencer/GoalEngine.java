@@ -15,7 +15,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import ch.hsr.ifs.pystructure.typeinference.basetype.IType;
+import ch.hsr.ifs.pystructure.typeinference.basetype.CombinedType;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.base.AbstractEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.GoalState;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
@@ -132,7 +132,7 @@ public class GoalEngine {
 		}
 	}
 
-	public IType evaluateGoal(AbstractTypeGoal rootGoal) {
+	public CombinedType evaluateGoal(AbstractTypeGoal rootGoal) {
 		logger.evaluationStarted(rootGoal);
 		
 		reset();
