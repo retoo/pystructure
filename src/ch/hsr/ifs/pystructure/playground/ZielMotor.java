@@ -27,15 +27,16 @@ public class ZielMotor {
 
 	public ZielMotor(IGoalEngineLogger logger) {
 		this.logger = logger;
-		System.out.println(this.logger);
 		this.factory = new PythonEvaluatorFactory();
 	}
 
-	public void evaluateGoal(AbstractTypeGoal goal) {
+	public void evaluateGoal(AbstractTypeGoal rootGoal) {
 		this.workUnits = new HashMap<IGoal, WorkUnit>();
 		LinkedList<WorkUnit> queue = new LinkedList<WorkUnit>();
+		
+		logger.evaluationStarted(rootGoal);
 
-		registerWorkUnits(queue, goal, null);
+		registerWorkUnits(queue, rootGoal, null);
 
 		while (!queue.isEmpty()) {
 			WorkUnit current = queue.poll();
@@ -58,11 +59,14 @@ public class ZielMotor {
 			}
 			
 			if (current.isDone()) {
+				logger.goalFinished(current.goal, current.evaluator);
 				// Don't add to the queue again because it's done.
 			} else {
 				queue.add(current);
 			}
 		}
+		
+		logger.evaluationFinished(rootGoal);
 	}
 
 	private void goalDone(List<WorkUnit> queue, WorkUnit workUnit) {
@@ -88,6 +92,10 @@ public class ZielMotor {
 		if (workUnit == null) {
 			// Didn't exist yet, so create it
 			AbstractEvaluator evaluator = factory.createEvaluator(goal);
+			
+			AbstractEvaluator creator = (parent != null ? parent.evaluator : null);
+			logger.goalCreated(goal, creator, evaluator);
+			
 			workUnit = new WorkUnit(goal, evaluator, parent);
 			workUnits.put(goal, workUnit);
 			queue.add(workUnit);
@@ -98,8 +106,8 @@ public class ZielMotor {
 			} else {
 				// The same goal existed before, so check for cycles.
 				if (isCyclic(workUnit, parent)) {
-					System.out.println("Cyclic, old goal: " + workUnit.goal);
-					System.out.println("        new goal: " + goal);
+//					System.out.println("Cyclic, old goal: " + workUnit.goal);
+//					System.out.println("        new goal: " + goal);
 					
 					List<IGoal> newGoals = parent.subGoalDone(workUnit.goal, GoalState.RECURSIVE);
 					registerWorkUnits(queue, newGoals, parent);
@@ -124,8 +132,7 @@ public class ZielMotor {
 	}
 
 	public void shutdown() {
-		// TODO Auto-generated method stub
-
+		logger.shutdown();
 	}
 
 }
