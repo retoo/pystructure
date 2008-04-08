@@ -23,6 +23,13 @@ public class IteratorChain<E> implements Iterator<E> {
 		}
 	}
 	
+	public void add(Iterable<E> iterable) {
+		iterators.add(iterable.iterator());
+		if (currentIterator == null) {
+			currentIterator = iterable.iterator();
+		}
+	}
+	
 	public boolean hasNext() {
 		return currentIterator != null && (currentIterator.hasNext() || nextIndex < iterators.size());
 	}
