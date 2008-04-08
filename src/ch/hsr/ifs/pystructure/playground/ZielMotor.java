@@ -89,13 +89,7 @@ public class ZielMotor {
 		WorkUnit workUnit = workUnits.get(goal);
 		if (workUnit == null) {
 			// Didn't exist yet, so create it
-			AbstractEvaluator evaluator = factory.createEvaluator(goal);
-			
-			AbstractEvaluator creator = (parent != null ? parent.evaluator : null);
-			logger.goalCreated(goal, creator, evaluator);
-			
-			workUnit = new WorkUnit(goal, evaluator, parent);
-			workUnits.put(goal, workUnit);
+			workUnit = createWorkUnit(goal, parent);
 			queue.add(workUnit);
 		} else {
 			if (workUnit.isFinished()) {
@@ -105,9 +99,7 @@ public class ZielMotor {
 			} else {
 				// The same goal existed before, so check for cycles.
 				if (workUnit.isInParentsOf(parent)) {
-//					System.out.println("Cyclic, old goal: " + workUnit.goal);
-//					System.out.println("        new goal: " + goal);
-					
+					// TODO: Maybe add an event (cyclicGoalCreated) to the logger interface?
 					List<IGoal> newGoals = parent.subGoalDone(workUnit.goal, GoalState.RECURSIVE);
 					registerWorkUnits(queue, newGoals, parent);
 				} else {
@@ -116,6 +108,17 @@ public class ZielMotor {
 				}
 			}
 		}
+	}
+
+	private WorkUnit createWorkUnit(IGoal goal, WorkUnit parent) {
+		AbstractEvaluator evaluator = factory.createEvaluator(goal);
+		
+		AbstractEvaluator creator = (parent != null ? parent.evaluator : null);
+		logger.goalCreated(goal, creator, evaluator);
+		
+		WorkUnit workUnit = new WorkUnit(goal, evaluator, parent);
+		workUnits.put(goal, workUnit);
+		return workUnit;
 	}
 	
 	public void shutdown() {
