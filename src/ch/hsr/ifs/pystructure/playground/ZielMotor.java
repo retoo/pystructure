@@ -104,7 +104,7 @@ public class ZielMotor {
 				registerWorkUnits(queue, subgoals, parent);
 			} else {
 				// The same goal existed before, so check for cycles.
-				if (isCyclic(workUnit, parent)) {
+				if (workUnit.isInParentsOf(parent)) {
 //					System.out.println("Cyclic, old goal: " + workUnit.goal);
 //					System.out.println("        new goal: " + goal);
 					
@@ -118,18 +118,6 @@ public class ZielMotor {
 		}
 	}
 	
-	private boolean isCyclic(WorkUnit start, WorkUnit end) {
-		if (start == end) {
-			return true;
-		}
-		for (WorkUnit parent : end.parents) {
-			if (isCyclic(start, parent)) {
-				return true;
-			}
-		}
-		return false;
-	}
-
 	public void shutdown() {
 		logger.shutdown();
 	}

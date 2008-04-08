@@ -8,6 +8,7 @@ import ch.hsr.ifs.pystructure.typeinference.goals.base.GoalState;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
 
 public class WorkUnit {
+
 	public enum State { NEW, INITIALIZED, FINISHED };
 	
 	public final IGoal goal;
@@ -67,4 +68,23 @@ public class WorkUnit {
 		return subGoalDone(goal, null);
 	}
 	
+	/**
+	 * Checks if this WorkUnit appears somewhere in the parents (at any level)
+	 * of the other WorkUnit.
+	 * 
+	 * @param other WorkUnit to start checking from
+	 * @return true if this is in the parents of other
+	 */
+	public boolean isInParentsOf(WorkUnit other) {
+		if (this == other) {
+			return true;
+		}
+		for (WorkUnit parent : other.parents) {
+			if (isInParentsOf(parent)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 }
