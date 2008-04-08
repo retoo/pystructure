@@ -20,7 +20,7 @@ import ch.hsr.ifs.pystructure.typeinference.evaluators.base.AbstractEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.GoalState;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.AbstractTypeGoal;
-import ch.hsr.ifs.pystructure.typeinference.inferencer.dispatcher.IEvaluatorFactory;
+import ch.hsr.ifs.pystructure.typeinference.inferencer.dispatcher.PythonEvaluatorFactory;
 import ch.hsr.ifs.pystructure.typeinference.inferencer.logger.GoalEngineNullLogger;
 import ch.hsr.ifs.pystructure.typeinference.inferencer.logger.IGoalEngineLogger;
 
@@ -34,7 +34,7 @@ import ch.hsr.ifs.pystructure.typeinference.inferencer.logger.IGoalEngineLogger;
  */
 public class GoalEngine {
 
-	private final IEvaluatorFactory evaluatorFactory;
+	private final PythonEvaluatorFactory evaluatorFactory;
 
 	private final LinkedList<WorkingPair> workingQueue = new LinkedList<WorkingPair>();
 	private final Map<IGoal, GoalEvaluationState> goalStates = new HashMap<IGoal, GoalEvaluationState>();
@@ -80,11 +80,11 @@ public class GoalEngine {
 		}
 	}
 
-	public GoalEngine(IEvaluatorFactory evaluatorFactory) {
+	public GoalEngine(PythonEvaluatorFactory evaluatorFactory) {
 		this(evaluatorFactory, new GoalEngineNullLogger());
 	}
 
-	public GoalEngine(IEvaluatorFactory evaluatorFactory, IGoalEngineLogger logger) {
+	public GoalEngine(PythonEvaluatorFactory evaluatorFactory, IGoalEngineLogger logger) {
 		this.evaluatorFactory = evaluatorFactory;
 		this.logger = logger;
 	}
