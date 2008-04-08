@@ -40,13 +40,15 @@ public class Workspace {
 	
 	public PathElement resolve(NamePath path, PathElementContainer parent) {
 		List<String> parts = path.getParts();
-		String last = parts.get(parts.size() - 1);
+		int remaining = parts.size();
 		
 		PathElementContainer pkg = parent;
 		
 		for (String part : parts) {
 			PathElement child = pkg.getChild(part);
-			if (part == last) {
+			--remaining;
+			
+			if (remaining == 0) {
 				return child;
 			} else if (child instanceof Package) {
 				pkg = (Package) child;
