@@ -15,6 +15,8 @@ import ch.hsr.ifs.pystructure.typeinference.inferencer.logger.GoalEngineNullLogg
 import ch.hsr.ifs.pystructure.typeinference.inferencer.logger.IGoalEngineLogger;
 
 public class ZielMotor {
+	
+	private static final boolean CACHING_ENABLED = true;
 
 	private final PythonEvaluatorFactory factory;
 	private final IGoalEngineLogger logger;
@@ -42,8 +44,12 @@ public class ZielMotor {
 			WorkUnit current = queue.poll();
 
 			if (current.isNew()) {
-				List<IGoal> subgoals = current.init();
-				registerWorkUnits(queue, subgoals, current);
+				if (CACHING_ENABLED && current.evaluator.checkCache()) {
+					finishGoal(queue, current);
+				} else {
+					List<IGoal> subgoals = current.init();
+					registerWorkUnits(queue, subgoals, current);
+				}
 			}
 			
 			if (current.isInitialized() && current.areAllSubgoalsDone()) {
@@ -93,6 +99,7 @@ public class ZielMotor {
 			queue.add(workUnit);
 		} else {
 			if (workUnit.isFinished()) {
+				// Reuse the goal's result.
 				List<IGoal> subgoals = parent.subGoalDone(workUnit.goal);
 				registerWorkUnits(queue, subgoals, parent);
 			} else {
