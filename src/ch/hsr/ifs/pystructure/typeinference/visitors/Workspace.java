@@ -84,7 +84,7 @@ public class Workspace {
 	public Iterable<Module> getModules() {
 		IteratorChain<Module> iterator = new IteratorChain<Module>();
 		for (SourceFolder sourceFolder : sourceFolders) {
-			iterator.addIterator(sourceFolder.getModules().iterator());
+			iterator.add(sourceFolder.getModules());
 		}
 		return new IterableIterator<Module>(iterator);
 	}

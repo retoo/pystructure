@@ -13,14 +13,8 @@ public class IteratorChain<E> implements Iterator<E> {
 	
 	public IteratorChain() {
 		iterators = new LinkedList<Iterator<E>>();
+		currentIterator = null;
 		nextIndex = 1;
-	}
-	
-	public void addIterator(Iterator<E> iterator) {
-		iterators.add(iterator);
-		if (currentIterator == null) {
-			currentIterator = iterator;
-		}
 	}
 	
 	public void add(Iterable<E> iterable) {

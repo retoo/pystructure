@@ -17,7 +17,7 @@ public class IteratorChainTest extends TestCase {
 
 	public void testNormal() {
 		IteratorChain<String> chain = new IteratorChain<String>();
-		chain.addIterator(Arrays.asList("1", "2", "3").iterator());
+		chain.add(Arrays.asList("1", "2", "3"));
 		chain.add(Arrays.asList("4", "5"));
 		
 		assertTrue(chain.hasNext());
@@ -54,7 +54,7 @@ public class IteratorChainTest extends TestCase {
 	
 	public void testRemove() {
 		IteratorChain<String> chain = new IteratorChain<String>();
-		chain.addIterator(Arrays.asList("1", "2", "3").iterator());
+		chain.add(Arrays.asList("1", "2", "3"));
 		
 		try {
 			chain.remove();
