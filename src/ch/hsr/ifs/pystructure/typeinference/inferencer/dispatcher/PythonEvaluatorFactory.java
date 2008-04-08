@@ -30,13 +30,13 @@ import ch.hsr.ifs.pystructure.typeinference.evaluators.references.MethodReferenc
 import ch.hsr.ifs.pystructure.typeinference.evaluators.references.PossibleAttributeReferencesEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.references.PossibleReferencesEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.references.VariableReferenceEvaluator;
+import ch.hsr.ifs.pystructure.typeinference.evaluators.types.AnswerAlreadyKnownEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.types.ArgumentTypeEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.types.AssignTypeEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.types.AttributeTypeEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.types.BinOpTypeEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.types.CallTypeEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.types.ClassAttributeTypeEvaluator;
-import ch.hsr.ifs.pystructure.typeinference.evaluators.types.FixedAnswerEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.types.IfExpTypeEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.types.ImportTypeEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.types.ReturnTypeEvaluator;
@@ -148,26 +148,26 @@ public class PythonEvaluatorFactory {
 		}
 		if (def instanceof Function) {
 			Function function = (Function) def;
-			return new FixedAnswerEvaluator(goal, new FunctionType(module, function));
+			return new AnswerAlreadyKnownEvaluator(goal, new FunctionType(module, function));
 		}
 		if (def instanceof ch.hsr.ifs.pystructure.typeinference.model.definitions.Class) {
 			ch.hsr.ifs.pystructure.typeinference.model.definitions.Class klass = (ch.hsr.ifs.pystructure.typeinference.model.definitions.Class) def;
-			return new FixedAnswerEvaluator(goal, new MetaclassType(module, klass));
+			return new AnswerAlreadyKnownEvaluator(goal, new MetaclassType(module, klass));
 		}
 		if (def instanceof Module) {
 			Module moduleDef = (Module) def;
-			return new FixedAnswerEvaluator(goal, new ModuleType(moduleDef));
+			return new AnswerAlreadyKnownEvaluator(goal, new ModuleType(moduleDef));
 		}
 		if (def instanceof LoopVariableDefinition) {
 			// TODO: Implement LoopVariableTypeEvaluator
-			return new FixedAnswerEvaluator(goal, new ClassType("object"));
+			return new AnswerAlreadyKnownEvaluator(goal, new ClassType("object"));
 		}
 		if (def instanceof ExceptDefinition) {
 			// TODO: Implement ExceptTypeEvaluator
-			return new FixedAnswerEvaluator(goal, new ClassType("object"));
+			return new AnswerAlreadyKnownEvaluator(goal, new ClassType("object"));
 		}
 		if (def instanceof NoDefintion) {
-			return new FixedAnswerEvaluator(goal, new ClassType("object"));
+			return new AnswerAlreadyKnownEvaluator(goal, new ClassType("object"));
 		}
 		
 		throw new RuntimeException("Can't create evaluator for definition " + def + ", goal " + goal);
@@ -180,10 +180,10 @@ public class PythonEvaluatorFactory {
 			Name name = (Name) expr;
 			if (name.id.equals("None")) {
 				/* FIXME: shoudln't we create a new class for NoneType? */
-				return new FixedAnswerEvaluator(goal, new ClassType("NoneType"));
+				return new AnswerAlreadyKnownEvaluator(goal, new ClassType("NoneType"));
 			}
 			if (name.id.equals("True") || name.id.equals("False")) {
-				return new FixedAnswerEvaluator(goal, new ClassType("bool"));
+				return new AnswerAlreadyKnownEvaluator(goal, new ClassType("bool"));
 			}
 			return new VariableReferenceEvaluator(goal, name);
 		}
@@ -219,27 +219,27 @@ public class PythonEvaluatorFactory {
 			case num_typeType.Hex:
 			default: type = "int"; break;
 			}
-			return new FixedAnswerEvaluator(goal, new ClassType(type));
+			return new AnswerAlreadyKnownEvaluator(goal, new ClassType(type));
 		}
 		if (expr instanceof Str) {
 			Str str = (Str) expr;
 			if (str.unicode) {
-				return new FixedAnswerEvaluator(goal, new ClassType("unicode"));
+				return new AnswerAlreadyKnownEvaluator(goal, new ClassType("unicode"));
 			} else {
-				return new FixedAnswerEvaluator(goal, new ClassType("str"));
+				return new AnswerAlreadyKnownEvaluator(goal, new ClassType("str"));
 			}
 		}
 		if (expr instanceof List) {
-			return new FixedAnswerEvaluator(goal, new ClassType("list"));
+			return new AnswerAlreadyKnownEvaluator(goal, new ClassType("list"));
 		}
 		if (expr instanceof Tuple) {
-			return new FixedAnswerEvaluator(goal, new TupleType((Tuple) expr));
+			return new AnswerAlreadyKnownEvaluator(goal, new TupleType((Tuple) expr));
 		}
 		if (expr instanceof Dict) {
-			return new FixedAnswerEvaluator(goal, new ClassType("dict"));
+			return new AnswerAlreadyKnownEvaluator(goal, new ClassType("dict"));
 		}
 		if (expr instanceof Subscript) {
-			return new FixedAnswerEvaluator(goal, new ClassType("list-element"));
+			return new AnswerAlreadyKnownEvaluator(goal, new ClassType("list-element"));
 		}
 		if (expr instanceof ListComp) {
 			/* FIXME: this is a expression like:
@@ -248,20 +248,20 @@ public class PythonEvaluatorFactory {
 			 *  we could use the generators.iter to find out what kind of 
 			 *  list we have to expect here, but for now we have no idea about lists anyway
 			 */
-			return new FixedAnswerEvaluator(goal, new ClassType("list"));
+			return new AnswerAlreadyKnownEvaluator(goal, new ClassType("list"));
 		}
 		if (expr instanceof Compare) {
-			return new FixedAnswerEvaluator(goal, new ClassType("bool"));
+			return new AnswerAlreadyKnownEvaluator(goal, new ClassType("bool"));
 		}
 		if (expr instanceof UnaryOp) {
-			return new FixedAnswerEvaluator(goal, new ClassType("bool"));
+			return new AnswerAlreadyKnownEvaluator(goal, new ClassType("bool"));
 		}
 		if (expr instanceof BoolOp) {
-			return new FixedAnswerEvaluator(goal, new ClassType("bool"));
+			return new AnswerAlreadyKnownEvaluator(goal, new ClassType("bool"));
 		}
 		if (expr instanceof Lambda) {
 			// FIXME: Implement properly (like function)
-			return new FixedAnswerEvaluator(goal, new ClassType("function"));
+			return new AnswerAlreadyKnownEvaluator(goal, new ClassType("function"));
 		}
 		
 		throw new RuntimeException("Can't create evaluator for literal expression " + expr +  ", goal " + goal);
