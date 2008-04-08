@@ -17,7 +17,7 @@ import ch.hsr.ifs.pystructure.typeinference.inferencer.logger.IGoalEngineLogger;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Module;
 import ch.hsr.ifs.pystructure.typeinference.visitors.Workspace;
 
-public class PythonTypeInferencer implements ITypeInferencer {
+public class PythonTypeInferencer {
 
 	private final GoalEngine engine;
 	

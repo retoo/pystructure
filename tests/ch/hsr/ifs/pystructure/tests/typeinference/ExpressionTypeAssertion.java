@@ -16,7 +16,7 @@ import org.python.pydev.parser.jython.SimpleNode;
 import org.python.pydev.parser.jython.ast.Expr;
 
 import ch.hsr.ifs.pystructure.typeinference.basetype.IType;
-import ch.hsr.ifs.pystructure.typeinference.inferencer.ITypeInferencer;
+import ch.hsr.ifs.pystructure.typeinference.inferencer.PythonTypeInferencer;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Module;
 import ch.hsr.ifs.pystructure.typeinference.visitors.ExpressionAtLineVisitor;
 import ch.hsr.ifs.pystructure.typeinference.visitors.Workspace;
@@ -38,7 +38,7 @@ class ExpressionTypeAssertion extends Assert {
 		this.correctClassRef = correctClassRef;
 	}
 
-	public void check(File file, ITypeInferencer inferencer, Workspace workspace) {
+	public void check(File file, PythonTypeInferencer inferencer, Workspace workspace) {
 		Module module = workspace.getModule(file);
 		SimpleNode rootNode = module.getNode();
 		

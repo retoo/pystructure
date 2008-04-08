@@ -14,7 +14,7 @@ import java.util.List;
 
 import junit.framework.TestCase;
 import ch.hsr.ifs.pystructure.playground.Structure101Logger;
-import ch.hsr.ifs.pystructure.typeinference.inferencer.ITypeInferencer;
+import ch.hsr.ifs.pystructure.typeinference.inferencer.PythonTypeInferencer;
 import ch.hsr.ifs.pystructure.typeinference.visitors.Workspace;
 import ch.hsr.ifs.pystructure.utils.FileUtils;
 import ch.hsr.ifs.pystructure.utils.TestUtils;
@@ -25,11 +25,11 @@ public class TypeInferenceTest extends TestCase {
 	private File file;
 	private String sourceCode;
 	private Workspace workspace;
-	private ITypeInferencer inferencer;
+	private PythonTypeInferencer inferencer;
 	private Structure101Logger logger;
 
 	public TypeInferenceTest(String name, File file, Workspace workspace,
-			ITypeInferencer inferencer, Structure101Logger logger)
+			PythonTypeInferencer inferencer, Structure101Logger logger)
 			throws IOException {
 		super(name);
 		this.file = file;
