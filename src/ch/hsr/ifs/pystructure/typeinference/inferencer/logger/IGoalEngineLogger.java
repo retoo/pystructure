@@ -12,4 +12,5 @@ public interface IGoalEngineLogger {
 	void goalFinished(IGoal goal, AbstractEvaluator evaluator);
 
 	void shutdown();
+
 }
