@@ -15,6 +15,7 @@ import org.python.pydev.parser.jython.ast.keywordType;
 import ch.hsr.ifs.pystructure.typeinference.model.base.NodeUtils;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Argument;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Function;
+import ch.hsr.ifs.pystructure.typeinference.model.definitions.Reference;
 
 public class FunctionReference extends Reference {
 	

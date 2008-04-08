@@ -98,10 +98,12 @@ public class MethodReferencesEvaluator extends AbstractEvaluator {
 		return IGoal.NO_GOALS;
 	}
 	
+	/* casting is safe here */
+	@SuppressWarnings("unchecked")
 	@Override
 	public boolean checkCache() {
 		if (method.references != null) {
-			this.references.addAll(references);
+			this.references.addAll((List<FunctionReference>) method.references);
 			return true;
 		} else {
 			return false;

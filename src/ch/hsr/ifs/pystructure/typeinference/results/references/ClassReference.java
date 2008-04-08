@@ -10,6 +10,7 @@ package ch.hsr.ifs.pystructure.typeinference.results.references;
 import org.python.pydev.parser.jython.SimpleNode;
 
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Class;
+import ch.hsr.ifs.pystructure.typeinference.model.definitions.Reference;
 
 public class ClassReference extends Reference {
 	

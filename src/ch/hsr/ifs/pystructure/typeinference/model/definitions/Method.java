@@ -11,15 +11,13 @@ import java.util.List;
 
 import org.python.pydev.parser.jython.ast.FunctionDef;
 
-import ch.hsr.ifs.pystructure.typeinference.results.references.FunctionReference;
-
 /**
  * Definition of a method of a class.
  */
 public class Method extends Function {
 
 	private final Class klass;
-	public List<FunctionReference> references;
+	public List<? extends Reference> references;
 
 	public Method(Module module, String name, FunctionDef functionDef, Class klass) {
 		super(module, name, functionDef, klass);

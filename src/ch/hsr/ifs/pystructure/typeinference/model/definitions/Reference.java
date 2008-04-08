@@ -5,12 +5,11 @@
  *
  */
 
-package ch.hsr.ifs.pystructure.typeinference.results.references;
+package ch.hsr.ifs.pystructure.typeinference.model.definitions;
 
 import org.python.pydev.parser.jython.SimpleNode;
 
 import ch.hsr.ifs.pystructure.typeinference.model.base.NodeUtils;
-import ch.hsr.ifs.pystructure.typeinference.model.definitions.Definition;
 
 public class Reference {
 

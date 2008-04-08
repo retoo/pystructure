@@ -4,7 +4,6 @@ import java.util.List;
 
 import ch.hsr.ifs.pystructure.typeinference.basetype.CombinedType;
 import ch.hsr.ifs.pystructure.typeinference.model.base.NamePath;
-import ch.hsr.ifs.pystructure.typeinference.results.references.AttributeReference;
 
 public class Attribute extends Definition {
 	
@@ -12,7 +11,7 @@ public class Attribute extends Definition {
 	private final NamePath namePath;
 	private final Class klass;
 	public CombinedType type;
-	public List<AttributeReference> references;
+	public List<? extends Reference> references;
 
 	public Attribute(String name, Class klass) {
 		super();

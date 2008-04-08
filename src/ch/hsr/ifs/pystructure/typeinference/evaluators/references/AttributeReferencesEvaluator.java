@@ -68,10 +68,12 @@ public class AttributeReferencesEvaluator extends AbstractEvaluator {
 		return IGoal.NO_GOALS;
 	}
 	
+	/* casting is safe here */
+	@SuppressWarnings("unchecked")
 	@Override
 	public boolean checkCache() {
 		if (attribute.references != null) {
-			this.references.addAll(attribute.references);
+			this.references.addAll((List<AttributeReference>) attribute.references);
 			return true;
 		} else {
 			return false;
