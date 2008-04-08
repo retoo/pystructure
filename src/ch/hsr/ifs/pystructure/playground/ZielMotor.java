@@ -29,11 +29,10 @@ public class ZielMotor {
 		this.logger = logger;
 		System.out.println(this.logger);
 		this.factory = new PythonEvaluatorFactory();
-		this.workUnits = new HashMap<IGoal, WorkUnit>();
-
 	}
 
 	public void evaluateGoal(AbstractTypeGoal goal) {
+		this.workUnits = new HashMap<IGoal, WorkUnit>();
 		LinkedList<WorkUnit> queue = new LinkedList<WorkUnit>();
 
 		registerWorkUnits(queue, goal, null);
