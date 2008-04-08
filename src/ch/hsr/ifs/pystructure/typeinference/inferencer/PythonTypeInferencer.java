@@ -33,7 +33,7 @@ public class PythonTypeInferencer {
 		ModuleContext context = new ModuleContext(workspace, module);
 		ExpressionTypeGoal goal = new ExpressionTypeGoal(context, node);
 		
-		return engine.evaluateGoal(goal, null);
+		return engine.evaluateGoal(goal);
 	}
 	
 	public void shutdown() {

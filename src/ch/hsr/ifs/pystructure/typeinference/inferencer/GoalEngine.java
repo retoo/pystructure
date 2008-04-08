@@ -132,13 +132,10 @@ public class GoalEngine {
 		}
 	}
 
-	public IType evaluateGoal(AbstractTypeGoal rootGoal, IPruner pruner) {
+	public IType evaluateGoal(AbstractTypeGoal rootGoal) {
 		logger.evaluationStarted(rootGoal);
 		
 		reset();
-		if (pruner != null) {
-			pruner.init();
-		}
 		workingQueue.add(new WorkingPair(rootGoal, null));
 
 		WorkingPair firstPostponed = null;
