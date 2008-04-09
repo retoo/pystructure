@@ -9,13 +9,12 @@ import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
 
 public class GoalNode {
 
-	public enum State { NEW, INITIALIZED, FINISHED };
+	private enum State { NEW, INITIALIZED, FINISHED };
+	private State state;
 	
 	public final IGoal goal;
 	public final AbstractEvaluator evaluator;
 	public final List<GoalNode> parents;
-	
-	public State state;
 	
 	private int subgoalsCount;
 	private int subgoalsDoneCount;
@@ -51,6 +50,11 @@ public class GoalNode {
 		state = State.INITIALIZED;
 		subgoalsCount = subgoals.size();
 		return subgoals;
+	}
+	
+	public void finish() {
+		evaluator.finish();
+		state = State.FINISHED;
 	}
 
 	public boolean areAllSubgoalsDone() {

@@ -9,7 +9,6 @@ import ch.hsr.ifs.pystructure.typeinference.evaluators.base.AbstractEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.GoalState;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.AbstractTypeGoal;
-import ch.hsr.ifs.pystructure.typeinference.inferencer.GoalNode.State;
 import ch.hsr.ifs.pystructure.typeinference.inferencer.dispatcher.PythonEvaluatorFactory;
 import ch.hsr.ifs.pystructure.typeinference.inferencer.logger.GoalEngineNullLogger;
 import ch.hsr.ifs.pystructure.typeinference.inferencer.logger.IGoalEngineLogger;
@@ -76,8 +75,7 @@ public class GoalEngine {
 	}
 
 	private void finishGoalNode(GoalNode goalNode) {
-		goalNode.evaluator.finish();
-		goalNode.state = State.FINISHED;
+		goalNode.finish();
 		for (GoalNode parent : goalNode.parents) {
 			List<IGoal> subgoals = parent.subGoalDone(goalNode.goal);
 			registerGoalNode(subgoals, parent);
