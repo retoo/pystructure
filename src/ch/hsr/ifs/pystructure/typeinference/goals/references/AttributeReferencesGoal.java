@@ -10,19 +10,13 @@ package ch.hsr.ifs.pystructure.typeinference.goals.references;
 import java.util.ArrayList;
 import java.util.List;
 
-import ch.hsr.ifs.pystructure.typeinference.model.definitions.Class; 
 import ch.hsr.ifs.pystructure.typeinference.contexts.ModuleContext;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.AbstractGoal;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Attribute;
-import ch.hsr.ifs.pystructure.typeinference.model.definitions.Definition;
 import ch.hsr.ifs.pystructure.typeinference.results.references.AttributeReference;
 
 public class AttributeReferencesGoal extends AbstractGoal {
 
-	@Deprecated
-	private final String attributeName;
-	@Deprecated
-	private final Class attributeParent;
 	public final List<AttributeReference> references;
 	private Attribute attribute;
 
@@ -30,25 +24,31 @@ public class AttributeReferencesGoal extends AbstractGoal {
 			Attribute attribute) {
 		super(context);
 		this.attribute = attribute;
-		this.attributeName = attribute.getName();
-		this.attributeParent = attribute.getKlass();
 		this.references = new ArrayList<AttributeReference>();
 	}
 
-	@Deprecated
-	public String getAttributeName() {
-		return attributeName;
-	}
-
-	@Deprecated
-	public Definition getAttributeParent() {
-		return attributeParent;
-	}
-	
 	public Attribute getAttribute() {
 		return attribute;
 	}
 	
+
+	public String toString() {
+		return "AttributeReferencesGoal: "
+		+ "Attribute " + attribute
+		+ " context: " + context;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((attribute == null) ? 0 : attribute.hashCode());
+		result = prime * result
+				+ ((references == null) ? 0 : references.hashCode());
+		return result;
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -61,39 +61,21 @@ public class AttributeReferencesGoal extends AbstractGoal {
 			return false;
 		}
 		final AttributeReferencesGoal other = (AttributeReferencesGoal) obj;
-		if (attributeName == null) {
-			if (other.attributeName != null) {
+		if (attribute == null) {
+			if (other.attribute != null) {
 				return false;
 			}
-		} else if (!attributeName.equals(other.attributeName)) {
+		} else if (!attribute.equals(other.attribute)) {
 			return false;
 		}
-		if (attributeParent == null) {
-			if (other.attributeParent != null) {
+		if (references == null) {
+			if (other.references != null) {
 				return false;
 			}
-		} else if (!attributeParent.equals(other.attributeParent)) {
+		} else if (!references.equals(other.references)) {
 			return false;
 		}
 		return true;
-	}
-	
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result
-				+ ((attributeName == null) ? 0 : attributeName.hashCode());
-		result = prime * result
-				+ ((attributeParent == null) ? 0 : attributeParent.hashCode());
-		return result;
-	}
-
-	public String toString() {
-		return "AttributeReferencesGoal: "
-		+ "Attribute " + attributeName
-		+ " of " + attributeParent
-		+ " context: " + context;
 	}
 
 }

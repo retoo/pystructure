@@ -36,8 +36,8 @@ public class AttributeReferencesEvaluator extends AbstractEvaluator {
 	public AttributeReferencesEvaluator(AttributeReferencesGoal goal) {
 		super(goal);
 		this.attribute = goal.getAttribute();
-		this.attributeName = goal.getAttributeName();
-		this.attributeParent = goal.getAttributeParent();
+		this.attributeName = attribute.getName();
+		this.attributeParent = attribute.getKlass();
 		
 		this.references = goal.references;
 	}
