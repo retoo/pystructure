@@ -5,8 +5,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import ch.hsr.ifs.pystructure.playground.WorkUnit;
-import ch.hsr.ifs.pystructure.playground.WorkUnit.State;
+import ch.hsr.ifs.pystructure.playground.GoalNode;
+import ch.hsr.ifs.pystructure.playground.GoalNode.State;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.base.AbstractEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.GoalState;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
@@ -26,8 +26,8 @@ public class GoalEngine {
 	private final PythonEvaluatorFactory factory;
 	private final IGoalEngineLogger logger;
 	
-	private LinkedList<WorkUnit> queue;
-	private Map<IGoal, WorkUnit> workUnits;
+	private LinkedList<GoalNode> queue;
+	private Map<IGoal, GoalNode> goalNodes;
 
 	public GoalEngine() {
 		this(new GoalEngineNullLogger());
@@ -41,13 +41,13 @@ public class GoalEngine {
 	public void evaluateGoal(AbstractTypeGoal rootGoal) {
 		logger.evaluationStarted(rootGoal);
 		
-		queue = new LinkedList<WorkUnit>();
-		workUnits = new HashMap<IGoal, WorkUnit>();
+		queue = new LinkedList<GoalNode>();
+		goalNodes = new HashMap<IGoal, GoalNode>();
 
 		registerWorkUnits(rootGoal, null);
 
 		while (!queue.isEmpty()) {
-			WorkUnit current = queue.poll();
+			GoalNode current = queue.poll();
 
 			if (current.isNew()) {
 				if (CACHING_ENABLED && current.evaluator.checkCache()) {
@@ -71,16 +71,16 @@ public class GoalEngine {
 		}
 		
 		queue = null;
-		workUnits = null;
+		goalNodes = null;
 		
 		logger.evaluationFinished(rootGoal);
 	}
 
-	private void finishGoal(WorkUnit workUnit) {
-		workUnit.evaluator.finish();
-		workUnit.state = State.FINISHED;
-		for (WorkUnit parent : workUnit.parents) {
-			List<IGoal> subgoals = parent.subGoalDone(workUnit.goal);
+	private void finishGoal(GoalNode goalNode) {
+		goalNode.evaluator.finish();
+		goalNode.state = State.FINISHED;
+		for (GoalNode parent : goalNode.parents) {
+			List<IGoal> subgoals = parent.subGoalDone(goalNode.goal);
 			registerWorkUnits(subgoals, parent);
 			if (parent.areAllSubgoalsDone()) {
 				finishGoal(parent);
@@ -88,46 +88,46 @@ public class GoalEngine {
 		}
 	}
 
-	private void registerWorkUnits(List<IGoal> goals, WorkUnit parent) {
+	private void registerWorkUnits(List<IGoal> goals, GoalNode parent) {
 		for (IGoal goal : goals) {
 			registerWorkUnits(goal, parent);
 		}
 	}
 
-	private void registerWorkUnits(IGoal goal, WorkUnit parent) {
-		WorkUnit workUnit = workUnits.get(goal);
-		if (workUnit == null) {
+	private void registerWorkUnits(IGoal goal, GoalNode parent) {
+		GoalNode goalNode = goalNodes.get(goal);
+		if (goalNode == null) {
 			// Didn't exist yet, so create it
-			workUnit = createWorkUnit(goal, parent);
-			queue.add(workUnit);
+			goalNode = createWorkUnit(goal, parent);
+			queue.add(goalNode);
 		} else {
-			if (workUnit.isFinished()) {
+			if (goalNode.isFinished()) {
 				// Reuse the goal's result.
-				List<IGoal> subgoals = parent.subGoalDone(workUnit.goal);
+				List<IGoal> subgoals = parent.subGoalDone(goalNode.goal);
 				registerWorkUnits(subgoals, parent);
 			} else {
 				// The same goal existed before, so check for cycles.
-				if (workUnit.isInParentsOf(parent)) {
+				if (goalNode.isInParentsOf(parent)) {
 					// TODO: Maybe add an event (cyclicGoalCreated) to the logger interface?
-					List<IGoal> newGoals = parent.subGoalDone(workUnit.goal, GoalState.RECURSIVE);
+					List<IGoal> newGoals = parent.subGoalDone(goalNode.goal, GoalState.RECURSIVE);
 					registerWorkUnits(newGoals, parent);
 				} else {
-					workUnit.addParent(parent);
-					queue.add(workUnit);
+					goalNode.addParent(parent);
+					queue.add(goalNode);
 				}
 			}
 		}
 	}
 
-	private WorkUnit createWorkUnit(IGoal goal, WorkUnit parent) {
+	private GoalNode createWorkUnit(IGoal goal, GoalNode parent) {
 		AbstractEvaluator evaluator = factory.createEvaluator(goal);
 		
 		AbstractEvaluator creator = (parent != null ? parent.evaluator : null);
 		logger.goalCreated(goal, creator, evaluator);
 		
-		WorkUnit workUnit = new WorkUnit(goal, evaluator, parent);
-		workUnits.put(goal, workUnit);
-		return workUnit;
+		GoalNode goalNode = new GoalNode(goal, evaluator, parent);
+		goalNodes.put(goal, goalNode);
+		return goalNode;
 	}
 	
 	public void shutdown() {

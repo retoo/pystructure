@@ -7,30 +7,30 @@ import ch.hsr.ifs.pystructure.typeinference.evaluators.base.AbstractEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.GoalState;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
 
-public class WorkUnit {
+public class GoalNode {
 
 	public enum State { NEW, INITIALIZED, FINISHED };
 	
 	public final IGoal goal;
 	public final AbstractEvaluator evaluator;
-	public final List<WorkUnit> parents;
+	public final List<GoalNode> parents;
 	
 	public State state;
 	
 	private int subgoalsCount;
 	private int subgoalsDoneCount;
 	
-	public WorkUnit(IGoal goal, AbstractEvaluator createEvaluator, WorkUnit parent) {
+	public GoalNode(IGoal goal, AbstractEvaluator createEvaluator, GoalNode parent) {
 		this.state = State.NEW;
 		this.goal = goal;
 		this.evaluator = createEvaluator;
-		this.parents = new LinkedList<WorkUnit>();
+		this.parents = new LinkedList<GoalNode>();
 		if (parent != null) {
 			addParent(parent);
 		}
 	}
 	
-	public void addParent(WorkUnit parent) {
+	public void addParent(GoalNode parent) {
 		parents.add(parent);
 	}
 
@@ -69,17 +69,17 @@ public class WorkUnit {
 	}
 	
 	/**
-	 * Checks if this WorkUnit appears somewhere in the parents (at any level)
-	 * of the other WorkUnit.
+	 * Checks if this GoalNode appears somewhere in the parents (at any level)
+	 * of the other GoalNode.
 	 * 
-	 * @param other WorkUnit to start checking from
+	 * @param other GoalNode to start checking from
 	 * @return true if this is in the parents of other
 	 */
-	public boolean isInParentsOf(WorkUnit other) {
+	public boolean isInParentsOf(GoalNode other) {
 		if (this == other) {
 			return true;
 		}
-		for (WorkUnit parent : other.parents) {
+		for (GoalNode parent : other.parents) {
 			if (isInParentsOf(parent)) {
 				return true;
 			}
