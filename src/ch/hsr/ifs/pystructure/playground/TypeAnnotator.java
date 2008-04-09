@@ -47,6 +47,20 @@ public final class TypeAnnotator {
 			}
 		}
 		
+		/* hashcode and equals have to implemented if Result objects are stored in certain
+		 * data structures. The Object implementations can't be used as they are not consitent
+		 * with our compareTo impelmentation.
+		 */
+		@Override
+		public boolean equals(Object obj) {
+			throw new RuntimeException("not impelemnted");
+		}
+		
+		@Override
+		public int hashCode() {
+			throw new RuntimeException("not implemented");
+		}
+		
 		@Override
 		public String toString() {
 			return definition.toString() + " " + this.type.toString();
