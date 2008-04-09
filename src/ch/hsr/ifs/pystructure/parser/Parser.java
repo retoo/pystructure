@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 2007  Reto Schuettel, Robin Stocker
+ * Copyright (C) 2007-2008  Reto Schuettel, Robin Stocker
  *
  * IFS Institute for Software, HSR Rapperswil, Switzerland
  * 
