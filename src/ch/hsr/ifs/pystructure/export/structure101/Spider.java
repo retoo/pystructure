@@ -1,4 +1,4 @@
-package ch.hsr.ifs.pystructure.playground;
+package ch.hsr.ifs.pystructure.export.structure101;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,7 +35,7 @@ public class Spider extends StructuralVisitor {
 		typables = new HashMap<StructureDefinition, List<exprType>>();
 	}
 
-	protected void run(Module module) {
+	public void run(Module module) {
 		super.run(module);
 	}
 

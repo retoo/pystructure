@@ -1,4 +1,4 @@
-package ch.hsr.ifs.pystructure.playground;
+package ch.hsr.ifs.pystructure.export.structure101;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -13,10 +13,11 @@ import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 import org.python.pydev.parser.jython.ast.exprType;
 
-import ch.hsr.ifs.pystructure.playground.representation.EClass;
-import ch.hsr.ifs.pystructure.playground.representation.EDependency;
-import ch.hsr.ifs.pystructure.playground.representation.EMethod;
-import ch.hsr.ifs.pystructure.playground.representation.EModule;
+import ch.hsr.ifs.pystructure.export.structure101.representation.EAttribute;
+import ch.hsr.ifs.pystructure.export.structure101.representation.EClass;
+import ch.hsr.ifs.pystructure.export.structure101.representation.EDependency;
+import ch.hsr.ifs.pystructure.export.structure101.representation.EMethod;
+import ch.hsr.ifs.pystructure.export.structure101.representation.EModule;
 import ch.hsr.ifs.pystructure.typeinference.basetype.CombinedType;
 import ch.hsr.ifs.pystructure.typeinference.basetype.IType;
 import ch.hsr.ifs.pystructure.typeinference.inferencer.PythonTypeInferencer;

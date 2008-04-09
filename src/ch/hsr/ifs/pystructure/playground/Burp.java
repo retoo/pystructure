@@ -12,6 +12,7 @@ import java.util.Map;
 import org.python.pydev.parser.jython.SimpleNode;
 import org.python.pydev.parser.jython.ast.exprType;
 
+import ch.hsr.ifs.pystructure.export.structure101.Spider;
 import ch.hsr.ifs.pystructure.typeinference.basetype.IType;
 import ch.hsr.ifs.pystructure.typeinference.inferencer.PythonTypeInferencer;
 import ch.hsr.ifs.pystructure.typeinference.inferencer.logger.StatsLogger;

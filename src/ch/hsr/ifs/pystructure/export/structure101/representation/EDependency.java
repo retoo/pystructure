@@ -1,4 +1,4 @@
-package ch.hsr.ifs.pystructure.playground.representation;
+package ch.hsr.ifs.pystructure.export.structure101.representation;
 
 import org.jdom.Element;
 
