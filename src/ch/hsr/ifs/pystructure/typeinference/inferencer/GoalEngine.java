@@ -50,7 +50,7 @@ public class GoalEngine {
 
 			if (current.isNew()) {
 				if (CACHING_ENABLED && current.evaluator.checkCache()) {
-					finishGoal(current);
+					finishGoalNode(current);
 				} else {
 					List<IGoal> subgoals = current.init();
 					registerGoalNode(subgoals, current);
@@ -58,7 +58,7 @@ public class GoalEngine {
 			}
 			
 			if (current.isInitialized() && current.areAllSubgoalsDone()) {
-				finishGoal(current);
+				finishGoalNode(current);
 			}
 			
 			if (current.isFinished()) {
@@ -75,14 +75,14 @@ public class GoalEngine {
 		logger.evaluationFinished(rootGoal);
 	}
 
-	private void finishGoal(GoalNode goalNode) {
+	private void finishGoalNode(GoalNode goalNode) {
 		goalNode.evaluator.finish();
 		goalNode.state = State.FINISHED;
 		for (GoalNode parent : goalNode.parents) {
 			List<IGoal> subgoals = parent.subGoalDone(goalNode.goal);
 			registerGoalNode(subgoals, parent);
 			if (parent.areAllSubgoalsDone()) {
-				finishGoal(parent);
+				finishGoalNode(parent);
 			}
 		}
 	}
