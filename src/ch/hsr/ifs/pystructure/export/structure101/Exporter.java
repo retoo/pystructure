@@ -29,6 +29,7 @@ import ch.hsr.ifs.pystructure.typeinference.model.definitions.Module;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.StructureDefinition;
 import ch.hsr.ifs.pystructure.typeinference.results.types.AbstractType;
 import ch.hsr.ifs.pystructure.typeinference.visitors.Workspace;
+import ch.hsr.ifs.pystructure.utils.ListUtils;
 
 public class Exporter {
 
@@ -42,9 +43,13 @@ public class Exporter {
 
 		outputter = new XMLOutputter(Format.getPrettyFormat());
 	}
-
+	
 	public void export(String path) throws IOException {
-		Workspace workspace = new Workspace(new File(path));
+		export(ListUtils.wrap(new File(path)));
+	}
+
+	public void export(List<File> sourceDirs) throws IOException {
+		Workspace workspace = new Workspace(sourceDirs);
 		
 		Document document = new Document();
 
