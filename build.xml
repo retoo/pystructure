@@ -1,19 +1,15 @@
 <?xml version="1.0"?>
 
-<!--	I'm a useless comment, please give me some purpose! 
-			For example use me to force cc builds!-->
+<!-- build.xml PyStructure -->
+<!-- Copyright (c) 2008  Reto Schüttel, Robin Stocker -->
+<!-- Licensed as LGPL 3 (or above) -->
 
-<project name="PyStructure" default="all">
-	<property file="build.properties"/>
+<project name="PyStructure" default="default">
+	<!-- Properties -->
 	<property file="build.properties.local"/>
+	<property file="build.properties"/>
 	
-	<taskdef name="findbugs" 
-		classname="edu.umd.cs.findbugs.anttask.FindBugsTask"
-		classpath="/opt/findbugs/lib/findbugs-ant.jar"/>
-
-	<taskdef resource="checkstyletask.properties"
-		classpath="/opt/checkstyle/checkstyle-all-4.4.jar"/>
-
+	<!-- classpaths -->
 	<path id="junit.classpath">
 		<pathelement location="${junit.dir}/junit.jar" />
 	</path>
@@ -24,8 +20,6 @@
 			<include name="lib/**/*.jar" />
 		</fileset>
 	</path>
-
-	<taskdef classpathref="cobertura.classpath" resource="tasks.properties" />
 
 	<path id="instrumented.classpath">
 		<pathelement location="${cobertura-dir}" />
@@ -49,6 +43,17 @@
 		<pathelement location="${build.tests}" />
 	</path>
 
+	<!-- Entry targets -->
+
+	<!-- only builds the stuff necessary for the normal user -->
+	<target name="default" depends="init,build,jar"/>
+
+	<!-- builds everything -->
+	<target name="all" depends="init,build,documentation,checkstyle,run-tests,findbugs,jar"/>
+	
+	
+	<!-- Targets -->
+	
 	<target name="build" depends="build-parser,init">
 		<javac srcdir="${src-dir}" destdir="${build.src}" debug="true" deprecation="true">
 			<classpath refid="project.classpath" />
@@ -71,6 +76,20 @@
 		</javac>
 	</target>
 	
+	<target name="jar" depends="init,build,build-parser">
+		<jar destfile="${base-dir}/pystructure.jar">
+			<fileset dir="${build.src}" />
+			<fileset dir="${build.parser}" />
+			<manifest>
+				<attribute name="Main-Class" value="ch.hsr.ifs.pystructure.CLI"/>
+			</manifest>
+		</jar>
+	</target>
+	
+	<target name="publish-jar" depends="init,jar">
+	  <copy file="${base-dir}/pystructure.jar" todir="${output.release}" />
+	</target>
+		
 	<target name="documentation" depends="init">
 		<exec executable="build/build-documents.sh" 
 			output="${output.doc-dir}/log.txt" />
@@ -96,12 +115,12 @@
 		<mkdir dir="${output.findbugs-dir}" />
 		<mkdir dir="${output.checkstyle-dir}" />
 		<mkdir dir="${output.tests}" />
+		<mkdir dir="${output.release}" />
 
 		<mkdir dir="${build.base}" />
 		<mkdir dir="${build.src}" />
 		<mkdir dir="${build.parser}" />
 		<mkdir dir="${build.tests}" />
-	
 	</target>
 	
 	<target name="init-tests">
@@ -115,6 +134,7 @@
 	</target>
 
 	<target name="cobertura-instrument" depends="build">
+		<taskdef classpathref="cobertura.classpath" resource="tasks.properties" />
 		<cobertura-instrument todir="${cobertura-dir}" datafile="${cobertura-ser}">
 			<includeClasses regex=".*" />
 			<excludeClasses regex="something" />
@@ -127,7 +147,13 @@
 		</cobertura-instrument>
 	</target>
 
+	<!-- You need cobertura to run the tests, we might change that in the future 
+	     ensure that cobertura.dir points to a directory containing the 
+	     Cobertura files. You can download cobertura from 
+	       http://cobertura.sourceforge.net/ -->
 	<target name="run-tests" depends="init-tests,build-test,cobertura-instrument">
+		<taskdef classpathref="cobertura.classpath" resource="tasks.properties" />
+		
 		<junit fork="true" haltonfailure="true" printsummary="true">	
 
 			<classpath refid="junit.classpath" />
@@ -153,7 +179,10 @@
 		</cobertura-report>
 	</target>    
 
+	<!-- Needs checkstyle installed in the directory specified by checkstyle.dir -->
 	<target name="checkstyle">
+		<taskdef resource="checkstyletask.properties"
+			classpath="${checkstyle.dir}/checkstyle-all-4.4.jar" />
 		<checkstyle config="${doc-dir}/sun_checks.xml"
 			failureProperty="checkstyle.failure"
 			failOnViolation="false">
@@ -165,8 +194,12 @@
 			</fileset>
 		</checkstyle>
 	</target>
-
+	
+	<!-- needs findbugs installed in the directory findbugs.dir -->
 	<target name="findbugs" depends="build">
+		<taskdef name="findbugs" 
+			classname="edu.umd.cs.findbugs.anttask.FindBugsTask"
+			classpath="${findbugs.dir}/lib/findbugs-ant.jar"/>
 
 		<findbugs 
 			home="${findbugs.dir}"
@@ -188,7 +221,5 @@
 				<class location="${build.src}" />
 		</findbugs>
 	</target>
-
-	<target name="all" depends="init,build,documentation,checkstyle,run-tests,findbugs"/>
 </project>
 
