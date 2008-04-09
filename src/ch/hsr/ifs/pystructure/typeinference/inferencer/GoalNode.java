@@ -1,4 +1,4 @@
-package ch.hsr.ifs.pystructure.playground;
+package ch.hsr.ifs.pystructure.typeinference.inferencer;
 
 import java.util.LinkedList;
 import java.util.List;
