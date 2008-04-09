@@ -27,7 +27,6 @@ import java.io.File;
 import junit.framework.Assert;
 import junit.framework.AssertionFailedError;
 
-import org.python.pydev.parser.jython.SimpleNode;
 import org.python.pydev.parser.jython.ast.Expr;
 
 import ch.hsr.ifs.pystructure.typeinference.basetype.IType;
