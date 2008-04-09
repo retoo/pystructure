@@ -7,14 +7,18 @@
 
 package ch.hsr.ifs.pystructure.typeinference.inferencer.logger;
 
+import java.io.PrintStream;
+
 import ch.hsr.ifs.pystructure.typeinference.evaluators.base.AbstractEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
 
 public class StatsLogger implements IGoalEngineLogger {
 
+	private static final PrintStream OUT = System.err;
+
 	private IGoal currentGoal;
 	private int currentSubGoalsCounter;
-	private StringBuilder out;
+	private StringBuilder rootGoalStats;
 	private int rootGoalsCounter;
 	private int subGoalsCounter;
 	private long start;
@@ -22,7 +26,7 @@ public class StatsLogger implements IGoalEngineLogger {
 	
 	public StatsLogger(boolean showRootGoalStatsl) {
 		this.showRootGoalStats = showRootGoalStatsl;
-		this.out = new StringBuilder();
+		this.rootGoalStats = new StringBuilder();
 		this.rootGoalsCounter = 0;
 		this.subGoalsCounter = 0;
 		
@@ -42,7 +46,7 @@ public class StatsLogger implements IGoalEngineLogger {
 
 	public void evaluationFinished(IGoal rootGoal) {
 		assert rootGoal == currentGoal;
-		out.append("" + currentGoal + "." + currentSubGoalsCounter + "\n");
+		rootGoalStats.append("" + currentGoal + "." + currentSubGoalsCounter + "\n");
 		this.currentGoal = null;
 		this.currentSubGoalsCounter = 0;
 
@@ -59,31 +63,29 @@ public class StatsLogger implements IGoalEngineLogger {
 	public void shutdown() {
 		long delta = System.currentTimeMillis() - start;
 		
-		System.out.println("");
-		System.out.println("Statistics");
-		System.out.println("");
+		OUT.println("");
+		OUT.println("Statistics");
+		OUT.println("");
 		
 		if (showRootGoalStats) {
-			System.out.println(out);
+			OUT.println(rootGoalStats);
 		}
 		
-		System.out.println("Total root goals: " + rootGoalsCounter);
-		System.out.println("Total subgoals: " + subGoalsCounter);
+		OUT.println("Total root goals: " + rootGoalsCounter);
+		OUT.println("Total subgoals: " + subGoalsCounter);
 		if (rootGoalsCounter != 0) {
-			System.out.println("Average subgoals / goal: " + subGoalsCounter / rootGoalsCounter);
+			OUT.println("Average subgoals / goal: " + subGoalsCounter / rootGoalsCounter);
 		}
-		System.out.println();
-		System.out.println("Time: " + delta / 1000.0 + "s");
+		OUT.println();
+		OUT.println("Time: " + delta / 1000.0 + "s");
 		if (subGoalsCounter != 0) {
-			System.out.println("Average time / subgoal: " + delta / subGoalsCounter);
+			OUT.println("Average time / subgoal: " + delta / subGoalsCounter + "ms");
 		}
 		if  (rootGoalsCounter != 0) {
-			System.out.println("Average time / root goal: " + delta / rootGoalsCounter);
+			OUT.println("Average time / root goal: " + delta / rootGoalsCounter + "ms");
 		}
-		System.out.println("Average subgoal / s: " + subGoalsCounter * 1000L / delta);
-		System.out.println("Average rootgoal / s: " + rootGoalsCounter * 1000L / delta);
-		System.out.println("(Note: Benchmarking might be broken on Windows due to some problems with its timer.)");
-		
+		OUT.println("Average subgoal / s: " + subGoalsCounter * 1000 / delta);
+		OUT.println("Average rootgoal / s: " + rootGoalsCounter * 1000L / delta);
 	}
 	
 }
