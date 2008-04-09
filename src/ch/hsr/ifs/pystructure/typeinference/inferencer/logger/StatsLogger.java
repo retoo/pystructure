@@ -4,16 +4,17 @@ import ch.hsr.ifs.pystructure.typeinference.evaluators.base.AbstractEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
 
 public class StatsLogger implements IGoalEngineLogger {
+
 	private IGoal currentGoal;
 	private int currentSubGoalsCounter;
 	private StringBuilder out;
 	private int rootGoalsCounter;
 	private int subGoalsCounter;
 	private long start;
-	private boolean showRootGoalStatsl;
+	private boolean showRootGoalStats;
 	
 	public StatsLogger(boolean showRootGoalStatsl) {
-		this.showRootGoalStatsl = showRootGoalStatsl;
+		this.showRootGoalStats = showRootGoalStatsl;
 		this.out = new StringBuilder();
 		this.rootGoalsCounter = 0;
 		this.subGoalsCounter = 0;
@@ -55,26 +56,26 @@ public class StatsLogger implements IGoalEngineLogger {
 		System.out.println("Statistics");
 		System.out.println("");
 		
-		if (showRootGoalStatsl) {
+		if (showRootGoalStats) {
 			System.out.println(out);
 		}
 		
 		System.out.println("Total root goals: " + rootGoalsCounter);
-		System.out.println("Total SubGoals: " + subGoalsCounter);
+		System.out.println("Total subgoals: " + subGoalsCounter);
 		if (rootGoalsCounter != 0) {
-			System.out.println("Average Subgoals / Goal: " + subGoalsCounter / rootGoalsCounter);
+			System.out.println("Average subgoals / goal: " + subGoalsCounter / rootGoalsCounter);
 		}
 		System.out.println();
 		System.out.println("Time: " + delta);
 		if (subGoalsCounter != 0) {
-			System.out.println("Avg Time/SubGoal: " + delta / subGoalsCounter);
+			System.out.println("Average time / subgoal: " + delta / subGoalsCounter);
 		}
 		if  (rootGoalsCounter != 0) {
-			System.out.println("Avg Time/root goal: " + delta / rootGoalsCounter);
+			System.out.println("Average time / root goal: " + delta / rootGoalsCounter);
 		}
-		System.out.println("Avg subgoal/s: " + subGoalsCounter * 1000L / delta);
-		System.out.println("Avg rootgoal/s: " + rootGoalsCounter * 1000L / delta);
-		System.out.println("(Note: bencharmking might be broken on windows due to some problems with its timer");
+		System.out.println("Average subgoal / s: " + subGoalsCounter * 1000L / delta);
+		System.out.println("Average rootgoal / s: " + rootGoalsCounter * 1000L / delta);
+		System.out.println("(Note: Benchmarking might be broken on Windows due to some problems with its timer.)");
 		
 	}
 	
