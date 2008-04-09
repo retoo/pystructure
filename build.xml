@@ -49,7 +49,7 @@
 	<target name="default" depends="init,build,jar"/>
 
 	<!-- builds everything -->
-	<target name="all" depends="init,build,documentation,checkstyle,run-tests,findbugs,jar"/>
+	<target name="all" depends="init,build,documentation,checkstyle,run-tests,findbugs,jar,publish-jar"/>
 	
 	
 	<!-- Targets -->
