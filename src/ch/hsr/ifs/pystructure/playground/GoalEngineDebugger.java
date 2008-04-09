@@ -24,7 +24,6 @@ package ch.hsr.ifs.pystructure.playground;
 
 import java.io.File;
 
-import org.python.pydev.parser.jython.SimpleNode;
 import org.python.pydev.parser.jython.ast.Expr;
 
 import ch.hsr.ifs.pystructure.typeinference.basetype.IType;
@@ -65,17 +64,9 @@ public final class GoalEngineDebugger {
 	}
 
 	private static Expr getExpressionAtLine(Module module, int line) {
-		SimpleNode rootNode = module.getNode();
-		
 		ExpressionAtLineVisitor visitor = new ExpressionAtLineVisitor(line);
 		
-		try {
-			visitor.traverse(rootNode);
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-		
-		Expr expression = visitor.getExpression();
+		Expr expression = visitor.run(module.getNode());
 
 		if (expression == null) {
 			throw new RuntimeException("Unable to find expression on line " + line);

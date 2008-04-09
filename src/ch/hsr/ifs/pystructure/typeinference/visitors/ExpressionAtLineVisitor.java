@@ -22,6 +22,7 @@
 
 package ch.hsr.ifs.pystructure.typeinference.visitors;
 
+import org.python.pydev.parser.jython.SimpleNode;
 import org.python.pydev.parser.jython.Visitor;
 import org.python.pydev.parser.jython.ast.Expr;
 
@@ -35,6 +36,15 @@ public class ExpressionAtLineVisitor extends Visitor {
 	
 	public ExpressionAtLineVisitor(int beginLine) {
 		this.beginLine = beginLine;
+	}
+	
+	public Expr run(SimpleNode node) {
+		try {
+			node.traverse(this);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+		return expression;
 	}
 
 	@Override

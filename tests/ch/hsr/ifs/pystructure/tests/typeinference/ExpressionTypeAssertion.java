@@ -55,18 +55,10 @@ class ExpressionTypeAssertion extends Assert {
 
 	public void check(File file, PythonTypeInferencer inferencer, Workspace workspace) {
 		Module module = workspace.getModule(file);
-		SimpleNode rootNode = module.getNode();
 		
 		ExpressionAtLineVisitor visitor = new ExpressionAtLineVisitor(line);
+		Expr expression = visitor.run(module.getNode());
 		
-		try {
-			visitor.traverse(rootNode);
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-		
-		Expr expression = visitor.getExpression();
-
 		if (expression == null) {
 			throw new RuntimeException("Unable to find node for expresssion '" + this.expression + "'");
 		}
