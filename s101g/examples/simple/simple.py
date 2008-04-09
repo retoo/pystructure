@@ -11,3 +11,4 @@ a.set("hello world")
 z = a.get()
 print z
 z
+a
