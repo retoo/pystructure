@@ -66,7 +66,7 @@ public class ConsoleLogger implements IGoalEngineLogger {
 	}
 
 	public void shutdown() {
-		OUT.println("Engine Finsihed");
+		OUT.println("Engine finished");
 	}
 
 }
