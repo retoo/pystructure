@@ -77,7 +77,7 @@ public class GoalEngine {
 	private void finishGoalNode(GoalNode goalNode) {
 		goalNode.finish();
 		for (GoalNode parent : goalNode.parents) {
-			List<IGoal> subgoals = parent.subGoalDone(goalNode.goal);
+			List<IGoal> subgoals = parent.subgoalDone(goalNode.goal);
 			registerGoalNode(subgoals, parent);
 			if (parent.areAllSubgoalsDone()) {
 				finishGoalNode(parent);
@@ -100,7 +100,7 @@ public class GoalEngine {
 		} else {
 			if (goalNode.isFinished()) {
 				// Reuse the goal's result.
-				List<IGoal> subgoals = parent.subGoalDone(goalNode.goal);
+				List<IGoal> subgoals = parent.subgoalDone(goalNode.goal);
 				registerGoalNode(subgoals, parent);
 			} else {
 				// The same goal existed before, so check for cycles.
