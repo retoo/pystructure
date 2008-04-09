@@ -16,6 +16,7 @@ For more information, visit our project page at:
 
   http://pystructure.ifs.hsr.ch/
 
+
 Current Limitations
 -------------------
 
@@ -40,6 +41,7 @@ some very important features:
 
 We are working on tackling these issues in the next two milestones and we hope
 to improve the accuracy of the engine significantly.
+
 
 Using PyStructure
 -----------------
