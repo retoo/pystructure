@@ -43,7 +43,7 @@ public class GoalEngine {
 		queue = new LinkedList<GoalNode>();
 		goalNodes = new HashMap<IGoal, GoalNode>();
 
-		registerWorkUnits(rootGoal, null);
+		registerGoalNode(rootGoal, null);
 
 		while (!queue.isEmpty()) {
 			GoalNode current = queue.poll();
@@ -53,7 +53,7 @@ public class GoalEngine {
 					finishGoal(current);
 				} else {
 					List<IGoal> subgoals = current.init();
-					registerWorkUnits(subgoals, current);
+					registerGoalNode(subgoals, current);
 				}
 			}
 			
@@ -80,36 +80,36 @@ public class GoalEngine {
 		goalNode.state = State.FINISHED;
 		for (GoalNode parent : goalNode.parents) {
 			List<IGoal> subgoals = parent.subGoalDone(goalNode.goal);
-			registerWorkUnits(subgoals, parent);
+			registerGoalNode(subgoals, parent);
 			if (parent.areAllSubgoalsDone()) {
 				finishGoal(parent);
 			}
 		}
 	}
 
-	private void registerWorkUnits(List<IGoal> goals, GoalNode parent) {
+	private void registerGoalNode(List<IGoal> goals, GoalNode parent) {
 		for (IGoal goal : goals) {
-			registerWorkUnits(goal, parent);
+			registerGoalNode(goal, parent);
 		}
 	}
 
-	private void registerWorkUnits(IGoal goal, GoalNode parent) {
+	private void registerGoalNode(IGoal goal, GoalNode parent) {
 		GoalNode goalNode = goalNodes.get(goal);
 		if (goalNode == null) {
 			// Didn't exist yet, so create it
-			goalNode = createWorkUnit(goal, parent);
+			goalNode = createGoalNode(goal, parent);
 			queue.add(goalNode);
 		} else {
 			if (goalNode.isFinished()) {
 				// Reuse the goal's result.
 				List<IGoal> subgoals = parent.subGoalDone(goalNode.goal);
-				registerWorkUnits(subgoals, parent);
+				registerGoalNode(subgoals, parent);
 			} else {
 				// The same goal existed before, so check for cycles.
 				if (goalNode.isInParentsOf(parent)) {
 					// TODO: Maybe add an event (cyclicGoalCreated) to the logger interface?
 					List<IGoal> newGoals = parent.subGoalDone(goalNode.goal, GoalState.RECURSIVE);
-					registerWorkUnits(newGoals, parent);
+					registerGoalNode(newGoals, parent);
 				} else {
 					goalNode.addParent(parent);
 					queue.add(goalNode);
@@ -118,7 +118,7 @@ public class GoalEngine {
 		}
 	}
 
-	private GoalNode createWorkUnit(IGoal goal, GoalNode parent) {
+	private GoalNode createGoalNode(IGoal goal, GoalNode parent) {
 		AbstractEvaluator evaluator = factory.createEvaluator(goal);
 		
 		AbstractEvaluator creator = (parent != null ? parent.evaluator : null);
