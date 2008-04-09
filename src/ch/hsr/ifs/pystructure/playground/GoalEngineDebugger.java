@@ -15,9 +15,9 @@ import ch.hsr.ifs.pystructure.typeinference.model.definitions.Module;
 import ch.hsr.ifs.pystructure.typeinference.visitors.ExpressionAtLineVisitor;
 import ch.hsr.ifs.pystructure.typeinference.visitors.Workspace;
 
-public final class Swush {
+public final class GoalEngineDebugger {
 	
-	private Swush() {
+	private GoalEngineDebugger() {
 	}
 	
 	public static void main(String[] args) {
@@ -60,4 +60,5 @@ public final class Swush {
 		}
 		return expression;
 	}
+
 }
