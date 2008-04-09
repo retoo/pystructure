@@ -18,7 +18,7 @@ require "find"
 require 'fileutils'
 
 class Lizenzierer  
-  LICENSE = "/*" +                                                                          "\n" +
+  COPYRIGHT= "/*" +                                                                          "\n" +
             " * Copyright (C) 2008  Reto Schuettel, Robin Stocker" +                   "\n" +
             " *" +                                                                          "\n" +
             " * IFS Institute for Software, HSR Rapperswil, Switzerland" +                  "\n" +
@@ -26,6 +26,19 @@ class Lizenzierer
             " */"  +                                                                        "\n" + 
             "" +                                                                            "\n"
             
+  LICENSE = " * This library is free software; you can redistribute it and/or" +                     "\n" +
+            " * modify it under the terms of the GNU Lesser General Public" +                        "\n" +
+            " * License as published by the Free Software Foundation; either" +                      "\n" +
+            " * version 2.1 of the License, or (at your option) any later version." +                "\n" +
+            " *" +                                                                                  "\n" +
+            " * This library is distributed in the hope that it will be useful," +                   "\n" +
+            " * but WITHOUT ANY WARRANTY; without even the implied warranty of" +                    "\n" +
+            " * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU" +                 "\n" +
+            " * Lesser General Public License for more details." +                                   "\n" +
+            " *" +                                                                                  "\n" +
+            " * You should have received a copy of the GNU Lesser General Public" +                  "\n" +
+            " * License along with this library; if not, write to the Free Software" +               "\n" +
+            " * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA" +      "\n"
             
   def initialize(pfad)
     @pfad = pfad
@@ -47,8 +60,27 @@ class Lizenzierer
                           " * Copyright (C) 2007-2008  Reto Schuettel, Robin Stocker")
           
           temp_write(datei, n)
-        when " * Copyright (C) 2007-2008  Reto Schuettel, Robin Stocker\n"
-        when " * Copyright (C) 2008  Reto Schuettel, Robin Stocker\n"
+        when " * Copyright (C) 2008  Reto Schuettel, Robin Stocker\n",
+             " * Copyright (C) 2007-2008  Reto Schuettel, Robin Stocker\n"
+          #puts copyright
+             
+          anchor = " * IFS Institute for Software, HSR Rapperswil, Switzerland" +                  "\n" +
+                   " *" +                                                                          "\n" +
+                   " */"
+          if content.index(anchor) != nil
+            license_text =
+                  " * IFS Institute for Software, HSR Rapperswil, Switzerland" +                  "\n" +
+                  " *" +                                                                          "\n" +
+                  " *" +                                                                          "\n" +
+                  LICENSE +
+                  " *" +                                                                          "\n" +
+                  " */"
+            n = content.sub(anchor, license_text)
+            
+            temp_write(datei, n)
+          else
+            raise "#{datei}"
+          end
         else
           raise copyright.inspect
         end
@@ -69,8 +101,9 @@ class Lizenzierer
         if content.match /Copyright.*IBM Corporation/
           raise "IBM: #{datei}"
         else
+          raise "fix me, "
           puts "Installing license into #{datei}"
-          temp_write(datei, LICENSE + content)
+          temp_write(datei, COPYRIGHT + content)
         end
       end
     end
