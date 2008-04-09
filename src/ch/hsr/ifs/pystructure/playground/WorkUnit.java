@@ -15,7 +15,7 @@ public class WorkUnit {
 	public final AbstractEvaluator evaluator;
 	public final List<WorkUnit> parents;
 	
-	State state;
+	public State state;
 	
 	private int subgoalsCount;
 	private int subgoalsDoneCount;
@@ -42,7 +42,7 @@ public class WorkUnit {
 		return state == State.INITIALIZED;
 	}
 
-	boolean isFinished() {
+	public boolean isFinished() {
 		return state == State.FINISHED;
 	}
 	
@@ -57,15 +57,15 @@ public class WorkUnit {
 		return subgoalsDoneCount == subgoalsCount;
 	}
 
-	List<IGoal> subGoalDone(IGoal goal, GoalState state) {
+	public List<IGoal> subGoalDone(IGoal goal, GoalState state) {
 		List<IGoal> newSubGoals = evaluator.subgoalDone(goal, state);
 		subgoalsDoneCount++;
 		subgoalsCount += newSubGoals.size();
 		return newSubGoals;
 	}
 	
-	List<IGoal> subGoalDone(IGoal goal) {
-		return subGoalDone(goal, null);
+	public List<IGoal> subGoalDone(IGoal goal) {
+		return subGoalDone(goal, GoalState.DONE);
 	}
 	
 	/**

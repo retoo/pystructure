@@ -12,20 +12,21 @@ import org.python.pydev.parser.jython.SimpleNode;
 import ch.hsr.ifs.pystructure.typeinference.basetype.CombinedType;
 import ch.hsr.ifs.pystructure.typeinference.contexts.ModuleContext;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.ExpressionTypeGoal;
+import ch.hsr.ifs.pystructure.typeinference.inferencer.GoalEngine;
 import ch.hsr.ifs.pystructure.typeinference.inferencer.logger.IGoalEngineLogger;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Module;
 import ch.hsr.ifs.pystructure.typeinference.visitors.Workspace;
 
 public class PythonTypeInferencerNG {
 
-	private final ZielMotor engine;
+	private final GoalEngine engine;
 	
 	public PythonTypeInferencerNG() {
-		engine = new ZielMotor();
+		engine = new GoalEngine();
 	}
 	
 	public PythonTypeInferencerNG(IGoalEngineLogger logger) {
-		engine = new ZielMotor(logger);
+		engine = new GoalEngine(logger);
 	}
 
 	public CombinedType evaluateType(Workspace workspace, Module module, SimpleNode node) {
