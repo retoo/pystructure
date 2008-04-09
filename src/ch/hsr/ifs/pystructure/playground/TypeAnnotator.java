@@ -21,9 +21,9 @@ import ch.hsr.ifs.pystructure.typeinference.model.definitions.StructureDefinitio
 import ch.hsr.ifs.pystructure.typeinference.visitors.Workspace;
 import ch.hsr.ifs.pystructure.utils.LineIterator;
 
-public final class Burp {
+public final class TypeAnnotator {
 	
-	private Burp() {
+	private TypeAnnotator() {
 	}
 	
 	private static final class Result implements Comparable<Result> {
@@ -115,4 +115,5 @@ public final class Burp {
 		
 		return sb.toString();
 	}
+
 }
