@@ -23,3 +23,7 @@ None ## type NoneType
 [1, 2] ## type list
 (1, 2) ## type tuple
 {1: 2} ## type dict
+
+"one" "two" ## type str
+"one" u"two" ## type unicode
+u"one" "two" ## type unicode

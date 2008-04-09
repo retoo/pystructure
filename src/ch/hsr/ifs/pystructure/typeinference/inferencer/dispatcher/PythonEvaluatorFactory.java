@@ -39,9 +39,11 @@ import org.python.pydev.parser.jython.ast.ListComp;
 import org.python.pydev.parser.jython.ast.Name;
 import org.python.pydev.parser.jython.ast.Num;
 import org.python.pydev.parser.jython.ast.Str;
+import org.python.pydev.parser.jython.ast.StrJoin;
 import org.python.pydev.parser.jython.ast.Subscript;
 import org.python.pydev.parser.jython.ast.Tuple;
 import org.python.pydev.parser.jython.ast.UnaryOp;
+import org.python.pydev.parser.jython.ast.exprType;
 import org.python.pydev.parser.jython.ast.num_typeType;
 
 import ch.hsr.ifs.pystructure.typeinference.evaluators.base.AbstractEvaluator;
@@ -70,6 +72,7 @@ import ch.hsr.ifs.pystructure.typeinference.goals.references.FunctionReferencesG
 import ch.hsr.ifs.pystructure.typeinference.goals.references.MethodReferencesGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.references.PossibleAttributeReferencesGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.references.PossibleReferencesGoal;
+import ch.hsr.ifs.pystructure.typeinference.goals.types.AbstractTypeGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.ClassAttributeTypeGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.DefinitionTypeGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.ExpressionTypeGoal;
@@ -245,11 +248,7 @@ public class PythonEvaluatorFactory {
 		}
 		if (expr instanceof Str) {
 			Str str = (Str) expr;
-			if (str.unicode) {
-				return new AnswerAlreadyKnownEvaluator(goal, new ClassType("unicode"));
-			} else {
-				return new AnswerAlreadyKnownEvaluator(goal, new ClassType("str"));
-			}
+			return createStrEvaluator(goal, str.unicode);
 		}
 		if (expr instanceof List) {
 			return new AnswerAlreadyKnownEvaluator(goal, new ClassType("list"));
@@ -285,8 +284,26 @@ public class PythonEvaluatorFactory {
 			// FIXME: Implement properly (like function)
 			return new AnswerAlreadyKnownEvaluator(goal, new ClassType("function"));
 		}
+		if (expr instanceof StrJoin) {
+			StrJoin strJoin = (StrJoin) expr;
+			boolean isUnicode = false;
+			for (exprType str : strJoin.strs) {
+				if (((Str) str).unicode) {
+					isUnicode = true;
+				}
+			}
+			return createStrEvaluator(goal, isUnicode);
+		}
 		
 		throw new RuntimeException("Can't create evaluator for literal expression " + expr +  ", goal " + goal);
+	}
+
+	private AbstractEvaluator createStrEvaluator(AbstractTypeGoal goal, boolean isUnicode) {
+		if (isUnicode) {
+			return new AnswerAlreadyKnownEvaluator(goal, new ClassType("unicode"));
+		} else {
+			return new AnswerAlreadyKnownEvaluator(goal, new ClassType("str"));
+		}
 	}
 
 }
