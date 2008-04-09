@@ -13,11 +13,11 @@ import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 import org.python.pydev.parser.jython.ast.exprType;
 
-import ch.hsr.ifs.pystructure.export.structure101.representation.EAttribute;
-import ch.hsr.ifs.pystructure.export.structure101.representation.EClass;
-import ch.hsr.ifs.pystructure.export.structure101.representation.EDependency;
-import ch.hsr.ifs.pystructure.export.structure101.representation.EMethod;
-import ch.hsr.ifs.pystructure.export.structure101.representation.EModule;
+import ch.hsr.ifs.pystructure.export.structure101.elements.AttributeElement;
+import ch.hsr.ifs.pystructure.export.structure101.elements.ClassElement;
+import ch.hsr.ifs.pystructure.export.structure101.elements.DependencyElement;
+import ch.hsr.ifs.pystructure.export.structure101.elements.MethodElement;
+import ch.hsr.ifs.pystructure.export.structure101.elements.ModuleElement;
 import ch.hsr.ifs.pystructure.typeinference.basetype.CombinedType;
 import ch.hsr.ifs.pystructure.typeinference.basetype.IType;
 import ch.hsr.ifs.pystructure.typeinference.inferencer.PythonTypeInferencer;
@@ -81,11 +81,11 @@ public class Exporter {
 							/* determine if is referenced by a attribute */
 							if (abstractType.location instanceof Attribute) {
 								Attribute attribute = (Attribute) abstractType.location;
-								dependencies.addContent(new EDependency(definition, attribute));
+								dependencies.addContent(new DependencyElement(definition, attribute));
 							}
 						}
 
-						EDependency dependency = new EDependency(definition, type);
+						DependencyElement dependency = new DependencyElement(definition, type);
 						if (dependency.isValid()) {
 							dependencies.addContent(dependency);
 						}
@@ -99,16 +99,16 @@ public class Exporter {
 		/* Now export the structure of the program (modules, classes, methods*/
 
 		for (Module module : workspace.getModules()) {
-			EModule emodule = new EModule(module.getNamePath().toString(), module.getUniqueIdentifier());
+			ModuleElement emodule = new ModuleElement(module.getNamePath().toString(), module.getUniqueIdentifier());
 
 			modules.addContent(emodule);
 
 			for (Class klass : module.getClasses()) {
-				EClass eclass = new EClass(klass.getName(), klass.getUniqueIdentifier()); 
+				ClassElement eclass = new ClassElement(klass.getName(), klass.getUniqueIdentifier()); 
 				emodule.addContent(eclass);
 
 				for (Method method : klass.getMethods()) {
-					EMethod emethod = new EMethod(method.getName(), method.getUniqueIdentifier());
+					MethodElement emethod = new MethodElement(method.getName(), method.getUniqueIdentifier());
 					eclass.addContent(emethod);
 				}
 
@@ -118,11 +118,11 @@ public class Exporter {
 					CombinedType types = attribute.type;
 
 					String attributeId = attribute.getUniqueIdentifier();
-					EAttribute eattribute = new EAttribute(name, attributeId);
+					AttributeElement eattribute = new AttributeElement(name, attributeId);
 					eclass.addContent(eattribute);
 
 					for (IType type : types) {
-						EDependency dependency = new EDependency(attributeId, type);
+						DependencyElement dependency = new DependencyElement(attributeId, type);
 
 						if (dependency.isValid()) {
 							dependencies.addContent(dependency);

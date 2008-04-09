@@ -1,4 +1,4 @@
-package ch.hsr.ifs.pystructure.export.structure101.representation;
+package ch.hsr.ifs.pystructure.export.structure101.elements;
 
 import org.jdom.Element;
 
@@ -11,13 +11,13 @@ import ch.hsr.ifs.pystructure.typeinference.results.types.MetaclassType;
 import ch.hsr.ifs.pystructure.typeinference.results.types.ModuleType;
 import ch.hsr.ifs.pystructure.typeinference.results.types.TupleType;
 
-public class EDependency extends Element {
+public class DependencyElement extends Element {
 
 	private static final long serialVersionUID = 1L;
 	
 	private boolean valid;
 
-	private EDependency() {
+	private DependencyElement() {
 		super("dependency");
 	
 		this.valid = true;
@@ -25,20 +25,20 @@ public class EDependency extends Element {
 		this.setAttribute("type", "references");
 	}
 	
-	public EDependency(String from, IType type) {
+	public DependencyElement(String from, IType type) {
 		this();
 		this.setFrom(from);
 		this.setTo(type);
 	}
 
-	public EDependency(StructureDefinition from, IType to) {
+	public DependencyElement(StructureDefinition from, IType to) {
 		this();
 		
 		this.setFrom(from);
 		this.setTo(to);
 	}
 	
-	public EDependency(StructureDefinition from, Definition to) {
+	public DependencyElement(StructureDefinition from, Definition to) {
 		this();
 		
 		this.setFrom(from);

@@ -1,12 +1,12 @@
-package ch.hsr.ifs.pystructure.export.structure101.representation;
+package ch.hsr.ifs.pystructure.export.structure101.elements;
 
 import org.jdom.Element;
 
-public class EModule extends Element {
+public class ModuleElement extends Element {
 
 	private static final long serialVersionUID = 1L;
 	
-	public EModule(String name, String id) {
+	public ModuleElement(String name, String id) {
 		super("module");
 		
 		this.setAttribute("type", "module");

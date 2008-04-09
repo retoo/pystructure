@@ -1,12 +1,12 @@
-package ch.hsr.ifs.pystructure.export.structure101.representation;
+package ch.hsr.ifs.pystructure.export.structure101.elements;
 
 import org.jdom.Element;
 
-public class EMethod extends Element {
+public class MethodElement extends Element {
 
 	private static final long serialVersionUID = 1L;
 
-	public EMethod(String name, String id) {
+	public MethodElement(String name, String id) {
 		super("submodule");
 		
 		this.setAttribute("type", "method");
