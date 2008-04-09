@@ -10,9 +10,12 @@ As Python is a dynamic language most of the interesting details (i.e. type) are
 not known before the application is running. The analyser has to 'guess' the
 correct type by analysing the code base.
 
+The project is licensed under the LGPL (v2 or later), see the COPYING file.
+
 For more information, visit our project page at:
 
   http://pystructure.ifs.hsr.ch/
+
 
 Using PyStructure
 -----------------
@@ -50,3 +53,4 @@ Download Structure101g here:
 Extract the files from the archive and go to the directory where the main
 executable is. Create a directory called "flavors" there and copy the directory
 "s101g/ch.hsr.ifs.pystructure" from the pystructure archive into it.
+
