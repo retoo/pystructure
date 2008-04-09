@@ -21,6 +21,7 @@ public class ZielMotor {
 	private final PythonEvaluatorFactory factory;
 	private final IGoalEngineLogger logger;
 	
+	private LinkedList<WorkUnit> queue;
 	private Map<IGoal, WorkUnit> workUnits;
 
 	public ZielMotor() {
@@ -33,27 +34,27 @@ public class ZielMotor {
 	}
 
 	public void evaluateGoal(AbstractTypeGoal rootGoal) {
-		this.workUnits = new HashMap<IGoal, WorkUnit>();
-		LinkedList<WorkUnit> queue = new LinkedList<WorkUnit>();
-		
 		logger.evaluationStarted(rootGoal);
+		
+		queue = new LinkedList<WorkUnit>();
+		workUnits = new HashMap<IGoal, WorkUnit>();
 
-		registerWorkUnits(queue, rootGoal, null);
+		registerWorkUnits(rootGoal, null);
 
 		while (!queue.isEmpty()) {
 			WorkUnit current = queue.poll();
 
 			if (current.isNew()) {
 				if (CACHING_ENABLED && current.evaluator.checkCache()) {
-					finishGoal(queue, current);
+					finishGoal(current);
 				} else {
 					List<IGoal> subgoals = current.init();
-					registerWorkUnits(queue, subgoals, current);
+					registerWorkUnits(subgoals, current);
 				}
 			}
 			
 			if (current.isInitialized() && current.areAllSubgoalsDone()) {
-				finishGoal(queue, current);
+				finishGoal(current);
 			}
 			
 			if (current.isFinished()) {
@@ -64,28 +65,31 @@ public class ZielMotor {
 			}
 		}
 		
+		queue = null;
+		workUnits = null;
+		
 		logger.evaluationFinished(rootGoal);
 	}
 
-	private void finishGoal(List<WorkUnit> queue, WorkUnit workUnit) {
+	private void finishGoal(WorkUnit workUnit) {
 		workUnit.evaluator.finish();
 		workUnit.state = State.FINISHED;
 		for (WorkUnit parent : workUnit.parents) {
 			List<IGoal> subgoals = parent.subGoalDone(workUnit.goal);
-			registerWorkUnits(queue, subgoals, parent);
+			registerWorkUnits(subgoals, parent);
 			if (parent.areAllSubgoalsDone()) {
-				finishGoal(queue, parent);
+				finishGoal(parent);
 			}
 		}
 	}
 
-	private void registerWorkUnits(List<WorkUnit> queue, List<IGoal> goals, WorkUnit parent) {
+	private void registerWorkUnits(List<IGoal> goals, WorkUnit parent) {
 		for (IGoal goal : goals) {
-			registerWorkUnits(queue, goal, parent);
+			registerWorkUnits(goal, parent);
 		}
 	}
 
-	private void registerWorkUnits(List<WorkUnit> queue, IGoal goal, WorkUnit parent) {
+	private void registerWorkUnits(IGoal goal, WorkUnit parent) {
 		WorkUnit workUnit = workUnits.get(goal);
 		if (workUnit == null) {
 			// Didn't exist yet, so create it
@@ -95,13 +99,13 @@ public class ZielMotor {
 			if (workUnit.isFinished()) {
 				// Reuse the goal's result.
 				List<IGoal> subgoals = parent.subGoalDone(workUnit.goal);
-				registerWorkUnits(queue, subgoals, parent);
+				registerWorkUnits(subgoals, parent);
 			} else {
 				// The same goal existed before, so check for cycles.
 				if (workUnit.isInParentsOf(parent)) {
 					// TODO: Maybe add an event (cyclicGoalCreated) to the logger interface?
 					List<IGoal> newGoals = parent.subGoalDone(workUnit.goal, GoalState.RECURSIVE);
-					registerWorkUnits(queue, newGoals, parent);
+					registerWorkUnits(newGoals, parent);
 				} else {
 					workUnit.addParent(parent);
 					queue.add(workUnit);
