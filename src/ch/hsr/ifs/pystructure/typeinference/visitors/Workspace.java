@@ -24,8 +24,8 @@ public class Workspace {
 
 	private final List<SourceFolder> sourceFolders;
 
-	public Workspace(File sourceDirectory) {
-		this(ListUtils.wrap(sourceDirectory));
+	public Workspace(File sourceDir) {
+		this(ListUtils.wrap(sourceDir));
 	}
 	
 	public Workspace(List<File> sourceDirs) {
