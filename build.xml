@@ -49,7 +49,7 @@
 	<target name="default" depends="init,build,jar"/>
 
 	<!-- builds everything -->
-	<target name="all" depends="init,build,documentation,checkstyle,run-tests,findbugs,jar,publish-jar"/>
+	<target name="all" depends="init,build,documentation,checkstyle,run-tests,findbugs,publish-dist"/>
 	
 	
 	<!-- Targets -->
@@ -86,10 +86,29 @@
 		</jar>
 	</target>
 	
-	<target name="publish-jar" depends="init,jar">
-	  <copy file="${base-dir}/pystructure.jar" todir="${output.release}" />
+	<target name="publish-dist" depends="init,dist,dist-src">
+		<copy todir="${output.release}/">
+			<fileset dir="${build.dist}/" includes="*.zip" />
+		</copy>
 	</target>
-		
+	
+	<target name="dist" depends="init,jar">
+		<zip destfile="${build.dist}/pystructure.zip">
+			<fileset dir=".">
+				<exclude name="tmp/**" />
+			</fileset>
+	    <zipfileset dir="${base-dir}" includes="pystructure.jar" fullpath="pystructure.jar"/>
+		</zip>
+	</target>
+	
+	<target name="dist-src" depends="init">
+		<zip destfile="${build.dist}/pystructure-src.zip">
+			<fileset dir=".">
+				<exclude name="tmp/**" />
+			</fileset>
+		</zip>
+	</target>
+	
 	<target name="documentation" depends="init">
 		<exec executable="build/build-documents.sh" 
 			output="${output.doc-dir}/log.txt" />
@@ -121,6 +140,7 @@
 		<mkdir dir="${build.src}" />
 		<mkdir dir="${build.parser}" />
 		<mkdir dir="${build.tests}" />
+		<mkdir dir="${build.dist}" />
 	</target>
 	
 	<target name="init-tests">
@@ -194,7 +214,7 @@
 			</fileset>
 		</checkstyle>
 	</target>
-	
+
 	<!-- needs findbugs installed in the directory findbugs.dir -->
 	<target name="findbugs" depends="build">
 		<taskdef name="findbugs" 
