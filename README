@@ -1,0 +1,46 @@
+The PyStructure Project
+=======================
+
+This project's goal is to develop a structural analyser for programs written in
+the Python programming language. The analyser should be able to parse an
+application's source code, analyse it and then generate a graph representing
+the internal structure of the project.
+
+As Python is a dynamic language most of the interesting details (i.e. type) are
+not known before the application is running. The analyser has to 'guess' the
+correct type by analysing the code base.
+
+For more information, visit our project page at:
+
+  http://pystructure.ifs.hsr.ch/
+
+Using PyStructure
+-----------------
+
+At the moment, there's a simple command line interface. It expects Python
+source directories as arguments and writes the Structure101 XML file for the
+code to standard output. It will print some statistics to standard error. Use
+it like this:
+
+  java -cp pystructure.jar:jdom.jar ch.hsr.ifs.pystructure.CLI /path/to/source/ > myproject.xml
+
+The XML file can then be viewed in Structure101g, by choosing File -> New and
+then specifying the XML file. But before this works, Structure101g has to be
+set up as explained in the next section.
+
+Of course, the project can also be used as a library to get more information
+than is exported in the XML. A simple example for querying the type of an
+expression at a specified line is provided in the file SimpleExample.java in
+the package ch.hsr.ifs.pystructure.playground.
+
+
+Setting up Structure101g
+------------------------
+
+Download Structure101g here: 
+
+  http://www.headwaysoftware.com/products/structure101/g/
+
+Extract the files from the archive and go to the directory where the main
+executable is. Create a directory called "flavors" there and copy the directory
+"s101g/ch.hsr.ifs.pystructure" from the pystructure archive into it.
