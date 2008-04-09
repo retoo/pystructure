@@ -16,6 +16,29 @@ For more information, visit our project page at:
 
   http://pystructure.ifs.hsr.ch/
 
+Current Limitations
+-------------------
+Although the engine already supports a wide variety of cases it still lacks some 
+very important features:
+
+ * No support for inheritance
+
+   Currently the engine ignores everything that involves inheritance.
+   For example if a method is implemented in a base class it won't be found
+   if it was called on an instance of a sub class.
+
+ * Type of list/dict elements is not known
+
+   The type of container elements cannot be determined yet. For projects which heavily
+   rely on lists this means that a lot of types can't be determined-
+
+ * Only little support for built-ins 
+
+   Only a few built-in operations are recognised. For example the type inference
+   engine doesn't yet know that len("str") returns an integer.
+
+We are working on tackling these issues in the next two milestones and we hope to 
+improve the accuracy of the engine significantly.
 
 Using PyStructure
 -----------------
