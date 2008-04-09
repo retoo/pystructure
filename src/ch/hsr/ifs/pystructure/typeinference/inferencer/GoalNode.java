@@ -68,7 +68,7 @@ public class GoalNode {
 		return newSubGoals;
 	}
 	
-	public List<IGoal> subGoalDone(IGoal goal) {
+	public List<IGoal> subgoalDone(IGoal goal) {
 		return subGoalDone(goal, GoalState.DONE);
 	}
 	
