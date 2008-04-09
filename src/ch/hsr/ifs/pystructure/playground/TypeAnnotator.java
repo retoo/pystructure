@@ -60,18 +60,12 @@ public final class TypeAnnotator {
 		}
 
 		public int compareTo(Result o) {
-			if (this.node.beginColumn < o.node.beginColumn) {
-				return -1;
-			} else if (this.node.beginColumn > o.node.beginColumn) {
-				return +1;
-			} else {
-				return 0;
-			}
+			return node.beginColumn - o.node.beginColumn;
 		}
 		
-		/* hashcode and equals have to implemented if Result objects are stored in certain
-		 * data structures. The Object implementations can't be used as they are not consitent
-		 * with our compareTo impelmentation.
+		/* hashCode and equals have to implemented if Result objects are stored in certain
+		 * data structures. The Object implementations can't be used as they are not consistent
+		 * with our compareTo implementation.
 		 */
 		@Override
 		public boolean equals(Object obj) {
