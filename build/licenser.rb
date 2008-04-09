@@ -101,7 +101,7 @@ class Lizenzierer
         if content.match /Copyright.*IBM Corporation/
           raise "IBM: #{datei}"
         else
-          raise "fix me, "
+          #raise "fix me, "
           puts "Installing license into #{datei}"
           temp_write(datei, COPYRIGHT + content)
         end
@@ -124,7 +124,7 @@ class Lizenzierer
   end
 end
 
-lizenzierer = Lizenzierer.new("src");
+lizenzierer = Lizenzierer.new("tests");
 lizenzierer.lizenziere
 
 # nice :)
