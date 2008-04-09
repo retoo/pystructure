@@ -30,9 +30,9 @@ import ch.hsr.ifs.pystructure.typeinference.goals.base.GoalState;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.AbstractTypeGoal;
 
-public class AnswerAlreadyKnownEvaluator extends AbstractEvaluator {
+public class FixedResultEvaluator extends AbstractEvaluator {
 
-	public AnswerAlreadyKnownEvaluator(AbstractTypeGoal goal, IType classType) {
+	public FixedResultEvaluator(AbstractTypeGoal goal, IType classType) {
 		super(goal);
 		
 		goal.resultType.appendType(classType);
