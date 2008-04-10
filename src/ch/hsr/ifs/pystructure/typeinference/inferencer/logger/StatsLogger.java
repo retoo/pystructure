@@ -61,7 +61,9 @@ public class StatsLogger implements IGoalEngineLogger {
 
 	public void evaluationFinished(IGoal rootGoal) {
 		assert rootGoal == currentGoal;
-		rootGoalStats.append("" + currentGoal + "." + currentSubGoalsCounter + "\n");
+		if (showRootGoalStats) {
+			rootGoalStats.append("" + currentGoal + "." + currentSubGoalsCounter + "\n");
+		}
 		this.currentGoal = null;
 		this.currentSubGoalsCounter = 0;
 

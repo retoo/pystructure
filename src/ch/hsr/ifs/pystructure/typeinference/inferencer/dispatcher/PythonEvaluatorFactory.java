@@ -38,6 +38,7 @@ import org.python.pydev.parser.jython.ast.List;
 import org.python.pydev.parser.jython.ast.ListComp;
 import org.python.pydev.parser.jython.ast.Name;
 import org.python.pydev.parser.jython.ast.Num;
+import org.python.pydev.parser.jython.ast.Repr;
 import org.python.pydev.parser.jython.ast.Str;
 import org.python.pydev.parser.jython.ast.StrJoin;
 import org.python.pydev.parser.jython.ast.Subscript;
@@ -293,6 +294,9 @@ public class PythonEvaluatorFactory {
 				}
 			}
 			return createStrEvaluator(goal, isUnicode);
+		}
+		if (expr instanceof Repr) {
+			return new FixedResultEvaluator(goal, new ClassType("str"));
 		}
 		
 		throw new RuntimeException("Can't create evaluator for literal expression " + expr +  ", goal " + goal);

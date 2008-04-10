@@ -67,4 +67,9 @@ public class Package extends StructureDefinition implements PathElement, PathEle
 		return parent;
 	}
 	
+	@Override
+	public String toString() {
+		return "package " + namePath.toString();
+	}
+	
 }
