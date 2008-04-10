@@ -28,7 +28,11 @@ import java.util.Map;
 
 import ch.hsr.ifs.pystructure.typeinference.model.base.NamePath;
 
-public class Package implements PathElement, PathElementContainer {
+/*
+ * FIXME: robin: extending from structure definition AND implementing
+ * pathelementcontainer feels a bit wrong, can we dot that here?
+ */ 
+public class Package extends StructureDefinition implements PathElement, PathElementContainer {
 	
 	private final String name;
 	private final NamePath namePath;

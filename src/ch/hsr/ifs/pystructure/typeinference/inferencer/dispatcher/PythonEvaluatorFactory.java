@@ -294,6 +294,9 @@ public class PythonEvaluatorFactory {
 			}
 			return createStrEvaluator(goal, isUnicode);
 		}
+		if (expr instanceof StrJoin) {
+			return new FixedResultEvaluator(goal, new ClassType("str"));			
+		}
 		
 		throw new RuntimeException("Can't create evaluator for literal expression " + expr +  ", goal " + goal);
 	}

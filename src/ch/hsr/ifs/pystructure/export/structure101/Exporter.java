@@ -168,8 +168,9 @@ public class Exporter {
 
 	public static void main(String[] args) throws IOException {
 //		String path = "s101g	/examples/simple";
-		String path = "s101g/examples/pydoku";
+//		String path = "s101g/examples/pydoku";
 //		String path = "/Users/reto/Downloads/simple_go/";
+		String path = "/Users/reto/tmp/pygments/";
 		
 
 		FileOutputStream stream = new FileOutputStream("s101g/examples/test.xml", false);

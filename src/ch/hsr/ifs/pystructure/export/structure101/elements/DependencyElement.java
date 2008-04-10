@@ -31,6 +31,7 @@ import ch.hsr.ifs.pystructure.typeinference.results.types.ClassType;
 import ch.hsr.ifs.pystructure.typeinference.results.types.FunctionType;
 import ch.hsr.ifs.pystructure.typeinference.results.types.MetaclassType;
 import ch.hsr.ifs.pystructure.typeinference.results.types.ModuleType;
+import ch.hsr.ifs.pystructure.typeinference.results.types.PackageType;
 import ch.hsr.ifs.pystructure.typeinference.results.types.TupleType;
 
 public class DependencyElement extends Element {
@@ -87,7 +88,7 @@ public class DependencyElement extends Element {
 		this.setAttribute("from", from);
 	}
 
-	private StructureDefinition  getTypeIdentifier(IType type) {
+	private StructureDefinition getTypeIdentifier(IType type) {
 		if (type instanceof ClassType) {
 			ClassType classType = (ClassType) type;
 			return classType.getKlass();
@@ -103,6 +104,9 @@ public class DependencyElement extends Element {
 		} else if (type instanceof TupleType) {
 //			TupleType tupleType = (TupleType) type;
 			return null;
+		} else if (type instanceof PackageType) {
+			PackageType pkg = (PackageType) type;
+			return pkg.getPackage();
 		} else {
 			throw new RuntimeException("Unknown type" + type);
 		}

@@ -122,7 +122,8 @@ public class AttributeTypeEvaluator extends AbstractEvaluator {
 							throw new RuntimeException("Got SysPath, evil!");
 						}
 					} else {
-						throw new RuntimeException("Unable to find " + attributeName + " in package " + pkg);
+						System.err.println("Unable to find " + attributeName + " in package " + pkg);
+//						throw new RuntimeException("Unable to find " + attributeName + " in package " + pkg);
 					}
 					
 				} else if (type instanceof ModuleType) {
