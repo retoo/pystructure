@@ -18,12 +18,16 @@ True ## type bool
 False ## type bool
 None ## type NoneType
 
-# Others
+# Containers
 
 [1, 2] ## type list
 (1, 2) ## type tuple
 {1: 2} ## type dict
 
+# Others
+
 "one" "two" ## type str
 "one" u"two" ## type unicode
 u"one" "two" ## type unicode
+
+`test` ## type str
