@@ -82,6 +82,7 @@
 			<fileset dir="${build.parser}" />
 			<manifest>
 				<attribute name="Main-Class" value="ch.hsr.ifs.pystructure.CLI"/>
+				<attribute name="Class-Path" value="../lib/jdom/jdom.jar"/>
 			</manifest>
 		</jar>
 	</target>
@@ -96,6 +97,7 @@
 		<zip destfile="${build.dist}/pystructure.zip">
 			<fileset dir=".">
 				<exclude name="tmp/**" />
+				<exclude name="build.properties.local" />
 			</fileset>
 	    <zipfileset dir="${base-dir}" includes="pystructure.jar" fullpath="pystructure.jar"/>
 		</zip>
@@ -104,6 +106,7 @@
 	<target name="dist-src" depends="init">
 		<zip destfile="${build.dist}/pystructure-src.zip">
 			<fileset dir=".">
+				<exclude name="build.properties.local" />
 				<exclude name="tmp/**" />
 			</fileset>
 		</zip>
