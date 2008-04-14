@@ -2,7 +2,7 @@
 
 <!-- build.xml PyStructure -->
 <!-- Copyright (c) 2008  Reto Schüttel, Robin Stocker -->
-<!-- Licensed as LGPL 3 (or above) -->
+<!-- Licensed as LGPL 2 (or above) -->
 
 <project name="PyStructure" default="default">
 	<!-- Properties -->
