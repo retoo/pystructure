@@ -128,7 +128,7 @@ public class GoalEngine {
 				// The same goal existed before, so check for cycles.
 				if (goalNode.isInParentsOf(parent)) {
 					// TODO: Maybe add an event (cyclicGoalCreated) to the logger interface?
-					List<IGoal> newGoals = parent.subGoalDone(goalNode.goal, GoalState.RECURSIVE);
+					List<IGoal> newGoals = parent.subgoalDone(goalNode.goal, GoalState.RECURSIVE);
 					registerGoalNode(newGoals, parent);
 				} else {
 					goalNode.addParent(parent);
