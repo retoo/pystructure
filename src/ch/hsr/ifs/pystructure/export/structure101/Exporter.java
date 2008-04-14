@@ -43,6 +43,8 @@ import ch.hsr.ifs.pystructure.export.structure101.elements.ModuleElement;
 import ch.hsr.ifs.pystructure.typeinference.basetype.CombinedType;
 import ch.hsr.ifs.pystructure.typeinference.basetype.IType;
 import ch.hsr.ifs.pystructure.typeinference.inferencer.PythonTypeInferencer;
+import ch.hsr.ifs.pystructure.typeinference.inferencer.logger.GoalEngineNullLogger;
+import ch.hsr.ifs.pystructure.typeinference.inferencer.logger.IGoalEngineLogger;
 import ch.hsr.ifs.pystructure.typeinference.inferencer.logger.StatsLogger;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Attribute;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Class;
@@ -57,13 +59,24 @@ public class Exporter {
 
 	public static final String FLAVOR = "ch.hsr.ifs.pystructure";
 
-	private XMLOutputter outputter;
+	private final XMLOutputter outputter;
 	private final OutputStream outputStream;
+	
+	private boolean statistics;
 
 	public Exporter(OutputStream outputStream) {
 		this.outputStream = outputStream;
 
-		outputter = new XMLOutputter(Format.getPrettyFormat());
+		this.outputter = new XMLOutputter(Format.getPrettyFormat());
+		this.statistics = true;
+	}
+	
+	public void enableStats() {
+		statistics = true;
+	}
+	
+	public void deactivateStats() {
+		statistics = false;
 	}
 	
 	public void export(String path) throws IOException {
@@ -81,13 +94,17 @@ public class Exporter {
 
 		Element modules = new Element("modules");
 		Element dependencies = new Element("dependencies");
+		
+		IGoalEngineLogger logger =
+			this.statistics 
+				? new StatsLogger(false)
+				: new GoalEngineNullLogger();
 
-		PythonTypeInferencer inferencer = new PythonTypeInferencer(new StatsLogger(false));
+		PythonTypeInferencer inferencer = new PythonTypeInferencer(logger);
 
 		for (Module module : workspace.getModules()) {
 			Spider spider = new Spider();
 			spider.run(module);
-
 
 			/* Iterate over all methods/classes/functions in a particular module */
 			for (Map.Entry<StructureDefinition, List<exprType>> entry : spider.getTypables().entrySet()) {
@@ -178,4 +195,5 @@ public class Exporter {
 		Exporter exporter = new Exporter(stream);
 		exporter.export(path);
 	}
+
 }
