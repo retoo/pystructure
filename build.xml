@@ -95,20 +95,20 @@
 	
 	<target name="dist" depends="init,jar">
 		<zip destfile="${build.dist}/pystructure.zip">
-			<fileset dir=".">
+			<zipfileset dir="." prefix="pystructure">
 				<exclude name="tmp/**" />
 				<exclude name="build.properties.local" />
-			</fileset>
-	    <zipfileset dir="${build.jar}" includes="pystructure.jar" fullpath="pystructure.jar"/>
+			</zipfileset>
+	    <zipfileset dir="${build.jar}" includes="pystructure.jar" fullpath="pystructure/pystructure.jar"/>
 		</zip>
 	</target>
 	
 	<target name="dist-src" depends="init">
 		<zip destfile="${build.dist}/pystructure-src.zip">
-			<fileset dir=".">
-				<exclude name="build.properties.local" />
+			<zipfileset dir="." prefix="pystructure">
 				<exclude name="tmp/**" />
-			</fileset>
+				<exclude name="build.properties.local" />
+			</zipfileset>
 		</zip>
 	</target>
 	
