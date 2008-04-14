@@ -23,10 +23,13 @@
 package ch.hsr.ifs.pystructure.tests.typeinference;
 
 import junit.framework.Test;
-import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-public class AllTests extends TestCase {
+public final class AllTests {
+	
+	private AllTests() {
+	}
+	
 	public static Test suite() {
 		TestSuite suite = new TestSuite("Type Inference Tests");
 		suite.addTest(new TypeInferenceSuite("tests/python/typeinference/"));

@@ -22,6 +22,7 @@
 
 package ch.hsr.ifs.pystructure.tests;
 
+import ch.hsr.ifs.pystructure.tests.export.ExporterTest;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
@@ -35,6 +36,7 @@ public final class AllTests {
 		//$JUnit-BEGIN$
 		suite.addTest(ch.hsr.ifs.pystructure.tests.typeinference.AllTests.suite());
 		suite.addTest(ch.hsr.ifs.pystructure.tests.utils.AllTests.suite());
+		suite.addTestSuite(ExporterTest.class);
 		//$JUnit-END$
 		return suite;
 	}
