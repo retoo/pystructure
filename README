@@ -8,7 +8,7 @@ the internal structure of the project.
 
 As Python is a dynamic language most of the interesting details (i.e. type) are
 not known before the application is running. The analyser has to 'guess' the
-correct type by analysing the code base.
+correct type by analysing the code base (which is called type inference).
 
 The project is licensed under the LGPL (v2 or later), see the COPYING file.
 
