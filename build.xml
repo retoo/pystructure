@@ -77,12 +77,12 @@
 	</target>
 	
 	<target name="jar" depends="init,build,build-parser">
-		<jar destfile="${base-dir}/pystructure.jar">
+		<jar destfile="${build.jar}/pystructure.jar">
 			<fileset dir="${build.src}" />
 			<fileset dir="${build.parser}" />
 			<manifest>
 				<attribute name="Main-Class" value="ch.hsr.ifs.pystructure.CLI"/>
-				<attribute name="Class-Path" value="../lib/jdom/jdom.jar"/>
+				<attribute name="Class-Path" value="lib/jdom/jdom.jar"/>
 			</manifest>
 		</jar>
 	</target>
@@ -99,7 +99,7 @@
 				<exclude name="tmp/**" />
 				<exclude name="build.properties.local" />
 			</fileset>
-	    <zipfileset dir="${base-dir}" includes="pystructure.jar" fullpath="pystructure.jar"/>
+	    <zipfileset dir="${build.jar}" includes="pystructure.jar" fullpath="pystructure.jar"/>
 		</zip>
 	</target>
 	
@@ -123,9 +123,13 @@
 			<fileset dir="${doc-dir}/img/" includes="*" />
 		</copy>
 	</target>
-
-	<target name="init">
+	
+	<target name="clean">
+		<delete file="${build.jar}/pystructure.jar" failonerror="false"/>
 		<delete dir="${tmp-dir}" failonerror="false"/>
+	</target>
+
+	<target name="init" depends="clean">
 		<mkdir  dir="${tmp-dir}" />
 		
 		<mkdir dir="${output.base}" />
