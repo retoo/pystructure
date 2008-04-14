@@ -54,7 +54,7 @@ First, extract the files from the pystructure archive. There should be a
 pystructure.jar archive in the root of the directory. We're using this to
 execute the CLI:
 
-  java -jar pystructure.jar:lib/jdom/jdom.jar /path/to/source/directory > myproject.xml
+  java -jar pystructure.jar /path/to/source/directory > myproject.xml
 
 The source directory is where your Python modules and packages reside in.
 
