@@ -54,8 +54,7 @@ First, extract the files from the pystructure archive. There should be a
 pystructure.jar archive in the root of the directory. We're using this to
 execute the CLI:
 
-  java -cp pystructure.jar:lib/jdom/jdom.jar ch.hsr.ifs.pystructure.CLI \
-    /path/to/source/directory > myproject.xml
+  java -jar pystructure.jar:lib/jdom/jdom.jar /path/to/source/directory > myproject.xml
 
 The source directory is where your Python modules and packages reside in.
 
@@ -79,4 +78,8 @@ Download Structure101g here:
 Extract the files from the archive and go to the directory where the main
 executable is. Create a directory called "flavors" there and copy the directory
 "s101g/ch.hsr.ifs.pystructure" from the pystructure archive into it.
+
+On OS X this is usually: (well hidden)
+  /Applications/Structure101g.app/Contents/Resources/app/
+
 
