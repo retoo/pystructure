@@ -101,7 +101,7 @@ public class StatsLogger implements IGoalEngineLogger {
 		if  (rootGoalsCounter != 0) {
 			OUT.println("Average time / root goal: " + delta / rootGoalsCounter + "ms");
 		}
-		OUT.println("Average subgoal / s: " + subGoalsCounter * 1000 / delta);
+		OUT.println("Average subgoal / s: " + subGoalsCounter * 1000L / delta);
 		OUT.println("Average rootgoal / s: " + rootGoalsCounter * 1000L / delta);
 	}
 	
