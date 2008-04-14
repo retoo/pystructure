@@ -234,17 +234,7 @@ public class PythonEvaluatorFactory {
 		SimpleNode expr = goal.getExpression();
 		
 		if (expr instanceof Num) {
-			Num num = (Num) expr;
-			String type = null;
-			switch (num.type) {
-			case num_typeType.Long: type = "long"; break;
-			case num_typeType.Float: type = "float"; break;
-			case num_typeType.Comp: type = "complex"; break;
-			case num_typeType.Int:
-			case num_typeType.Oct:
-			case num_typeType.Hex:
-			default: type = "int"; break;
-			}
+			String type = getNumType((Num) expr);
 			return new FixedResultEvaluator(goal, new ClassType(type));
 		}
 		if (expr instanceof Str) {
@@ -272,13 +262,7 @@ public class PythonEvaluatorFactory {
 			 */
 			return new FixedResultEvaluator(goal, new ClassType("list"));
 		}
-		if (expr instanceof Compare) {
-			return new FixedResultEvaluator(goal, new ClassType("bool"));
-		}
-		if (expr instanceof UnaryOp) {
-			return new FixedResultEvaluator(goal, new ClassType("bool"));
-		}
-		if (expr instanceof BoolOp) {
+		if (expr instanceof Compare || expr instanceof UnaryOp || expr instanceof BoolOp) {
 			return new FixedResultEvaluator(goal, new ClassType("bool"));
 		}
 		if (expr instanceof Lambda) {
@@ -300,6 +284,18 @@ public class PythonEvaluatorFactory {
 		}
 		
 		throw new RuntimeException("Can't create evaluator for literal expression " + expr +  ", goal " + goal);
+	}
+
+	private String getNumType(Num num) {
+		switch (num.type) {
+		case num_typeType.Long: return "long";
+		case num_typeType.Float: return "float";
+		case num_typeType.Comp: return "complex";
+		case num_typeType.Int:
+		case num_typeType.Oct:
+		case num_typeType.Hex:
+		default: return "int";
+		}
 	}
 
 	private AbstractEvaluator createStrEvaluator(AbstractTypeGoal goal, boolean isUnicode) {
