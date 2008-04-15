@@ -52,7 +52,6 @@ public class TypeAnnotator {
 	private File outPath;
 	private XMLOutputter escaper;
 	private PythonTypeInferencer inferencer;
-	private Foo foo;
 	public TypeAnnotator(File path, String outPath) {
 		this.workspace = new Workspace(path);
 		this.outPath = new File(outPath);
