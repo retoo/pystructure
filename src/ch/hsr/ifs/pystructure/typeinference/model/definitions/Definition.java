@@ -32,7 +32,7 @@ import ch.hsr.ifs.pystructure.typeinference.model.base.NodeUtils;
 
 /**
  * Definition of a name, for example through an assignment, a def or a class
- * statement. Each definition has a scope (function, class, module) and a node.
+ * statement. Each definition has a node.
  */
 public abstract class Definition {
 
