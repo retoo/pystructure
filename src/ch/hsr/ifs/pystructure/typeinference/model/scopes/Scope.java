@@ -22,7 +22,7 @@
 
 package ch.hsr.ifs.pystructure.typeinference.model.scopes;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Definition;
@@ -34,7 +34,7 @@ public class Scope extends Block {
 	public Scope(Block parent, Definition definition) {
 		super(parent);
 		this.definition = definition;
-		this.globals = new ArrayList<String>();
+		this.globals = new LinkedList<String>();
 	}
 	
 	public void setGlobal(String name) {
