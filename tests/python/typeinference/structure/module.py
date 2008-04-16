@@ -1,6 +1,6 @@
 class A(object):
     def __init__(self, argument):
-        self.attribute = attribute
+        self.attribute = argument
 
     def foo(self):
         def bar():
