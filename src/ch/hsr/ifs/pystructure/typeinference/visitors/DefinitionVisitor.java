@@ -282,9 +282,9 @@ public class DefinitionVisitor extends StructuralVisitor {
 		// TODO: What about tuples?
 		if (node.target instanceof Name) {
 			String name = ((Name) node.target).id;
-			Definition definition = new LoopVariableDefinition(module, name, node);
-			bodyBlock.setCurrentDefinition(definition);
-			parent.addToCurrentDefinitions(definition);
+			Definition loopVariable = new LoopVariableDefinition(module, name, node);
+			bodyBlock.setCurrentDefinition(loopVariable);
+			parent.addToCurrentDefinitions(loopVariable);
 		}
 
 		node.target.accept(this);
@@ -367,9 +367,11 @@ public class DefinitionVisitor extends StructuralVisitor {
 		visitBlock(finallyBlock, node.finalbody);
 
 		parent.addToCurrentDefinitions(bodyBlock.getBlockDefinitions());
-		// Overwrite the current definitions, because whether an exception
-		// occurred or not.
-		parent.setCurrentDefinition(finallyBlock.getCurrentBlockDefinitions());
+		// Overwrite the current definitions, because we don't know whether an
+		// exception occurred or not.
+		for (Definition definition : finallyBlock.getCurrentBlockDefinitions()) {
+			parent.setCurrentDefinition(definition);
+		}
 
 		return null;
 	}
@@ -401,7 +403,7 @@ public class DefinitionVisitor extends StructuralVisitor {
 	}
 
 	private void addNameUse(NameUse use) {
-		List<Definition> definitions = getBlock().getDefinitions(use.getName());
+		List<Definition> definitions = getBlock().getCurrentDefinitions(use.getName());
 		use.addDefinitions(definitions);
 		if (getScope() == moduleScope || getScope().isGlobal(use.getName())) {
 			moduleScope.addGlobalNameUse(use);

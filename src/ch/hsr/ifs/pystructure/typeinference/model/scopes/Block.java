@@ -22,22 +22,37 @@
 
 package ch.hsr.ifs.pystructure.typeinference.model.scopes;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Definition;
 
+/**
+ * Abstraction of a block of Python code (method body, if body, basically
+ * everything with indentation). It knows about its parent block and is used to
+ * store all definitions which are made inside it.
+ */
 public class Block {
+
 	private final Block parent;
 	
-	private List<Definition> allDefinitions;
-	private Map<String, List<Definition>> currentDefinitions;
+	/**
+	 * Contains all the definitions ever made in this block, even such which are
+	 * overwritten later.
+	 */
+	private final List<Definition> allDefinitions;
+
+	/**
+	 * Contains the currently active definitions for a given name (changes as
+	 * the processing code walks through the block and finds new definitions).
+	 */
+	private final Map<String, List<Definition>> currentDefinitions;
 
 	public Block(Block parent) {
 		this.parent = parent;
-		this.allDefinitions = new ArrayList<Definition>();
+		this.allDefinitions = new LinkedList<Definition>();
 		this.currentDefinitions = new TreeMap<String, List<Definition>>();
 	}
 	
@@ -59,7 +74,7 @@ public class Block {
 	}
 	
 	public List<Definition> getCurrentBlockDefinitions() {
-		List<Definition> definitions = new ArrayList<Definition>();
+		List<Definition> definitions = new LinkedList<Definition>();
 		for (List<Definition> d : currentDefinitions.values()) {
 			definitions.addAll(d);
 		}
@@ -71,19 +86,13 @@ public class Block {
 	}
 	
 	public void setCurrentDefinition(Definition definition) {
-		List<Definition> definitions = new ArrayList<Definition>();
+		List<Definition> definitions = new LinkedList<Definition>();
 		definitions.add(definition);
 		currentDefinitions.put(definition.getName(), definitions);
 		allDefinitions.add(definition);
 	}
 	
-	public void setCurrentDefinition(List<Definition> definitions) {
-		for (Definition definition : definitions) {
-			setCurrentDefinition(definition);
-		}
-	}
-	
-	public List<Definition> getDefinitions(String name) {
+	public List<Definition> getCurrentDefinitions(String name) {
 		List<Definition> definitions = currentDefinitions.get(name);
 		if (definitions != null) {
 			return definitions;
@@ -93,16 +102,19 @@ public class Block {
 	}
 	
 	protected List<Definition> getParentDefinitions(String name) {
-		return getParent().getDefinitions(name);
+		return getParent().getCurrentDefinitions(name);
 	}
 	
 	protected List<Definition> getAllDefinitions(String name) {
-		List<Definition> definitions = new ArrayList<Definition>();
+		List<Definition> definitions = new LinkedList<Definition>();
 		for (Definition definition : allDefinitions) {
 			if (name.equals(definition.getName())) {
 				definitions.add(definition);
 			}
 		}
+		
+		// If there hasn't been a single definition of name in the block, get
+		// the definitions in the parent block (may be recursive)
 		if (definitions.isEmpty()) {
 			definitions.addAll(getParent().getAllDefinitions(name));
 		}
@@ -112,4 +124,5 @@ public class Block {
 	public Block getParent() {
 		return parent;
 	}
+
 }
