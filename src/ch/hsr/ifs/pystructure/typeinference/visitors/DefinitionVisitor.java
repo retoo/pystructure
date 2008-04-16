@@ -285,9 +285,9 @@ public class DefinitionVisitor extends StructuralVisitor {
 			Definition loopVariable = new LoopVariableDefinition(module, name, node);
 			bodyBlock.setCurrentDefinition(loopVariable);
 			parent.addToCurrentDefinitions(loopVariable);
+			
+			node.target.accept(this);
 		}
-
-		node.target.accept(this);
 
 		visitBlock(bodyBlock, node.body);
 		Block orelseBlock = new Block(parent);
@@ -499,7 +499,7 @@ public class DefinitionVisitor extends StructuralVisitor {
 				 */
 				NameUse use = new NameUse(element, entry.name, this.module);
 				use.addDefinition(definition);
-				addNameUse(use);
+				uses.add(use);
 			}
 		}
 		
