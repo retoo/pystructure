@@ -463,7 +463,7 @@ public class DefinitionVisitor extends StructuralVisitor {
 			addDefinition(definition);
 		}
 		
-		return super.visitImport(node);
+		return null;
 	}
 
 	/*
@@ -503,7 +503,7 @@ public class DefinitionVisitor extends StructuralVisitor {
 			}
 		}
 		
-		return super.visitImportFrom(node);
+		return null;
 	}
 
 }
