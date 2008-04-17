@@ -65,7 +65,7 @@ public class VariableReferenceEvaluator extends AbstractEvaluator {
 		for (Use use : module.getContainedUses()) {
 			if (use instanceof NameUse) {
 				NameUse nameUse = (NameUse) use;
-				if (name.equals(nameUse.getNode())) {
+				if (name.equals(nameUse.getExpression())) {
 					for (Definition definition : nameUse.getDefinitions()) {
 						subgoals.add(new DefinitionTypeGoal(getGoal().getContext(), definition));
 					}

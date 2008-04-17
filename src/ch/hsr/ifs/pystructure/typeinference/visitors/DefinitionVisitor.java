@@ -39,7 +39,6 @@ import org.python.pydev.parser.jython.ast.If;
 import org.python.pydev.parser.jython.ast.Import;
 import org.python.pydev.parser.jython.ast.ImportFrom;
 import org.python.pydev.parser.jython.ast.Name;
-import org.python.pydev.parser.jython.ast.NameTok;
 import org.python.pydev.parser.jython.ast.NameTokType;
 import org.python.pydev.parser.jython.ast.TryExcept;
 import org.python.pydev.parser.jython.ast.TryFinally;
@@ -224,14 +223,6 @@ public class DefinitionVisitor extends StructuralVisitor {
 		return null;
 	}
 
-	@Override
-	public Object visitNameTok(NameTok node) throws Exception {
-		NameUse use = new NameUse(node.id, node, module);
-		addNameUse(use);
-		super.visitNameTok(node);
-		return null;
-	}
-	
 	@Override
 	public Object visitAttribute(Attribute node) throws Exception {
 		uses.add(new AttributeUse(node, module));
@@ -489,18 +480,6 @@ public class DefinitionVisitor extends StructuralVisitor {
 			
 			ImportDefinition definition = new ImportDefinition(module, node, path, element, alias, node.level);
 			addDefinition(definition);
-			
-			if (entry.asname != null) {
-				/*
-				 * In the following case, we have to add a name use for Class,
-				 * because otherwise it can't be found by reference finders:
-				 * 
-				 * from module import Class as Alias
-				 */
-				NameUse use = new NameUse(element, entry.name, this.module);
-				use.addDefinition(definition);
-				uses.add(use);
-			}
 		}
 		
 		return null;

@@ -27,8 +27,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import org.python.pydev.parser.jython.SimpleNode;
 import org.python.pydev.parser.jython.ast.Attribute;
+import org.python.pydev.parser.jython.ast.exprType;
 
 import ch.hsr.ifs.pystructure.typeinference.contexts.ModuleContext;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.base.AbstractEvaluator;
@@ -55,7 +55,7 @@ public class PossibleAttributeReferencesEvaluator extends AbstractEvaluator {
 
 	private String name;
 	private Map<IGoal, String> attributeNames;
-	private Map<IGoal, SimpleNode> attributeNodes;
+	private Map<IGoal, exprType> attributeExpressions;
 	
 	private List<AttributeReference> references;
 
@@ -64,7 +64,7 @@ public class PossibleAttributeReferencesEvaluator extends AbstractEvaluator {
 		name = goal.getName();
 		
 		attributeNames = new HashMap<IGoal, String>();
-		attributeNodes = new HashMap<IGoal, SimpleNode>();
+		attributeExpressions = new HashMap<IGoal, exprType>();
 		
 		references = goal.references;
 	}
@@ -83,17 +83,17 @@ public class PossibleAttributeReferencesEvaluator extends AbstractEvaluator {
 			List<IGoal> subgoals = new LinkedList<IGoal>();
 
 			for (Use use : g.references) {
-				SimpleNode node = use.getNode();
+				exprType expression = use.getExpression();
 				ModuleContext parentContext = getGoal().getContext();
 				ModuleContext context = new ModuleContext(parentContext, use.getModule());
 				
 				if (use instanceof AttributeUse) {
 					AttributeUse attributeUse = (AttributeUse) use;
-					Attribute attribute = (Attribute) attributeUse.getNode();
+					Attribute attribute = (Attribute) attributeUse.getExpression();
 					IGoal goal = new ExpressionTypeGoal(context, attribute.value);
 					
 					attributeNames.put(goal, attributeUse.getName());
-					attributeNodes.put(goal, attribute);
+					attributeExpressions.put(goal, attribute);
 					subgoals.add(goal);
 					
 				} else if (use instanceof NameUse) {
@@ -110,7 +110,7 @@ public class PossibleAttributeReferencesEvaluator extends AbstractEvaluator {
 							IGoal goal = new DefinitionTypeGoal(context, parent);
 							
 							attributeNames.put(goal, nameUse.getName());
-							attributeNodes.put(goal, node);
+							attributeExpressions.put(goal, expression);
 							subgoals.add(goal);
 						}
 					}
@@ -122,9 +122,9 @@ public class PossibleAttributeReferencesEvaluator extends AbstractEvaluator {
 		} else if (subgoal instanceof AbstractTypeGoal) {
 			AbstractTypeGoal typeGoal = (AbstractTypeGoal) subgoal;
 			String name = attributeNames.get(subgoal);
-			SimpleNode node = attributeNodes.get(subgoal);
+			exprType expression = attributeExpressions.get(subgoal);
 			Module module = typeGoal.getContext().getModule();
-			AttributeReference ref = new AttributeReference(name, typeGoal.resultType, node, module);
+			AttributeReference ref = new AttributeReference(name, typeGoal.resultType, expression, module);
 			references.add(ref);
 			
 		} else {

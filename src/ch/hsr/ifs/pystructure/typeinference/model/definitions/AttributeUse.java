@@ -28,8 +28,8 @@ import ch.hsr.ifs.pystructure.typeinference.model.base.NodeUtils;
 
 public class AttributeUse extends Use {
 
-	public AttributeUse(Attribute node, Module module) {
-		super(NodeUtils.getId(node.attr), node, module);
+	public AttributeUse(Attribute expression, Module module) {
+		super(NodeUtils.getId(expression.attr), expression, module);
 	}
 
 }

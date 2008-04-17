@@ -67,7 +67,7 @@ public class ClassReferencesEvaluator extends AbstractEvaluator {
 					NameUse nameUse = (NameUse) use;
 
 					if (nameUse.getDefinitions().contains(klass)) {
-						references.add(new ClassReference(klass, use.getNode()));
+						references.add(new ClassReference(klass, use.getExpression()));
 					}
 				} else {
 					// TODO: Check if it's in the right module etc.

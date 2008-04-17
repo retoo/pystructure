@@ -82,7 +82,7 @@ public class ClassAttributeTypeEvaluator extends AbstractEvaluator {
 			AttributeReferencesGoal g = (AttributeReferencesGoal) subgoal;
 			
 			for (AttributeReference reference : g.references) {
-				SimpleNode node = reference.getNode();
+				SimpleNode node = reference.getExpression();
 				if (node.parent instanceof Assign) {
 					Assign assign = (Assign) node.parent;
 					// TODO: Tuples

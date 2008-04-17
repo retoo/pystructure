@@ -22,22 +22,22 @@
 
 package ch.hsr.ifs.pystructure.typeinference.model.definitions;
 
-import org.python.pydev.parser.jython.SimpleNode;
+import org.python.pydev.parser.jython.ast.exprType;
 
 import ch.hsr.ifs.pystructure.typeinference.model.base.NodeUtils;
 
 public class Reference {
 
 	private final Definition definition;
-	private final SimpleNode node;
+	private final exprType expression;
 
-	public Reference(Definition definition, SimpleNode node) {
+	public Reference(Definition definition, exprType expression) {
 		this.definition = definition;
-		this.node = node;
+		this.expression = expression;
 	}
 	
-	public SimpleNode getNode() {
-		return node;
+	public exprType getExpression() {
+		return expression;
 	}
 	
 	public Definition getDefinition() {
@@ -46,6 +46,6 @@ public class Reference {
 
 	@Override
 	public String toString() {
-		return "Reference of " + definition + " at " + NodeUtils.nodePosition(node) + " node " + node;
+		return "Reference of " + definition + " at " + NodeUtils.nodePosition(expression) + " node " + expression;
 	}
 }

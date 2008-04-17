@@ -68,7 +68,7 @@ public class FunctionReferencesEvaluator extends AbstractEvaluator {
 			if (use instanceof NameUse) {
 				NameUse nameUse = (NameUse) use;
 				if (nameUse.getDefinitions().contains(function)) {
-					references.add(new FunctionReference(function, use.getNode()));
+					references.add(new FunctionReference(function, use.getExpression()));
 				}
 				// TODO: Check if it's in the right module etc.
 			} else {

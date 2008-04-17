@@ -24,7 +24,7 @@ package ch.hsr.ifs.pystructure.typeinference.evaluators.references;
 
 import java.util.List;
 
-import org.python.pydev.parser.jython.SimpleNode;
+import org.python.pydev.parser.jython.ast.exprType;
 
 import ch.hsr.ifs.pystructure.typeinference.basetype.IType;
 import ch.hsr.ifs.pystructure.typeinference.contexts.ModuleContext;
@@ -79,7 +79,7 @@ public class MethodReferencesEvaluator extends AbstractEvaluator {
 			
 			// We were looking for a constructor.
 			for (ClassReference classReference : g.references) {
-				references.add(new MethodReference(method, classReference.getNode(), true));
+				references.add(new MethodReference(method, classReference.getExpression(), true));
 			}
 			
 		} else 	if (subgoal instanceof PossibleAttributeReferencesGoal) {
@@ -87,7 +87,7 @@ public class MethodReferencesEvaluator extends AbstractEvaluator {
 			
 			// We were looking for a normal method.
 			for (AttributeReference reference : g.references) {
-				SimpleNode attribute = reference.getNode();
+				exprType attribute = reference.getExpression();
 				
 				for (IType parentType : reference.getParent()) {
 					if (parentType instanceof ClassType) {

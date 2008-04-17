@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.Queue;
 import java.util.Set;
 
-import org.python.pydev.parser.jython.SimpleNode;
+import org.python.pydev.parser.jython.ast.exprType;
 
 import ch.hsr.ifs.pystructure.typeinference.model.base.NodeUtils;
 
@@ -41,8 +41,8 @@ public class NameUse extends Use {
 	
 	private List<Definition> definitions;
 	
-	public NameUse(String name, SimpleNode node, Module module) {
-		super(name, node, module);
+	public NameUse(String name, exprType expression, Module module) {
+		super(name, expression, module);
 		this.definitions = new ArrayList<Definition>();
 	}
 	
@@ -98,6 +98,6 @@ public class NameUse extends Use {
 	}
 	
 	public String toString() {
-		return getName() + " " + NodeUtils.nodePosition(getNode());
+		return getName() + " " + NodeUtils.nodePosition(getExpression());
 	}
 }

@@ -22,7 +22,6 @@
 
 package ch.hsr.ifs.pystructure.typeinference.results.references;
 
-import org.python.pydev.parser.jython.SimpleNode;
 import org.python.pydev.parser.jython.ast.exprType;
 
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Argument;
@@ -31,12 +30,12 @@ import ch.hsr.ifs.pystructure.typeinference.model.definitions.Method;
 public class MethodReference extends FunctionReference {
 	private boolean firstArgumentIsImplicit;
 
-	public MethodReference(Method method, SimpleNode node) {
-		this(method, node, true);
+	public MethodReference(Method method, exprType expression) {
+		this(method, expression, true);
 	}
 	
-	public MethodReference(Method method, SimpleNode node, boolean firstArgumentIsImplicit) {
-		super(method, node);
+	public MethodReference(Method method, exprType expression, boolean firstArgumentIsImplicit) {
+		super(method, expression);
 		this.firstArgumentIsImplicit = firstArgumentIsImplicit;
 	}
 

@@ -22,7 +22,6 @@
 
 package ch.hsr.ifs.pystructure.typeinference.results.references;
 
-import org.python.pydev.parser.jython.SimpleNode;
 import org.python.pydev.parser.jython.ast.Call;
 import org.python.pydev.parser.jython.ast.exprType;
 import org.python.pydev.parser.jython.ast.keywordType;
@@ -34,8 +33,8 @@ import ch.hsr.ifs.pystructure.typeinference.model.definitions.Reference;
 
 public class FunctionReference extends Reference {
 	
-	public FunctionReference(Function definition, SimpleNode node) {
-		super(definition, node);
+	public FunctionReference(Function definition, exprType expression) {
+		super(definition, expression);
 	}
 	
 	public exprType getArgumentExpression(Argument argument) {
@@ -48,11 +47,11 @@ public class FunctionReference extends Reference {
 	 * @return argument expression
 	 */
 	protected exprType getArgumentExpression(Argument argument, boolean firstArgumentIsImplicit) {
-		if (!(getNode().parent instanceof Call)) {
+		if (!(getExpression().parent instanceof Call)) {
 			return null;
 		}
-		Call call = (Call) getNode().parent;
-		if (call.func != getNode()) {
+		Call call = (Call) getExpression().parent;
+		if (call.func != getExpression()) {
 			return null;
 		}
 

@@ -22,7 +22,7 @@
 
 package ch.hsr.ifs.pystructure.typeinference.results.references;
 
-import org.python.pydev.parser.jython.SimpleNode;
+import org.python.pydev.parser.jython.ast.exprType;
 
 import ch.hsr.ifs.pystructure.typeinference.basetype.CombinedType;
 import ch.hsr.ifs.pystructure.typeinference.model.base.NodeUtils;
@@ -33,15 +33,15 @@ public class AttributeReference extends Reference {
 
 	private final String name;
 	private final CombinedType parent;
-	private final SimpleNode node;
+	private final exprType expression;
 	private final Module module;
 
-	public AttributeReference(String name, CombinedType parent, SimpleNode node, Module module) {
-		super(module, node);
+	public AttributeReference(String name, CombinedType parent, exprType expression, Module module) {
+		super(module, expression);
 		
 		this.name = name;
 		this.parent = parent;
-		this.node = node;
+		this.expression = expression;
 		this.module = module;
 	}
 	
@@ -56,8 +56,8 @@ public class AttributeReference extends Reference {
 		return parent;
 	}
 
-	public SimpleNode getNode() {
-		return node;
+	public exprType getExpression() {
+		return expression;
 	}
 
 	/* (non-Javadoc)
@@ -68,7 +68,7 @@ public class AttributeReference extends Reference {
 	}
 	
 	public String getDescription() {
-		return "attribute reference '" + name + "' of class " + getParent().getTypeName() + " in " + module + " " + NodeUtils.nodePosition(node);
+		return "attribute reference '" + name + "' of class " + getParent().getTypeName() + " in " + module + " " + NodeUtils.nodePosition(expression);
 	}
 	
 	@Override
