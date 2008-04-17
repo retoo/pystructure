@@ -77,10 +77,10 @@ public class DefinitionVisitor extends StructuralVisitor {
 
 	private final Module module;
 	
-	private ModuleScope moduleScope;
-	private Stack<Block> blocks;
+	private final ModuleScope moduleScope;
+	private final Stack<Block> blocks;
 	
-	private List<Use> uses;
+	private final List<Use> uses;
 
 	public DefinitionVisitor(Module module) {
 		this.module = module;
