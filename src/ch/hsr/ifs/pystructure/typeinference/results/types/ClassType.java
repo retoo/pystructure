@@ -23,10 +23,8 @@
 package ch.hsr.ifs.pystructure.typeinference.results.types;
 
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Class;
-import ch.hsr.ifs.pystructure.typeinference.model.definitions.Module;
 
 public class ClassType extends AbstractType {
-	private Module module;
 	private Class klass;
 	
 	public ClassType(String typeName) {
@@ -34,14 +32,9 @@ public class ClassType extends AbstractType {
 		/* FIXME: shouldn't we use a different class for that? */
 	}
 
-	public ClassType(Module module, Class klass) {
+	public ClassType(Class klass) {
 		super(klass.getName());
-		this.module = module;
 		this.klass = klass;
-	}
-	
-	public Module getModule() {
-		return module;
 	}
 	
 	public Class getKlass() {

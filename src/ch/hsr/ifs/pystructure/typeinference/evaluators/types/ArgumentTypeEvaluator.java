@@ -64,7 +64,7 @@ public class ArgumentTypeEvaluator extends DefinitionTypeEvaluator {
 		if (function instanceof Method 
 				&& function.isFirstArgument(argument)) {
 			Method method = (Method) function;
-			ClassType type = new ClassType(context.getModule(), method.getKlass());
+			ClassType type = new ClassType(method.getKlass());
 			resultType.appendType(type);
 		} else {
 			CallContext callContext = context.getCallContext();
