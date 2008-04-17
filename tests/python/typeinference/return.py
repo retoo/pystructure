@@ -109,3 +109,11 @@ def voidmethod2():
     pass
 
 voidmethod2() ## type None
+
+def may_return_none():
+    if random():
+        return
+    else:
+        return 42
+
+may_return_none() ## type None|int
