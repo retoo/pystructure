@@ -58,17 +58,21 @@ public class ReturnTypeEvaluator extends AbstractEvaluator {
 	public List<IGoal> init() {
 		List<IGoal> subgoals = new ArrayList<IGoal>();
 
+		boolean mayReturnNone = false;
+		
 		List<Return> returns = ReturnVisitor.findReturns(function.getNode());
 		for (Return r : returns) {
 			exprType value = r.value;
-			/* there might be nothing being returned */
-			if (value != null) {
+			if (value == null) {
+				// A return with no value returns None
+				mayReturnNone = true;
+			} else {
 				subgoals.add(new ExpressionTypeGoal(getGoal().getContext(), value));
 			}
 		}
 		
-		/* well if there are no returns or if there are just empty returns we return None */
-		if (subgoals.isEmpty()) {
+		/* Well if there are no returns or only empty returns we return None */
+		if (returns.isEmpty() || mayReturnNone) {
 			resultType.appendType(new ClassType("None"));
 		}
 
