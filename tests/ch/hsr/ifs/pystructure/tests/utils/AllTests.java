@@ -36,6 +36,7 @@ public final class AllTests {
 		suite.addTestSuite(StringUtilsTest.class);
 		suite.addTestSuite(TestUtilsTest.class);
 		suite.addTestSuite(FileUtilsTest.class);
+		suite.addTestSuite(NodeUtilsTest.class);
 		//$JUnit-END$
 		return suite;
 	}

@@ -23,8 +23,10 @@
 package ch.hsr.ifs.pystructure.typeinference.model.base;
 
 import org.python.pydev.parser.jython.SimpleNode;
+import org.python.pydev.parser.jython.ast.Call;
 import org.python.pydev.parser.jython.ast.NameTok;
 import org.python.pydev.parser.jython.ast.NameTokType;
+import org.python.pydev.parser.jython.ast.exprType;
 
 public final class NodeUtils {
 
@@ -40,6 +42,23 @@ public final class NodeUtils {
 
 	public static String getId(NameTokType name) {
 		return ((NameTok) name).id;
+	}
+	
+	/**
+	 * Returns the Call node of the passed func expression if there is one.
+	 * 
+	 * For example in "module.func(arg)", the passed function would be
+	 * "module.func" and the result the call node of that function call.
+	 */
+	public static Call getCallForFunc(exprType expression) {
+		if (expression.parent instanceof Call) {
+			Call call = (Call) expression.parent;
+			if (call.func == expression) {
+				return call;
+			}
+		}
+		
+		return null;
 	}
 
 	/**

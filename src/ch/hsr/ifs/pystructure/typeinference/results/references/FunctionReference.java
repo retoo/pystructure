@@ -47,11 +47,8 @@ public class FunctionReference extends Reference {
 	 * @return argument expression
 	 */
 	protected exprType getArgumentExpression(Argument argument, boolean firstArgumentIsImplicit) {
-		if (!(getExpression().parent instanceof Call)) {
-			return null;
-		}
-		Call call = (Call) getExpression().parent;
-		if (call.func != getExpression()) {
+		Call call = NodeUtils.getCallForFunc(getExpression());
+		if (call == null) {
 			return null;
 		}
 
