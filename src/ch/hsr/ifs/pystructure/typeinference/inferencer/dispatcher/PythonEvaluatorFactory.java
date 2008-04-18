@@ -180,10 +180,6 @@ public class PythonEvaluatorFactory {
 			ch.hsr.ifs.pystructure.typeinference.model.definitions.Class klass = (ch.hsr.ifs.pystructure.typeinference.model.definitions.Class) def;
 			return new FixedResultEvaluator(goal, new MetaclassType(module, klass));
 		}
-		if (def instanceof Module) {
-			Module moduleDef = (Module) def;
-			return new FixedResultEvaluator(goal, new ModuleType(moduleDef));
-		}
 		if (def instanceof LoopVariableDefinition) {
 			// TODO: Implement LoopVariableTypeEvaluator
 			return new FixedResultEvaluator(goal, new ClassType("object"));
