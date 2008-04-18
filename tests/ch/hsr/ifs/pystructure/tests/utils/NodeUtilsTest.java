@@ -1,6 +1,7 @@
 package ch.hsr.ifs.pystructure.tests.utils;
 
 import org.python.pydev.parser.jython.ParseException;
+import org.python.pydev.parser.jython.ast.Attribute;
 import org.python.pydev.parser.jython.ast.Call;
 import org.python.pydev.parser.jython.ast.Expr;
 import org.python.pydev.parser.jython.ast.Module;
@@ -10,6 +11,13 @@ import ch.hsr.ifs.pystructure.typeinference.model.base.NodeUtils;
 import junit.framework.TestCase;
 
 public class NodeUtilsTest extends TestCase {
+	
+	public void testGetId() throws ParseException {
+		Module module = Parser.parse("module.func");
+		Expr expr = (Expr) module.body[0];
+		Attribute attribute = (Attribute) expr.value;
+		assertEquals("func", NodeUtils.getId(attribute.attr));
+	}
 	
 	public void testGetCallForFunc() throws ParseException {
 		Module module = Parser.parse("module.func(arg)");
