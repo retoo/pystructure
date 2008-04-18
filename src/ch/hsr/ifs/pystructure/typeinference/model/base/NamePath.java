@@ -51,10 +51,6 @@ public class NamePath {
 		return StringUtils.dotSplitter(path).getFirst();
 	}
 
-	public String getLastPart() {
-		return StringUtils.dotSplitter(path).getLast();
-	}
-	
 	@Override
 	public String toString() {
 		return path;
