@@ -26,10 +26,9 @@ import java.util.LinkedList;
 import java.util.Locale;
 import java.util.regex.Pattern;
 
-
 public final class StringUtils {
+
 	private static final Pattern DOT = Pattern.compile("\\.");
-	private static final Pattern SLASH = Pattern.compile("\\/");
 	
 	private StringUtils() { }
 	
@@ -99,15 +98,11 @@ public final class StringUtils {
 		return string;
 	}
 
-	public static LinkedList<String> dotSplitter(String string) {
-		return splitter(string, DOT);
+	public static LinkedList<String> dotSplit(String string) {
+		return split(string, DOT);
 	}
 
-	public static LinkedList<String> slashSplitter(String string) {
-		return splitter(string, SLASH);
-	}
-	
-	public static LinkedList<String> splitter(String string, Pattern re) {
+	public static LinkedList<String> split(String string, Pattern re) {
 		LinkedList<String> parts = new LinkedList<String>();
 		for (String part : re.split(string)) {
 			parts.add(part);

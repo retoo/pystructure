@@ -44,11 +44,11 @@ public class NamePath {
 	}
 	
 	public List<String> getParts() {
-		return StringUtils.dotSplitter(path);
+		return StringUtils.dotSplit(path);
 	}
 
 	public String getFirstPart() {
-		return StringUtils.dotSplitter(path).getFirst();
+		return StringUtils.dotSplit(path).getFirst();
 	}
 
 	@Override
