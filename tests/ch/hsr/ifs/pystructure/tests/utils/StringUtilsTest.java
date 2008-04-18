@@ -51,6 +51,10 @@ public class StringUtilsTest extends TestCase {
 		assertEquals("foo",					StringUtils.stripParts(input, 3));
 		assertEquals("",					StringUtils.stripParts(input, 4));
 	}
+	
+	public void testMultiply() {
+		assertEquals("lololo", StringUtils.multiply(3, "lo"));
+	}
 
 	private static LinkedList<String> l(String... array) {
 		LinkedList<String> list = new LinkedList<String>();
