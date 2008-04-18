@@ -11,7 +11,7 @@ import junit.framework.TestCase;
 
 public class NodeUtilsTest extends TestCase {
 	
-	public void testIsCalledFunction() throws ParseException {
+	public void testGetCallForFunc() throws ParseException {
 		Module module = Parser.parse("module.func(arg)");
 		Expr expr = (Expr) module.body[0];
 		Call call = (Call) expr.value;
