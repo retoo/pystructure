@@ -22,17 +22,26 @@
 
 package ch.hsr.ifs.pystructure.typeinference.evaluators.references;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
+import ch.hsr.ifs.pystructure.typeinference.basetype.IType;
+import ch.hsr.ifs.pystructure.typeinference.contexts.ModuleContext;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.base.AbstractEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.GoalState;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.references.ClassReferencesGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.references.PossibleReferencesGoal;
+import ch.hsr.ifs.pystructure.typeinference.goals.types.DefinitionTypeGoal;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Class;
+import ch.hsr.ifs.pystructure.typeinference.model.definitions.Definition;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.NameUse;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Use;
 import ch.hsr.ifs.pystructure.typeinference.results.references.ClassReference;
+import ch.hsr.ifs.pystructure.typeinference.results.types.MetaclassType;
 
 //TODO: Maybe merge with FunctionReferencesEvaluator.
 /**
@@ -44,11 +53,15 @@ public class ClassReferencesEvaluator extends AbstractEvaluator {
 
 	private List<ClassReference> references;
 
+	private Map<IGoal, List<Use>> usesForGoal;
+
 	public ClassReferencesEvaluator(ClassReferencesGoal goal) {
 		super(goal);
 		this.klass = goal.getKlass();
 
 		this.references = goal.references;
+		
+		this.usesForGoal = new HashMap<IGoal, List<Use>>();
 	}
 
 	@Override
@@ -63,14 +76,47 @@ public class ClassReferencesEvaluator extends AbstractEvaluator {
 			PossibleReferencesGoal g = (PossibleReferencesGoal) subgoal;
 
 			for (Use use : g.references) {
+				ModuleContext context = new ModuleContext(getGoal().getContext(), use.getModule());
+				
 				if (use instanceof NameUse) {
 					NameUse nameUse = (NameUse) use;
 
-					if (nameUse.getDefinitions().contains(klass)) {
-						references.add(new ClassReference(klass, use.getExpression()));
+					for (Definition definition : nameUse.getDefinitions()) {
+						DefinitionTypeGoal goal = new DefinitionTypeGoal(context, definition);
+						
+						List<Use> uses = usesForGoal.get(goal);
+						if (uses == null) {
+							uses = new LinkedList<Use>();
+							usesForGoal.put(goal, uses);
+						}
+						uses.add(use);
 					}
+					
 				} else {
-					// TODO: Check if it's in the right module etc.
+					// TODO: Add processing of AttributeUse and merge with FunctionReferencesEvaluator
+					// TODO: What about imports like these?: from module import Class as C
+				}
+			}
+			
+			List<IGoal> subgoals = new ArrayList<IGoal>();
+			for (IGoal goal : usesForGoal.keySet()) {
+				subgoals.add(goal);
+			}
+			
+			return subgoals;
+			
+		} else if (subgoal instanceof DefinitionTypeGoal) {
+			DefinitionTypeGoal g = (DefinitionTypeGoal) subgoal;
+			
+			for (IType type : g.resultType) {
+				if (type instanceof MetaclassType) {
+					MetaclassType metaclassType = (MetaclassType) type;
+					if (metaclassType.getKlass().equals(klass)) {
+						for (Use use : usesForGoal.get(subgoal)) {
+							references.add(new ClassReference(klass, use.getExpression()));
+						}
+						break;
+					}
 				}
 			}
 			
