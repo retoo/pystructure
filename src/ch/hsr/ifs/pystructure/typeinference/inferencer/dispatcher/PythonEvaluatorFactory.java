@@ -91,7 +91,6 @@ import ch.hsr.ifs.pystructure.typeinference.model.definitions.NoDefintion;
 import ch.hsr.ifs.pystructure.typeinference.results.types.ClassType;
 import ch.hsr.ifs.pystructure.typeinference.results.types.FunctionType;
 import ch.hsr.ifs.pystructure.typeinference.results.types.MetaclassType;
-import ch.hsr.ifs.pystructure.typeinference.results.types.ModuleType;
 import ch.hsr.ifs.pystructure.typeinference.results.types.TupleType;
 
 /**
