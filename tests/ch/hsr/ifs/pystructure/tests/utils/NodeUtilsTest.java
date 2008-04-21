@@ -32,20 +32,19 @@ public class NodeUtilsTest extends TestCase {
 	public void testGetPrettyPrinted() throws ParseException {
 		Module module = Parser.parse("x = 42");
 		Assign assign = (Assign) module.body[0];
-		String expected =
-				"Assign\n" +
-				"|   targets = \n" +
-				"|   |   Name\n" +
-				"|   |   |   id = x,\n" +
-				"|   |   |   ctx = Store\n" +
-				"|   |   \n" +
-				"|   ,\n" +
-				"|   value = Num\n" +
-				"|   |   n = 42,\n" +
-				"|   |   type = Int,\n" +
-				"|   |   num = 42\n" +
-				"|   \n" +
-				"";
+		String expected = "Assign\n"
+						+ "|   targets = \n"
+						+ "|   |   Name\n"
+						+ "|   |   |   id = x,\n"
+						+ "|   |   |   ctx = Store\n"
+						+ "|   |   \n"
+						+ "|   ,\n"
+						+ "|   value = Num\n"
+						+ "|   |   n = 42,\n"
+						+ "|   |   type = Int,\n"
+						+ "|   |   num = 42\n"
+						+ "|   \n"
+						+ "";
 		assertEquals(expected, NodeUtils.getPrettyPrinted(assign));
 	}
 	
