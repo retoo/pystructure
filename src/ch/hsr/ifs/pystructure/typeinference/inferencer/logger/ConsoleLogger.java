@@ -23,70 +23,58 @@
 package ch.hsr.ifs.pystructure.typeinference.inferencer.logger;
 
 import java.io.PrintStream;
-import java.util.IdentityHashMap;
 
 import ch.hsr.ifs.pystructure.typeinference.evaluators.base.AbstractEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
 import ch.hsr.ifs.pystructure.utils.StringUtils;
 
-public class ConsoleLogger implements IGoalEngineLogger {
-	private static final PrintStream OUT = System.out;
-	
-	private IdentityHashMap<AbstractEvaluator, AbstractEvaluator> creators;
-	private IdentityHashMap<Object, Integer> numbers;
-	private int curNr = 1;
+public class ConsoleLogger extends GoalTreeLogger {
+	static final PrintStream OUT = System.out;
 	
 	public ConsoleLogger() {
-		this.creators = new IdentityHashMap<AbstractEvaluator, AbstractEvaluator>(); 
-		this.numbers = new IdentityHashMap<Object, Integer>();
 	}
 	
 	public void evaluationFinished(IGoal rootGoal) {
+		super.evaluationFinished(rootGoal);
 		OUT.println("Evaluation finished of " + rootGoal);
 	}
 
 	public void evaluationStarted(IGoal rootGoal) {
-		OUT.println("Evaluation started of " + rootGoal);
-		
-	}
-
-	public void goalCreated(IGoal goal, AbstractEvaluator creator, AbstractEvaluator evaluator) {
-		numbers.put(evaluator, curNr++);
-		creators.put(evaluator, creator);
-		say(evaluator, "Created " + evaluator.getClass().getSimpleName() + " "  + goal);
+		super.evaluationStarted(rootGoal);
+		OUT.println("Evaluation started of " + rootGoal);		
 	}
 	
-	public void goalFinished(IGoal goal, AbstractEvaluator evaluator) {
-		say(evaluator, "Finished " + goal);
-	}
-
-	private void say(AbstractEvaluator evaluator, String text) {
-		AbstractEvaluator creator = getCreater(evaluator);
-		OUT.println(StringUtils.multiply(level(evaluator), "|   ")
-				+ getNumber(creator)
-				+ " " + getNumber(evaluator)
-				+ " " + text);
-	}
-
-	private int getNumber(AbstractEvaluator evaluator) {
-		Integer nr = numbers.get(evaluator);
-		return nr != null ? (int) nr : 0; 
-	}
-
-	private int level(AbstractEvaluator evaluator) {
-		int level = 0;
+	@Override
+	public void goalCreated(IGoal goal, AbstractEvaluator creator,
+			AbstractEvaluator evaluator) {
+		super.goalCreated(goal, creator, evaluator);
 		
-		for (AbstractEvaluator creator = evaluator; creator != null; creator = getCreater(creator)) {
-			level++;
-		} 
+		say(creator, evaluator, "Created " + evaluator.getClass().getSimpleName() + " "  + goal);
+
+	}
+	
+	@Override
+	protected void goalFinished(IGoal goal, AbstractEvaluator creator,
+			AbstractEvaluator evaluator) {
+		super.goalFinished(goal, creator, evaluator);
 		
-		return level;
+		say(creator, evaluator, "Finished " + goal);
 	}
-
-	private AbstractEvaluator getCreater(AbstractEvaluator creator) {
-		return creators.get(creator);
+	
+	
+	private void say(AbstractEvaluator creator, AbstractEvaluator evaluator, String text) {
+		int level = level(evaluator);
+		int idParent = getNumber(creator);
+		int id = getNumber(evaluator);
+		
+		OUT.print(StringUtils.multiply(level, "|   ")
+				+ idParent
+				+ " " + id
+				+ " " + text
+				+ "\n");		
 	}
-
+	
+	
 	public void shutdown() {
 		OUT.println("Engine finished");
 	}
