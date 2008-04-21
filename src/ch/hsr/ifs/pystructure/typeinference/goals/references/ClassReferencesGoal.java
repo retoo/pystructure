@@ -27,11 +27,13 @@ import java.util.List;
 
 import ch.hsr.ifs.pystructure.typeinference.contexts.ModuleContext;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.AbstractGoal;
+import ch.hsr.ifs.pystructure.typeinference.goals.base.ILocatable;
+import ch.hsr.ifs.pystructure.typeinference.goals.base.Location;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Class;
 import ch.hsr.ifs.pystructure.typeinference.results.references.ClassReference;
 
 // TODO: Maybe implement with an AttributeReferencesGoal (with Module as the parent)?
-public class ClassReferencesGoal extends AbstractGoal {
+public class ClassReferencesGoal extends AbstractGoal implements ILocatable {
 
 	private final Class klass;
 	public final List<ClassReference> references;
@@ -46,6 +48,10 @@ public class ClassReferencesGoal extends AbstractGoal {
 		return klass;
 	}
 
+	public Location getLocation() {
+		return new Location(context, klass);
+	}
+	
 	public boolean equals(Object obj) {
 		if (obj == this) {
 			return true;
@@ -66,8 +72,8 @@ public class ClassReferencesGoal extends AbstractGoal {
 
 	public String toString() {
 		return "ClassReferencesGoal: "
-		+ ((klass != null) ? klass.toString() : "null")
-		+ " context: "
-		+ ((getContext() != null) ? getContext().toString() : "null");
+		+ klass
+		+ " context: " 
+		+ getContext();
 	}
 }

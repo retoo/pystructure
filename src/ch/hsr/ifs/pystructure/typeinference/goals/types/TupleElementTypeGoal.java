@@ -22,6 +22,8 @@
 
 package ch.hsr.ifs.pystructure.typeinference.goals.types;
 
+import org.python.pydev.parser.jython.SimpleNode;
+
 import ch.hsr.ifs.pystructure.typeinference.contexts.ModuleContext;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.TupleElement;
 
@@ -36,6 +38,10 @@ public class TupleElementTypeGoal extends AbstractTypeGoal {
 	
 	public TupleElement getTupleElement() {
 		return element;
+	}
+	
+	public SimpleNode getNode() {
+		return element.getExpression();
 	}
 
 	@Override

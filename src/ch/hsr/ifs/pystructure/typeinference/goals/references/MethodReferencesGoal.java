@@ -23,9 +23,11 @@
 package ch.hsr.ifs.pystructure.typeinference.goals.references;
 
 import ch.hsr.ifs.pystructure.typeinference.contexts.ModuleContext;
+import ch.hsr.ifs.pystructure.typeinference.goals.base.ILocatable;
+import ch.hsr.ifs.pystructure.typeinference.goals.base.Location;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Method;
 
-public class MethodReferencesGoal extends CallableGoal {
+public class MethodReferencesGoal extends CallableGoal implements ILocatable {
 
 	private final Method method;
 
@@ -36,6 +38,10 @@ public class MethodReferencesGoal extends CallableGoal {
 	
 	public Method getMethod() {
 		return method;
+	}
+	
+	public Location getLocation() {
+		return new Location(context, method);
 	}
 
 	public boolean equals(Object obj) {

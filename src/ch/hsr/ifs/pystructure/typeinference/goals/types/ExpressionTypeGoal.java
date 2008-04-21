@@ -25,9 +25,11 @@ package ch.hsr.ifs.pystructure.typeinference.goals.types;
 import org.python.pydev.parser.jython.SimpleNode;
 
 import ch.hsr.ifs.pystructure.typeinference.contexts.ModuleContext;
+import ch.hsr.ifs.pystructure.typeinference.goals.base.ILocatable;
+import ch.hsr.ifs.pystructure.typeinference.goals.base.Location;
 import ch.hsr.ifs.pystructure.typeinference.model.base.NodeUtils;
 
-public class ExpressionTypeGoal extends AbstractTypeGoal {
+public class ExpressionTypeGoal extends AbstractTypeGoal implements ILocatable {
 
 	private final SimpleNode expression;
 	
@@ -41,6 +43,10 @@ public class ExpressionTypeGoal extends AbstractTypeGoal {
 
 	public SimpleNode getExpression() {
 		return expression;
+	}
+	
+	public Location getLocation() {
+		return new Location(context, expression);
 	}
 
 	@Override

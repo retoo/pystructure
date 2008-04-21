@@ -23,9 +23,11 @@
 package ch.hsr.ifs.pystructure.typeinference.goals.types;
 
 import ch.hsr.ifs.pystructure.typeinference.contexts.ModuleContext;
+import ch.hsr.ifs.pystructure.typeinference.goals.base.ILocatable;
+import ch.hsr.ifs.pystructure.typeinference.goals.base.Location;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Function;
 
-public class ReturnTypeGoal extends AbstractTypeGoal {
+public class ReturnTypeGoal extends AbstractTypeGoal implements ILocatable {
 
 	private Function function;
 
@@ -37,7 +39,11 @@ public class ReturnTypeGoal extends AbstractTypeGoal {
 	public Function getFunction() {
 		return function;
 	}
-
+	
+	public Location getLocation() {
+		return new Location(context, function);
+	}
+	
 	public boolean equals(Object obj) {
 		if (obj == this) {
 			return true;
