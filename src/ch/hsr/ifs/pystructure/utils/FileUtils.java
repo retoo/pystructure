@@ -26,6 +26,9 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 
 public final class FileUtils {
 	private static final int BUFFER_SIZE = 1024;
@@ -40,10 +43,25 @@ public final class FileUtils {
 	 * @throws IOException
 	 */
 	public static String read(File file) throws IOException {
-		BufferedReader reader = null;
+		return read(new FileReader(file));
+	}
+	
+	
+	public static String read(InputStream inputStream) throws IOException {
+		return read(new InputStreamReader(inputStream));
+	}
+
+	/**
+	 * Reads everything from a reader and returns it as a string. 
+	 * 
+	 * @param in reader
+	 * @return String containing all the reader data
+	 * @throws IOException
+	 */
+	private static String read(Reader in) throws IOException {
+		BufferedReader reader = new BufferedReader(in);
 		
 		try {
-			reader = new BufferedReader(new FileReader(file));
 			StringBuilder builder = new StringBuilder();
 			char[] buffer = new char[BUFFER_SIZE];
 			int len;
@@ -52,9 +70,7 @@ public final class FileUtils {
 			}
 			return builder.toString();
 		} finally {
-			if (reader != null) {
-				reader.close();
-			}
+			reader.close();
 		}
 	}
 
@@ -71,4 +87,5 @@ public final class FileUtils {
 				? filename.substring(0, point)
 				: filename;
 	}
+
 }
