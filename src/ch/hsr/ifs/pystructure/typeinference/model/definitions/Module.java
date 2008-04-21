@@ -80,7 +80,6 @@ public class Module extends StructureDefinition implements PathElement {
 	}
 	
 	// TODO: Should return all possible definitions, not just one.
-
 	public Definition getChild(String name) {
 		for (Definition definition : definitions) {
 			if (definition.getName().equals(name)) {
@@ -90,11 +89,6 @@ public class Module extends StructureDefinition implements PathElement {
 		
 		return new NoDefintion(this, name);
 //		throw new RuntimeException("Object " + name + " not defined in " + this);
-	}
-
-	@Override
-	public String toString() {
-		return namePath.toString();
 	}
 
 	public List<Use> getContainedUses() {
@@ -126,6 +120,11 @@ public class Module extends StructureDefinition implements PathElement {
 
 	public String getSource() {
 		return source;
+	}
+	
+	@Override
+	public String toString() {
+		return namePath.toString();
 	}
 
 }
