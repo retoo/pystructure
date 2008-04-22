@@ -76,4 +76,5 @@ public class FunctionReference extends Reference {
 		// Return default value, may also return null.
 		return argument.getDefaultValue();
 	}
+
 }
