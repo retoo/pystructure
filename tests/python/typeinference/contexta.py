@@ -1,5 +1,6 @@
 
 from contextb import B
 
-x = B(3.14)
+arg = 3.14
+x = B(arg)
 x.attr ## type C

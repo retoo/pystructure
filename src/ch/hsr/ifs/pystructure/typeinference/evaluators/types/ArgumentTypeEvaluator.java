@@ -130,7 +130,8 @@ public class ArgumentTypeEvaluator extends DefinitionTypeEvaluator {
 			//   other_name_for_function = function
 			return null;
 		} else {
-			return new ExpressionTypeGoal(getGoal().getContext(), expression);
+			ModuleContext context = new ModuleContext(getGoal().getContext(), reference.getModule());
+			return new ExpressionTypeGoal(context, expression);
 		}
 	}
 	
