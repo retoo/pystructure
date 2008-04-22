@@ -35,6 +35,7 @@ import ch.hsr.ifs.pystructure.typeinference.goals.references.ClassReferencesGoal
 import ch.hsr.ifs.pystructure.typeinference.goals.references.MethodReferencesGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.references.PossibleAttributeReferencesGoal;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Method;
+import ch.hsr.ifs.pystructure.typeinference.model.definitions.Module;
 import ch.hsr.ifs.pystructure.typeinference.results.references.AttributeReference;
 import ch.hsr.ifs.pystructure.typeinference.results.references.ClassReference;
 import ch.hsr.ifs.pystructure.typeinference.results.references.FunctionReference;
@@ -79,7 +80,8 @@ public class MethodReferencesEvaluator extends AbstractEvaluator {
 			
 			// We were looking for a constructor.
 			for (ClassReference classReference : g.references) {
-				references.add(new MethodReference(method, classReference.getExpression(), true));
+				exprType expression = classReference.getExpression();
+				references.add(new MethodReference(method, expression, classReference.getModule(), true));
 			}
 			
 		} else 	if (subgoal instanceof PossibleAttributeReferencesGoal) {
@@ -88,18 +90,19 @@ public class MethodReferencesEvaluator extends AbstractEvaluator {
 			// We were looking for a normal method.
 			for (AttributeReference reference : g.references) {
 				exprType attribute = reference.getExpression();
+				Module module = reference.getModule();
 				
 				for (IType parentType : reference.getParent()) {
 					if (parentType instanceof ClassType) {
 						ClassType classType = (ClassType) parentType;
 						if (classType.getKlass() != null && classType.getKlass().equals(method.getKlass())) {
-							references.add(new MethodReference(method, attribute));
+							references.add(new MethodReference(method, attribute, module));
 						}
 					}
 					if (parentType instanceof MetaclassType) {
 						MetaclassType metaclassType = (MetaclassType) parentType;
 						if (metaclassType.getKlass().equals(method.getKlass())) {
-							references.add(new MethodReference(method, attribute, false));
+							references.add(new MethodReference(method, attribute, module, false));
 						}
 					}
 

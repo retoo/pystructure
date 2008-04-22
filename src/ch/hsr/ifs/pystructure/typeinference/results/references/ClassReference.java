@@ -25,12 +25,13 @@ package ch.hsr.ifs.pystructure.typeinference.results.references;
 import org.python.pydev.parser.jython.ast.exprType;
 
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Class;
+import ch.hsr.ifs.pystructure.typeinference.model.definitions.Module;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Reference;
 
 public class ClassReference extends Reference {
 	
-	public ClassReference(Class definition, exprType expression) {
-		super(definition, expression);
+	public ClassReference(Class definition, exprType expression, Module module) {
+		super(definition, expression, module);
 	}
 	
 }

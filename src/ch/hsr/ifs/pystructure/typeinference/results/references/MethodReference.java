@@ -26,16 +26,18 @@ import org.python.pydev.parser.jython.ast.exprType;
 
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Argument;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Method;
+import ch.hsr.ifs.pystructure.typeinference.model.definitions.Module;
 
 public class MethodReference extends FunctionReference {
+
 	private boolean firstArgumentIsImplicit;
 
-	public MethodReference(Method method, exprType expression) {
-		this(method, expression, true);
+	public MethodReference(Method method, exprType expression, Module module) {
+		this(method, expression, module, true);
 	}
 	
-	public MethodReference(Method method, exprType expression, boolean firstArgumentIsImplicit) {
-		super(method, expression);
+	public MethodReference(Method method, exprType expression, Module module, boolean firstArgumentIsImplicit) {
+		super(method, expression, module);
 		this.firstArgumentIsImplicit = firstArgumentIsImplicit;
 	}
 

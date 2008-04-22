@@ -37,6 +37,7 @@ import ch.hsr.ifs.pystructure.typeinference.goals.base.GoalState;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.ExpressionTypeGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.ReturnTypeGoal;
+import ch.hsr.ifs.pystructure.typeinference.model.definitions.Module;
 import ch.hsr.ifs.pystructure.typeinference.results.references.FunctionReference;
 import ch.hsr.ifs.pystructure.typeinference.results.references.MethodReference;
 import ch.hsr.ifs.pystructure.typeinference.results.types.ClassType;
@@ -81,17 +82,18 @@ public class CallTypeEvaluator extends AbstractEvaluator {
 					
 					FunctionType functionType = (FunctionType) type;
 					
+					Module module = getGoal().getContext().getModule();
+					
 					FunctionReference reference;
 					if (type instanceof MethodType) {
-						reference = new MethodReference(((MethodType) type).getMethod(), call.func);
+						reference = new MethodReference(((MethodType) type).getMethod(), call.func, module);
 					} else {
-						reference = new FunctionReference(functionType.getFunction(), call.func);
+						reference = new FunctionReference(functionType.getFunction(), call.func, module);
 					}
 					
-					ModuleContext context = getGoal().getContext();
 					// Module of call context may be different from that of the
 					// function definition, therefore the two contexts.
-					CallContext callContext = new CallContext(context, context.getModule(), reference);
+					CallContext callContext = new CallContext(getGoal().getContext(), module, reference);
 					ModuleContext moduleContext = new ModuleContext(callContext, functionType.getModule());
 					
 					subgoals.add(new ReturnTypeGoal(moduleContext, functionType.getFunction()));

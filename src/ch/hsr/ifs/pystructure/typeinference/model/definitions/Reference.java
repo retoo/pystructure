@@ -30,10 +30,12 @@ public class Reference {
 
 	private final Definition definition;
 	private final exprType expression;
+	private final Module module;
 
-	public Reference(Definition definition, exprType expression) {
+	public Reference(Definition definition, exprType expression, Module module) {
 		this.definition = definition;
 		this.expression = expression;
+		this.module = module;
 	}
 	
 	public exprType getExpression() {
@@ -43,9 +45,14 @@ public class Reference {
 	public Definition getDefinition() {
 		return definition;
 	}
+	
+	public Module getModule() {
+		return module;
+	}
 
 	@Override
 	public String toString() {
 		return "Reference of " + definition + " at " + NodeUtils.nodePosition(expression) + " node " + expression;
 	}
+
 }

@@ -113,7 +113,7 @@ public class ClassReferencesEvaluator extends AbstractEvaluator {
 					MetaclassType metaclassType = (MetaclassType) type;
 					if (metaclassType.getKlass().equals(klass)) {
 						for (Use use : usesForGoal.get(subgoal)) {
-							references.add(new ClassReference(klass, use.getExpression()));
+							references.add(new ClassReference(klass, use.getExpression(), use.getModule()));
 						}
 						break;
 					}

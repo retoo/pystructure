@@ -34,15 +34,13 @@ public class AttributeReference extends Reference {
 	private final String name;
 	private final CombinedType parent;
 	private final exprType expression;
-	private final Module module;
 
 	public AttributeReference(String name, CombinedType parent, exprType expression, Module module) {
-		super(module, expression);
+		super(module, expression, module);
 		
 		this.name = name;
 		this.parent = parent;
 		this.expression = expression;
-		this.module = module;
 	}
 	
 	/* (non-Javadoc)
@@ -60,15 +58,8 @@ public class AttributeReference extends Reference {
 		return expression;
 	}
 
-	/* (non-Javadoc)
-	 * @see ch.hsr.ifs.pystructure.typeinference.results.references.IThing#getModule()
-	 */
-	public Module getModule() {
-		return module;
-	}
-	
 	public String getDescription() {
-		return "attribute reference '" + name + "' of class " + getParent().getTypeName() + " in " + module + " " + NodeUtils.nodePosition(expression);
+		return "attribute reference '" + name + "' of class " + getParent().getTypeName() + " in " + getModule() + " " + NodeUtils.nodePosition(expression);
 	}
 	
 	@Override

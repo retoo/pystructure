@@ -29,12 +29,13 @@ import org.python.pydev.parser.jython.ast.keywordType;
 import ch.hsr.ifs.pystructure.typeinference.model.base.NodeUtils;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Argument;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Function;
+import ch.hsr.ifs.pystructure.typeinference.model.definitions.Module;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Reference;
 
 public class FunctionReference extends Reference {
 	
-	public FunctionReference(Function definition, exprType expression) {
-		super(definition, expression);
+	public FunctionReference(Function definition, exprType expression, Module module) {
+		super(definition, expression, module);
 	}
 	
 	public exprType getArgumentExpression(Argument argument) {
