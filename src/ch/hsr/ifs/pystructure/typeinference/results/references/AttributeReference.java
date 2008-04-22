@@ -43,9 +43,6 @@ public class AttributeReference extends Reference {
 		this.expression = expression;
 	}
 	
-	/* (non-Javadoc)
-	 * @see ch.hsr.ifs.pystructure.typeinference.results.references.IThing#getName()
-	 */
 	public String getName() {
 		return name;
 	}
