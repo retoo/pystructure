@@ -188,6 +188,7 @@ public class Exporter {
 //		String path = "s101g/examples/pydoku";
 //		String path = "/Users/reto/Downloads/simple_go/";
 		String path = "/Users/reto/tmp/pygments/";
+//		String path = "/Users/reto/tmp/Trac-0.11b2
 		
 
 		FileOutputStream stream = new FileOutputStream("s101g/examples/test.xml", false);
