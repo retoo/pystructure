@@ -26,13 +26,13 @@ import org.python.pydev.parser.jython.ast.exprType;
 
 import ch.hsr.ifs.pystructure.typeinference.model.base.NodeUtils;
 
-public class Reference {
+public abstract class Reference {
 
 	private final Definition definition;
 	private final exprType expression;
 	private final Module module;
 
-	public Reference(Definition definition, exprType expression, Module module) {
+	protected Reference(Definition definition, exprType expression, Module module) {
 		this.definition = definition;
 		this.expression = expression;
 		this.module = module;
