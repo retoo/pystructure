@@ -23,13 +23,18 @@
 package ch.hsr.ifs.pystructure.typeinference.goals.base;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import ch.hsr.ifs.pystructure.typeinference.contexts.ModuleContext;
 
 public interface IGoal {
 
-	List<IGoal> NO_GOALS = new ArrayList<IGoal>();
+	/*
+	 * we use 'unmodifiableList' to forbid any modofictions to NO_GOALS (not
+	 * sure if anybody would be that stupid, but who knows
+	 */
+	List<IGoal> NO_GOALS = Collections.unmodifiableList(new ArrayList<IGoal>());
 
 	/**
 	 * Returns context, in which this goal should be considered. Context
