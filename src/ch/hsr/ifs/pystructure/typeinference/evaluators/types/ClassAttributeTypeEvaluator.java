@@ -71,7 +71,7 @@ public class ClassAttributeTypeEvaluator extends AbstractEvaluator {
 
 	@Override
 	public List<IGoal> init() {
-		return wrap(new AttributeReferencesGoal(getGoal().getContext(), attribute));
+		return wrap(new AttributeReferencesGoal(getGoal().getContext(), attribute, classType));
 	}
 	
 	@Override
@@ -109,23 +109,12 @@ public class ClassAttributeTypeEvaluator extends AbstractEvaluator {
 	}
 	
 	@Override
-	public boolean checkCache() {
-		if (attribute.type != null) {
-			resultType.appendType(attribute.type);
-			return true;
-		} else {
-			return false;
-		}
-	}
-	
-	@Override
 	public void finish() {
 		for (IType type : resultType) {
 			if (type instanceof AbstractType) {
 				((AbstractType) type).location = attribute;
 			}
 		}
-		attribute.type = resultType;
 	}
 
 }

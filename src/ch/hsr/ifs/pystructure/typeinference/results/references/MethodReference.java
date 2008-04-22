@@ -22,6 +22,7 @@
 
 package ch.hsr.ifs.pystructure.typeinference.results.references;
 
+import org.python.pydev.parser.jython.ast.Attribute;
 import org.python.pydev.parser.jython.ast.exprType;
 
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Argument;
@@ -43,6 +44,18 @@ public class MethodReference extends FunctionReference {
 
 	@Override
 	public exprType getArgumentExpression(Argument argument) {
+		if (argument.getPosition() == 0 && firstArgumentIsImplicit) {
+			// The self argument is wanted in a call like this:
+			//   instance.method(argument)
+			// ... which is "instance".
+			if (getExpression() instanceof Attribute) {
+				Attribute attribute = (Attribute) getExpression();
+				return attribute.value;
+			} else {
+				throw new RuntimeException("Could not get first argument expression.");
+			}
+		}
+		
 		return super.getArgumentExpression(argument, firstArgumentIsImplicit);
 	}
 

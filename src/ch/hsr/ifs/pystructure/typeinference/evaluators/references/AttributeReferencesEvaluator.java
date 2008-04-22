@@ -31,11 +31,8 @@ import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.references.AttributeReferencesGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.references.PossibleAttributeReferencesGoal;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Attribute;
-import ch.hsr.ifs.pystructure.typeinference.model.definitions.Definition;
 import ch.hsr.ifs.pystructure.typeinference.results.references.AttributeReference;
 import ch.hsr.ifs.pystructure.typeinference.results.types.ClassType;
-import ch.hsr.ifs.pystructure.typeinference.results.types.MetaclassType;
-import ch.hsr.ifs.pystructure.typeinference.results.types.ModuleType;
 
 /**
  * Evaluator for finding all the references to a data attribute of a class.
@@ -43,7 +40,7 @@ import ch.hsr.ifs.pystructure.typeinference.results.types.ModuleType;
 public class AttributeReferencesEvaluator extends AbstractEvaluator {
 
 	private final String attributeName;
-	private final Definition attributeParent;
+	private final ClassType classType;
 	
 	private List<AttributeReference> references;
 	private Attribute attribute;
@@ -51,8 +48,8 @@ public class AttributeReferencesEvaluator extends AbstractEvaluator {
 	public AttributeReferencesEvaluator(AttributeReferencesGoal goal) {
 		super(goal);
 		this.attribute = goal.getAttribute();
+		this.classType = goal.getClassType();
 		this.attributeName = attribute.getName();
-		this.attributeParent = attribute.getKlass();
 		
 		this.references = goal.references;
 	}
@@ -70,12 +67,8 @@ public class AttributeReferencesEvaluator extends AbstractEvaluator {
 		
 		for (AttributeReference reference : possibleReferences) {
 			for (IType type : reference.getParent()) {
-				if (type instanceof ClassType) {
-					checkPossibleReference(reference, ((ClassType) type).getKlass());
-				} else if (type instanceof ModuleType) {
-					checkPossibleReference(reference, ((ModuleType) type).getModule());
-				} else if (type instanceof MetaclassType) {
-					checkPossibleReference(reference, ((MetaclassType) type).getKlass());
+				if (type.equals(classType)) {
+					references.add(reference);
 				}
 			}
 		}
@@ -83,27 +76,26 @@ public class AttributeReferencesEvaluator extends AbstractEvaluator {
 		return IGoal.NO_GOALS;
 	}
 	
-	/* casting is safe here */
-	@SuppressWarnings("unchecked")
-	@Override
-	public boolean checkCache() {
-		if (attribute.references != null) {
-			this.references.addAll((List<AttributeReference>) attribute.references);
-			return true;
-		} else {
-			return false;
-		}
-	}
+	/*
+	 * Caching disabled for now, because the result depends on which ClassType
+	 * (as opposed to only the Class) the attribute belongs to.
+	 */
 	
-	@Override
-	public void finish() {
-		attribute.references = this.references;
-	}
-
-	private void checkPossibleReference(AttributeReference reference, Definition attributeParent) {
-		if (this.attributeParent.equals(attributeParent)) {
-			references.add(reference);
-		}
-	}
+//	/* casting is safe here */
+//	@SuppressWarnings("unchecked")
+//	@Override
+//	public boolean checkCache() {
+//		if (attribute.references != null) {
+//			this.references.addAll((List<AttributeReference>) attribute.references);
+//			return true;
+//		} else {
+//			return false;
+//		}
+//	}
+//	
+//	@Override
+//	public void finish() {
+//		attribute.references = this.references;
+//	}
 
 }

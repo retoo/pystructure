@@ -38,6 +38,7 @@ import ch.hsr.ifs.pystructure.typeinference.model.definitions.Method;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Module;
 import ch.hsr.ifs.pystructure.typeinference.results.references.AttributeReference;
 import ch.hsr.ifs.pystructure.typeinference.results.references.ClassReference;
+import ch.hsr.ifs.pystructure.typeinference.results.references.ConstructorReference;
 import ch.hsr.ifs.pystructure.typeinference.results.references.FunctionReference;
 import ch.hsr.ifs.pystructure.typeinference.results.references.MethodReference;
 import ch.hsr.ifs.pystructure.typeinference.results.types.ClassType;
@@ -81,7 +82,7 @@ public class MethodReferencesEvaluator extends AbstractEvaluator {
 			// We were looking for a constructor.
 			for (ClassReference classReference : g.references) {
 				exprType expression = classReference.getExpression();
-				references.add(new MethodReference(method, expression, classReference.getModule(), true));
+				references.add(new ConstructorReference(method, expression, classReference.getModule()));
 			}
 			
 		} else 	if (subgoal instanceof PossibleAttributeReferencesGoal) {

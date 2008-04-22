@@ -41,7 +41,6 @@ import ch.hsr.ifs.pystructure.typeinference.model.definitions.Argument;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Function;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Method;
 import ch.hsr.ifs.pystructure.typeinference.results.references.FunctionReference;
-import ch.hsr.ifs.pystructure.typeinference.results.types.ClassType;
 
 /**
  * Evaluator for the type of an argument.
@@ -61,24 +60,17 @@ public class ArgumentTypeEvaluator extends DefinitionTypeEvaluator {
 		Function function = argument.getFunction();
 		
 		ModuleContext context = getGoal().getContext();
-		if (function instanceof Method 
-				&& function.isFirstArgument(argument)) {
-			Method method = (Method) function;
-			ClassType type = new ClassType(method.getKlass());
-			resultType.appendType(type);
+		CallContext callContext = context.getCallContext();
+
+		if (callContext != null && callContext.getFunctionReference().getDefinition().equals(function)) {
+			FunctionReference reference = callContext.getFunctionReference();
+			exprType expression = reference.getArgumentExpression(argument);
+			subgoals.add(new ExpressionTypeGoal(callContext.getParent(), expression));
 		} else {
-			CallContext callContext = context.getCallContext();
-			
-			if (callContext != null && callContext.getFunctionReference().getDefinition().equals(function)) {
-				FunctionReference reference = callContext.getFunctionReference();
-				exprType expression = reference.getArgumentExpression(argument);
-				subgoals.add(new ExpressionTypeGoal(callContext.getParent(), expression));
+			if (function instanceof Method) {
+				subgoals.add(new MethodReferencesGoal(context, (Method) function));
 			} else {
-				if (function instanceof Method) {
-					subgoals.add(new MethodReferencesGoal(context, (Method) function));
-				} else {
-					subgoals.add(new FunctionReferencesGoal(context, function));
-				}
+				subgoals.add(new FunctionReferencesGoal(context, function));
 			}
 		}
 		

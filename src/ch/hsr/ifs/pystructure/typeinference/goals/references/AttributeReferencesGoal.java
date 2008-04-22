@@ -29,16 +29,21 @@ import ch.hsr.ifs.pystructure.typeinference.contexts.ModuleContext;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.AbstractGoal;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Attribute;
 import ch.hsr.ifs.pystructure.typeinference.results.references.AttributeReference;
+import ch.hsr.ifs.pystructure.typeinference.results.types.ClassType;
 
 public class AttributeReferencesGoal extends AbstractGoal {
 
-	public final List<AttributeReference> references;
-	private Attribute attribute;
+	private final Attribute attribute;
+	private final ClassType classType;
 
-	public AttributeReferencesGoal(ModuleContext context,
-			Attribute attribute) {
+	public final List<AttributeReference> references;
+
+	public AttributeReferencesGoal(ModuleContext context, Attribute attribute,
+			ClassType classType) {
 		super(context);
 		this.attribute = attribute;
+		this.classType = classType;
+		
 		this.references = new ArrayList<AttributeReference>();
 	}
 
@@ -46,6 +51,9 @@ public class AttributeReferencesGoal extends AbstractGoal {
 		return attribute;
 	}
 	
+	public ClassType getClassType() {
+		return classType;
+	}
 
 	public String toString() {
 		return "AttributeReferencesGoal: "
@@ -60,7 +68,7 @@ public class AttributeReferencesGoal extends AbstractGoal {
 		result = prime * result
 				+ ((attribute == null) ? 0 : attribute.hashCode());
 		result = prime * result
-				+ ((references == null) ? 0 : references.hashCode());
+				+ ((classType == null) ? 0 : classType.hashCode());
 		return result;
 	}
 
@@ -83,11 +91,11 @@ public class AttributeReferencesGoal extends AbstractGoal {
 		} else if (!attribute.equals(other.attribute)) {
 			return false;
 		}
-		if (references == null) {
-			if (other.references != null) {
+		if (classType == null) {
+			if (other.classType != null) {
 				return false;
 			}
-		} else if (!references.equals(other.references)) {
+		} else if (!classType.equals(other.classType)) {
 			return false;
 		}
 		return true;

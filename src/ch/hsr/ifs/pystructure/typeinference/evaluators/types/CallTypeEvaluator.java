@@ -102,7 +102,7 @@ public class CallTypeEvaluator extends AbstractEvaluator {
 				if (type instanceof MetaclassType) {
 					// It's a constructor.
 					MetaclassType metaclassType = (MetaclassType) type;
-					ClassType classType = new ClassType(metaclassType.getKlass());
+					ClassType classType = new ClassType(metaclassType.getKlass(), call);
 					resultType.appendType(classType);
 				}
 			}
