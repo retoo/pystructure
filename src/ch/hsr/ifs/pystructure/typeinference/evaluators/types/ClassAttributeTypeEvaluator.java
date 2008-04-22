@@ -115,6 +115,10 @@ public class ClassAttributeTypeEvaluator extends AbstractEvaluator {
 				((AbstractType) type).location = attribute;
 			}
 		}
+		if (attribute.type == null) {
+			attribute.type = new CombinedType();
+		}
+		attribute.type.appendType(resultType);
 	}
 
 }
