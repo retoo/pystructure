@@ -49,7 +49,7 @@ import ch.hsr.ifs.pystructure.typeinference.results.types.ModuleType;
 import ch.hsr.ifs.pystructure.typeinference.results.types.PackageType;
 
 /**
- * Evaluator for the type of an attribute node. For example, the result of
+ * Evaluator for the type of an attribute node. For example, the result for
  * <code>instance.method</code> would be the method.
  */
 public class AttributeTypeEvaluator extends AbstractEvaluator {
