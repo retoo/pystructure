@@ -47,11 +47,11 @@ public final class GoalEngineDebugger {
 		IGoalEngineLogger logger = new CombinedLogger(new ConsoleLogger(), new StatsLogger(), s101);
 		
 		PythonTypeInferencer inferencer = new PythonTypeInferencer(logger);
-		File path = new File("s101g/examples/simple/");
+		File path = new File("tests/python/typeinference/inher/");
 		Workspace workspace = new Workspace(path);
-		Module module = workspace.getModule("simple");
+		Module module = workspace.getModule("inheritance");
 		
-		int[] lines = {13};
+		int[] lines = {11};
 		
 		for (int line : lines) {
 			Expr expression = getExpressionAtLine(module, line);
