@@ -53,6 +53,7 @@ import ch.hsr.ifs.pystructure.typeinference.goals.references.AttributeReferences
 import ch.hsr.ifs.pystructure.typeinference.goals.references.PossibleAttributeReferencesGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.references.PossibleReferencesGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.ClassAttributeTypeGoal;
+import ch.hsr.ifs.pystructure.typeinference.goals.types.ResolveMethodGoal;
 import ch.hsr.ifs.pystructure.typeinference.inferencer.PythonTypeInferencer;
 import ch.hsr.ifs.pystructure.typeinference.inferencer.logger.CombinedLogger;
 import ch.hsr.ifs.pystructure.typeinference.inferencer.logger.CustomLogger;
@@ -70,7 +71,7 @@ import ch.hsr.ifs.pystructure.utils.StringUtils;
 public class TypeAnnotator extends HtmlOutputter {
 	
 	private static final String PYTHON = "/usr/bin/python";
-	private static final String PYGMENTIZE = "/Users/reto/tmp/pygments/pygmentize";
+	private static final String PYGMENTIZE = "s101g/examples/pygments/pygmentize";
 	private Workspace workspace;
 	private File outPath;
 	private PythonTypeInferencer inferencer;
@@ -303,6 +304,9 @@ public class TypeAnnotator extends HtmlOutputter {
 		} else if (goal instanceof PossibleAttributeReferencesGoal) {
 			PossibleAttributeReferencesGoal g = (PossibleAttributeReferencesGoal) goal;
 			return new Text(g.getName());
+		} else if (goal instanceof ResolveMethodGoal) {
+			ResolveMethodGoal g = (ResolveMethodGoal) goal;
+			return new Text(g.getClassType().getKlass() + " " + g.getAttributeName());
 		} else { 
 			throw new RuntimeException("Cannot format goal, unknown goal type: " + goal);
 		}
@@ -385,11 +389,9 @@ public class TypeAnnotator extends HtmlOutputter {
 	}
 
 	public static void main(String[] args) throws Exception {
-		File path = new File("s101g/examples/pydoku/");
-//		File path = new File("tests/python/typeinference/inher/");
-		TypeAnnotator ta = new TypeAnnotator(path, "out");
-		
-		ta.generateReport();
+		new TypeAnnotator(new File("tests/python/typeinference/"), "out/tests/").generateReport();
+//		new TypeAnnotator(new File("s101g/examples/pydoku/"), "out/pydoku/").generateReport();
+//		new TypeAnnotator(new File("s101g/examples/pygments/"), "out/pygments/").generateReport();
 	}
 
 }
