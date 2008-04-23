@@ -20,31 +20,47 @@
  *
  */
 
-package ch.hsr.ifs.pystructure.typeinference.results.types;
+package ch.hsr.ifs.pystructure.typeinference.contexts;
 
-import ch.hsr.ifs.pystructure.typeinference.model.definitions.Method;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Module;
+import ch.hsr.ifs.pystructure.typeinference.results.types.ClassType;
 
-public class MethodType extends FunctionType {
+/**
+ * Context of a class instance. This is necessary for the following case:
+ * 
+ * <code>
+ * class Container(object):
+ *     def set(self, element):
+ *         self.element = element
+ *   
+ *     def get(self):
+ *         return self.element
+ * 
+ * c1 = Container()
+ * c1.set(3.14)
+ * c1.get() ## type float
+ * 
+ * c2 = Container()
+ * c2.set(42)
+ * c2.get() ## type str
+ * </code>
+ * 
+ * The instance context is necessary so that the ExpressionTypeGoal for the
+ * "element" argument of the "set" method only considers the one instance.
+ * 
+ * Without the context, both results would be float|int.
+ */
+public class InstanceContext extends ModuleContext {
 
 	private final ClassType classType;
-
-	public MethodType(Module module, Method method, ClassType classType) {
-		super(module, method);
+	
+	public InstanceContext(ModuleContext parent, Module module, ClassType classType) {
+		super(parent, module);
 		this.classType = classType;
 	}
-	
-	public Method getMethod() {
-		return (Method) super.getFunction();
-	}
-	
+
 	public ClassType getClassType() {
 		return classType;
 	}
 	
-	@Override
-	public String getTypeName() {
-		return "method";
-	}
-
 }

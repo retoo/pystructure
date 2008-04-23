@@ -10,7 +10,7 @@ class A(object):
 
 a = A()
 a.set(1)
-a.get() ## type float|int
+a.get() ## type int
 
 ## Context example
 # Kinda strange example, the question is how the instance context affects

@@ -13,4 +13,4 @@ else:
     a = Foo()
 
 a.set(3.14)
-a.get() ## type float|int|str
+a.get() ## type float|str

@@ -27,6 +27,7 @@ import java.util.List;
 import org.python.pydev.parser.jython.ast.exprType;
 
 import ch.hsr.ifs.pystructure.typeinference.basetype.IType;
+import ch.hsr.ifs.pystructure.typeinference.contexts.InstanceContext;
 import ch.hsr.ifs.pystructure.typeinference.contexts.ModuleContext;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.base.AbstractEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.GoalState;
@@ -34,6 +35,7 @@ import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.references.ClassReferencesGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.references.MethodReferencesGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.references.PossibleAttributeReferencesGoal;
+import ch.hsr.ifs.pystructure.typeinference.model.definitions.Class;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Method;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Module;
 import ch.hsr.ifs.pystructure.typeinference.results.references.AttributeReference;
@@ -92,15 +94,26 @@ public class MethodReferencesEvaluator extends AbstractEvaluator {
 			for (AttributeReference reference : g.references) {
 				exprType attribute = reference.getExpression();
 				Module module = reference.getModule();
+				Class wantedClass = method.getKlass();
 				
 				for (IType parentType : reference.getParent()) {
 					if (parentType instanceof ClassType) {
-						ClassType classType = (ClassType) parentType;
-						if (classType.getKlass() != null && classType.getKlass().equals(method.getKlass())) {
+						ClassType referenceClassType = (ClassType) parentType;
+						boolean referenceValid = false;
+						
+						InstanceContext instanceContext = getGoal().getContext().getInstanceContext();
+						if (instanceContext != null && wantedClass.equals(instanceContext.getClassType().getKlass()))  {
+							// InstanceContext applies
+							referenceValid = referenceClassType.equals(instanceContext.getClassType());
+						} else {
+							referenceValid = wantedClass.equals(referenceClassType.getKlass());
+						}
+						
+						if (referenceValid) {
 							references.add(new MethodReference(method, attribute, module));
 						}
-					}
-					if (parentType instanceof MetaclassType) {
+						
+					} else if (parentType instanceof MetaclassType) {
 						MetaclassType metaclassType = (MetaclassType) parentType;
 						if (metaclassType.getKlass().equals(method.getKlass())) {
 							references.add(new MethodReference(method, attribute, module, false));
@@ -117,22 +130,26 @@ public class MethodReferencesEvaluator extends AbstractEvaluator {
 		return IGoal.NO_GOALS;
 	}
 	
-	/* casting is safe here */
-	@SuppressWarnings("unchecked")
-	@Override
-	public boolean checkCache() {
-		if (method.references != null) {
-			this.references.addAll((List<FunctionReference>) method.references);
-			return true;
-		} else {
-			return false;
-		}
-	}
+	/*
+	 * Caching disabled for now, because the result depends on the InstanceContext.
+	 */
 	
-	@Override
-	public void finish() {
-		method.references = this.references;
-	}
+//	/* casting is safe here */
+//	@SuppressWarnings("unchecked")
+//	@Override
+//	public boolean checkCache() {
+//		if (method.references != null) {
+//			this.references.addAll((List<FunctionReference>) method.references);
+//			return true;
+//		} else {
+//			return false;
+//		}
+//	}
+//	
+//	@Override
+//	public void finish() {
+//		method.references = this.references;
+//	}
 	
 
 	private boolean isConstructor() {

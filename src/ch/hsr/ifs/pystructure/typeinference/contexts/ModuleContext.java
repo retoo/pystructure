@@ -64,6 +64,16 @@ public class ModuleContext {
 		return null;
 	}
 	
+	public InstanceContext getInstanceContext() {
+		ModuleContext c;
+		for (c = this; c.parent != null; c = c.parent) {
+			if (c instanceof InstanceContext) {
+				return (InstanceContext) c;
+			}
+		}
+		return null;
+	}
+	
 	public Module getModule() {
 		return module;
 	}

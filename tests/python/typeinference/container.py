@@ -13,15 +13,13 @@ c2 = Container()
 c2.element = "hi"
 c2.element ## type str
 
-# doesn't yet work
-
 c3 = Container()
 c3.set(3.14)
-c3.get() # # type float
+c3.get() ## type float
 
 c4 = Container()
 c4.set(True)
-c4.get() # # type bool
+c4.get() ## type bool
 
 
 class PrefilledContainer(object):
