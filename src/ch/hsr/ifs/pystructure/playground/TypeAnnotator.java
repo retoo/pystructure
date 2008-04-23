@@ -388,7 +388,7 @@ public class TypeAnnotator extends HtmlOutputter {
 
 	public static void main(String[] args) throws Exception {
 		File path = new File("s101g/examples/pydoku/");
-		
+//		File path = new File("tests/python/typeinference/inher/");
 		TypeAnnotator ta = new TypeAnnotator(path, "out");
 		
 		ta.generateReport();
