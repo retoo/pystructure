@@ -25,9 +25,9 @@ package ch.hsr.ifs.pystructure.tests.typeinference;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
-public final class AllTests {
+public final class TypeInferenceTests {
 	
-	private AllTests() {
+	private TypeInferenceTests() {
 	}
 	
 	public static Test suite() {

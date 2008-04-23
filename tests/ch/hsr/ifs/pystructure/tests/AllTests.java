@@ -34,7 +34,7 @@ public final class AllTests {
 	public static Test suite() {
 		TestSuite suite = new TestSuite("Test for org.pystructure.tests");
 		//$JUnit-BEGIN$
-		suite.addTest(ch.hsr.ifs.pystructure.tests.typeinference.AllTests.suite());
+		suite.addTest(ch.hsr.ifs.pystructure.tests.typeinference.TypeInferenceTests.suite());
 		suite.addTest(ch.hsr.ifs.pystructure.tests.utils.AllTests.suite());
 		suite.addTestSuite(ExporterTest.class);
 		//$JUnit-END$
