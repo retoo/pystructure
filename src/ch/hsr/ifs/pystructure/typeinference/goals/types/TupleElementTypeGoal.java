@@ -25,9 +25,11 @@ package ch.hsr.ifs.pystructure.typeinference.goals.types;
 import org.python.pydev.parser.jython.SimpleNode;
 
 import ch.hsr.ifs.pystructure.typeinference.contexts.ModuleContext;
+import ch.hsr.ifs.pystructure.typeinference.goals.base.ILocatable;
+import ch.hsr.ifs.pystructure.typeinference.goals.base.Location;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.TupleElement;
 
-public class TupleElementTypeGoal extends AbstractTypeGoal {
+public class TupleElementTypeGoal extends AbstractTypeGoal implements ILocatable {
 
 	private final TupleElement element;
 	
@@ -42,6 +44,10 @@ public class TupleElementTypeGoal extends AbstractTypeGoal {
 	
 	public SimpleNode getNode() {
 		return element.getExpression();
+	}
+	
+	public Location getLocation() {
+		return new Location(getContext(), element.getExpression());
 	}
 
 	@Override
