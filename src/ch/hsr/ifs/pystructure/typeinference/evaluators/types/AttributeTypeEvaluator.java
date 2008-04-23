@@ -36,15 +36,14 @@ import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.ClassAttributeTypeGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.DefinitionTypeGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.ExpressionTypeGoal;
+import ch.hsr.ifs.pystructure.typeinference.goals.types.ResolveMethodGoal;
 import ch.hsr.ifs.pystructure.typeinference.model.base.NodeUtils;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Class;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Definition;
-import ch.hsr.ifs.pystructure.typeinference.model.definitions.Method;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Module;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Package;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.PathElement;
 import ch.hsr.ifs.pystructure.typeinference.results.types.ClassType;
-import ch.hsr.ifs.pystructure.typeinference.results.types.MethodType;
 import ch.hsr.ifs.pystructure.typeinference.results.types.ModuleType;
 import ch.hsr.ifs.pystructure.typeinference.results.types.PackageType;
 
@@ -80,7 +79,7 @@ public class AttributeTypeEvaluator extends AbstractEvaluator {
 		}
 		
 		List<IGoal> subgoals = new ArrayList<IGoal>();
-
+		
 		if (subgoal instanceof ExpressionTypeGoal) {
 			ExpressionTypeGoal g = (ExpressionTypeGoal) subgoal;
 			
@@ -92,17 +91,11 @@ public class AttributeTypeEvaluator extends AbstractEvaluator {
 					Class klass = classType.getKlass();
 	
 					if (klass != null) {
-						Method method = klass.getMethod(attributeName);
-						if (method != null) {
-							resultType.appendType(new MethodType(klass.getModule(), method, classType));
-						} else {
-							ModuleContext context = new ModuleContext(getGoal().getContext(), klass.getModule());
-							subgoals.add(new ClassAttributeTypeGoal(context, classType, attributeName));
-						}
+						ModuleContext context = new ModuleContext(getGoal().getContext(), klass.getModule());
+						subgoals.add(new ResolveMethodGoal(context, classType, attributeName));
 					} else {
 						/* klass is null, this probably means that we are talking about 
 						 * an internal or unknown class */
-						
 					}
 					
 				} else if (type instanceof PackageType) {
@@ -128,7 +121,6 @@ public class AttributeTypeEvaluator extends AbstractEvaluator {
 					
 				} else if (type instanceof ModuleType) {
 					ModuleType moduleType = (ModuleType) type;
-	
 					Module module = moduleType.getModule();
 	
 					Definition child = module.getChild(attributeName);
@@ -142,6 +134,18 @@ public class AttributeTypeEvaluator extends AbstractEvaluator {
 		} else if (subgoal instanceof ClassAttributeTypeGoal) {
 			ClassAttributeTypeGoal g = (ClassAttributeTypeGoal) subgoal;
 			resultType.appendType((CombinedType) g.resultType);
+		
+		} else if (subgoal instanceof ResolveMethodGoal) {
+			ResolveMethodGoal g = (ResolveMethodGoal) subgoal;
+			
+			if (!g.resultType.getTypes().isEmpty()) {
+				resultType.appendType(g.resultType);
+			} else {
+				ClassType classType = g.getClassType();
+				String attributeName = g.getAttributeName();
+				ModuleContext context = new ModuleContext(getGoal().getContext(), classType.getKlass().getModule());
+				subgoals.add(new ClassAttributeTypeGoal(context, classType, attributeName));
+			}	
 			
 		} else if (subgoal instanceof DefinitionTypeGoal) {
 			/* Was invoked by the ModuleType case above, might be used by other cases as well, later */

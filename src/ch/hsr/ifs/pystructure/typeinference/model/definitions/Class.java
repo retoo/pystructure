@@ -23,11 +23,13 @@
 package ch.hsr.ifs.pystructure.typeinference.model.definitions;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.python.pydev.parser.jython.ast.ClassDef;
+import org.python.pydev.parser.jython.ast.exprType;
 
 /**
  * Definition of a class.
@@ -35,11 +37,13 @@ import org.python.pydev.parser.jython.ast.ClassDef;
 public class Class extends StructureDefinition implements IAttributeDefinition {
 
 	private final List<Method> methods;
+	private final List<exprType> bases;
 	private final Map<String, Attribute> attributes;
 
 	public Class(String name, ClassDef classDef, Module module) {
 		super(module, name, classDef);
 		this.methods = new ArrayList<Method>();
+		this.bases = Arrays.asList(classDef.bases);
 		this.attributes = new HashMap<String, Attribute>();
 	}
 	
@@ -71,6 +75,10 @@ public class Class extends StructureDefinition implements IAttributeDefinition {
 	@Override
 	public String getDescription() {
 		return "class '" + getName() + "'";
+	}
+	
+	public List<exprType> getBases() {
+		return bases;
 	}
 	
 	@Override
