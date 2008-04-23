@@ -241,8 +241,6 @@ public class TypeAnnotator extends HtmlOutputter {
 			
 			IGoal rootGoal = result.rootGoal;
 			
-//			header(writer, 1);
-			
 			ModuleContext context = rootGoal.getContext();
 			
 			Element p = emptyTag("p");
