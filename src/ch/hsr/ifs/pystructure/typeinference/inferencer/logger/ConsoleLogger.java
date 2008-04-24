@@ -26,6 +26,7 @@ import java.io.PrintStream;
 
 import ch.hsr.ifs.pystructure.typeinference.evaluators.base.AbstractEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
+import ch.hsr.ifs.pystructure.typeinference.goals.types.AbstractTypeGoal;
 import ch.hsr.ifs.pystructure.utils.StringUtils;
 
 public class ConsoleLogger extends GoalTreeLogger {
@@ -58,7 +59,13 @@ public class ConsoleLogger extends GoalTreeLogger {
 			AbstractEvaluator evaluator) {
 		super.goalFinished(goal, creator, evaluator);
 		
-		say(creator, evaluator, "Finished " + goal);
+		String goalName = goal.getClass().getSimpleName();
+		String result = "";
+		if (goal instanceof AbstractTypeGoal) {
+			AbstractTypeGoal typeGoal = (AbstractTypeGoal) goal;
+			result = ", result: " + typeGoal.resultType;
+		}
+		say(creator, evaluator, "Finished " + goalName + result);
 	}
 	
 	
