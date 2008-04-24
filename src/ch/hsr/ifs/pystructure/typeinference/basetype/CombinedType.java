@@ -61,7 +61,11 @@ public class CombinedType implements IType, Iterable<IType> {
 
 	@Override
 	public String toString() {
-		return getTypeName();
+		SortedSet<String> set = new TreeSet<String>();
+		for (IType type : types) {
+			set.add(type.toString());
+		}
+		return StringUtils.join('|', set);
 	}
 
 	public Iterator<IType> iterator() {
