@@ -79,7 +79,7 @@ public class CallTypeEvaluator extends AbstractEvaluator {
 			for (IType type : expressionTypeGoal.resultType) {
 				
 				if (type instanceof FunctionType) {
-					// It's function or method call.
+					// It's a function or method call.
 					
 					FunctionType functionType = (FunctionType) type;
 					
@@ -105,6 +105,7 @@ public class CallTypeEvaluator extends AbstractEvaluator {
 				
 				if (type instanceof MetaclassType) {
 					// It's a constructor.
+					
 					MetaclassType metaclassType = (MetaclassType) type;
 					ClassType classType = new ClassType(metaclassType.getKlass(), call);
 					resultType.appendType(classType);
