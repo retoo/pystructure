@@ -44,4 +44,9 @@ public class MetaclassType extends AbstractType {
 		return klass;
 	}
 	
+	@Override
+	public String toString() {
+		return "type metaclass of " + klass;
+	}
+	
 }

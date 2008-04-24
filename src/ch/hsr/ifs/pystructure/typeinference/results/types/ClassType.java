@@ -52,9 +52,9 @@ public class ClassType extends AbstractType {
 	@Override
 	public String toString() {
 		if (klass == null) {
-			return "Type " + typeName;
+			return "type " + typeName;
 		} else {
-			return "Type " + klass + " constructed at " + NodeUtils.nodePosition(constructorCall);
+			return "type " + klass + " constructed at " + NodeUtils.nodePosition(constructorCall);
 		}
 	}
 

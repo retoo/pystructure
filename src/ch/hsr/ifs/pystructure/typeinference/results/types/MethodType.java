@@ -46,5 +46,10 @@ public class MethodType extends FunctionType {
 	public String getTypeName() {
 		return "method";
 	}
+	
+	@Override
+	public String toString() {
+		return "type " + getMethod() + " of " + classType;
+	}
 
 }
