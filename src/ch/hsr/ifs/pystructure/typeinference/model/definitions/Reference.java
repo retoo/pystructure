@@ -52,7 +52,7 @@ public abstract class Reference {
 
 	@Override
 	public String toString() {
-		return "Reference of " + definition + " at " + NodeUtils.nodePosition(expression) + " node " + expression;
+		return "Reference of " + definition + " at " + NodeUtils.nodePosition(expression);
 	}
 
 }
