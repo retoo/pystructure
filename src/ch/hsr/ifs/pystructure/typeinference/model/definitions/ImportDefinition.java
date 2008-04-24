@@ -26,7 +26,12 @@ import org.python.pydev.parser.jython.SimpleNode;
 
 import ch.hsr.ifs.pystructure.typeinference.model.base.NamePath;
 
-/* TODO: as ordered by robin, there used to be a implements Iattribute something which is now removed */
+/**
+ * Definition which happens because of an import, for example:
+ * 
+ * import pkg.module  # results in ImportDefinition for pkg
+ * from pkg.module import Class  # results in ImportDefinition for Class
+ */
 public class ImportDefinition extends Definition {
 
 	private final NamePath path;
@@ -63,5 +68,5 @@ public class ImportDefinition extends Definition {
 	public String toString() {
 		return "import of " + path + (element != null ? "." + element : ""); 
 	}
-	
+
 }
