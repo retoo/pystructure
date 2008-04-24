@@ -33,6 +33,9 @@ public class ReturnTypeGoal extends AbstractTypeGoal implements ILocatable {
 
 	public ReturnTypeGoal(ModuleContext context, Function function) {
 		super(context);
+		if (function == null) {
+			throw new IllegalArgumentException("function may not be null");
+		}
 		this.function = function;
 	}
 

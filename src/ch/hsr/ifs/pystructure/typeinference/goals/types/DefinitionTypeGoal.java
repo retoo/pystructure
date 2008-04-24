@@ -34,7 +34,7 @@ public class DefinitionTypeGoal extends AbstractTypeGoal implements ILocatable {
 	public DefinitionTypeGoal(ModuleContext context, Definition definition) {
 		super(context);
 		if (definition == null) {
-			throw new RuntimeException("definition has to be set");
+			throw new IllegalArgumentException("definition may not be null");
 		}
 		this.definition = definition;
 	}

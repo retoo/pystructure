@@ -36,7 +36,7 @@ public class ExpressionTypeGoal extends AbstractTypeGoal implements ILocatable {
 	public ExpressionTypeGoal(ModuleContext context, SimpleNode expression) {
 		super(context);
 		if (expression == null) {
-			throw new RuntimeException("expression must not be null");
+			throw new IllegalArgumentException("expression may not be null");
 		}
 		this.expression = expression;
 	}
