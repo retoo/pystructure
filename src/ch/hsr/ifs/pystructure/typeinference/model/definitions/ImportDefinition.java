@@ -59,4 +59,9 @@ public class ImportDefinition extends Definition {
 		return level;
 	}
 	
+	@Override
+	public String toString() {
+		return "import of " + path + (element != null ? "." + element : ""); 
+	}
+	
 }
