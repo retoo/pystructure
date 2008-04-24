@@ -46,7 +46,13 @@ public class DefinitionTypeGoal extends AbstractTypeGoal implements ILocatable {
 	public Location getLocation() {
 		return new Location(context, definition);
 	}
+	
+	@Override
+	public String toString() {
+		return fillToString(definition.toString());
+	}
 
+	@Override
 	public boolean equals(Object obj) {
 		if (obj == this) {
 			return true;
@@ -58,6 +64,7 @@ public class DefinitionTypeGoal extends AbstractTypeGoal implements ILocatable {
 		return false;
 	}
 
+	@Override
 	public int hashCode() {
 		if (definition != null) {
 			return definition.hashCode();
@@ -65,9 +72,4 @@ public class DefinitionTypeGoal extends AbstractTypeGoal implements ILocatable {
 		return super.hashCode();
 	}
 
-	public String toString() {
-		return "DefinitionTypeGoal: "
-		+ ((definition != null) ? definition.toString() : "null")
-		+ " context: " + context;
-	}
 }

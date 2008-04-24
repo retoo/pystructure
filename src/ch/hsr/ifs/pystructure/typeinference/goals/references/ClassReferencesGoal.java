@@ -52,6 +52,12 @@ public class ClassReferencesGoal extends AbstractGoal implements ILocatable {
 		return new Location(context, klass);
 	}
 	
+	@Override
+	public String toString() {
+		return fillToString(klass.toString());
+	}
+
+	@Override
 	public boolean equals(Object obj) {
 		if (obj == this) {
 			return true;
@@ -63,6 +69,7 @@ public class ClassReferencesGoal extends AbstractGoal implements ILocatable {
 		return false;
 	}
 
+	@Override
 	public int hashCode() {
 		if (klass != null) {
 			return klass.hashCode();
@@ -70,10 +77,4 @@ public class ClassReferencesGoal extends AbstractGoal implements ILocatable {
 		return super.hashCode();
 	}
 
-	public String toString() {
-		return "ClassReferencesGoal: "
-		+ klass
-		+ " context: " 
-		+ getContext();
-	}
 }

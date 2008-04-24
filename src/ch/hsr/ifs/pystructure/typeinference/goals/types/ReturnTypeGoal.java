@@ -47,6 +47,12 @@ public class ReturnTypeGoal extends AbstractTypeGoal implements ILocatable {
 		return new Location(context, function);
 	}
 	
+	@Override
+	public String toString() {
+		return fillToString(function.toString());
+	}
+	
+	@Override
 	public boolean equals(Object obj) {
 		if (obj == this) {
 			return true;
@@ -58,6 +64,7 @@ public class ReturnTypeGoal extends AbstractTypeGoal implements ILocatable {
 		return false;
 	}
 
+	@Override
 	public int hashCode() {
 		if (function != null) {
 			return function.hashCode();
@@ -65,10 +72,4 @@ public class ReturnTypeGoal extends AbstractTypeGoal implements ILocatable {
 		return super.hashCode();
 	}
 
-	public String toString() {
-		return "ReturnTypeGoal: "
-		+ ((function != null) ? function.toString() : "null")
-		+ " context: "
-		+ ((context != null) ? context.hashCode() : "null");
-	}
 }

@@ -44,6 +44,12 @@ public class MethodReferencesGoal extends CallableGoal implements ILocatable {
 		return new Location(context, method);
 	}
 
+	@Override
+	public String toString() {
+		return fillToString(method.toString());
+	}
+
+	@Override
 	public boolean equals(Object obj) {
 		if (obj == this) {
 			return true;
@@ -55,6 +61,7 @@ public class MethodReferencesGoal extends CallableGoal implements ILocatable {
 		return false;
 	}
 
+	@Override
 	public int hashCode() {
 		if (method != null) {
 			return method.hashCode();
@@ -62,10 +69,4 @@ public class MethodReferencesGoal extends CallableGoal implements ILocatable {
 		return super.hashCode();
 	}
 
-	public String toString() {
-		return "MethodReferencesGoal: "
-		+ ((method != null) ? method.toString() : "null")
-		+ " context: "
-		+ ((getContext() != null) ? getContext().toString() : "null");
-	}
 }

@@ -55,10 +55,9 @@ public class AttributeReferencesGoal extends AbstractGoal {
 		return classType;
 	}
 
+	@Override
 	public String toString() {
-		return "AttributeReferencesGoal: "
-		+ "Attribute " + attribute
-		+ " context: " + context;
+		return fillToString(attribute.toString());
 	}
 
 	@Override

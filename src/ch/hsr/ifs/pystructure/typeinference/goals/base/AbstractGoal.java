@@ -36,4 +36,14 @@ public class AbstractGoal implements IGoal {
 		return context;
 	}
 
+	@Override
+	public String toString() {
+		return fillToString(null);
+	}
+	
+	protected String fillToString(String info) {
+		String middle = (info == null ? "" : ": " + info);
+		return this.getClass().getSimpleName() + middle + ", context: " + context;
+	}
+
 }

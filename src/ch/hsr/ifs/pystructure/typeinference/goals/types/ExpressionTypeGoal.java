@@ -50,6 +50,11 @@ public class ExpressionTypeGoal extends AbstractTypeGoal implements ILocatable {
 	}
 
 	@Override
+	public String toString() {
+		return fillToString(expression + " " + NodeUtils.nodePosition(expression));
+	}
+
+	@Override
 	public boolean equals(Object obj) {
 		if (obj == this) {
 			return true;
@@ -69,11 +74,4 @@ public class ExpressionTypeGoal extends AbstractTypeGoal implements ILocatable {
 		return super.hashCode();
 	}
 
-	@Override
-	public String toString() {
-		return "ExpressionTypeGoal: "
-				+ expression
-				+ NodeUtils.nodePosition(expression)
-				+ " context: " + context;
-	}
 }

@@ -44,6 +44,11 @@ public class PossibleAttributeReferencesGoal extends AbstractGoal {
 	public String getName() {
 		return name;
 	}
+	
+	@Override
+	public String toString() {
+		return fillToString(name);
+	}
 
 	@Override
 	public int hashCode() {

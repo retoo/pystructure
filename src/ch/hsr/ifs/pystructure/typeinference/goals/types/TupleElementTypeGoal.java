@@ -51,6 +51,11 @@ public class TupleElementTypeGoal extends AbstractTypeGoal implements ILocatable
 	}
 
 	@Override
+	public String toString() {
+		return fillToString(element.toString());
+	}
+
+	@Override
 	public boolean equals(Object obj) {
 		if (obj == this) {
 			return true;
@@ -70,11 +75,4 @@ public class TupleElementTypeGoal extends AbstractTypeGoal implements ILocatable
 		return super.hashCode();
 	}
 
-	@Override
-	public String toString() {
-		return "TupleElementTypeGoal: "
-				+ ((element != null) ? element.toString() : "null")
-				+ " context: "
-				+ ((context != null) ? context.toString() : "null");
-	}
 }
