@@ -51,5 +51,10 @@ public class CallContext extends ModuleContext {
 	public FunctionReference getFunctionReference() {
 		return functionReference;
 	}
+	
+	@Override
+	public String toString() {
+		return "CallContext " + functionReference;
+	}
 
 }

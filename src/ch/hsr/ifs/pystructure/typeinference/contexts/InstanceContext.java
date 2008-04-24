@@ -63,4 +63,9 @@ public class InstanceContext extends ModuleContext {
 		return classType;
 	}
 	
+	@Override
+	public String toString() {
+		return "InstanceContext " + classType;
+	}
+	
 }
