@@ -21,6 +21,11 @@ public class ResolveMethodGoal extends AbstractTypeGoal {
 	public String getAttributeName() {
 		return attributeName;
 	}
+	
+	@Override
+	public String toString() {
+		return "ResolveMethodGoal: " + attributeName + " of " + classType.getKlass();
+	}
 
 	@Override
 	public int hashCode() {
