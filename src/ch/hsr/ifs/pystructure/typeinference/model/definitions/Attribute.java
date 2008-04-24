@@ -54,6 +54,11 @@ public class Attribute extends Definition {
 	}
 	
 	@Override
+	public String toString() {
+		return "Attribute " + name + " of " + klass;
+	}
+	
+	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
