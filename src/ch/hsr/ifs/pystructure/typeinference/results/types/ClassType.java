@@ -24,6 +24,7 @@ package ch.hsr.ifs.pystructure.typeinference.results.types;
 
 import org.python.pydev.parser.jython.ast.Call;
 
+import ch.hsr.ifs.pystructure.typeinference.model.base.NodeUtils;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Class;
 
 public class ClassType extends AbstractType {
@@ -46,6 +47,11 @@ public class ClassType extends AbstractType {
 	
 	public Class getKlass() {
 		return klass;
+	}
+	
+	@Override
+	public String toString() {
+		return "ClassType: " + klass + " constructed at " + NodeUtils.nodePosition(constructorCall);
 	}
 
 	@Override
