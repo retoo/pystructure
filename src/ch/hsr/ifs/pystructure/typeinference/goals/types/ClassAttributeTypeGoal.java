@@ -44,6 +44,11 @@ public class ClassAttributeTypeGoal extends AbstractTypeGoal {
 	public String getAttributeName() {
 		return attributeName;
 	}
+	
+	@Override
+	public String toString() {
+		return fillToString(attributeName + " of " + classType);
+	}
 
 	@Override
 	public int hashCode() {
@@ -85,5 +90,4 @@ public class ClassAttributeTypeGoal extends AbstractTypeGoal {
 		return true;
 	}
 
- 
 }
