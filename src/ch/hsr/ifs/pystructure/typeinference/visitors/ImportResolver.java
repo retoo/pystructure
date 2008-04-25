@@ -16,6 +16,15 @@ public class ImportResolver {
 		this.sourceFolders = sourceFolders;
 	}
 
+	/**
+	 * Resolve the import of path imported from the module fromModule and the
+	 * specified relative import level.
+	 * 
+	 * @param fromModule module where the path is imported from
+	 * @param path path to resolve
+	 * @param level relative import level (0 for absolute)
+	 * @return the resulting element
+	 */
 	public PathElement resolve(Module fromModule, NamePath path, int level) {
 		/* first we try to look if it is a relative lookup */
 		PathElementContainer parent = fromModule.getParent();
@@ -52,6 +61,13 @@ public class ImportResolver {
 		return result;
 	}
 
+	/**
+	 * Resolve the import of path by descending into parent.
+	 * 
+	 * @param path the path to resolve
+	 * @param parent could be a SourceFolder or a Package
+	 * @return the resulting element or null if nothing was found
+	 */
 	public PathElement resolve(NamePath path, PathElementContainer parent) {
 		List<String> parts = path.getParts();
 		int remaining = parts.size();
@@ -73,6 +89,12 @@ public class ImportResolver {
 		return null;
 	}
 
+	/**
+	 * Resolve the absolute import of path, searching the whole workspace.
+	 * 
+	 * @param path
+	 * @return
+	 */
 	public PathElement resolve(NamePath path) {
 		String first = path.getFirstPart();
 
