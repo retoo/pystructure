@@ -8,6 +8,9 @@ import ch.hsr.ifs.pystructure.typeinference.model.definitions.Package;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.PathElement;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.PathElementContainer;
 
+/**
+ * Provides various methods for resolving imports of modules or packages.
+ */
 public class ImportResolver {
 
 	private final List<SourceFolder> sourceFolders;
