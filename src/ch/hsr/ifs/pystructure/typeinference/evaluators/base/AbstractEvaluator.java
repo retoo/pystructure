@@ -28,6 +28,10 @@ import ch.hsr.ifs.pystructure.typeinference.goals.base.GoalState;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
 import ch.hsr.ifs.pystructure.utils.ListUtils;
 
+/**
+ * Base class for goal evaluators. It is created to evaluate the result of a
+ * goal. It can itself return subgoals and use their results for its evaluation.
+ */
 public abstract class AbstractEvaluator {
 
 	private final IGoal goal;
@@ -37,7 +41,7 @@ public abstract class AbstractEvaluator {
 	}
 
 	/**
-	 * Initializes the evaluator. The evaluator can, if it likes, return a list
+	 * Initialises the evaluator. The evaluator can, if it likes, return a list
 	 * of subgoals. The list will get processed eventually and reported as
 	 * finished using the method {@link #subgoalDone(IGoal, GoalState)}.
 	 * 
@@ -51,7 +55,7 @@ public abstract class AbstractEvaluator {
 	 * Gets called when a subgoal has been finished. The evaluator can create new subgoals if it likes 
 	 * 
 	 * @param subgoal finished subgoal
-	 * @param state state of the subgoal (might be RECURSIVE if the goal was causing a recurssion)
+	 * @param state state of the subgoal (might be RECURSIVE if the goal was causing a recursion)
 	 * 
 	 * return {@link IGoal#NO_GOALS} if you have no goals
 	 * 
@@ -59,6 +63,10 @@ public abstract class AbstractEvaluator {
 	 */
 	public abstract List<IGoal> subgoalDone(IGoal subgoal, GoalState state);
 	
+	/**
+	 * Can be implemented to do something when the evaluator finished (all
+	 * subgoals are finished).
+	 */
 	public void finish() {
 	}
 	
@@ -72,6 +80,9 @@ public abstract class AbstractEvaluator {
 		return false;
 	}
 	
+	/**
+	 * @return the goal for which this evaluator was created
+	 */
 	public IGoal getGoal() {
 		return goal;
 	}
@@ -85,6 +96,11 @@ public abstract class AbstractEvaluator {
 		return ListUtils.wrap(goal);
 	}
 
+	/**
+	 * Use this method to signal that the received subgoal parameter of
+	 * subgoalDone is unexpected, because the evaluator never created such a
+	 * subgoal. It throws a runtime exception.
+	 */
 	protected void unexpectedSubgoal(IGoal goal) {
 		throw new RuntimeException(this + " got an unexpected subgoal" + goal);
 	}
