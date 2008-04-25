@@ -85,6 +85,42 @@ public class Workspace {
 		
 		return null;
 	}
+	
+	public PathElement resolve(Module fromModule, NamePath path, int level) {
+		/* first we try to look if it is a relative lookup */
+		PathElementContainer parent = fromModule.getParent();
+
+		boolean isRelativeImport = (level != 0);
+		
+		if (isRelativeImport && level > 1) {
+			for (int i = 1; i < level; i++) {
+				if (parent == null) {
+					throw new RuntimeException("Relative Invalid relative import.");
+				}
+				parent = parent.getParent();
+			}
+		}
+		
+		if (isRelativeImport && !(parent instanceof Package)) {
+			throw new RuntimeException("Relative import not inside package");
+		}
+		
+		PathElement result = this.resolve(path, parent);
+		if (result != null) {
+			return result;
+		}
+
+		if (isRelativeImport) {
+			throw new RuntimeException("Invalid relative import.");
+		}
+		
+		/* Search absolute in all source folders */
+		result = this.resolve(path);
+		
+		/* If result is null, the import failed. A warning might be useful here. */
+		
+		return result;
+	}
 
 	public Module getModule(String name) {
 		for (SourceFolder sourceFolder : sourceFolders) {

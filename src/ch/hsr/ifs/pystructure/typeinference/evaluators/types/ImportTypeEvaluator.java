@@ -34,7 +34,6 @@ import ch.hsr.ifs.pystructure.typeinference.model.definitions.ImportDefinition;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Module;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Package;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.PathElement;
-import ch.hsr.ifs.pystructure.typeinference.model.definitions.PathElementContainer;
 import ch.hsr.ifs.pystructure.typeinference.results.types.FunctionType;
 import ch.hsr.ifs.pystructure.typeinference.results.types.MetaclassType;
 import ch.hsr.ifs.pystructure.typeinference.results.types.ModuleType;
@@ -56,8 +55,11 @@ public class ImportTypeEvaluator extends DefinitionTypeEvaluator {
 
 	@Override
 	public List<IGoal> init() {
+		Workspace workspace = getGoal().getContext().getWorkspace();
+		Module fromModule = getGoal().getContext().getModule();
 		NamePath path = importDefinition.getPath();
-		PathElement pathElement = resolve(path, importDefinition.getLevel());
+		int level = importDefinition.getLevel();
+		PathElement pathElement = workspace.resolve(fromModule, path, level);
 		
 		if (pathElement == null) {
 			/* this was a module/package which we don't know. Usually 
@@ -104,45 +106,6 @@ public class ImportTypeEvaluator extends DefinitionTypeEvaluator {
 	@Override
 	public List<IGoal> subgoalDone(IGoal subgoal, GoalState state) {
 		return IGoal.NO_GOALS;
-	}
-
-	private PathElement resolve(NamePath path, int level) {
-		/* first we try to look if it is a relative lookup*/
-		Workspace workspace = getGoal().getContext().getWorkspace();
-		Module module = getGoal().getContext().getModule();
-		
-		PathElementContainer parent = module.getParent();
-
-		boolean isRelativeImport = (level != 0);
-		
-		if (isRelativeImport && level > 1) {
-			for (int i = 1; i < level; i++) {
-				if (parent == null) {
-					throw new RuntimeException("Relative Invalid relative import.");
-				}
-				parent = parent.getParent();
-			}
-		}
-		
-		if (isRelativeImport && !(parent instanceof Package)) {
-			throw new RuntimeException("Relative import not inside package");
-		}
-		
-		PathElement result = workspace.resolve(path, parent);
-		if (result != null) {
-			return result;
-		}
-
-		if (isRelativeImport) {
-			throw new RuntimeException("Invalid relative import.");
-		}
-		
-		/* Search absolute in all source folders */
-		result = workspace.resolve(path);
-		
-		/* If result is null, the import failed. A warning might be useful here. */
-		
-		return result;
 	}
 
 }
