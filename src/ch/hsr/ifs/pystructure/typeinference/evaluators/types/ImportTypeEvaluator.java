@@ -38,7 +38,7 @@ import ch.hsr.ifs.pystructure.typeinference.results.types.FunctionType;
 import ch.hsr.ifs.pystructure.typeinference.results.types.MetaclassType;
 import ch.hsr.ifs.pystructure.typeinference.results.types.ModuleType;
 import ch.hsr.ifs.pystructure.typeinference.results.types.PackageType;
-import ch.hsr.ifs.pystructure.typeinference.visitors.Workspace;
+import ch.hsr.ifs.pystructure.typeinference.visitors.ImportResolver;
 
 /**
  * Evaluator for the type of an import, which could be a module, a class, a
@@ -55,11 +55,11 @@ public class ImportTypeEvaluator extends DefinitionTypeEvaluator {
 
 	@Override
 	public List<IGoal> init() {
-		Workspace workspace = getGoal().getContext().getWorkspace();
+		ImportResolver importResolver = getGoal().getContext().getWorkspace().getImportResolver();
 		Module fromModule = getGoal().getContext().getModule();
 		NamePath path = importDefinition.getPath();
 		int level = importDefinition.getLevel();
-		PathElement pathElement = workspace.resolve(fromModule, path, level);
+		PathElement pathElement = importResolver.resolve(fromModule, path, level);
 		
 		if (pathElement == null) {
 			/* this was a module/package which we don't know. Usually 
