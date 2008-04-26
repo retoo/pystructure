@@ -10,7 +10,7 @@ class A(object):
 a = A()
 a.method() ## type int
 
-
+test = lambda x: x
 test("*confuse*")
 a.test(1.1)
 nonexisting.test("*disctract*")
