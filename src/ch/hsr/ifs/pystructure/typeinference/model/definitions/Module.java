@@ -39,13 +39,16 @@ public class Module extends StructureDefinition implements PathElement {
 	private final PathElementContainer parent;
 	private final File file;
 	
-	private ArrayList<Use> containedUses;
-	private ArrayList<Definition> definitions;
+	private final List<Use> containedUses;
+	private final List<Definition> definitions;
 
 	public Module(String name, PathElementContainer parent, File file) {
 		this.namePath = new NamePath(parent.getNamePath(), name);
 		this.parent = parent;
 		this.file = file;
+		
+		this.containedUses = new ArrayList<Use>();
+		this.definitions  = new ArrayList<Definition>();
 		
 		try {
 			String source = FileUtils.read(file);
@@ -56,9 +59,6 @@ public class Module extends StructureDefinition implements PathElement {
 	}
 	
 	private void init(String source, String name) {
-		this.containedUses = new ArrayList<Use>();
-		this.definitions  = new ArrayList<Definition>();
-
 		org.python.pydev.parser.jython.ast.Module module;
 		try {
 			module = Parser.parse(source);
