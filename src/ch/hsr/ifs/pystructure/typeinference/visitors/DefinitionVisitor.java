@@ -38,6 +38,7 @@ import org.python.pydev.parser.jython.ast.Global;
 import org.python.pydev.parser.jython.ast.If;
 import org.python.pydev.parser.jython.ast.Import;
 import org.python.pydev.parser.jython.ast.ImportFrom;
+import org.python.pydev.parser.jython.ast.Lambda;
 import org.python.pydev.parser.jython.ast.Name;
 import org.python.pydev.parser.jython.ast.NameTokType;
 import org.python.pydev.parser.jython.ast.TryExcept;
@@ -148,6 +149,12 @@ public class DefinitionVisitor extends StructuralVisitor {
 			blocks.pop();
 		}
 
+		return null;
+	}
+	
+	@Override
+	public Object visitLambda(Lambda node) throws Exception {
+		// TODO: Implement lambda properly
 		return null;
 	}
 
