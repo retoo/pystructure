@@ -1,9 +1,5 @@
-
-
 class Foo(object):
-    def foo(self):
-        return Bar().bar()
-
+    pass
 
 def external_function():
     return 1
