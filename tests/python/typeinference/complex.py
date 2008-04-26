@@ -1,5 +1,5 @@
 
-if rand():
+if random():
     from complex_pkg.modulea import Foo as Alias
     Alias() ## type Foo
 else:

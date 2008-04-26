@@ -18,7 +18,7 @@ a.get() ## type int
 
 class Context(object):
     def method(self, par):
-        if rand():
+        if random():
             self.attr = par
     
         self.another()

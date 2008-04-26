@@ -1,13 +1,13 @@
 def a(x):
     x ## type int|str
-    if rand():
+    if random():
         return b(x)
     else:
         return x
         
 def b(x):
     x ## type int|str
-    if rand():
+    if random():
         return a(x)
     else:
         return x
@@ -18,7 +18,7 @@ b(1)   ## type int
 
 
 def c():
-    if rand():
+    if random():
         return c()
     else:
         return ""
