@@ -41,7 +41,6 @@ public class Module extends StructureDefinition implements PathElement {
 	
 	private ArrayList<Use> containedUses;
 	private ArrayList<Definition> definitions;
-	private String source;
 
 	public Module(String name, PathElementContainer parent, File file) {
 		this.namePath = new NamePath(parent.getNamePath(), name);
@@ -59,7 +58,6 @@ public class Module extends StructureDefinition implements PathElement {
 	private void init(String source, String name) {
 		this.containedUses = new ArrayList<Use>();
 		this.definitions  = new ArrayList<Definition>();
-		this.source = source;
 
 		org.python.pydev.parser.jython.ast.Module module;
 		try {
@@ -118,10 +116,6 @@ public class Module extends StructureDefinition implements PathElement {
 		return getNamePath().toString();
 	}
 
-	public String getSource() {
-		return source;
-	}
-	
 	@Override
 	public String toString() {
 		return namePath.toString();
