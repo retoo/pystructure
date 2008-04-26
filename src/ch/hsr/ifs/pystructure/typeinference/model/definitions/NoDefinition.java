@@ -22,11 +22,10 @@
 
 package ch.hsr.ifs.pystructure.typeinference.model.definitions;
 
-public class NoDefintion extends Definition {
+public class NoDefinition extends Definition {
 
-	public NoDefintion(Module module, String name) {
+	public NoDefinition(Module module, String name) {
 		super(module, name, null);
-		
 	}
 	
 }

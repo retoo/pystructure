@@ -89,7 +89,7 @@ import ch.hsr.ifs.pystructure.typeinference.model.definitions.Function;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.ImportDefinition;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.LoopVariableDefinition;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Module;
-import ch.hsr.ifs.pystructure.typeinference.model.definitions.NoDefintion;
+import ch.hsr.ifs.pystructure.typeinference.model.definitions.NoDefinition;
 import ch.hsr.ifs.pystructure.typeinference.results.types.ClassType;
 import ch.hsr.ifs.pystructure.typeinference.results.types.FunctionType;
 import ch.hsr.ifs.pystructure.typeinference.results.types.MetaclassType;
@@ -191,7 +191,7 @@ public class PythonEvaluatorFactory {
 			// TODO: Implement ExceptTypeEvaluator
 			return new FixedResultEvaluator(goal, new ClassType("object"));
 		}
-		if (def instanceof NoDefintion) {
+		if (def instanceof NoDefinition) {
 			return new FixedResultEvaluator(goal, new ClassType("object"));
 		}
 		

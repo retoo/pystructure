@@ -85,7 +85,7 @@ public class Module extends StructureDefinition implements PathElement {
 			}
 		}
 		
-		return new NoDefintion(this, name);
+		return new NoDefinition(this, name);
 //		throw new RuntimeException("Object " + name + " not defined in " + this);
 	}
 
