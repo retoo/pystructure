@@ -464,6 +464,7 @@ public class DefinitionVisitor extends StructuralVisitor {
 	 * from pkg.module import Class as C1, ClassTwo as C2
 	 * from pkg.module import *  # grrr
 	 * from pkg import module
+	 * from pkg import subpkg
 	 * from pkg import *  # doesn't import all modules, but everything in __init__.py
 	 * from .module import Class
 	 * from . import module
