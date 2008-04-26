@@ -30,4 +30,5 @@ None ## type NoneType
 "one" u"two" ## type unicode
 u"one" "two" ## type unicode
 
+test = 1
 `test` ## type str
