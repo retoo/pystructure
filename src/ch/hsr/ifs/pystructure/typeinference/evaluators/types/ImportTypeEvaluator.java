@@ -24,20 +24,16 @@ package ch.hsr.ifs.pystructure.typeinference.evaluators.types;
 
 import java.util.List;
 
+import ch.hsr.ifs.pystructure.typeinference.contexts.ModuleContext;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.GoalState;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.DefinitionTypeGoal;
 import ch.hsr.ifs.pystructure.typeinference.model.base.NamePath;
-import ch.hsr.ifs.pystructure.typeinference.model.definitions.Class;
-import ch.hsr.ifs.pystructure.typeinference.model.definitions.Function;
+import ch.hsr.ifs.pystructure.typeinference.model.definitions.Definition;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.ImportDefinition;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Module;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Package;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.PathElement;
-import ch.hsr.ifs.pystructure.typeinference.results.types.FunctionType;
-import ch.hsr.ifs.pystructure.typeinference.results.types.MetaclassType;
-import ch.hsr.ifs.pystructure.typeinference.results.types.ModuleType;
-import ch.hsr.ifs.pystructure.typeinference.results.types.PackageType;
 import ch.hsr.ifs.pystructure.typeinference.visitors.ImportResolver;
 
 /**
@@ -65,7 +61,7 @@ public class ImportTypeEvaluator extends DefinitionTypeEvaluator {
 			/* this was a module/package which we don't know. Usually 
 			 * this is just some sort of external library and it isn't that
 			 * bad if we can't import it. Some day we have to generate some warnings here
-			 * to let the user know that perhaps his syspath isnt set correctly.
+			 * to let the user know that perhaps his syspath isn't set correctly.
 			 */
 			return IGoal.NO_GOALS;
 		}
@@ -86,25 +82,26 @@ public class ImportTypeEvaluator extends DefinitionTypeEvaluator {
 			}
 		}
 		
-		if (result instanceof Package) {
-			Package pkg = (Package) result;
-			resultType.appendType(new PackageType(pkg));
-		} else if (result instanceof Module) {
-			Module module = (Module) result;
-			resultType.appendType(new ModuleType(module));
-		} else if (result instanceof Class) {
-			Class klass = (Class) result;
-			resultType.appendType(new MetaclassType(klass.getModule(), klass));
-		} else if (result instanceof Function) {
-			Function function = (Function) result;
-			resultType.appendType(new FunctionType(function.getModule(), function));
+		if (result instanceof Definition) {
+			Definition definition = (Definition) result;
+			ModuleContext context = getGoal().getContext();
+			if (!(definition instanceof Package)) {
+				context = new ModuleContext(context, definition.getModule());
+			}
+			return wrap(new DefinitionTypeGoal(context, definition));
+		} else {
+			throw new RuntimeException("Something other than a definition was returned, which should not happen");
 		}
-
-		return IGoal.NO_GOALS;
 	}
 
 	@Override
 	public List<IGoal> subgoalDone(IGoal subgoal, GoalState state) {
+		if (subgoal instanceof DefinitionTypeGoal) {
+			DefinitionTypeGoal g = (DefinitionTypeGoal) subgoal;
+			this.resultType.appendType(g.resultType);
+		} else {
+			unexpectedSubgoal(subgoal);
+		}
 		return IGoal.NO_GOALS;
 	}
 
