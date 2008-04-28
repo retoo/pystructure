@@ -42,7 +42,7 @@ public class Block {
 	 * Contains all the definitions ever made in this block, even such which are
 	 * overwritten later.
 	 */
-	private final List<Definition> allDefinitions;
+	private final List<Definition> blockDefinitions;
 
 	/**
 	 * Contains the currently active definitions for a given name (changes as
@@ -52,46 +52,48 @@ public class Block {
 
 	public Block(Block parent) {
 		this.parent = parent;
-		this.allDefinitions = new LinkedList<Definition>();
+		this.blockDefinitions = new LinkedList<Definition>();
 		this.currentDefinitions = new TreeMap<String, List<Definition>>();
 	}
 	
-	public void addToCurrentDefinitions(Definition definition) {
+	public void setDefinition(Definition definition) {
+		List<Definition> definitions = new LinkedList<Definition>();
+		definitions.add(definition);
+		currentDefinitions.put(definition.getName(), definitions);
+		blockDefinitions.add(definition);
+	}
+	
+	public void addDefinition(Definition definition) {
 		String name = definition.getName();
 		List<Definition> definitions = currentDefinitions.get(name);
 		if (definitions != null) {
 			definitions.add(definition);
-			allDefinitions.add(definition);
+			blockDefinitions.add(definition);
 		} else {
-			setCurrentDefinition(definition);
+			setDefinition(definition);
 		}
 	}
 	
-	public void addToCurrentDefinitions(List<Definition> definitions) {
-		for (Definition definition : definitions) {
-			addToCurrentDefinitions(definition);
+	public void addBlockDefinitions(Block other) {
+		for (Definition definition : other.blockDefinitions) {
+			addDefinition(definition);
 		}
 	}
 	
-	public List<Definition> getCurrentBlockDefinitions() {
+	public void addCurrentDefinitions(Block other) {
+		for (Definition definition : other.getCurrentDefinitions()) {
+			addDefinition(definition);
+		}
+	}
+	
+	public List<Definition> getCurrentDefinitions() {
 		List<Definition> definitions = new LinkedList<Definition>();
 		for (List<Definition> d : currentDefinitions.values()) {
 			definitions.addAll(d);
 		}
 		return definitions;
 	}
-	
-	public List<Definition> getBlockDefinitions() {
-		return allDefinitions;
-	}
-	
-	public void setCurrentDefinition(Definition definition) {
-		List<Definition> definitions = new LinkedList<Definition>();
-		definitions.add(definition);
-		currentDefinitions.put(definition.getName(), definitions);
-		allDefinitions.add(definition);
-	}
-	
+		
 	public List<Definition> getCurrentDefinitions(String name) {
 		List<Definition> definitions = currentDefinitions.get(name);
 		if (definitions != null) {
@@ -107,7 +109,7 @@ public class Block {
 	
 	protected List<Definition> getAllDefinitions(String name) {
 		List<Definition> definitions = new LinkedList<Definition>();
-		for (Definition definition : allDefinitions) {
+		for (Definition definition : blockDefinitions) {
 			if (name.equals(definition.getName())) {
 				definitions.add(definition);
 			}

@@ -106,7 +106,7 @@ public class DefinitionVisitor extends StructuralVisitor {
 		blocks.pop();
 
 		moduleScope.connectGlobals();
-		module.getDefinitions().addAll(moduleScope.getCurrentBlockDefinitions());
+		module.getDefinitions().addAll(moduleScope.getCurrentDefinitions());
 
 		return null;
 	}
@@ -263,8 +263,8 @@ public class DefinitionVisitor extends StructuralVisitor {
 		visitBlock(bodyBlock, node.body);
 		visitBlock(orelseBlock, node.orelse);
 
-		parent.addToCurrentDefinitions(bodyBlock.getCurrentBlockDefinitions());
-		parent.addToCurrentDefinitions(orelseBlock.getCurrentBlockDefinitions());
+		parent.addCurrentDefinitions(bodyBlock);
+		parent.addCurrentDefinitions(orelseBlock);
 
 		return null;
 	}
@@ -281,8 +281,8 @@ public class DefinitionVisitor extends StructuralVisitor {
 		if (node.target instanceof Name) {
 			String name = ((Name) node.target).id;
 			Definition loopVariable = new LoopVariableDefinition(module, name, node);
-			bodyBlock.setCurrentDefinition(loopVariable);
-			parent.addToCurrentDefinitions(loopVariable);
+			bodyBlock.setDefinition(loopVariable);
+			parent.addDefinition(loopVariable);
 			
 			node.target.accept(this);
 		}
@@ -290,11 +290,11 @@ public class DefinitionVisitor extends StructuralVisitor {
 		visitBlock(bodyBlock, node.body);
 		Block orelseBlock = new Block(parent);
 		// Definitions may flow from the body to the else block.
-		orelseBlock.addToCurrentDefinitions(bodyBlock.getCurrentBlockDefinitions());
+		orelseBlock.addCurrentDefinitions(bodyBlock);
 		visitBlock(orelseBlock, node.orelse);
 
-		parent.addToCurrentDefinitions(bodyBlock.getCurrentBlockDefinitions());
-		parent.addToCurrentDefinitions(orelseBlock.getCurrentBlockDefinitions());
+		parent.addCurrentDefinitions(bodyBlock);
+		parent.addCurrentDefinitions(orelseBlock);
 
 		return null;
 	}
@@ -308,11 +308,11 @@ public class DefinitionVisitor extends StructuralVisitor {
 		Block bodyBlock = new Block(parent);
 		Block orelseBlock = new Block(parent);
 		visitBlock(bodyBlock, node.body);
-		orelseBlock.addToCurrentDefinitions(bodyBlock.getCurrentBlockDefinitions());
+		orelseBlock.addCurrentDefinitions(bodyBlock);
 		visitBlock(orelseBlock, node.orelse);
 
-		parent.addToCurrentDefinitions(bodyBlock.getCurrentBlockDefinitions());
-		parent.addToCurrentDefinitions(orelseBlock.getCurrentBlockDefinitions());
+		parent.addCurrentDefinitions(bodyBlock);
+		parent.addCurrentDefinitions(orelseBlock);
 
 		return null;
 	}
@@ -328,27 +328,27 @@ public class DefinitionVisitor extends StructuralVisitor {
 
 		for (excepthandlerType handler : node.handlers) {
 			Block handlerBlock = new Block(parent);
-			handlerBlock.addToCurrentDefinitions(bodyBlock.getBlockDefinitions());
+			handlerBlock.addBlockDefinitions(bodyBlock);
 
 			// TODO: What about tuples?
 			if (handler.name instanceof Name) {
 				String name = ((Name) handler.name).id;
 				ExceptDefinition definition = new ExceptDefinition(module, name, handler);
-				handlerBlock.setCurrentDefinition(definition);
+				handlerBlock.setDefinition(definition);
 			}
 
 			visitBlock(handlerBlock, handler.body);
-			parent.addToCurrentDefinitions(handlerBlock.getCurrentBlockDefinitions());
+			parent.addCurrentDefinitions(handlerBlock);
 		}
 
-		orelseBlock.addToCurrentDefinitions(bodyBlock.getBlockDefinitions());
+		orelseBlock.addBlockDefinitions(bodyBlock);
 		visitBlock(orelseBlock, node.orelse);
 
 		// We need to add all definitions of the block, because we don't know
 		// where the exception was thrown, it could be between two definitions
 		// of the same name.
-		parent.addToCurrentDefinitions(bodyBlock.getBlockDefinitions());
-		parent.addToCurrentDefinitions(orelseBlock.getCurrentBlockDefinitions());
+		parent.addBlockDefinitions(bodyBlock);
+		parent.addCurrentDefinitions(orelseBlock);
 
 		return null;
 	}
@@ -361,14 +361,14 @@ public class DefinitionVisitor extends StructuralVisitor {
 		Block finallyBlock = new Block(parent);
 
 		visitBlock(bodyBlock, node.body);
-		finallyBlock.addToCurrentDefinitions(bodyBlock.getBlockDefinitions());
+		finallyBlock.addBlockDefinitions(bodyBlock);
 		visitBlock(finallyBlock, node.finalbody);
 
-		parent.addToCurrentDefinitions(bodyBlock.getBlockDefinitions());
+		parent.addBlockDefinitions(bodyBlock);
 		// Overwrite the current definitions, because we don't know whether an
 		// exception occurred or not.
-		for (Definition definition : finallyBlock.getCurrentBlockDefinitions()) {
-			parent.setCurrentDefinition(definition);
+		for (Definition definition : finallyBlock.getCurrentDefinitions()) {
+			parent.setDefinition(definition);
 		}
 
 		return null;
@@ -396,7 +396,7 @@ public class DefinitionVisitor extends StructuralVisitor {
 		if (getScope().isGlobal(definition.getName())) {
 			moduleScope.addGlobalDefinition(definition);
 		} else {
-			getBlock().setCurrentDefinition(definition);
+			getBlock().setDefinition(definition);
 		}
 	}
 
