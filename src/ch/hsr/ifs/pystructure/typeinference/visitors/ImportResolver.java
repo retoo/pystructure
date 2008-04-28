@@ -31,14 +31,14 @@ public class ImportResolver {
 		if (importPath.isRelative() && importPath.getLevel() > 1) {
 			for (int i = 1; i < importPath.getLevel(); i++) {
 				if (parent == null) {
-					throw new RuntimeException("Relative Invalid relative import.");
+					throw new RuntimeException("Relative import beyond toplevel package.");
 				}
 				parent = parent.getParent();
 			}
 		}
 		
 		if (importPath.isRelative() && !(parent instanceof Package)) {
-			throw new RuntimeException("Relative import not inside package");
+			throw new RuntimeException("Relative import not inside package.");
 		}
 		
 		PathElement result = this.resolve(importPath.getNamePath(), parent);
