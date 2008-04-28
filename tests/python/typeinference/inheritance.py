@@ -55,6 +55,16 @@ class I(F, G): pass
 class J(H, G): pass
 class K(I, J): pass
 
+def mro(klass):
+    mro = klass.__mro__
+    names = [k.__name__ for k in mro]
+    names.remove("object")
+    return ",".join(names)
+
+for klass in [E, F, G, H, I, J, K]:
+    print klass.__name__ + " ## mro " + mro(klass)
+
+# execute the code above to get the foloowing output :D 
 E ## mro E
 F ## mro F,E
 G ## mro G,E
