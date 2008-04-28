@@ -3,7 +3,7 @@ package ch.hsr.ifs.pystructure.typeinference.visitors;
 import java.util.List;
 
 import ch.hsr.ifs.pystructure.typeinference.model.base.NamePath;
-import ch.hsr.ifs.pystructure.typeinference.model.definitions.Module;
+import ch.hsr.ifs.pystructure.typeinference.model.definitions.ImportPath;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Package;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.PathElement;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.PathElementContainer;
@@ -20,22 +20,16 @@ public class ImportResolver {
 	}
 
 	/**
-	 * Resolve the import of path imported from the module fromModule and the
-	 * specified relative import level.
+	 * Resolve the specified import path.
 	 * 
-	 * @param fromModule module where the path is imported from
-	 * @param path path to resolve
-	 * @param level relative import level (0 for absolute)
 	 * @return the resulting element
 	 */
-	public PathElement resolve(Module fromModule, NamePath path, int level) {
+	public PathElement resolve(ImportPath importPath) {
 		/* first we try to look if it is a relative lookup */
-		PathElementContainer parent = fromModule.getParent();
-
-		boolean isRelativeImport = (level != 0);
+		PathElementContainer parent = importPath.getModule().getParent();
 		
-		if (isRelativeImport && level > 1) {
-			for (int i = 1; i < level; i++) {
+		if (importPath.isRelative() && importPath.getLevel() > 1) {
+			for (int i = 1; i < importPath.getLevel(); i++) {
 				if (parent == null) {
 					throw new RuntimeException("Relative Invalid relative import.");
 				}
@@ -43,21 +37,21 @@ public class ImportResolver {
 			}
 		}
 		
-		if (isRelativeImport && !(parent instanceof Package)) {
+		if (importPath.isRelative() && !(parent instanceof Package)) {
 			throw new RuntimeException("Relative import not inside package");
 		}
 		
-		PathElement result = this.resolve(path, parent);
+		PathElement result = this.resolve(importPath.getNamePath(), parent);
 		if (result != null) {
 			return result;
 		}
 
-		if (isRelativeImport) {
+		if (importPath.isRelative()) {
 			throw new RuntimeException("Invalid relative import.");
 		}
 		
 		/* Search absolute in all source folders */
-		result = this.resolve(path);
+		result = this.resolve(importPath.getNamePath());
 		
 		/* If result is null, the import failed. A warning might be useful here. */
 		
@@ -71,7 +65,7 @@ public class ImportResolver {
 	 * @param parent could be a SourceFolder or a Package
 	 * @return the resulting element or null if nothing was found
 	 */
-	public PathElement resolve(NamePath path, PathElementContainer parent) {
+	private PathElement resolve(NamePath path, PathElementContainer parent) {
 		List<String> parts = path.getParts();
 		int remaining = parts.size();
 		
@@ -98,7 +92,7 @@ public class ImportResolver {
 	 * @param path
 	 * @return
 	 */
-	public PathElement resolve(NamePath path) {
+	private PathElement resolve(NamePath path) {
 		String first = path.getFirstPart();
 
 		for (SourceFolder sourceFolder : sourceFolders) {

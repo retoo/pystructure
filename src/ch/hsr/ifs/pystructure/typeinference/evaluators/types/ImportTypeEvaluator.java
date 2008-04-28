@@ -29,7 +29,6 @@ import ch.hsr.ifs.pystructure.typeinference.contexts.ModuleContext;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.GoalState;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.DefinitionTypeGoal;
-import ch.hsr.ifs.pystructure.typeinference.model.base.NamePath;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Definition;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.ImportDefinition;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Module;
@@ -53,10 +52,7 @@ public class ImportTypeEvaluator extends DefinitionTypeEvaluator {
 	@Override
 	public List<IGoal> init() {
 		ImportResolver importResolver = getGoal().getContext().getWorkspace().getImportResolver();
-		Module fromModule = getGoal().getContext().getModule();
-		NamePath path = importDefinition.getPath();
-		int level = importDefinition.getLevel();
-		PathElement pathElement = importResolver.resolve(fromModule, path, level);
+		PathElement pathElement = importResolver.resolve(importDefinition.getPath());
 		
 		if (pathElement == null) {
 			/* this was a module/package which we don't know. Usually 

@@ -62,6 +62,7 @@ import ch.hsr.ifs.pystructure.typeinference.model.definitions.Definition;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.ExceptDefinition;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Function;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.ImportDefinition;
+import ch.hsr.ifs.pystructure.typeinference.model.definitions.ImportPath;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.LoopVariableDefinition;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Module;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.NameUse;
@@ -450,13 +451,15 @@ public class DefinitionVisitor extends StructuralVisitor {
 				
 				NamePath fullPath = new NamePath(NodeUtils.getId(entry.name));
 				NamePath name = new NamePath(fullPath.getFirstPart());
-				definition = new ImportDefinition(module, node, name, null, name.toString());
+				ImportPath importPath = new ImportPath(module, name, 0);
+				definition = new ImportDefinition(module, node, importPath, null, name.toString());
 			} else {
 				/* import package.module as alias  # alias -> package.module */
 				
 				String alias = NodeUtils.getId(entry.asname);
 				NamePath path = new NamePath(NodeUtils.getId(entry.name));
-				definition = new ImportDefinition(module, node, path, null, alias);
+				ImportPath importPath = new ImportPath(module, path, 0);
+				definition = new ImportDefinition(module, node, importPath, null, alias);
 			}
 			
 			addDefinition(definition);
@@ -487,7 +490,8 @@ public class DefinitionVisitor extends StructuralVisitor {
 			String element = NodeUtils.getId(entry.name);
 			String alias = NodeUtils.getId(entry.asname == null ? entry.name : entry.asname);
 			
-			ImportDefinition definition = new ImportDefinition(module, node, path, element, alias, node.level);
+			ImportPath importPath = new ImportPath(module, path, node.level);
+			ImportDefinition definition = new ImportDefinition(module, node, importPath, element, alias);
 			addDefinition(definition);
 		}
 		
