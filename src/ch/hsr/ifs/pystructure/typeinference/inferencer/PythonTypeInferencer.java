@@ -26,10 +26,14 @@ import org.python.pydev.parser.jython.SimpleNode;
 
 import ch.hsr.ifs.pystructure.typeinference.basetype.CombinedType;
 import ch.hsr.ifs.pystructure.typeinference.contexts.ModuleContext;
+import ch.hsr.ifs.pystructure.typeinference.evaluators.types.Linearisation;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.ExpressionTypeGoal;
+import ch.hsr.ifs.pystructure.typeinference.goals.types.MethodResolutionOrderGoal;
 import ch.hsr.ifs.pystructure.typeinference.inferencer.logger.IGoalEngineLogger;
+import ch.hsr.ifs.pystructure.typeinference.model.definitions.Class;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Module;
 import ch.hsr.ifs.pystructure.typeinference.visitors.Workspace;
+
 
 public class PythonTypeInferencer {
 
@@ -50,6 +54,16 @@ public class PythonTypeInferencer {
 		engine.evaluateGoal(goal);
 		return goal.resultType;
 	}
+	
+	public Linearisation getMRO(Workspace workspace, Module module, Class klass) {
+		ModuleContext context = new ModuleContext(workspace, module);
+		MethodResolutionOrderGoal goal = new MethodResolutionOrderGoal(context, klass);
+		
+		engine.evaluateGoal(goal);
+		
+		return goal.linearization;
+	}
+	
 	
 	public void shutdown() {
 		engine.shutdown();

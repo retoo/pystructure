@@ -35,11 +35,16 @@ public final class TestUtils {
 	private TestUtils() { }
 
 	public static final class Marker {
+	
+		public enum Type { TYPE, MRO } 
+		
 		public final int beginLine;
 		public final String expr;
 		public final String type;
+		public final Type markerType;
 
-		public Marker(int beginLine, String expr, String type) {
+		public Marker(Type markerType, int beginLine, String expr, String type) {
+			this.markerType = markerType;
 			this.beginLine = beginLine;
 			this.expr = expr;
 			this.type = type;
@@ -72,9 +77,13 @@ public final class TestUtils {
 				String type = tok.nextToken();
 				String expr = line.substring(0, line.indexOf("##")).trim();
 
-				markers.add(new Marker(beginLine, expr, type));
-			}
+				markers.add(new Marker(Marker.Type.TYPE, beginLine, expr, type));
+			} else if ("mro".equals(test)) {
+				String type = tok.nextToken();
+				String expr = line.substring(0, line.indexOf("##")).trim();
 
+				markers.add(new Marker(Marker.Type.MRO, beginLine, expr, type));				
+			}
 		}
 
 		return markers;

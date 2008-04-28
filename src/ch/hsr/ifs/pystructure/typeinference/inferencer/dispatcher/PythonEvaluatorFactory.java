@@ -55,16 +55,17 @@ import ch.hsr.ifs.pystructure.typeinference.evaluators.references.MethodReferenc
 import ch.hsr.ifs.pystructure.typeinference.evaluators.references.PossibleAttributeReferencesEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.references.PossibleReferencesEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.references.VariableReferenceEvaluator;
+import ch.hsr.ifs.pystructure.typeinference.evaluators.types.MethodResolutionOrderEvaluator;
+import ch.hsr.ifs.pystructure.typeinference.evaluators.types.ResolveMethodEvaluator;
+import ch.hsr.ifs.pystructure.typeinference.evaluators.types.FixedResultEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.types.ArgumentTypeEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.types.AssignTypeEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.types.AttributeTypeEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.types.BinOpTypeEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.types.CallTypeEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.types.ClassAttributeTypeEvaluator;
-import ch.hsr.ifs.pystructure.typeinference.evaluators.types.FixedResultEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.types.IfExpTypeEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.types.ImportTypeEvaluator;
-import ch.hsr.ifs.pystructure.typeinference.evaluators.types.ResolveMethodEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.types.ReturnTypeEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.types.TupleElementTypeEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
@@ -76,9 +77,10 @@ import ch.hsr.ifs.pystructure.typeinference.goals.references.PossibleAttributeRe
 import ch.hsr.ifs.pystructure.typeinference.goals.references.PossibleReferencesGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.AbstractTypeGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.ClassAttributeTypeGoal;
+import ch.hsr.ifs.pystructure.typeinference.goals.types.MethodResolutionOrderGoal;
+import ch.hsr.ifs.pystructure.typeinference.goals.types.ResolveMethodGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.DefinitionTypeGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.ExpressionTypeGoal;
-import ch.hsr.ifs.pystructure.typeinference.goals.types.ResolveMethodGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.ReturnTypeGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.TupleElementTypeGoal;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Argument;
@@ -122,6 +124,7 @@ public class PythonEvaluatorFactory {
 		evaluators.put(TupleElementTypeGoal.class, TupleElementTypeEvaluator.class);
 		evaluators.put(ClassAttributeTypeGoal.class, ClassAttributeTypeEvaluator.class);
 		evaluators.put(ResolveMethodGoal.class, ResolveMethodEvaluator.class);
+		evaluators.put(MethodResolutionOrderGoal.class, MethodResolutionOrderEvaluator.class);
 		evaluators.put(PossibleReferencesGoal.class, PossibleReferencesEvaluator.class);
 		evaluators.put(PossibleReferencesGoal.class, PossibleReferencesEvaluator.class);
 	}

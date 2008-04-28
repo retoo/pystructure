@@ -55,28 +55,35 @@ public class TypeInferenceTest extends TestCase {
 	}
 	
 	protected void runTest() throws Throwable {
-		List<ExpressionTypeAssertion> assertions = extractAssertions();
+		List<InferencerAssertion> assertions = extractAssertions();
 
-		for (ExpressionTypeAssertion assertion : assertions) {
+		for (InferencerAssertion assertion : assertions) {
 			logger.testStarted(assertion.filename, assertion.expression, assertion.line);
 			assertion.check(file, inferencer, workspace);
 		}
 	}
 
-	private List<ExpressionTypeAssertion> extractAssertions() {
-		List<ExpressionTypeAssertion> assertions = new ArrayList<ExpressionTypeAssertion>();
+	private List<InferencerAssertion> extractAssertions() {
+		List<InferencerAssertion> assertions = new ArrayList<InferencerAssertion>();
 		
 		/* Fetch all markers and create a test case for each marker */
 		for (Marker marker : TestUtils.getMarkers(sourceCode)) {
 			String name = getName();
 			
-			ExpressionTypeAssertion expressionTypeAssertion = 
-				new ExpressionTypeAssertion(
-					name, 
-					marker.expr, 
-					marker.beginLine, 
-					marker.type
-				);
+			InferencerAssertion expressionTypeAssertion = 
+				marker.markerType == Marker.Type.TYPE 
+					? new ExpressionTypeAssertion(
+							name, 
+							marker.expr, 
+							marker.beginLine, 
+							marker.type)
+					: new MROAssertion(
+							name,
+							marker.expr,
+							marker.beginLine,
+							marker.type);
+				
+			
 			
 			assertions.add(expressionTypeAssertion);	
 		}
