@@ -62,7 +62,7 @@ def mro(klass):
     return ",".join(names)
 
 for klass in [E, F, G, H, I, J, K]:
-    print klass.__name__ + " ## mro " + mro(klass)
+    print klass.__name__ + " #" + "# mro " + mro(klass)
 
 # execute the code above to get the foloowing output :D 
 E ## mro E
