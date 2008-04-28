@@ -29,7 +29,7 @@ import ch.hsr.ifs.pystructure.typeinference.model.definitions.Definition;
 
 public class BuiltInScope extends Scope {
 	public BuiltInScope() {
-		super(null, null);
+		super(null);
 	}
 	
 	@Override

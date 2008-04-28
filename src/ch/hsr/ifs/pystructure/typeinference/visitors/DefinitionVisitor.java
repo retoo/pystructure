@@ -85,7 +85,7 @@ public class DefinitionVisitor extends StructuralVisitor {
 	public DefinitionVisitor(Module module) {
 		this.module = module;
 		
-		this.moduleScope = new ModuleScope(new BuiltInScope(), module);
+		this.moduleScope = new ModuleScope(new BuiltInScope());
 		this.blocks = new Stack<Block>();
 		this.uses = module.getContainedUses();
 	}
@@ -118,7 +118,7 @@ public class DefinitionVisitor extends StructuralVisitor {
 		if (isFirstVisit(klass)) {
 			addDefinition(klass);
 		} else {
-			blocks.push(new Scope(getBlock(), klass));
+			blocks.push(new Scope(getBlock()));
 			super.visitClassDef(node);
 			visitChildren(klass);
 			blocks.pop();
@@ -141,7 +141,7 @@ public class DefinitionVisitor extends StructuralVisitor {
 			 */
 			addDefinition(function);
 		} else {
-			Scope functionScope = new Scope(getBlock(), function);
+			Scope functionScope = new Scope(getBlock());
 			blocks.push(functionScope);
 			addArgumentDefinitions(node.args, function);
 			super.visitFunctionDef(node);

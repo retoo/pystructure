@@ -29,7 +29,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Definition;
-import ch.hsr.ifs.pystructure.typeinference.model.definitions.Module;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.NameUse;
 
 public class ModuleScope extends Scope {
@@ -37,8 +36,8 @@ public class ModuleScope extends Scope {
 	private Map<String, List<Definition>> globalDefinitions;
 	private Map<String, List<NameUse>> globalNameUses;
 	
-	public ModuleScope(Block parent, Module module) {
-		super(parent, module);
+	public ModuleScope(Block parent) {
+		super(parent);
 		globalDefinitions = new HashMap<String, List<Definition>>();
 		globalNameUses = new HashMap<String, List<NameUse>>();
 	}
