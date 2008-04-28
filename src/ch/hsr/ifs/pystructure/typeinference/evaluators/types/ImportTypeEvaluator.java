@@ -22,6 +22,7 @@
 
 package ch.hsr.ifs.pystructure.typeinference.evaluators.types;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import ch.hsr.ifs.pystructure.typeinference.contexts.ModuleContext;
@@ -66,32 +67,32 @@ public class ImportTypeEvaluator extends DefinitionTypeEvaluator {
 			return IGoal.NO_GOALS;
 		}
 		
-		Object result;
+		List<Definition> definitions = new LinkedList<Definition>();
 		
 		if (importDefinition.getElement() == null) {
-			result = pathElement;
+			definitions.add((Definition) pathElement);
 		} else {
 			if (pathElement instanceof Module) {
 				Module module = (Module) pathElement;
-				result = module.getChild(importDefinition.getElement());
+				definitions = module.getDefinitions(importDefinition.getElement());
 			} else if (pathElement instanceof Package) {
 				Package pkg = (Package) pathElement;
-				result = pkg.getChild(importDefinition.getElement());
+				definitions.add((Definition) pkg.getChild(importDefinition.getElement()));
 			} else {
 				throw new RuntimeException("ImportFrom doesn't import from a package or module");
 			}
 		}
 		
-		if (result instanceof Definition) {
-			Definition definition = (Definition) result;
+		List<IGoal> subgoals = new LinkedList<IGoal>();
+		for (Definition definition : definitions) {
 			ModuleContext context = getGoal().getContext();
 			if (!(definition instanceof Package)) {
 				context = new ModuleContext(context, definition.getModule());
 			}
-			return wrap(new DefinitionTypeGoal(context, definition));
-		} else {
-			throw new RuntimeException("Something other than a definition was returned, which should not happen");
+			subgoals.add(new DefinitionTypeGoal(context, definition));
 		}
+		
+		return subgoals;
 	}
 
 	@Override

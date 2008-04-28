@@ -123,9 +123,11 @@ public class AttributeTypeEvaluator extends AbstractEvaluator {
 					ModuleType moduleType = (ModuleType) type;
 					Module module = moduleType.getModule();
 	
-					Definition child = module.getChild(attributeName);
-					ModuleContext context = new ModuleContext(getGoal().getContext(), module);
-					subgoals.add(new DefinitionTypeGoal(context, child));
+					List<Definition> definitions = module.getDefinitions(attributeName);
+					for (Definition definition : definitions) {
+						ModuleContext context = new ModuleContext(getGoal().getContext(), module);
+						subgoals.add(new DefinitionTypeGoal(context, definition));
+					}
 				}
 				
 				// TODO: PythonMetaclassType

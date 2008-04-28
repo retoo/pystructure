@@ -86,6 +86,8 @@ public class DefinitionVisitor extends StructuralVisitor {
 		this.module = module;
 		
 		this.moduleScope = new ModuleScope(new BuiltInScope());
+		module.setModuleScope(moduleScope);
+		
 		this.blocks = new Stack<Block>();
 		this.uses = module.getContainedUses();
 	}
@@ -106,7 +108,6 @@ public class DefinitionVisitor extends StructuralVisitor {
 		blocks.pop();
 
 		moduleScope.connectGlobals();
-		module.getDefinitions().addAll(moduleScope.getCurrentDefinitions());
 
 		return null;
 	}

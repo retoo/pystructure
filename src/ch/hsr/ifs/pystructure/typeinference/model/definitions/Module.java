@@ -31,6 +31,7 @@ import org.python.pydev.parser.jython.ParseException;
 
 import ch.hsr.ifs.pystructure.parser.Parser;
 import ch.hsr.ifs.pystructure.typeinference.model.base.NamePath;
+import ch.hsr.ifs.pystructure.typeinference.model.scopes.ModuleScope;
 import ch.hsr.ifs.pystructure.utils.FileUtils;
 
 public class Module extends StructureDefinition implements PathElement {
@@ -40,7 +41,8 @@ public class Module extends StructureDefinition implements PathElement {
 	private final File file;
 	
 	private final List<Use> containedUses;
-	private final List<Definition> definitions;
+	
+	private ModuleScope moduleScope;
 
 	public Module(String name, PathElementContainer parent, File file) {
 		this.namePath = new NamePath(parent.getNamePath(), name);
@@ -48,7 +50,6 @@ public class Module extends StructureDefinition implements PathElement {
 		this.file = file;
 		
 		this.containedUses = new ArrayList<Use>();
-		this.definitions  = new ArrayList<Definition>();
 		
 		try {
 			String source = FileUtils.read(file);
@@ -68,6 +69,10 @@ public class Module extends StructureDefinition implements PathElement {
 		
 		super.init(this, name, module);
 	}
+	
+	public void setModuleScope(ModuleScope moduleScope) {
+		this.moduleScope = moduleScope;
+	}
 
 	public NamePath getNamePath() {
 		return namePath;
@@ -77,29 +82,17 @@ public class Module extends StructureDefinition implements PathElement {
 		return parent;
 	}
 	
-	// TODO: Should return all possible definitions, not just one.
-	public Definition getChild(String name) {
-		for (Definition definition : definitions) {
-			if (definition.getName().equals(name)) {
-				return definition;
-			}
-		}
-		
-		return new NoDefinition(this, name);
-//		throw new RuntimeException("Object " + name + " not defined in " + this);
+	public List<Definition> getDefinitions(String name) {
+		return moduleScope.getCurrentDefinitions(name);
 	}
 
 	public List<Use> getContainedUses() {
 		return containedUses;
 	}
 
-	public List<Definition> getDefinitions() {
-		return definitions;
-	}
-	
 	public List<Class> getClasses() {
 		List<Class> classes = new ArrayList<Class>();
-		for (Definition definition : definitions) {
+		for (Definition definition : getChildren()) {
 			if (definition instanceof Class) {
 				classes.add((Class) definition);
 			}
