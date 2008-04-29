@@ -110,12 +110,29 @@ public class MethodResolutionOrderEvaluator extends AbstractEvaluator {
 
 		return subgoals;
 	}
+	
+	@Override
+	public boolean checkCache() {
+		MethodResolutionOrder linearization = klass.getLinearization();
+		
+		if (linearization != null) {
+			goal.linearization = linearization;
+			return true;
+		} else {
+			return false;
+		}
+	}
 
 
 	@Override
 	public void finish() {
-		goal.linearization = calculateLinearsation();
-
+		if (goal.linearization == null) {  
+			goal.linearization = calculateLinearsation();
+		}
+		
+		if (klass.getLinearization() == null) {
+			klass.setLinearization(goal.linearization);
+		}
 	}
 
 	private MethodResolutionOrder calculateLinearsation() {
@@ -139,7 +156,7 @@ public class MethodResolutionOrderEvaluator extends AbstractEvaluator {
 		return MethodResolutionOrder.merge(this.klass, toMerge);
 	}
 
-	private MetaclassType extractClass(ExpressionTypeGoal g) {
+	private static MetaclassType extractClass(ExpressionTypeGoal g) {
 		CombinedType result = g.resultType;
 
 		Set<IType> types = result.getTypes();

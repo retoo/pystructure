@@ -49,9 +49,9 @@ public final class GoalEngineDebugger {
 		PythonTypeInferencer inferencer = new PythonTypeInferencer(logger);
 		File path = new File("tests/python/typeinference/inher/");
 		Workspace workspace = new Workspace(path);
-		Module module = workspace.getModule("inheritance");
+		Module module = workspace.getModule("mro");
 		
-		int[] lines = {11};
+		int[] lines = {23};
 		
 		for (int line : lines) {
 			Expr expression = getExpressionAtLine(module, line);

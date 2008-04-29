@@ -39,6 +39,7 @@ public class Class extends StructureDefinition implements IAttributeDefinition {
 	private final List<Method> methods;
 	private final List<exprType> bases;
 	private final Map<String, Attribute> attributes;
+	private MethodResolutionOrder linearization;
 
 	public Class(String name, ClassDef classDef, Module module) {
 		super(module, name, classDef);
@@ -96,6 +97,14 @@ public class Class extends StructureDefinition implements IAttributeDefinition {
 	
 	public String getFullName() {
 		return getModule().getNamePath().toString() + "." + getName();
+	}
+
+	public MethodResolutionOrder getLinearization() {
+		return linearization;
+	}
+
+	public void setLinearization(MethodResolutionOrder linearization) {
+		this.linearization = linearization;
 	}
 
 }
