@@ -10,7 +10,7 @@ import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
  */
 public class CustomLogger extends GoalTreeLogger {
 	
-	public class Record {
+	public static class Record {
 
 		public final IGoal goal;
 		public final int level;

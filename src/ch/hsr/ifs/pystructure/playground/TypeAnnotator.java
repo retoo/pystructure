@@ -85,7 +85,11 @@ public class TypeAnnotator extends HtmlOutputter {
 		this.logger = new CustomLogger();
 		
 		goalDir = new File(outPath, "goals");
-		goalDir.mkdir();
+		boolean res = goalDir.mkdir();
+		
+		if (!res) {
+			throw new RuntimeException("Unable to create directory " + goalDir);
+		}
 		
 		this.inferencer = new PythonTypeInferencer(new CombinedLogger(new StatsLogger(false), logger));
 	}
