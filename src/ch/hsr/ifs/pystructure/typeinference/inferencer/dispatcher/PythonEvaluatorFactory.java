@@ -65,6 +65,7 @@ import ch.hsr.ifs.pystructure.typeinference.evaluators.types.BinOpTypeEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.types.CallTypeEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.types.ClassAttributeTypeEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.types.IfExpTypeEvaluator;
+import ch.hsr.ifs.pystructure.typeinference.evaluators.types.ImplicitImportTypeEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.types.ImportTypeEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.types.ReturnTypeEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.types.TupleElementTypeEvaluator;
@@ -88,6 +89,7 @@ import ch.hsr.ifs.pystructure.typeinference.model.definitions.AssignDefinition;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Definition;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.ExceptDefinition;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Function;
+import ch.hsr.ifs.pystructure.typeinference.model.definitions.ImplicitImportDefinition;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.ImportDefinition;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.LoopVariableDefinition;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Module;
@@ -179,6 +181,9 @@ public class PythonEvaluatorFactory {
 		}
 		if (def instanceof ImportDefinition) {
 			return new ImportTypeEvaluator(goal, (ImportDefinition) def);
+		}
+		if (def instanceof ImplicitImportDefinition) {
+			return new ImplicitImportTypeEvaluator(goal, (ImplicitImportDefinition) def);
 		}
 		if (def instanceof Function) {
 			Function function = (Function) def;

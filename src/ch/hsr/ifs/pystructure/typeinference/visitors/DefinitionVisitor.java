@@ -70,7 +70,7 @@ import ch.hsr.ifs.pystructure.typeinference.model.definitions.TupleElement;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Use;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Value;
 import ch.hsr.ifs.pystructure.typeinference.model.scopes.Block;
-import ch.hsr.ifs.pystructure.typeinference.model.scopes.BuiltInScope;
+import ch.hsr.ifs.pystructure.typeinference.model.scopes.ExternalScope;
 import ch.hsr.ifs.pystructure.typeinference.model.scopes.ModuleScope;
 import ch.hsr.ifs.pystructure.typeinference.model.scopes.Scope;
 
@@ -78,15 +78,18 @@ public class DefinitionVisitor extends StructuralVisitor {
 
 	private final Module module;
 	
+	private final ExternalScope externalScope;
 	private final ModuleScope moduleScope;
 	private final Stack<Block> blocks;
 	
 	private final List<Use> uses;
 
+
 	public DefinitionVisitor(Module module) {
 		this.module = module;
 		
-		this.moduleScope = new ModuleScope(new BuiltInScope());
+		this.externalScope = new ExternalScope(module);
+		this.moduleScope = new ModuleScope(externalScope);
 		module.setModuleScope(moduleScope);
 		
 		this.blocks = new Stack<Block>();
@@ -501,14 +504,20 @@ public class DefinitionVisitor extends StructuralVisitor {
 	@Override
 	public Object visitImportFrom(ImportFrom node) throws Exception {
 		NamePath path = new NamePath(NodeUtils.getId(node.module));
+		ImportPath importPath = new ImportPath(module, path, node.level);
 		
-		for (aliasType entry : node.names) {
-			String element = NodeUtils.getId(entry.name);
-			String alias = NodeUtils.getId(entry.asname == null ? entry.name : entry.asname);
+		if (node.names.length == 0) {
+			/* This is a "star" import (from module import *) */
+			externalScope.addImportStarPath(importPath);
 			
-			ImportPath importPath = new ImportPath(module, path, node.level);
-			ImportDefinition definition = new ImportDefinition(module, node, importPath, element, alias);
-			addDefinition(definition);
+		} else {
+			for (aliasType entry : node.names) {
+				String element = NodeUtils.getId(entry.name);
+				String alias = NodeUtils.getId(entry.asname == null ? entry.name : entry.asname);
+				
+				ImportDefinition definition = new ImportDefinition(module, node, importPath, element, alias);
+				addDefinition(definition);
+			}
 		}
 		
 		return null;
