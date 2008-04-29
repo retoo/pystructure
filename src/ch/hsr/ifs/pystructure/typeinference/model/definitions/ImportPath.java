@@ -41,4 +41,9 @@ public class ImportPath {
 		return level;
 	}
 	
+	@Override
+	public String toString() {
+		return namePath + " imported from module " + module + (level != 0 ? " with level" + level : "");
+	}
+	
 }

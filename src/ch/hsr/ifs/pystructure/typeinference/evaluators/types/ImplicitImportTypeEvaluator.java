@@ -107,7 +107,7 @@ public class ImplicitImportTypeEvaluator extends DefinitionTypeEvaluator {
 			} else if (parent instanceof Package) {
 				throw new RuntimeException("Importing definitions from __init__.py not yet implemented");
 			} else {
-				throw new RuntimeException("ImportFrom doesn't import from a package or module");
+				throw new RuntimeException("Import doesn't import from a package or module: " + importStarPath);
 			}
 			
 			for (Definition definition : definitions) {
