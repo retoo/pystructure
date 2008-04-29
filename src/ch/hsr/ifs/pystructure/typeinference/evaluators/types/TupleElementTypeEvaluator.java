@@ -102,6 +102,8 @@ public class TupleElementTypeEvaluator extends AbstractEvaluator {
 			return subgoals;
 
 		} else {
+			if (!(subgoal instanceof AbstractTypeGoal)) { unexpectedSubgoal(subgoal); }
+			
 			AbstractTypeGoal g = (AbstractTypeGoal) subgoal;
 
 			this.result.appendType(g.resultType);
