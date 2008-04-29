@@ -12,7 +12,7 @@ a = A()
 a.set(1)
 a.get() ## type int
 
-## Context example
+# * Context example: *
 # Kinda strange example, the question is how the instance context affects
 # other evaluators
 

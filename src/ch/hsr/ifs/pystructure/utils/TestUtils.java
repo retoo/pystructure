@@ -35,9 +35,9 @@ public final class TestUtils {
 	private TestUtils() { }
 
 	public static final class Marker {
-	
+
 		public enum Type { TYPE, MRO } 
-		
+
 		public final int beginLine;
 		public final String expr;
 		public final String type;
@@ -71,18 +71,19 @@ public final class TestUtils {
 			StringTokenizer tok = new StringTokenizer(line.substring(pos + 2));
 			String test = tok.nextToken();
 
-			if ("exit".equals(test)) {
+			if (test.equals("exit")) {
 				break;
-			} else if ("type".equals(test)) {
+			} else { 
 				String type = tok.nextToken();
 				String expr = line.substring(0, line.indexOf("##")).trim();
-
-				markers.add(new Marker(Marker.Type.TYPE, beginLine, expr, type));
-			} else if ("mro".equals(test)) {
-				String type = tok.nextToken();
-				String expr = line.substring(0, line.indexOf("##")).trim();
-
-				markers.add(new Marker(Marker.Type.MRO, beginLine, expr, type));				
+				
+				if (test.equals("type")) {
+					markers.add(new Marker(Marker.Type.TYPE, beginLine, expr, type));
+				} else if (test.equals("mro")) {
+					markers.add(new Marker(Marker.Type.MRO, beginLine, expr, type));				
+				} else {
+					throw new RuntimeException("Unexpected marker type '" + test + "' at line " + beginLine);
+				}
 			}
 		}
 
@@ -111,7 +112,7 @@ public final class TestUtils {
 			if (index < 0) {
 				break;
 			}
-			
+
 			positions.add(index);
 			text = CURSOR_PATTERN.matcher(text).replaceFirst("");
 		}

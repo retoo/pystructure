@@ -21,10 +21,12 @@ mod ## type DeepModule
 ldeep = mod.less_deep()()
 ldeep ## type LessDeep
 
-x = ExactlySameLevel()
+x = ExactlySameLevel(2)
 out = x.get_field()
-out ## TODO type str
+
+# doesn't work because ExactlySameLevel is an alias for SameLevel and therefore isn't found by the PossbileReferences gang
+out # # TODO type str
 
 xx = same_level_import.SameLevel()
 out2 = xx.get_field()
-out2 ## TODO type str
+out2 # # TODO type str

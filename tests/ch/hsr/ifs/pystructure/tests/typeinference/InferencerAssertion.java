@@ -24,7 +24,13 @@ public abstract class InferencerAssertion extends Assert {
 					+ "> but was <" + actual 
 					+ "> (" + filename + ":" + line + ")");
 		}
-
+		
+	    public String toString() {
+	        String s = getClass().getSimpleName();
+	        String message = getLocalizedMessage();
+	        return (message != null) ? (s + ": " + message) : s;
+	    }
+	    
 	}
 
 	public final String filename;

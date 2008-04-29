@@ -1,7 +1,6 @@
 package ch.hsr.ifs.pystructure.typeinference.evaluators.types;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -136,66 +135,7 @@ public class MethodResolutionOrderEvaluator extends AbstractEvaluator {
 
 		toMerge.add(directAnchestors);
 
-		return merge(this.klass, toMerge);
-	}
-
-	private static Linearisation merge(Class klass, List<Linearisation> toMerge) {
-		Linearisation linearization = new Linearisation();
-		linearization.add(klass);
-
-		boolean changedSomething = false;
-
-		for (;;) {
-			if (toMerge.isEmpty()) {
-				/* yay finished */
-				break; 
-			}
-
-			for (Iterator<Linearisation> i = toMerge.iterator(); i.hasNext();) {
-				Linearisation chain = i.next();
-
-				/* empty chain detected */
-				if (chain.isEmpty()) {
-					i.remove();
-					changedSomething = true;
-					continue;
-				}
-				Class head = chain.get(0);
-
-				if (isInNoTail(head, toMerge)) {
-					/* great we found a header which is in no tail */
-					linearization.add(head);
-
-					/* remove the other occurrences of that particular class*/
-					for (Linearisation toClean : toMerge) {
-						toClean.remove(head);
-					}
-
-					/* begin again from the beginning */
-					changedSomething = true;
-					break;
-				}
-			}
-
-			if (changedSomething) {
-				changedSomething = false;
-			} else {
-				/* hm, we walked through the whole list without changing anything, thats bad */
-				throw new RuntimeException("Invalid linerarisation");
-			}
-		}
-
-		return linearization;
-	}
-
-	private static boolean isInNoTail(Class head, List<Linearisation> toMerge) {
-		for (Linearisation otherChains : toMerge) {
-			if (otherChains.inTail(head)) {
-				return false;
-			}
-		}
-
-		return true;
+		return Linearisation.merge(this.klass, toMerge);
 	}
 
 	private MetaclassType extractClass(ExpressionTypeGoal g) {

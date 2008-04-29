@@ -31,7 +31,7 @@ DeepThought().saying() ## type str
 class A():
     def x(self):
         return 1
-class B(): 
+class B():
     def y(self):
         return "x"
     def x(self):
@@ -52,7 +52,7 @@ class F(E): pass
 class G(E): pass
 class H(E): pass
 class I(F, G): pass
-class J(H, G): pass
+class J(G, H): pass
 class K(I, J): pass
 
 def mro(klass):
@@ -70,5 +70,5 @@ F ## mro F,E
 G ## mro G,E
 H ## mro H,E
 I ## mro I,F,G,E
-J ## mro J,H,G,E
-K ## mro K,I,F,J,H,G,E
+J ## mro J,G,H,E
+K ## mro K,I,F,J,G,H,E

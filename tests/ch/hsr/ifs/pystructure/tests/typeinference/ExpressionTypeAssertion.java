@@ -58,7 +58,7 @@ class ExpressionTypeAssertion extends InferencerAssertion {
 	
 	private void assertType(String expected, String actual) {
 		if (!expected.equals(actual)) {
-			throw new InferencerAssertionError("type", expected, actual, expected, filename, line); 
+			throw new InferencerAssertionError("type", expected, actual, expression, filename, line); 
 		}
 	}
 

@@ -53,6 +53,7 @@ import ch.hsr.ifs.pystructure.typeinference.goals.references.AttributeReferences
 import ch.hsr.ifs.pystructure.typeinference.goals.references.PossibleAttributeReferencesGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.references.PossibleReferencesGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.ClassAttributeTypeGoal;
+import ch.hsr.ifs.pystructure.typeinference.goals.types.MethodResolutionOrderGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.ResolveMethodGoal;
 import ch.hsr.ifs.pystructure.typeinference.inferencer.PythonTypeInferencer;
 import ch.hsr.ifs.pystructure.typeinference.inferencer.logger.CombinedLogger;
@@ -307,6 +308,9 @@ public class TypeAnnotator extends HtmlOutputter {
 		} else if (goal instanceof ResolveMethodGoal) {
 			ResolveMethodGoal g = (ResolveMethodGoal) goal;
 			return new Text(g.getClassType().getKlass() + " " + g.getAttributeName());
+		} else if (goal instanceof MethodResolutionOrderGoal) {
+			MethodResolutionOrderGoal g = (MethodResolutionOrderGoal) goal;
+			return new Text("MRO for " + g.getKlass());
 		} else { 
 			throw new RuntimeException("Cannot format goal, unknown goal type: " + goal);
 		}
@@ -389,8 +393,8 @@ public class TypeAnnotator extends HtmlOutputter {
 	}
 
 	public static void main(String[] args) throws Exception {
-		new TypeAnnotator(new File("tests/python/typeinference/"), "out/tests/").generateReport();
-//		new TypeAnnotator(new File("s101g/examples/pydoku/"), "out/pydoku/").generateReport();
+//		new TypeAnnotator(new File("tests/python/typeinference/"), "out/tests/").generateReport();
+		new TypeAnnotator(new File("s101g/examples/pydoku/"), "out/pydoku/").generateReport();
 //		new TypeAnnotator(new File("s101g/examples/pygments/"), "out/pygments/").generateReport();
 	}
 
