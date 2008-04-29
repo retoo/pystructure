@@ -3,12 +3,12 @@ package ch.hsr.ifs.pystructure.typeinference.goals.types;
 import ch.hsr.ifs.pystructure.typeinference.contexts.ModuleContext;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.AbstractGoal;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Class;
-import ch.hsr.ifs.pystructure.typeinference.model.definitions.Linearisation;
+import ch.hsr.ifs.pystructure.typeinference.model.definitions.MethodResolutionOrder;
 
 public class MethodResolutionOrderGoal extends AbstractGoal {
 
 	private final Class klass;
-	public Linearisation linearization;
+	public MethodResolutionOrder linearization;
 
 	public MethodResolutionOrderGoal(ModuleContext context, Class klass) {
 		super(context);

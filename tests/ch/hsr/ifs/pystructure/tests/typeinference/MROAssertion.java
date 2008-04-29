@@ -5,7 +5,7 @@ import org.python.pydev.parser.jython.ast.Expr;
 import ch.hsr.ifs.pystructure.typeinference.basetype.CombinedType;
 import ch.hsr.ifs.pystructure.typeinference.basetype.IType;
 import ch.hsr.ifs.pystructure.typeinference.inferencer.PythonTypeInferencer;
-import ch.hsr.ifs.pystructure.typeinference.model.definitions.Linearisation;
+import ch.hsr.ifs.pystructure.typeinference.model.definitions.MethodResolutionOrder;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Module;
 import ch.hsr.ifs.pystructure.typeinference.results.types.MetaclassType;
 import ch.hsr.ifs.pystructure.typeinference.visitors.Workspace;
@@ -30,7 +30,7 @@ public class MROAssertion extends InferencerAssertion {
 			if (type instanceof MetaclassType) {
 				MetaclassType metaClassType = (MetaclassType) type;
 
-				Linearisation li = inferencer.getMRO(workspace, module, metaClassType.getKlass());
+				MethodResolutionOrder li = inferencer.getMRO(workspace, module, metaClassType.getKlass());
 
 				assertNotNull(li);
 				assertMro(solution, li);
@@ -44,7 +44,7 @@ public class MROAssertion extends InferencerAssertion {
 		}
 	}
 
-	private void assertMro(String expected, Linearisation li) {
+	private void assertMro(String expected, MethodResolutionOrder li) {
 		String actual = li.getStringRep();
 
 		if (!expected.equals(actual)) {

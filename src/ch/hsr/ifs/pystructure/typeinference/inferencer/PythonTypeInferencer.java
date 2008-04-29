@@ -30,7 +30,7 @@ import ch.hsr.ifs.pystructure.typeinference.goals.types.ExpressionTypeGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.MethodResolutionOrderGoal;
 import ch.hsr.ifs.pystructure.typeinference.inferencer.logger.IGoalEngineLogger;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Class;
-import ch.hsr.ifs.pystructure.typeinference.model.definitions.Linearisation;
+import ch.hsr.ifs.pystructure.typeinference.model.definitions.MethodResolutionOrder;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Module;
 import ch.hsr.ifs.pystructure.typeinference.visitors.Workspace;
 
@@ -55,7 +55,7 @@ public class PythonTypeInferencer {
 		return goal.resultType;
 	}
 	
-	public Linearisation getMRO(Workspace workspace, Module module, Class klass) {
+	public MethodResolutionOrder getMRO(Workspace workspace, Module module, Class klass) {
 		ModuleContext context = new ModuleContext(workspace, module);
 		MethodResolutionOrderGoal goal = new MethodResolutionOrderGoal(context, klass);
 		

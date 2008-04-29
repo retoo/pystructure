@@ -16,7 +16,7 @@ import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.ExpressionTypeGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.MethodResolutionOrderGoal;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Class;
-import ch.hsr.ifs.pystructure.typeinference.model.definitions.Linearisation;
+import ch.hsr.ifs.pystructure.typeinference.model.definitions.MethodResolutionOrder;
 import ch.hsr.ifs.pystructure.typeinference.results.types.MetaclassType;
 
 public class MethodResolutionOrderEvaluator extends AbstractEvaluator {
@@ -26,7 +26,7 @@ public class MethodResolutionOrderEvaluator extends AbstractEvaluator {
 		public final exprType expr;
 
 		public MetaclassType classType;
-		public Linearisation linearization;
+		public MethodResolutionOrder linearization;
 
 		public BaseClass(exprType expr) {
 			this.expr = expr;
@@ -118,15 +118,15 @@ public class MethodResolutionOrderEvaluator extends AbstractEvaluator {
 
 	}
 
-	private Linearisation calculateLinearsation() {
-		LinkedList<Linearisation> toMerge = new LinkedList<Linearisation>();
+	private MethodResolutionOrder calculateLinearsation() {
+		LinkedList<MethodResolutionOrder> toMerge = new LinkedList<MethodResolutionOrder>();
 
-		Linearisation directAnchestors = new Linearisation();
+		MethodResolutionOrder directAnchestors = new MethodResolutionOrder();
 
 		for (BaseClass baseClass : bases) {
 			if (baseClass != null) {
 				if (baseClass.classType != null && baseClass.linearization != null) {
-					toMerge.add(new Linearisation(baseClass.linearization));
+					toMerge.add(new MethodResolutionOrder(baseClass.linearization));
 					directAnchestors.add(baseClass.classType.getKlass());
 				} else {
 					System.err.println("No linearisation for base class: " + baseClass);
@@ -136,7 +136,7 @@ public class MethodResolutionOrderEvaluator extends AbstractEvaluator {
 
 		toMerge.add(directAnchestors);
 
-		return Linearisation.merge(this.klass, toMerge);
+		return MethodResolutionOrder.merge(this.klass, toMerge);
 	}
 
 	private MetaclassType extractClass(ExpressionTypeGoal g) {

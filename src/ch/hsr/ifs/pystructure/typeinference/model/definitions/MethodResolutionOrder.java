@@ -5,13 +5,13 @@ import java.util.LinkedList;
 import java.util.List;
 
 
-public class Linearisation extends LinkedList<Class> {
+public class MethodResolutionOrder extends LinkedList<Class> {
 
 	private static final long serialVersionUID = 1L;
 	
-	public static Linearisation merge(Class klass, List<Linearisation> toMerge) {
-		Linearisation linearization = new Linearisation();
-		linearization.add(klass);
+	public static MethodResolutionOrder merge(Class klass, List<MethodResolutionOrder> toMerge) {
+		MethodResolutionOrder linearisation = new MethodResolutionOrder();
+		linearisation.add(klass);
 
 
 		for (;;) {
@@ -22,8 +22,8 @@ public class Linearisation extends LinkedList<Class> {
 				break; 
 			}
 			
-			for (Iterator<Linearisation> i = toMerge.iterator(); i.hasNext();) {
-				Linearisation chain = i.next();
+			for (Iterator<MethodResolutionOrder> i = toMerge.iterator(); i.hasNext();) {
+				MethodResolutionOrder chain = i.next();
 
 				/* empty chain detected */
 				if (chain.isEmpty()) {
@@ -36,10 +36,10 @@ public class Linearisation extends LinkedList<Class> {
 
 				if (isInNoTail(head, toMerge)) {
 					/* great we found a header which is in no tail */
-					linearization.add(head);
+					linearisation.add(head);
 
 					/* remove the other occurrences of that particular class*/
-					for (Linearisation toClean : toMerge) {
+					for (MethodResolutionOrder toClean : toMerge) {
 						toClean.remove(head);
 					}
 
@@ -55,11 +55,11 @@ public class Linearisation extends LinkedList<Class> {
 			}
 		}
 
-		return linearization;
+		return linearisation;
 	}
 
-	private static boolean isInNoTail(Class head, List<Linearisation> toMerge) {
-		for (Linearisation otherChains : toMerge) {
+	private static boolean isInNoTail(Class head, List<MethodResolutionOrder> toMerge) {
+		for (MethodResolutionOrder otherChains : toMerge) {
 			if (otherChains.isInTail(head)) {
 				return false;
 			}
@@ -68,11 +68,11 @@ public class Linearisation extends LinkedList<Class> {
 		return true;
 	}
 
-	public Linearisation(List<Class> linearization) {
+	public MethodResolutionOrder(List<Class> linearization) {
 		super(linearization);
 	}
 
-	public Linearisation() {
+	public MethodResolutionOrder() {
 		super();
 	}
 
