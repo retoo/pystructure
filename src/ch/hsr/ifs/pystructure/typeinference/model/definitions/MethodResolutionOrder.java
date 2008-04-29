@@ -8,7 +8,7 @@ import java.util.List;
 public class MethodResolutionOrder extends LinkedList<Class> {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	public static MethodResolutionOrder merge(Class klass, List<MethodResolutionOrder> toMerge) {
 		MethodResolutionOrder linearisation = new MethodResolutionOrder();
 		linearisation.add(klass);
@@ -16,12 +16,12 @@ public class MethodResolutionOrder extends LinkedList<Class> {
 
 		for (;;) {
 			boolean changedSomething = false;
-			
+
 			if (toMerge.isEmpty()) {
 				/* yay finished */
 				break; 
 			}
-			
+
 			for (Iterator<MethodResolutionOrder> i = toMerge.iterator(); i.hasNext();) {
 				MethodResolutionOrder chain = i.next();
 
@@ -31,7 +31,7 @@ public class MethodResolutionOrder extends LinkedList<Class> {
 					changedSomething = true;
 					continue;
 				}
-				
+
 				Class head = chain.getFirst();
 
 				if (isInNoTail(head, toMerge)) {
@@ -84,7 +84,7 @@ public class MethodResolutionOrder extends LinkedList<Class> {
 					return true;
 				}
 			}
-			
+
 			return false;
 		} else {
 			/* empty or just head -> not in tail */
@@ -94,7 +94,7 @@ public class MethodResolutionOrder extends LinkedList<Class> {
 
 	public String getStringRep() {
 		StringBuilder sb = new StringBuilder();
-		
+
 		boolean first = true;
 		for (Class c : this) {
 			if (first) {
@@ -104,7 +104,7 @@ public class MethodResolutionOrder extends LinkedList<Class> {
 			}
 			sb.append(c.getName());
 		}
-		
+
 		return sb.toString();
 	}
 
