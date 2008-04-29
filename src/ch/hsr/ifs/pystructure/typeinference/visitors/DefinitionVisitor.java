@@ -177,6 +177,13 @@ public class DefinitionVisitor extends StructuralVisitor {
 		}
 	}
 
+	/*
+	 * Assign statements like these:
+	 * 
+	 * a = 1
+	 * b, c = 2, 3
+	 * d, e = function_returning_tuple()
+	 */
 	@Override
 	public Object visitAssign(Assign node) throws Exception {
 		node.value.accept(this);
@@ -223,8 +230,11 @@ public class DefinitionVisitor extends StructuralVisitor {
 		}
 	}
 	
+	/*
+	 * Node for bare names (variables), for example the "instance" of
+	 * "instance.method" but not the "method" (which is an attribute).
+	 */
 	@Override
-
 	public Object visitName(Name node) throws Exception {
 		NameUse use = new NameUse(node.id, node, module);
 		addNameUse(use);
@@ -232,6 +242,12 @@ public class DefinitionVisitor extends StructuralVisitor {
 		return null;
 	}
 
+	/*
+	 * Examples:
+	 * 
+	 * module.function
+	 * instance.method
+	 */
 	@Override
 	public Object visitAttribute(Attribute node) throws Exception {
 		uses.add(new AttributeUse(node, module));
