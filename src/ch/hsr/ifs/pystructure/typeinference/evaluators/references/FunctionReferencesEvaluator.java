@@ -29,7 +29,6 @@ import ch.hsr.ifs.pystructure.typeinference.goals.base.GoalState;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.references.FunctionReferencesGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.references.PossibleReferencesGoal;
-import ch.hsr.ifs.pystructure.typeinference.goals.types.AbstractTypeGoal;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Function;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.NameUse;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Use;
