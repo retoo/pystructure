@@ -26,11 +26,11 @@ import org.python.pydev.parser.jython.SimpleNode;
 
 import ch.hsr.ifs.pystructure.typeinference.basetype.CombinedType;
 import ch.hsr.ifs.pystructure.typeinference.contexts.ModuleContext;
-import ch.hsr.ifs.pystructure.typeinference.evaluators.types.Linearisation;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.ExpressionTypeGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.MethodResolutionOrderGoal;
 import ch.hsr.ifs.pystructure.typeinference.inferencer.logger.IGoalEngineLogger;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Class;
+import ch.hsr.ifs.pystructure.typeinference.model.definitions.Linearisation;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Module;
 import ch.hsr.ifs.pystructure.typeinference.visitors.Workspace;
 

@@ -4,8 +4,8 @@ import org.python.pydev.parser.jython.ast.Expr;
 
 import ch.hsr.ifs.pystructure.typeinference.basetype.CombinedType;
 import ch.hsr.ifs.pystructure.typeinference.basetype.IType;
-import ch.hsr.ifs.pystructure.typeinference.evaluators.types.Linearisation;
 import ch.hsr.ifs.pystructure.typeinference.inferencer.PythonTypeInferencer;
+import ch.hsr.ifs.pystructure.typeinference.model.definitions.Linearisation;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Module;
 import ch.hsr.ifs.pystructure.typeinference.results.types.MetaclassType;
 import ch.hsr.ifs.pystructure.typeinference.visitors.Workspace;

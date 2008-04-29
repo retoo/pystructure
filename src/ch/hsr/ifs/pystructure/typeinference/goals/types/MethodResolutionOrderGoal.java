@@ -1,9 +1,9 @@
 package ch.hsr.ifs.pystructure.typeinference.goals.types;
 
 import ch.hsr.ifs.pystructure.typeinference.contexts.ModuleContext;
-import ch.hsr.ifs.pystructure.typeinference.evaluators.types.Linearisation;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.AbstractGoal;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Class;
+import ch.hsr.ifs.pystructure.typeinference.model.definitions.Linearisation;
 
 public class MethodResolutionOrderGoal extends AbstractGoal {
 

@@ -16,6 +16,7 @@ import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.ExpressionTypeGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.MethodResolutionOrderGoal;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Class;
+import ch.hsr.ifs.pystructure.typeinference.model.definitions.Linearisation;
 import ch.hsr.ifs.pystructure.typeinference.results.types.MetaclassType;
 
 public class MethodResolutionOrderEvaluator extends AbstractEvaluator {

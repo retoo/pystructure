@@ -1,10 +1,9 @@
-package ch.hsr.ifs.pystructure.typeinference.evaluators.types;
+package ch.hsr.ifs.pystructure.typeinference.model.definitions;
 
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import ch.hsr.ifs.pystructure.typeinference.model.definitions.Class;
 
 public class Linearisation extends LinkedList<Class> {
 
