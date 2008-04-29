@@ -61,6 +61,8 @@ public class AssignTypeEvaluator extends DefinitionTypeEvaluator  {
 
 	@Override
 	public List<IGoal> subgoalDone(IGoal subgoal, GoalState state) {
+		if (!(subgoal instanceof AbstractTypeGoal)) { unexpectedSubgoal(subgoal); }
+		
 		AbstractTypeGoal g = (AbstractTypeGoal) subgoal;
 		resultType.appendType(g.resultType);
 		return IGoal.NO_GOALS;

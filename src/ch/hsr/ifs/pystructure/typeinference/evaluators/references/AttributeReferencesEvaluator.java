@@ -61,6 +61,8 @@ public class AttributeReferencesEvaluator extends AbstractEvaluator {
 	
 	@Override
 	public List<IGoal> subgoalDone(IGoal subgoal, GoalState state) {
+		if (!(subgoal instanceof PossibleAttributeReferencesGoal)) { unexpectedSubgoal(subgoal); }
+		
 		PossibleAttributeReferencesGoal g = (PossibleAttributeReferencesGoal) subgoal;
 		
 		List<AttributeReference> possibleReferences = g.references;

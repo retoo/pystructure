@@ -68,6 +68,8 @@ public class TupleElementTypeEvaluator extends AbstractEvaluator {
 			this.state = State.RESULT_WAIT;
 			List<IGoal> subgoals = new ArrayList<IGoal>();
 
+			if (!(subgoal instanceof ExpressionTypeGoal)) { unexpectedSubgoal(subgoal); }
+			
 			ExpressionTypeGoal g = (ExpressionTypeGoal) subgoal;
 
 			for (IType type : g.resultType) {

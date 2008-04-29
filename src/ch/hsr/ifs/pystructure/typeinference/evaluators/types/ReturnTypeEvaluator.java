@@ -81,6 +81,8 @@ public class ReturnTypeEvaluator extends AbstractEvaluator {
 
 	@Override
 	public List<IGoal> subgoalDone(IGoal subgoal, GoalState state) {
+		if (!(subgoal instanceof ExpressionTypeGoal)) { unexpectedSubgoal(subgoal); }
+		
 		ExpressionTypeGoal g = (ExpressionTypeGoal) subgoal;
 		resultType.appendType(g.resultType);
 		return IGoal.NO_GOALS;

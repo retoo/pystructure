@@ -94,6 +94,8 @@ public class BinOpTypeEvaluator extends AbstractEvaluator {
 
 	@Override
 	public List<IGoal> subgoalDone(IGoal subgoal, GoalState state) {
+		if (!(subgoal instanceof ExpressionTypeGoal)) { unexpectedSubgoal(subgoal); }
+		
 		ExpressionTypeGoal g = (ExpressionTypeGoal) subgoal;
 		this.result.appendType(g.resultType);
 		return IGoal.NO_GOALS;

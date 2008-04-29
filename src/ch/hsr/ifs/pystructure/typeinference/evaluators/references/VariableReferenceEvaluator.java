@@ -78,6 +78,8 @@ public class VariableReferenceEvaluator extends AbstractEvaluator {
 
 	@Override
 	public List<IGoal> subgoalDone(IGoal subgoal, GoalState state) {
+		if (!(subgoal instanceof DefinitionTypeGoal)) { unexpectedSubgoal(subgoal); }
+		
 		DefinitionTypeGoal g = (DefinitionTypeGoal) subgoal;
 		resultType.appendType(g.resultType);
 		return IGoal.NO_GOALS;
