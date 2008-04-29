@@ -1,4 +1,4 @@
-from import_star_1 import *
+from import_star import *
 
 Class ## type metaclass
 func() ## type float
