@@ -79,7 +79,7 @@ public class MethodResolutionOrderEvaluator extends AbstractEvaluator {
 		List<IGoal> subgoals = new LinkedList<IGoal>();
 
 		if (state == GoalState.RECURSIVE) {
-			throw new RuntimeException("Recurssion");
+			throw new RuntimeException("Recursion occured while evaluating MRO of class " + this.klass);
 		}
 		
 		/* In the first phase we resolve all the base classes's type. After that we calculate the MRO */
