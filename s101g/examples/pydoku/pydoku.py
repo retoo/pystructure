@@ -20,9 +20,8 @@
 import os
 from sudoku.board import Board
 
-board = Board("board5.txt")
+board = Board("board6.txt")
 
-board.fields
 n = board.pre_solve()
 print board
 board.solve()
