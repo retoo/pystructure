@@ -21,7 +21,7 @@ public class ExporterTest extends TestCase {
 		}
 		
 		/* Stupid simple test */
-		assertTrue(out.size() > 10000); 
+		assertTrue(out.size() > 9900); 
 	}
 
 }

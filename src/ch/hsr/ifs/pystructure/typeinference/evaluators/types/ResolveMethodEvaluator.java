@@ -31,7 +31,15 @@ public class ResolveMethodEvaluator extends AbstractEvaluator {
 
 	@Override
 	public List<IGoal> init() {
-		return wrap(new MethodResolutionOrderGoal(getGoal().getContext(), this.classType.getKlass()));
+		Class klass = this.classType.getKlass();
+		
+		if (klass != null) {
+			return wrap(new MethodResolutionOrderGoal(getGoal().getContext(), klass));
+		} else {
+			System.err.println("Class is null for class type " + this.classType);
+			
+			return IGoal.NO_GOALS;
+		}
 	}
 
 	@Override

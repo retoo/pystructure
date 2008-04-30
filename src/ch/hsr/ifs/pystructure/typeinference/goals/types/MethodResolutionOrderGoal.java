@@ -13,6 +13,10 @@ public class MethodResolutionOrderGoal extends AbstractGoal {
 	public MethodResolutionOrderGoal(ModuleContext context, Class klass) {
 		super(context);
 		
+		if (klass == null) {
+			throw new IllegalArgumentException("Klass cannot be null");
+		}
+		
 		this.klass = klass;
 	}
 
