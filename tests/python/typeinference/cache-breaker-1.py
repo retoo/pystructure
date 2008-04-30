@@ -5,3 +5,14 @@ class A():
 
 A().method(1)
 A().method("x")
+
+
+# The following test breaks because of the caching in DefinitionTypeEvaluator.
+
+def func(arg):
+    x = arg
+    x # # type float|int
+    return x
+
+func(42) # # type int
+func(3.14) # # type float
