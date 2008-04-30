@@ -7,7 +7,10 @@ class I(F, G): pass
 class J(G, H): pass
 class K(I, J): pass
 
-class Boat(object): pass
+class Boat(object): 
+    def foo(self):
+        return "x"
+        
 class DayBoat(Boat): pass
 class WheelBoat(Boat): pass
 class EngineLess(DayBoat): pass
@@ -15,6 +18,9 @@ class SmallMultihull(DayBoat): pass
 class PedalWheelBoat(EngineLess,WheelBoat): pass
 class SmallCatamaran(SmallMultihull): pass
 class Pedalo(PedalWheelBoat,SmallCatamaran): pass
+
+x = Pedalo()
+x.foo() ## type str
 
 class Pane(object): pass
 class ScrollingMixin(object): pass

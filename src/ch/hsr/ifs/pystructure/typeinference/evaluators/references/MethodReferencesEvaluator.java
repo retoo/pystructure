@@ -22,6 +22,8 @@
 
 package ch.hsr.ifs.pystructure.typeinference.evaluators.references;
 
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.python.pydev.parser.jython.ast.exprType;
@@ -35,6 +37,7 @@ import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.references.ClassReferencesGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.references.MethodReferencesGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.references.PossibleAttributeReferencesGoal;
+import ch.hsr.ifs.pystructure.typeinference.goals.types.ResolveMethodGoal;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Class;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Method;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Module;
@@ -45,6 +48,7 @@ import ch.hsr.ifs.pystructure.typeinference.results.references.FunctionReference
 import ch.hsr.ifs.pystructure.typeinference.results.references.MethodReference;
 import ch.hsr.ifs.pystructure.typeinference.results.types.ClassType;
 import ch.hsr.ifs.pystructure.typeinference.results.types.MetaclassType;
+import ch.hsr.ifs.pystructure.typeinference.results.types.MethodType;
 
 /**
  * Evaluator for finding all the references of a method. This is done in two
@@ -56,12 +60,15 @@ public class MethodReferencesEvaluator extends AbstractEvaluator {
 	private final Method method;
 	
 	private List<FunctionReference> references;
+	private HashMap<IGoal, List<AttributeReference>> possibleReferences;
 	
 	public MethodReferencesEvaluator(MethodReferencesGoal goal) {
 		super(goal);
 		this.method = goal.getMethod();
 		
+		
 		this.references = goal.references;
+		this.possibleReferences = new HashMap<IGoal, List<AttributeReference>>();
 	}
 
 	@Override
@@ -90,6 +97,8 @@ public class MethodReferencesEvaluator extends AbstractEvaluator {
 		} else 	if (subgoal instanceof PossibleAttributeReferencesGoal) {
 			PossibleAttributeReferencesGoal g = (PossibleAttributeReferencesGoal) subgoal; 
 			
+			List<IGoal> subgoals = new LinkedList<IGoal>();
+			
 			// We were looking for a normal method.
 			for (AttributeReference reference : g.references) {
 				exprType attribute = reference.getExpression();
@@ -101,12 +110,20 @@ public class MethodReferencesEvaluator extends AbstractEvaluator {
 						ClassType referenceClassType = (ClassType) parentType;
 						boolean referenceValid = false;
 						
-						InstanceContext instanceContext = getGoal().getContext().getInstanceContext();
+						ModuleContext context = getGoal().getContext();
+						InstanceContext instanceContext = context.getInstanceContext();
 						if (instanceContext != null && wantedClass.equals(instanceContext.getClassType().getKlass()))  {
 							// InstanceContext applies
 							referenceValid = referenceClassType.equals(instanceContext.getClassType());
 						} else {
-							referenceValid = wantedClass.equals(referenceClassType.getKlass());
+							ResolveMethodGoal rmg = new ResolveMethodGoal(context, referenceClassType, method.getName());
+							List<AttributeReference> list = possibleReferences.get(rmg);
+							if (list == null) {
+								list = new LinkedList<AttributeReference>();
+								possibleReferences.put(rmg, list);
+								subgoals.add(rmg);
+							}
+							list.add(reference);
 						}
 						
 						if (referenceValid) {
@@ -119,7 +136,25 @@ public class MethodReferencesEvaluator extends AbstractEvaluator {
 							references.add(new MethodReference(method, attribute, module, false));
 						}
 					}
+				}
+			}
+			
+			return subgoals;
+			
+		} else if (subgoal instanceof ResolveMethodGoal) {
+			ResolveMethodGoal g = (ResolveMethodGoal) subgoal;
+			List<AttributeReference> referencesList = possibleReferences.get(g);
+			for (IType result : g.resultType) {
+				MethodType methodType = (MethodType) result;
+				Method methodCandidate = methodType.getMethod();
 
+				if (method.equals(methodCandidate)) {
+					for (AttributeReference reference : referencesList) {
+						exprType attribute = reference.getExpression();
+						Module module = reference.getModule();
+					
+						references.add(new MethodReference(method, attribute, module));
+					}
 				}
 			}
 			

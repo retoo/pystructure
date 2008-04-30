@@ -1,13 +1,22 @@
 class Base(object):
+    def __init__(self):
+        self.value = ""
+
     def foo(self):
         return 42
+        
+    def set_value(self):
+        self.value = 1
 
 class Sub(Base):
     pass
-    
-        
-o = Sub()
 
+o = Sub()
+o.set_value()
+o.value ## type int
+
+b = Base()
+b.value ## type str
 o.foo() ## type int
 
 class DeepThought(object):
