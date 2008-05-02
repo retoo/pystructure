@@ -30,6 +30,7 @@ import java.util.Map;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.base.AbstractEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.GoalState;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
+import ch.hsr.ifs.pystructure.typeinference.inferencer.dispatcher.IEvaluatorFactory;
 import ch.hsr.ifs.pystructure.typeinference.inferencer.dispatcher.PythonEvaluatorFactory;
 import ch.hsr.ifs.pystructure.typeinference.inferencer.logger.GoalEngineNullLogger;
 import ch.hsr.ifs.pystructure.typeinference.inferencer.logger.IGoalEngineLogger;
@@ -42,7 +43,7 @@ public class GoalEngine {
 	
 	private static final boolean CACHING_ENABLED = true;
 
-	private final PythonEvaluatorFactory factory;
+	private final IEvaluatorFactory factory;
 	private final IGoalEngineLogger logger;
 	
 	private LinkedList<GoalNode> queue;
@@ -53,9 +54,13 @@ public class GoalEngine {
 	}
 
 	public GoalEngine(IGoalEngineLogger logger) {
-		this.logger = logger;
-		this.factory = new PythonEvaluatorFactory();
+		this(new PythonEvaluatorFactory(), logger);
 	}
+	
+	public GoalEngine(IEvaluatorFactory evaluatorFactory, IGoalEngineLogger logger) {
+		this.logger = logger;
+		this.factory = evaluatorFactory;
+	}	
 
 	public void evaluateGoal(IGoal rootGoal) {
 		logger.evaluationStarted(rootGoal);
