@@ -46,12 +46,6 @@ public class SourceFolder implements PathElementContainer {
 		this.filesToModules = new HashMap<File, Module>();
 	}
 
-	public static void main(String[] args) {
-		File path = new File("s101g/examples/pydoku/");
-		SourceFolder sourceDir = new SourceFolder(path);
-		sourceDir.traverse();
-	}
-	
 	public void addChild(PathElement child) {
 		children.put(child.getName(), child);
 	}
