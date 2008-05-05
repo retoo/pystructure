@@ -88,4 +88,14 @@ public final class FileUtils {
 				: filename;
 	}
 
+	public static void mkdir(File dir) {
+		if (!dir.exists()) {
+			boolean res = dir.mkdir();
+			
+			if (!res) {
+				throw new RuntimeException("Unable to create directory " + dir);
+			}
+		}
+	}
+
 }
