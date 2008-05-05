@@ -85,10 +85,13 @@ public class TypeAnnotator extends HtmlOutputter {
 		this.logger = new CustomLogger();
 		
 		goalDir = new File(outPath, "goals");
-		boolean res = goalDir.mkdir();
 		
-		if (!res) {
-			throw new RuntimeException("Unable to create directory " + goalDir);
+		if (!goalDir.exists()) {
+			boolean res = goalDir.mkdir();
+			
+			if (!res) {
+				throw new RuntimeException("Unable to create directory " + goalDir);
+			}
 		}
 		
 		this.inferencer = new PythonTypeInferencer(new CombinedLogger(new StatsLogger(false), logger));
@@ -226,9 +229,20 @@ public class TypeAnnotator extends HtmlOutputter {
 		
 		Process formatter = Runtime.getRuntime().exec(cmd);
 		
-		formatter.getOutputStream();
+		formatter.getOutputStream().close();
 		
 		String formatted = FileUtils.read(formatter.getInputStream());
+		
+		int exitValue;
+		try {
+			exitValue = formatter.waitFor();
+		} catch (InterruptedException e) {
+			throw new RuntimeException(e);
+		}
+		
+		if (exitValue != 0) {
+			throw new RuntimeException("pygmentize returned witha non-zero" + exitValue);
+		}
 		/* don't ask, don't tell */
  		return formatted.replaceFirst("^.*?<pre>", "")
  						.replaceFirst("</pre></div>$", "");
@@ -292,9 +306,14 @@ public class TypeAnnotator extends HtmlOutputter {
 		if (goal instanceof ILocatable) {
 			Location location = ((ILocatable) goal).getLocation();
 			
-			Element span = emptyTag("span"); 
-			span.addContent(location.node.getClass().getSimpleName() + " ");
-			span.addContent(linkTo(location));
+			Element span = emptyTag("span");
+			
+			if (location.node == null) {
+				span.addContent("null");
+			} else {
+				span.addContent(location.node.getClass().getSimpleName() + " ");
+				span.addContent(linkTo(location));
+			}
 			return span;
 		} else if (goal instanceof PossibleReferencesGoal) {
 			PossibleReferencesGoal g = (PossibleReferencesGoal) goal;
