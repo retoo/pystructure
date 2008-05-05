@@ -49,7 +49,9 @@ public class CombinedType implements IType, Iterable<IType> {
 	}
 	
 	public void appendType(List<? extends IType> types) {
-		this.types.addAll(types); /* FIXME: Robin müssen wir hier wirklich iterieren, oder genügt die Lösung hier? */
+		for (IType type : types) {
+			appendType(type);
+		}
 	}
 	
 	public Set<IType> getTypes() {
