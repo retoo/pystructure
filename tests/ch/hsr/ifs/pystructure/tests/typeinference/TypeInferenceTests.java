@@ -32,8 +32,9 @@ public final class TypeInferenceTests {
 	
 	public static Test suite() {
 		TestSuite suite = new TestSuite("Type Inference Tests");
-		suite.addTest(new TypeInferenceSuite("tests/python/typeinference/"));
+		suite.addTest(TypeInferenceSuite.suite());
 		suite.addTestSuite(StructureDefinitionVisitorTest.class);
 		return suite;
 	}
+
 }
