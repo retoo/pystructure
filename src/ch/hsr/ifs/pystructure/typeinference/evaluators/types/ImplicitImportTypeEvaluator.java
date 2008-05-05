@@ -55,6 +55,8 @@ public class ImplicitImportTypeEvaluator extends DefinitionTypeEvaluator {
 	 */
 	private final LinkedList<ImportPath> importStarPaths;
 	
+	private boolean tryingBuiltin = false;
+	
 	public ImplicitImportTypeEvaluator(DefinitionTypeGoal goal, ImplicitImportDefinition implicitImportDefinition) {
 		super(goal, implicitImportDefinition);
 		this.implicitImportDefinition = implicitImportDefinition;
@@ -126,8 +128,22 @@ public class ImplicitImportTypeEvaluator extends DefinitionTypeEvaluator {
 		} else if (!importStarPaths.isEmpty()) {
 			/* Maybe we could do this with a loop instead of recursing. */
 			return tryNextImportStarPath();
+		} else if (!tryingBuiltin) {
+			tryingBuiltin = true;
+			Module builtinModule = getGoal().getContext().getWorkspace().getBuiltinModule();
+			List<Definition> definitions = builtinModule.getDefinitions(implicitImportDefinition.getName());
+			for (Definition definition : definitions) {
+				if (definition instanceof ImplicitImportDefinition) {
+					// Ignore an implicit import definition because we're
+					// already trying the built-ins.
+					continue;
+				}
+				ModuleContext context = new ModuleContext(getGoal().getContext(), builtinModule);
+				subgoals.add(new DefinitionTypeGoal(context, definition));
+			}
+			return subgoals;
 		} else {
-			System.err.println("Built-in?: " + implicitImportDefinition.getName());
+			// Really no definition found.
 			return IGoal.NO_GOALS;
 		}
 	}

@@ -34,8 +34,11 @@ import ch.hsr.ifs.pystructure.utils.ListUtils;
 
 public class Workspace {
 
+	private static final File STDLIB_DIR = new File("resources/python-stdlib");
+
 	private final List<SourceFolder> sourceFolders;
 	private final ImportResolver importResolver;
+	private final Module builtinModule;
 
 	public Workspace(File sourceDir) {
 		this(ListUtils.wrap(sourceDir));
@@ -49,6 +52,12 @@ public class Workspace {
 			sourceFolder.traverse();
 			sourceFolders.add(sourceFolder);
 		}
+		
+		SourceFolder stdlib = new SourceFolder(STDLIB_DIR);
+		stdlib.traverse();
+		sourceFolders.add(stdlib);
+		
+		this.builtinModule = (Module) stdlib.getChild("builtins");
 		
 		this.importResolver = new ImportResolver(sourceFolders);
 	}
@@ -85,6 +94,10 @@ public class Workspace {
 
 	public ImportResolver getImportResolver() {
 		return importResolver;
+	}
+	
+	public Module getBuiltinModule() {
+		return builtinModule;
 	}
 
 }

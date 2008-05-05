@@ -38,9 +38,7 @@ class Z(X,B,Y,C): pass
 
 def mro(klass):
     mro = klass.__mro__
-    names = [k.__name__ for k in mro]
-    names.remove("object")
-    return ",".join(names)
+    return ",".join(k.__name__ for k in mro)
 
 classes = [definition for name, definition in locals().items() if isinstance(definition, type)]
 classes.sort()
@@ -49,31 +47,31 @@ for klass in classes:
     print klass.__name__ + " #" + "# mro " + mro(klass)
 
 # GENERATED #
-E ## mro E
-F ## mro F,E
-G ## mro G,E
-H ## mro H,E
-I ## mro I,F,G,E
-J ## mro J,G,H,E
-K ## mro K,I,F,J,G,H,E
-Boat ## mro Boat
-DayBoat ## mro DayBoat,Boat
-WheelBoat ## mro WheelBoat,Boat
-EngineLess ## mro EngineLess,DayBoat,Boat
-SmallMultihull ## mro SmallMultihull,DayBoat,Boat
-PedalWheelBoat ## mro PedalWheelBoat,EngineLess,DayBoat,WheelBoat,Boat
-SmallCatamaran ## mro SmallCatamaran,SmallMultihull,DayBoat,Boat
-Pedalo ## mro Pedalo,PedalWheelBoat,EngineLess,SmallCatamaran,SmallMultihull,DayBoat,WheelBoat,Boat
-Pane ## mro Pane
-ScrollingMixin ## mro ScrollingMixin
-EditingMixin ## mro EditingMixin
-ScrollablePane ## mro ScrollablePane,Pane,ScrollingMixin
-EditablePane ## mro EditablePane,Pane,EditingMixin
-EditableScrollablePane ## mro EditableScrollablePane,ScrollablePane,EditablePane,Pane,ScrollingMixin,EditingMixin
-A ## mro A
-B ## mro B
-C ## mro C
-X ## mro X,A
-Y ## mro Y,A
-Z ## mro Z,X,B,Y,A,C
+E ## mro E,object
+F ## mro F,E,object
+G ## mro G,E,object
+H ## mro H,E,object
+I ## mro I,F,G,E,object
+J ## mro J,G,H,E,object
+K ## mro K,I,F,J,G,H,E,object
+Boat ## mro Boat,object
+DayBoat ## mro DayBoat,Boat,object
+WheelBoat ## mro WheelBoat,Boat,object
+EngineLess ## mro EngineLess,DayBoat,Boat,object
+SmallMultihull ## mro SmallMultihull,DayBoat,Boat,object
+PedalWheelBoat ## mro PedalWheelBoat,EngineLess,DayBoat,WheelBoat,Boat,object
+SmallCatamaran ## mro SmallCatamaran,SmallMultihull,DayBoat,Boat,object
+Pedalo ## mro Pedalo,PedalWheelBoat,EngineLess,SmallCatamaran,SmallMultihull,DayBoat,WheelBoat,Boat,object
+Pane ## mro Pane,object
+ScrollingMixin ## mro ScrollingMixin,object
+EditingMixin ## mro EditingMixin,object
+ScrollablePane ## mro ScrollablePane,Pane,ScrollingMixin,object
+EditablePane ## mro EditablePane,Pane,EditingMixin,object
+EditableScrollablePane ## mro EditableScrollablePane,ScrollablePane,EditablePane,Pane,ScrollingMixin,EditingMixin,object
+A ## mro A,object
+B ## mro B,object
+C ## mro C,object
+X ## mro X,A,object
+Y ## mro Y,A,object
+Z ## mro Z,X,B,Y,A,C,object
 # GENERATED #
