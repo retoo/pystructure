@@ -58,7 +58,6 @@
 		<javac srcdir="${src-dir}" destdir="${build.src}" debug="true" deprecation="true">
 			<classpath refid="project.classpath" />
 			<classpath refid="jdom.classpath" />
-			<classpath refid="junit.classpath" />
 			<compilerarg value="-Xlint:unchecked" />
 		</javac>
 	</target>
