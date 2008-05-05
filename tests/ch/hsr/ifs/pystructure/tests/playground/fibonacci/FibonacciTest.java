@@ -1,9 +1,10 @@
-package ch.hsr.ifs.pystructure.playground.fibonacci;
+package ch.hsr.ifs.pystructure.tests.playground.fibonacci;
 
+import ch.hsr.ifs.pystructure.playground.fibonacci.Fibonacci;
 import junit.framework.TestCase;
 
 public class FibonacciTest extends TestCase {
-	
+		
 	public void testFibbonacci() {
 		Fibonacci fib = new Fibonacci();
 		

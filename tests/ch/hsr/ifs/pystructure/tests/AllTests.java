@@ -23,6 +23,8 @@
 package ch.hsr.ifs.pystructure.tests;
 
 import ch.hsr.ifs.pystructure.tests.export.ExporterTest;
+import ch.hsr.ifs.pystructure.tests.playground.fibonacci.FibonacciTest;
+import ch.hsr.ifs.pystructure.tests.typeannotator.AnnotatorTest;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
@@ -37,6 +39,8 @@ public final class AllTests {
 		suite.addTest(ch.hsr.ifs.pystructure.tests.typeinference.TypeInferenceTests.suite());
 		suite.addTest(ch.hsr.ifs.pystructure.tests.utils.AllTests.suite());
 		suite.addTestSuite(ExporterTest.class);
+		suite.addTestSuite(AnnotatorTest.class);
+		suite.addTestSuite(FibonacciTest.class);
 		//$JUnit-END$
 		return suite;
 	}

@@ -71,32 +71,26 @@ import ch.hsr.ifs.pystructure.utils.StringUtils;
 
 public class TypeAnnotator extends HtmlOutputter {
 	
-	private static final String PYTHON = "/usr/bin/python";
-	private static final String PYGMENTIZE = "s101g/examples/pygments/pygmentize";
 	private Workspace workspace;
 	private File outPath;
 	private PythonTypeInferencer inferencer;
 	private CustomLogger logger;
 	private File goalDir;
+	private String pygmentizePath;
 	
-	public TypeAnnotator(File path, String outPath) {
+	public TypeAnnotator(File path, String outPath, String pygmentizePath) {
 		this.workspace = new Workspace(path);
 		this.outPath = new File(outPath);
+		this.pygmentizePath = pygmentizePath;
 		this.logger = new CustomLogger();
 		
 		goalDir = new File(outPath, "goals");
 		
-		if (!goalDir.exists()) {
-			boolean res = goalDir.mkdir();
-			
-			if (!res) {
-				throw new RuntimeException("Unable to create directory " + goalDir);
-			}
-		}
+		FileUtils.mkdir(goalDir);
 		
 		this.inferencer = new PythonTypeInferencer(new CombinedLogger(new StatsLogger(false), logger));
 	}
-	
+
 	public void generateReport() throws IOException {
 		for (Module module : workspace.getModules()) {
 			/* parse */
@@ -225,27 +219,32 @@ public class TypeAnnotator extends HtmlOutputter {
 	}
 
 	private String style(File sourceFile) throws IOException {
-		String[] cmd = {PYTHON, PYGMENTIZE, "-f", "html", "-l", "python", sourceFile.getPath()};
-		
-		Process formatter = Runtime.getRuntime().exec(cmd);
-		
-		formatter.getOutputStream().close();
-		
-		String formatted = FileUtils.read(formatter.getInputStream());
-		
-		int exitValue;
-		try {
-			exitValue = formatter.waitFor();
-		} catch (InterruptedException e) {
-			throw new RuntimeException(e);
+		if (pygmentizePath != null) {
+			String[] cmd = {pygmentizePath, "-f", "html", "-l", "python", sourceFile.getPath()};
+			
+			Process formatter = Runtime.getRuntime().exec(cmd);
+			
+			formatter.getOutputStream().close();
+			
+			String formatted = FileUtils.read(formatter.getInputStream());
+			
+			int exitValue;
+			try {
+				exitValue = formatter.waitFor();
+			} catch (InterruptedException e) {
+				throw new RuntimeException(e);
+			}
+			
+			if (exitValue != 0) {
+				throw new RuntimeException("pygmentize returned witha non-zero" + exitValue);
+			}
+			/* don't ask, don't tell */
+	 		return formatted.replaceFirst("^.*?<pre>", "")
+	 						.replaceFirst("</pre></div>$", "");
+		} else {
+			/* Do not format if pygmentize is null */
+			return FileUtils.read(sourceFile);
 		}
-		
-		if (exitValue != 0) {
-			throw new RuntimeException("pygmentize returned witha non-zero" + exitValue);
-		}
-		/* don't ask, don't tell */
- 		return formatted.replaceFirst("^.*?<pre>", "")
- 						.replaceFirst("</pre></div>$", "");
 	}
 
 	private void writeGoalReport(List<Result> results) throws IOException {
@@ -416,8 +415,10 @@ public class TypeAnnotator extends HtmlOutputter {
 	}
 
 	public static void main(String[] args) throws Exception {
+		String pyg = "s101g/examples/pygments/pygmentize";
+		
 //		new TypeAnnotator(new File("tests/python/typeinference/"), "out/tests/").generateReport();
-		new TypeAnnotator(new File("s101g/examples/pydoku/"), "out/pydoku/").generateReport();
+		new TypeAnnotator(new File("s101g/examples/pydoku/"), "out/pydoku/", pyg).generateReport();
 //		new TypeAnnotator(new File("s101g/examples/pygments/"), "out/pygments/").generateReport();
 	}
 
