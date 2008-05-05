@@ -498,8 +498,6 @@ public class DefinitionVisitor extends StructuralVisitor {
 	 * from pkg import *  # doesn't import all modules, but everything in __init__.py
 	 * from .module import Class
 	 * from . import module
-	 * 
-	 * TODO: Support wildcard imports
 	 */
 	@Override
 	public Object visitImportFrom(ImportFrom node) throws Exception {
