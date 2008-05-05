@@ -1,5 +1,7 @@
+a = list()
+a.append(1)
+a.pop() ## type int
 
-
-x = []
-
-x.append("hallo") # FIXME: how to handle/test internal/unreachable clases & methods # type 
+b = list()
+b.append(3.14)
+b.pop() ## type float
