@@ -108,6 +108,11 @@ public class ArgumentTypeEvaluator extends DefinitionTypeEvaluator {
 		return IGoal.NO_GOALS;
 	}
 	
+	@Override
+	public boolean checkCache() {
+		return false;
+	}
+	
 	private IGoal getArgumentExpressionGoal(FunctionReference reference) {
 		exprType expression = reference.getArgumentExpression(argument);
 		if (expression == null) {
