@@ -130,7 +130,16 @@ public class AttributeTypeEvaluator extends AbstractEvaluator {
 					}
 				}
 				
-				// TODO: PythonMetaclassType
+				/*
+				 * TODO: What if the receiver is MetaclassType?:
+				 * 
+				 * class B(object):
+				 *     def method(self):
+				 *         return 42
+				 * 
+				 * b = B()
+				 * B.method(b) ## type int
+				 */
 			}
 			
 		} else if (subgoal instanceof ClassAttributeTypeGoal) {
