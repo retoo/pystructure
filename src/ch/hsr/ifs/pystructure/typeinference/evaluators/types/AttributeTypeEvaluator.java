@@ -135,7 +135,7 @@ public class AttributeTypeEvaluator extends AbstractEvaluator {
 			
 		} else if (subgoal instanceof ClassAttributeTypeGoal) {
 			ClassAttributeTypeGoal g = (ClassAttributeTypeGoal) subgoal;
-			resultType.appendType((CombinedType) g.resultType);
+			resultType.appendType(g.resultType);
 		
 		} else if (subgoal instanceof ResolveMethodGoal) {
 			ResolveMethodGoal g = (ResolveMethodGoal) subgoal;
@@ -143,6 +143,9 @@ public class AttributeTypeEvaluator extends AbstractEvaluator {
 			if (!g.methodTypes.isEmpty()) {
 				resultType.appendType(g.methodTypes);
 			} else {
+				/* If we can't find a method with this name (both in the actual class
+				 * and in the hierarchy we are trying to look for a class attribute 
+				 */
 				ClassType classType = g.getClassType();
 				String attributeName = g.getAttributeName();
 				ModuleContext context = new ModuleContext(getGoal().getContext(), classType.getKlass().getModule());
