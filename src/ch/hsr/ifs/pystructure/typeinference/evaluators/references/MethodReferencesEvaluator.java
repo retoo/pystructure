@@ -144,8 +144,7 @@ public class MethodReferencesEvaluator extends AbstractEvaluator {
 		} else if (subgoal instanceof ResolveMethodGoal) {
 			ResolveMethodGoal g = (ResolveMethodGoal) subgoal;
 			List<AttributeReference> referencesList = possibleReferences.get(g);
-			for (IType result : g.resultType) {
-				MethodType methodType = (MethodType) result;
+			for (MethodType methodType : g.methodTypes) {
 				Method methodCandidate = methodType.getMethod();
 
 				if (method.equals(methodCandidate)) {

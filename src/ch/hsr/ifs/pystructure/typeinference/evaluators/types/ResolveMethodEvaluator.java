@@ -2,7 +2,6 @@ package ch.hsr.ifs.pystructure.typeinference.evaluators.types;
 
 import java.util.List;
 
-import ch.hsr.ifs.pystructure.typeinference.basetype.CombinedType;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.base.AbstractEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.GoalState;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
@@ -18,7 +17,7 @@ public class ResolveMethodEvaluator extends AbstractEvaluator {
 	private ClassType classType;
 	private String methodName;
 	
-	private CombinedType resultType;
+	private List<MethodType> methodTypes;
 
 	public ResolveMethodEvaluator(ResolveMethodGoal goal) {
 		super(goal);
@@ -26,7 +25,7 @@ public class ResolveMethodEvaluator extends AbstractEvaluator {
 		this.classType = goal.getClassType();
 		this.methodName = goal.getAttributeName();
 		
-		this.resultType = goal.resultType;
+		this.methodTypes = goal.methodTypes;
 	}
 
 	@Override
@@ -51,7 +50,7 @@ public class ResolveMethodEvaluator extends AbstractEvaluator {
 				Method method = klass.getMethod(methodName);
 				
 				if (method != null) {
-					this.resultType.appendType(new MethodType(klass.getModule(), method, classType));
+					this.methodTypes.add(new MethodType(klass.getModule(), method, classType));
 					break;
 				}
 			}

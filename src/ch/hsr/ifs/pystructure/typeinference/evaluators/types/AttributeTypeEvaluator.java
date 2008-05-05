@@ -140,8 +140,8 @@ public class AttributeTypeEvaluator extends AbstractEvaluator {
 		} else if (subgoal instanceof ResolveMethodGoal) {
 			ResolveMethodGoal g = (ResolveMethodGoal) subgoal;
 			
-			if (!g.resultType.getTypes().isEmpty()) {
-				resultType.appendType(g.resultType);
+			if (!g.methodTypes.isEmpty()) {
+				resultType.appendType(g.methodTypes);
 			} else {
 				ClassType classType = g.getClassType();
 				String attributeName = g.getAttributeName();

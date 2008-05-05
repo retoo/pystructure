@@ -24,6 +24,7 @@ package ch.hsr.ifs.pystructure.typeinference.basetype;
 
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -45,6 +46,10 @@ public class CombinedType implements IType, Iterable<IType> {
 		} else {
 			types.add(type);
 		}
+	}
+	
+	public void appendType(List<? extends IType> types) {
+		this.types.addAll(types); /* FIXME: Robin müssen wir hier wirklich iterieren, oder genügt die Lösung hier? */
 	}
 	
 	public Set<IType> getTypes() {
@@ -71,4 +76,5 @@ public class CombinedType implements IType, Iterable<IType> {
 	public Iterator<IType> iterator() {
 		return types.iterator();
 	}
+
 }

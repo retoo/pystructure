@@ -1,17 +1,24 @@
 package ch.hsr.ifs.pystructure.typeinference.goals.types;
 
-import ch.hsr.ifs.pystructure.typeinference.contexts.ModuleContext;
-import ch.hsr.ifs.pystructure.typeinference.results.types.ClassType;
+import java.util.LinkedList;
+import java.util.List;
 
-public class ResolveMethodGoal extends AbstractTypeGoal {
+import ch.hsr.ifs.pystructure.typeinference.contexts.ModuleContext;
+import ch.hsr.ifs.pystructure.typeinference.goals.base.AbstractGoal;
+import ch.hsr.ifs.pystructure.typeinference.results.types.ClassType;
+import ch.hsr.ifs.pystructure.typeinference.results.types.MethodType;
+
+public class ResolveMethodGoal extends AbstractGoal {
 
 	private final String attributeName;
 	private final ClassType classType;
+	public final List<MethodType> methodTypes;
 
 	public ResolveMethodGoal(ModuleContext context, ClassType classType, String attributeName) {
 		super(context);
 		this.classType = classType;
 		this.attributeName = attributeName;
+		this.methodTypes = new LinkedList<MethodType>();
 	}
 
 	public ClassType getClassType() {
