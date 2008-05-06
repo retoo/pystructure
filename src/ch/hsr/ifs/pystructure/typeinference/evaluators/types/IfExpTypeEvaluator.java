@@ -33,6 +33,14 @@ import ch.hsr.ifs.pystructure.typeinference.goals.base.GoalState;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.ExpressionTypeGoal;
 
+/**
+ * Evaluator for the following kind of expression (e.g. used as the right side
+ * of an assignment):
+ * 
+ * 42 if random() else 3.14
+ * 
+ * The resulting type would be int|float.
+ */
 public class IfExpTypeEvaluator extends AbstractEvaluator {
 	
 	private final IfExp ifExp;
