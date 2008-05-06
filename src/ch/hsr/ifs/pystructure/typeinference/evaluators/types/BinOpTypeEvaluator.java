@@ -26,13 +26,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.python.pydev.parser.jython.ast.Attribute;
 import org.python.pydev.parser.jython.ast.BinOp;
 import org.python.pydev.parser.jython.ast.Call;
-import org.python.pydev.parser.jython.ast.NameTok;
-import org.python.pydev.parser.jython.ast.exprType;
-import org.python.pydev.parser.jython.ast.expr_contextType;
-import org.python.pydev.parser.jython.ast.name_contextType;
 import org.python.pydev.parser.jython.ast.operatorType;
 
 import ch.hsr.ifs.pystructure.typeinference.basetype.CombinedType;
@@ -40,6 +35,7 @@ import ch.hsr.ifs.pystructure.typeinference.evaluators.base.AbstractEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.GoalState;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.ExpressionTypeGoal;
+import ch.hsr.ifs.pystructure.typeinference.model.base.NodeUtils;
 
 /**
  * Evaluator for binary operations like +.
@@ -85,17 +81,12 @@ public class BinOpTypeEvaluator extends AbstractEvaluator {
 		 * 2 * 3  →  2.__mul__(3)
 		 */
 		
-		exprType receiver = binOp.left;
 		String method = METHODS.get(binOp.op);
 		if (method == null) {
 			return IGoal.NO_GOALS;
 		}
 		
-		NameTok methodTok = new NameTok(method, name_contextType.Attrib);
-		Attribute func = new Attribute(receiver, methodTok, expr_contextType.Load);
-		
-		exprType argument = binOp.right;
-		Call call = new Call(func, new exprType[] {argument}, null, null, null);
+		Call call = NodeUtils.createMethodCall(binOp.left, method, binOp.right);
 		
 		return wrap(new ExpressionTypeGoal(getGoal().getContext(), call));
 	}

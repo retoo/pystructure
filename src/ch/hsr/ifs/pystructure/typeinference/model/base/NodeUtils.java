@@ -23,10 +23,13 @@
 package ch.hsr.ifs.pystructure.typeinference.model.base;
 
 import org.python.pydev.parser.jython.SimpleNode;
+import org.python.pydev.parser.jython.ast.Attribute;
 import org.python.pydev.parser.jython.ast.Call;
 import org.python.pydev.parser.jython.ast.NameTok;
 import org.python.pydev.parser.jython.ast.NameTokType;
 import org.python.pydev.parser.jython.ast.exprType;
+import org.python.pydev.parser.jython.ast.expr_contextType;
+import org.python.pydev.parser.jython.ast.name_contextType;
 
 public final class NodeUtils {
 
@@ -60,7 +63,17 @@ public final class NodeUtils {
 		
 		return null;
 	}
-
+	
+	/**
+	 * Create a call node for a method call from the specified receiver
+	 * expression, method name and arguments: receiver.method(arg1, arg2)
+	 */
+	public static Call createMethodCall(exprType receiver, String method, exprType... arguments) {
+		NameTok methodTok = new NameTok(method, name_contextType.Attrib);
+		Attribute func = new Attribute(receiver, methodTok, expr_contextType.Load);
+		return new Call(func, arguments, null, null, null);
+	}
+	
 	/**
 	 * Pretty-print the given AST node to stdout.
 	 *

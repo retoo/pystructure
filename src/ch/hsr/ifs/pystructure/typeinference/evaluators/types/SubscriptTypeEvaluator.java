@@ -24,15 +24,11 @@ package ch.hsr.ifs.pystructure.typeinference.evaluators.types;
 
 import java.util.List;
 
-import org.python.pydev.parser.jython.ast.Attribute;
 import org.python.pydev.parser.jython.ast.Call;
 import org.python.pydev.parser.jython.ast.Index;
-import org.python.pydev.parser.jython.ast.NameTok;
 import org.python.pydev.parser.jython.ast.Num;
 import org.python.pydev.parser.jython.ast.Subscript;
 import org.python.pydev.parser.jython.ast.exprType;
-import org.python.pydev.parser.jython.ast.expr_contextType;
-import org.python.pydev.parser.jython.ast.name_contextType;
 import org.python.pydev.parser.jython.ast.num_typeType;
 
 import ch.hsr.ifs.pystructure.typeinference.basetype.CombinedType;
@@ -40,6 +36,7 @@ import ch.hsr.ifs.pystructure.typeinference.evaluators.base.AbstractEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.GoalState;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.ExpressionTypeGoal;
+import ch.hsr.ifs.pystructure.typeinference.model.base.NodeUtils;
 
 /**
  * Evaluator for the subscript operator. There are two cases here:
@@ -102,10 +99,7 @@ public class SubscriptTypeEvaluator extends AbstractEvaluator {
 		}
 		
 		exprType receiver = subscript.value;
-		NameTok methodTok = new NameTok(method, name_contextType.Attrib);
-		Attribute func = new Attribute(receiver, methodTok, expr_contextType.Load);
-		
-		Call call = new Call(func, arguments, null, null, null);
+		Call call = NodeUtils.createMethodCall(receiver, method, arguments);
 
 		return wrap(new ExpressionTypeGoal(getGoal().getContext(), call));
 	}
