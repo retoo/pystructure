@@ -28,3 +28,9 @@ class list(object):
 
     def sort(self):
         pass
+
+    def __getitem__(self, index):
+        return self.element
+
+    def __getslice__(self, i, j):
+        return self

@@ -68,6 +68,7 @@ import ch.hsr.ifs.pystructure.typeinference.evaluators.types.IfExpTypeEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.types.ImplicitImportTypeEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.types.ImportTypeEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.types.ReturnTypeEvaluator;
+import ch.hsr.ifs.pystructure.typeinference.evaluators.types.SubscriptTypeEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.types.TupleElementTypeEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.references.AttributeReferencesGoal;
@@ -243,6 +244,9 @@ public class PythonEvaluatorFactory implements IEvaluatorFactory {
 		if (expr instanceof IfExp) {
 			return new IfExpTypeEvaluator(goal, (IfExp) expr);
 		}
+		if (expr instanceof Subscript) {
+			return new SubscriptTypeEvaluator(goal, (Subscript) expr);
+		}
 		
 		return createLiteralEvaluator(goal);
 	}
@@ -267,9 +271,6 @@ public class PythonEvaluatorFactory implements IEvaluatorFactory {
 		}
 		if (expr instanceof Dict) {
 			return new FixedResultEvaluator(goal, new ClassType("dict"));
-		}
-		if (expr instanceof Subscript) {
-			return new FixedResultEvaluator(goal, new ClassType("list-element"));
 		}
 		if (expr instanceof ListComp) {
 			/* FIXME: this is a expression like:
