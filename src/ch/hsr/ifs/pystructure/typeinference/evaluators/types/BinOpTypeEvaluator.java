@@ -77,6 +77,14 @@ public class BinOpTypeEvaluator extends AbstractEvaluator {
 
 	@Override
 	public List<IGoal> init() {
+		/*
+		 * We create a corresponding call for the operator and then generate an
+		 * ExpressionTypeGoal for it:
+		 * 
+		 * x + 1  =>  x.__add__(1)
+		 * 2 * 3  =>  2.__mul__(3)
+		 */
+		
 		exprType receiver = binOp.left;
 		String method = METHODS.get(binOp.op);
 		if (method == null) {
