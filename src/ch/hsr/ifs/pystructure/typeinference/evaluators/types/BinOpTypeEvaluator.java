@@ -61,6 +61,8 @@ public class BinOpTypeEvaluator extends AbstractEvaluator {
 		METHODS.put(operatorType.BitXor, "__xor__");
 		METHODS.put(operatorType.BitOr, "__or__");
 		
+		METHODS.put(operatorType.Div, "__div__");
+		
 		// TODO: What about __radd__ and friends?
 	}
 	
@@ -83,7 +85,7 @@ public class BinOpTypeEvaluator extends AbstractEvaluator {
 		
 		String method = METHODS.get(binOp.op);
 		if (method == null) {
-			return IGoal.NO_GOALS;
+			throw new RuntimeException("Couldn't map BinOp to corresponding method: " + binOp);
 		}
 		
 		Call call = NodeUtils.createMethodCall(binOp.left, method, binOp.right);
