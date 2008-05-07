@@ -8,13 +8,13 @@ import ch.hsr.ifs.pystructure.typeinference.goals.base.AbstractGoal;
 import ch.hsr.ifs.pystructure.typeinference.results.types.ClassType;
 import ch.hsr.ifs.pystructure.typeinference.results.types.MethodType;
 
-public class ResolveMethodGoal extends AbstractGoal {
+public class MethodResolveGoal extends AbstractGoal {
 
 	private final String attributeName;
 	private final ClassType classType;
 	public final List<MethodType> methodTypes;
 
-	public ResolveMethodGoal(ModuleContext context, ClassType classType, String attributeName) {
+	public MethodResolveGoal(ModuleContext context, ClassType classType, String attributeName) {
 		super(context);
 		this.classType = classType;
 		this.attributeName = attributeName;
@@ -56,7 +56,7 @@ public class ResolveMethodGoal extends AbstractGoal {
 		if (getClass() != obj.getClass()) {
 			return false;
 		}
-		final ResolveMethodGoal other = (ResolveMethodGoal) obj;
+		final MethodResolveGoal other = (MethodResolveGoal) obj;
 		if (classType == null) {
 			if (other.classType != null) {
 				return false;

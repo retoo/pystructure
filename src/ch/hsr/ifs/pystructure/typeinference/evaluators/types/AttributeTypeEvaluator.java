@@ -36,7 +36,7 @@ import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.ClassAttributeTypeGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.DefinitionTypeGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.ExpressionTypeGoal;
-import ch.hsr.ifs.pystructure.typeinference.goals.types.ResolveMethodGoal;
+import ch.hsr.ifs.pystructure.typeinference.goals.types.MethodResolveGoal;
 import ch.hsr.ifs.pystructure.typeinference.model.base.NodeUtils;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Class;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Definition;
@@ -92,7 +92,7 @@ public class AttributeTypeEvaluator extends AbstractEvaluator {
 	
 					if (klass != null) {
 						ModuleContext context = new ModuleContext(getGoal().getContext(), klass.getModule());
-						subgoals.add(new ResolveMethodGoal(context, classType, attributeName));
+						subgoals.add(new MethodResolveGoal(context, classType, attributeName));
 					} else {
 						/* klass is null, this probably means that we are talking about 
 						 * an internal or unknown class */
@@ -146,8 +146,8 @@ public class AttributeTypeEvaluator extends AbstractEvaluator {
 			ClassAttributeTypeGoal g = (ClassAttributeTypeGoal) subgoal;
 			resultType.appendType(g.resultType);
 		
-		} else if (subgoal instanceof ResolveMethodGoal) {
-			ResolveMethodGoal g = (ResolveMethodGoal) subgoal;
+		} else if (subgoal instanceof MethodResolveGoal) {
+			MethodResolveGoal g = (MethodResolveGoal) subgoal;
 			
 			if (!g.methodTypes.isEmpty()) {
 				resultType.appendType(g.methodTypes);

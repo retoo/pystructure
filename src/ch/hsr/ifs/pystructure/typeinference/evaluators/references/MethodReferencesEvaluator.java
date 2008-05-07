@@ -37,7 +37,7 @@ import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.references.ClassReferencesGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.references.MethodReferencesGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.references.PossibleAttributeReferencesGoal;
-import ch.hsr.ifs.pystructure.typeinference.goals.types.ResolveMethodGoal;
+import ch.hsr.ifs.pystructure.typeinference.goals.types.MethodResolveGoal;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Class;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Method;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Module;
@@ -135,8 +135,8 @@ public class MethodReferencesEvaluator extends AbstractEvaluator {
 				}
 			}
 			
-		} else if (subgoal instanceof ResolveMethodGoal) {
-			ResolveMethodGoal g = (ResolveMethodGoal) subgoal;
+		} else if (subgoal instanceof MethodResolveGoal) {
+			MethodResolveGoal g = (MethodResolveGoal) subgoal;
 			List<Reference> referencesList = possibleReferences.get(g);
 			for (MethodType methodType : g.methodTypes) {
 				Method methodCandidate = methodType.getMethod();
@@ -162,11 +162,11 @@ public class MethodReferencesEvaluator extends AbstractEvaluator {
 	}
 
 	/**
-	 * Sets up a {@link ResolveMethodGoal} for the given class 
+	 * Sets up a {@link MethodResolveGoal} for the given class 
 	 */
 	private void resolveMethod(Reference reference, ClassType classType, List<IGoal> subgoals) {
 		String methodName = this.method.getName();
-		ResolveMethodGoal rmg = new ResolveMethodGoal(this.context, classType, methodName);
+		MethodResolveGoal rmg = new MethodResolveGoal(this.context, classType, methodName);
 		List<Reference> list = possibleReferences.get(rmg);
 		if (list == null) {
 			list = new LinkedList<Reference>();

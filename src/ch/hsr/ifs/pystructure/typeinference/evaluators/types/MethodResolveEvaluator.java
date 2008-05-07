@@ -6,20 +6,20 @@ import ch.hsr.ifs.pystructure.typeinference.evaluators.base.AbstractEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.GoalState;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.MethodResolutionOrderGoal;
-import ch.hsr.ifs.pystructure.typeinference.goals.types.ResolveMethodGoal;
+import ch.hsr.ifs.pystructure.typeinference.goals.types.MethodResolveGoal;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Class;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Method;
 import ch.hsr.ifs.pystructure.typeinference.results.types.ClassType;
 import ch.hsr.ifs.pystructure.typeinference.results.types.MethodType;
 
-public class ResolveMethodEvaluator extends AbstractEvaluator {
+public class MethodResolveEvaluator extends AbstractEvaluator {
 
 	private ClassType classType;
 	private String methodName;
 	
 	private List<MethodType> methodTypes;
 
-	public ResolveMethodEvaluator(ResolveMethodGoal goal) {
+	public MethodResolveEvaluator(MethodResolveGoal goal) {
 		super(goal);
 		
 		this.classType = goal.getClassType();

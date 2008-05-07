@@ -55,7 +55,7 @@ import ch.hsr.ifs.pystructure.typeinference.goals.references.PossibleAttributeRe
 import ch.hsr.ifs.pystructure.typeinference.goals.references.PossibleReferencesGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.ClassAttributeTypeGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.MethodResolutionOrderGoal;
-import ch.hsr.ifs.pystructure.typeinference.goals.types.ResolveMethodGoal;
+import ch.hsr.ifs.pystructure.typeinference.goals.types.MethodResolveGoal;
 import ch.hsr.ifs.pystructure.typeinference.inferencer.PythonTypeInferencer;
 import ch.hsr.ifs.pystructure.typeinference.inferencer.logger.CombinedLogger;
 import ch.hsr.ifs.pystructure.typeinference.inferencer.logger.CustomLogger;
@@ -328,8 +328,8 @@ public class TypeAnnotator extends HtmlOutputter {
 		} else if (goal instanceof PossibleAttributeReferencesGoal) {
 			PossibleAttributeReferencesGoal g = (PossibleAttributeReferencesGoal) goal;
 			return new Text(g.getName());
-		} else if (goal instanceof ResolveMethodGoal) {
-			ResolveMethodGoal g = (ResolveMethodGoal) goal;
+		} else if (goal instanceof MethodResolveGoal) {
+			MethodResolveGoal g = (MethodResolveGoal) goal;
 			return new Text(g.getClassType().getKlass() + " " + g.getAttributeName());
 		} else if (goal instanceof MethodResolutionOrderGoal) {
 			MethodResolutionOrderGoal g = (MethodResolutionOrderGoal) goal;
