@@ -60,7 +60,7 @@ public class MethodResolutionOrderEvaluator extends AbstractEvaluator {
 		List<IGoal> subgoals = new LinkedList<IGoal>();
 
 		ModuleContext context = new ModuleContext(getGoal().getContext(), klass.getModule());
-		for (exprType baseClasseExpression : klass.getBases()) {
+		for (exprType baseClasseExpression : klass.getBaseClasses()) {
 			BaseClass baseClass = new BaseClass(baseClasseExpression);
 
 			/* Create and register goal */

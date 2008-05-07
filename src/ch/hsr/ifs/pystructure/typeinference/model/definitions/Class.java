@@ -39,15 +39,15 @@ import org.python.pydev.parser.jython.ast.exprType;
 public class Class extends StructureDefinition implements IAttributeDefinition {
 
 	private final List<Method> methods;
-	private final List<exprType> bases; /* FIXME: rename me to baseClasses */
 	private final Map<String, Attribute> attributes;
+	private final List<exprType> baseClasses;
 	private final Set<Class> subClasses;
 	private MethodResolutionOrder linearization;
 
 	public Class(String name, ClassDef classDef, Module module) {
 		super(module, name, classDef);
 		this.methods = new ArrayList<Method>();
-		this.bases = Arrays.asList(classDef.bases);
+		this.baseClasses = Arrays.asList(classDef.bases);
 		
 		this.attributes = new HashMap<String, Attribute>();
 		subClasses = new HashSet<Class>();
@@ -83,13 +83,8 @@ public class Class extends StructureDefinition implements IAttributeDefinition {
 		return "class '" + getName() + "'";
 	}
 	
-	public List<exprType> getBases() {
-		return bases;
-	}
-	
-	@Override
-	public String toString() {
-		return "Class " + getName() + " " + getNodePosition();
+	public List<exprType> getBaseClasses() {
+		return baseClasses;
 	}
 
 	public Definition getAttributeParent() {
@@ -118,6 +113,11 @@ public class Class extends StructureDefinition implements IAttributeDefinition {
 	
 	public Set<Class> getSubClasses() {
 		return subClasses;
+	}
+	
+	@Override
+	public String toString() {
+		return "Class " + getName() + " " + getNodePosition();
 	}
 
 }
