@@ -101,9 +101,7 @@ public class CallTypeEvaluator extends AbstractEvaluator {
 					ModuleContext moduleContext = new ModuleContext(callContext, functionType.getModule());
 					
 					subgoals.add(new ReturnTypeGoal(moduleContext, functionType.getFunction()));
-				}
-				
-				if (type instanceof MetaclassType) {
+				} else if (type instanceof MetaclassType) {
 					// It's a constructor.
 					
 					MetaclassType metaclassType = (MetaclassType) type;

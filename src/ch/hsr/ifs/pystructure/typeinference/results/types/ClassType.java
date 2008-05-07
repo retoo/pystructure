@@ -45,6 +45,12 @@ public class ClassType extends AbstractType {
 		this.constructorCall = constructorCall;
 	}
 	
+	protected ClassType(String typename, Class klass) {
+		super(typename);
+		this.klass = klass;
+		this.constructorCall = null;
+	}
+	
 	public Class getKlass() {
 		return klass;
 	}

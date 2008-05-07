@@ -24,14 +24,22 @@ package ch.hsr.ifs.pystructure.typeinference.results.references;
 
 import org.python.pydev.parser.jython.ast.exprType;
 
-import ch.hsr.ifs.pystructure.typeinference.model.definitions.Class;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Module;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Reference;
+import ch.hsr.ifs.pystructure.typeinference.results.types.MetaclassType;
 
 public class ClassReference extends Reference {
 	
-	public ClassReference(Class definition, exprType expression, Module module) {
-		super(definition, expression, module);
+	private final MetaclassType metaclassType;
+
+	public ClassReference(MetaclassType metaclassType, exprType expression, Module module) {
+		super(metaclassType.getKlass(), expression, module);
+
+		this.metaclassType = metaclassType;
+	}
+	
+	public MetaclassType getMetaclassType() {
+		return metaclassType;
 	}
 	
 }

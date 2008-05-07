@@ -50,6 +50,7 @@ import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.ILocatable;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.Location;
 import ch.hsr.ifs.pystructure.typeinference.goals.references.AttributeReferencesGoal;
+import ch.hsr.ifs.pystructure.typeinference.goals.references.CalculateTypeHierarchyGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.references.PossibleAttributeReferencesGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.references.PossibleReferencesGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.ClassAttributeTypeGoal;
@@ -333,6 +334,8 @@ public class TypeAnnotator extends HtmlOutputter {
 		} else if (goal instanceof MethodResolutionOrderGoal) {
 			MethodResolutionOrderGoal g = (MethodResolutionOrderGoal) goal;
 			return new Text("MRO for " + g.getKlass());
+		} else if (goal instanceof CalculateTypeHierarchyGoal) {
+			return new Text("Calculate all Types");
 		} else { 
 			throw new RuntimeException("Cannot format goal, unknown goal type: " + goal);
 		}

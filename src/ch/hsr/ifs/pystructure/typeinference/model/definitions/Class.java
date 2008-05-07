@@ -25,8 +25,10 @@ package ch.hsr.ifs.pystructure.typeinference.model.definitions;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.python.pydev.parser.jython.ast.ClassDef;
 import org.python.pydev.parser.jython.ast.exprType;
@@ -37,15 +39,18 @@ import org.python.pydev.parser.jython.ast.exprType;
 public class Class extends StructureDefinition implements IAttributeDefinition {
 
 	private final List<Method> methods;
-	private final List<exprType> bases;
+	private final List<exprType> bases; /* FIXME: rename me to baseClasses */
 	private final Map<String, Attribute> attributes;
+	private final Set<Class> subClasses;
 	private MethodResolutionOrder linearization;
 
 	public Class(String name, ClassDef classDef, Module module) {
 		super(module, name, classDef);
 		this.methods = new ArrayList<Method>();
 		this.bases = Arrays.asList(classDef.bases);
+		
 		this.attributes = new HashMap<String, Attribute>();
+		subClasses = new HashSet<Class>();
 	}
 	
 	public void addMethod(Method method) {
@@ -105,6 +110,14 @@ public class Class extends StructureDefinition implements IAttributeDefinition {
 
 	public void setLinearization(MethodResolutionOrder linearization) {
 		this.linearization = linearization;
+	}
+
+	public void addSubClass(Class klass) {
+		subClasses.add(klass);
+	}
+	
+	public Set<Class> getSubClasses() {
+		return subClasses;
 	}
 
 }

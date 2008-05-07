@@ -23,30 +23,11 @@
 package ch.hsr.ifs.pystructure.typeinference.results.types;
 
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Class;
-import ch.hsr.ifs.pystructure.typeinference.model.definitions.Module;
 
-public class MetaclassType extends AbstractType {
+public class MetaclassType extends ClassType {
 	
-	private final Module module;
-	private final Class klass;
-
-	public MetaclassType(Module module, Class klass) {
-		super("metaclass");
-		this.module = module;
-		this.klass = klass;
-	}
-	
-	public Module getModule() {
-		return module;
-	}
-	
-	public Class getKlass() {
-		return klass;
-	}
-	
-	@Override
-	public String toString() {
-		return "type metaclass of " + klass;
+	public MetaclassType(Class klass) {
+		super("metaclass", klass);
 	}
 	
 }

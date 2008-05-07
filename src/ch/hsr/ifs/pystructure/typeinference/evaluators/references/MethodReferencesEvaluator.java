@@ -41,6 +41,7 @@ import ch.hsr.ifs.pystructure.typeinference.goals.types.ResolveMethodGoal;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Class;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Method;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Module;
+import ch.hsr.ifs.pystructure.typeinference.model.definitions.Reference;
 import ch.hsr.ifs.pystructure.typeinference.results.references.AttributeReference;
 import ch.hsr.ifs.pystructure.typeinference.results.references.ClassReference;
 import ch.hsr.ifs.pystructure.typeinference.results.references.ConstructorReference;
@@ -60,15 +61,18 @@ public class MethodReferencesEvaluator extends AbstractEvaluator {
 	private final Method method;
 	
 	private List<FunctionReference> references;
-	private HashMap<IGoal, List<AttributeReference>> possibleReferences;
+	private HashMap<IGoal, List<Reference>> possibleReferences;
+
+	private ModuleContext context;
 	
 	public MethodReferencesEvaluator(MethodReferencesGoal goal) {
 		super(goal);
 		this.method = goal.getMethod();
 		
 		
+		this.context = goal.getContext();
 		this.references = goal.references;
-		this.possibleReferences = new HashMap<IGoal, List<AttributeReference>>();
+		this.possibleReferences = new HashMap<IGoal, List<Reference>>();
 	}
 
 	@Override
@@ -84,20 +88,20 @@ public class MethodReferencesEvaluator extends AbstractEvaluator {
 	
 	@Override
 	public List<IGoal> subgoalDone(IGoal subgoal, GoalState state) {
+		List<IGoal> subgoals = new LinkedList<IGoal>();
 		
 		if (subgoal instanceof ClassReferencesGoal) {
 			ClassReferencesGoal g = (ClassReferencesGoal) subgoal;
 			
-			// We were looking for a constructor.
-			for (ClassReference classReference : g.references) {
-				exprType expression = classReference.getExpression();
-				references.add(new ConstructorReference(method, expression, classReference.getModule()));
+			System.out.println(g.references);
+			for (ClassReference reference : g.references) {
+				MetaclassType metaClassType = reference.getMetaclassType();
+				resolveMethod(reference, metaClassType, subgoals);
 			}
 			
 		} else 	if (subgoal instanceof PossibleAttributeReferencesGoal) {
 			PossibleAttributeReferencesGoal g = (PossibleAttributeReferencesGoal) subgoal; 
 			
-			List<IGoal> subgoals = new LinkedList<IGoal>();
 			
 			// We were looking for a normal method.
 			for (AttributeReference reference : g.references) {
@@ -106,53 +110,47 @@ public class MethodReferencesEvaluator extends AbstractEvaluator {
 				Class wantedClass = method.getKlass();
 				
 				for (IType parentType : reference.getParent()) {
-					if (parentType instanceof ClassType) {
+						
+					if (parentType instanceof MetaclassType) {
+						MetaclassType metaclassType = (MetaclassType) parentType;
+						if (metaclassType.getKlass().equals(method.getKlass())) {
+							references.add(new MethodReference(method, attribute, module, false));
+						}
+					
+					} else if (parentType instanceof ClassType) {
 						ClassType referenceClassType = (ClassType) parentType;
 						boolean referenceValid = false;
 						
-						ModuleContext context = getGoal().getContext();
 						InstanceContext instanceContext = context.getInstanceContext();
 						if (instanceContext != null && wantedClass.equals(instanceContext.getClassType().getKlass()))  {
 							// InstanceContext applies
 							referenceValid = referenceClassType.equals(instanceContext.getClassType());
 						} else {
-							ResolveMethodGoal rmg = new ResolveMethodGoal(context, referenceClassType, method.getName());
-							List<AttributeReference> list = possibleReferences.get(rmg);
-							if (list == null) {
-								list = new LinkedList<AttributeReference>();
-								possibleReferences.put(rmg, list);
-								subgoals.add(rmg);
-							}
-							list.add(reference);
+							resolveMethod(reference, referenceClassType, subgoals);
 						}
 						
 						if (referenceValid) {
 							references.add(new MethodReference(method, attribute, module));
 						}
-						
-					} else if (parentType instanceof MetaclassType) {
-						MetaclassType metaclassType = (MetaclassType) parentType;
-						if (metaclassType.getKlass().equals(method.getKlass())) {
-							references.add(new MethodReference(method, attribute, module, false));
-						}
 					}
 				}
 			}
 			
-			return subgoals;
-			
 		} else if (subgoal instanceof ResolveMethodGoal) {
 			ResolveMethodGoal g = (ResolveMethodGoal) subgoal;
-			List<AttributeReference> referencesList = possibleReferences.get(g);
+			List<Reference> referencesList = possibleReferences.get(g);
 			for (MethodType methodType : g.methodTypes) {
 				Method methodCandidate = methodType.getMethod();
 
 				if (method.equals(methodCandidate)) {
-					for (AttributeReference reference : referencesList) {
-						exprType attribute = reference.getExpression();
+					for (Reference reference : referencesList) {
 						Module module = reference.getModule();
-					
-						references.add(new MethodReference(method, attribute, module));
+						exprType expression = reference.getExpression();
+						if (reference instanceof AttributeReference) {
+							references.add(new MethodReference(method, expression, module));
+						} else if (reference instanceof ClassReference) {
+							references.add(new ConstructorReference(method, expression, module));
+						}
 					}
 				}
 			}
@@ -161,7 +159,22 @@ public class MethodReferencesEvaluator extends AbstractEvaluator {
 			unexpectedSubgoal(subgoal);
 		}
 		
-		return IGoal.NO_GOALS;
+		return subgoals;
+	}
+
+	/**
+	 * Sets up a {@link ResolveMethodGoal} for the given class 
+	 */
+	private void resolveMethod(Reference reference, ClassType classType, List<IGoal> subgoals) {
+		String methodName = this.method.getName();
+		ResolveMethodGoal rmg = new ResolveMethodGoal(this.context, classType, methodName);
+		List<Reference> list = possibleReferences.get(rmg);
+		if (list == null) {
+			list = new LinkedList<Reference>();
+			possibleReferences.put(rmg, list);
+			subgoals.add(rmg);
+		}
+		list.add(reference);
 	}
 	
 	/*

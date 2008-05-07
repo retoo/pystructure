@@ -29,7 +29,6 @@ import ch.hsr.ifs.pystructure.typeinference.model.definitions.Definition;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.StructureDefinition;
 import ch.hsr.ifs.pystructure.typeinference.results.types.ClassType;
 import ch.hsr.ifs.pystructure.typeinference.results.types.FunctionType;
-import ch.hsr.ifs.pystructure.typeinference.results.types.MetaclassType;
 import ch.hsr.ifs.pystructure.typeinference.results.types.ModuleType;
 import ch.hsr.ifs.pystructure.typeinference.results.types.PackageType;
 import ch.hsr.ifs.pystructure.typeinference.results.types.TupleType;
@@ -91,9 +90,6 @@ public class DependencyElement extends Element {
 	private StructureDefinition getTypeIdentifier(IType type) {
 		if (type instanceof ClassType) {
 			ClassType classType = (ClassType) type;
-			return classType.getKlass();
-		} else if (type instanceof MetaclassType) {
-			MetaclassType classType = (MetaclassType) type;
 			return classType.getKlass();
 		} else if (type instanceof FunctionType) {
 			FunctionType functionType = (FunctionType) type;

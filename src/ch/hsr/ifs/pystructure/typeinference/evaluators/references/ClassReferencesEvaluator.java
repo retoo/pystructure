@@ -22,7 +22,6 @@
 
 package ch.hsr.ifs.pystructure.typeinference.evaluators.references;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -33,6 +32,7 @@ import ch.hsr.ifs.pystructure.typeinference.contexts.ModuleContext;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.base.AbstractEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.GoalState;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
+import ch.hsr.ifs.pystructure.typeinference.goals.references.CalculateTypeHierarchyGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.references.ClassReferencesGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.references.PossibleReferencesGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.DefinitionTypeGoal;
@@ -66,13 +66,23 @@ public class ClassReferencesEvaluator extends AbstractEvaluator {
 
 	@Override
 	public List<IGoal> init() {
-		return wrap(new PossibleReferencesGoal(getGoal().getContext(),
-				klass.getName()));
+		return wrap(new CalculateTypeHierarchyGoal(getGoal().getContext())); 
 	}
+
 
 	@Override
 	public List<IGoal> subgoalDone(IGoal subgoal, GoalState state) {
-		if (subgoal instanceof PossibleReferencesGoal) {
+		List<IGoal> subgoals = new LinkedList<IGoal>();
+		
+		if (subgoal instanceof CalculateTypeHierarchyGoal) {
+			System.out.println("Calculated ... " + this.klass);
+			subgoals.add(new PossibleReferencesGoal(getGoal().getContext(), klass.getName()));
+			
+			for (Class subClass : this.klass.getSubClasses()) {
+				subgoals.add(new PossibleReferencesGoal(getGoal().getContext(), subClass.getName()));
+			}
+			
+		} else if (subgoal instanceof PossibleReferencesGoal) {
 			PossibleReferencesGoal g = (PossibleReferencesGoal) subgoal;
 
 			for (Use use : g.references) {
@@ -98,12 +108,10 @@ public class ClassReferencesEvaluator extends AbstractEvaluator {
 				}
 			}
 			
-			List<IGoal> subgoals = new ArrayList<IGoal>();
 			for (IGoal goal : usesForGoal.keySet()) {
 				subgoals.add(goal);
 			}
 			
-			return subgoals;
 			
 		} else if (subgoal instanceof DefinitionTypeGoal) {
 			DefinitionTypeGoal g = (DefinitionTypeGoal) subgoal;
@@ -111,9 +119,9 @@ public class ClassReferencesEvaluator extends AbstractEvaluator {
 			for (IType type : g.resultType) {
 				if (type instanceof MetaclassType) {
 					MetaclassType metaclassType = (MetaclassType) type;
-					if (metaclassType.getKlass().equals(klass)) {
+					if (metaclassType.getKlass().getLinearization().contains(klass)) {
 						for (Use use : usesForGoal.get(subgoal)) {
-							references.add(new ClassReference(klass, use.getExpression(), use.getModule()));
+							references.add(new ClassReference(metaclassType, use.getExpression(), use.getModule()));
 						}
 						break;
 					}
@@ -124,7 +132,7 @@ public class ClassReferencesEvaluator extends AbstractEvaluator {
 			unexpectedSubgoal(subgoal);
 		}
 		
-		return IGoal.NO_GOALS;
+		return subgoals;
 	}
 
 }
