@@ -33,7 +33,6 @@ public class CalculateTypeHierarchyEvaluator extends AbstractEvaluator {
 			ModuleContext context = new ModuleContext(parentContext, module);
 
 			for (Class klass : module.getClasses()) {
-				System.out.println(module + ". " + klass);
 				subgoals.add(new MethodResolutionOrderGoal(context, klass));
 			}
 		}
