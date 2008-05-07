@@ -75,7 +75,6 @@ public class ClassReferencesEvaluator extends AbstractEvaluator {
 		List<IGoal> subgoals = new LinkedList<IGoal>();
 		
 		if (subgoal instanceof CalculateTypeHierarchyGoal) {
-			System.out.println("Calculated ... " + this.klass);
 			subgoals.add(new PossibleReferencesGoal(getGoal().getContext(), klass.getName()));
 			
 			for (Class subClass : this.klass.getSubClasses()) {
