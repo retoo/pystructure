@@ -167,12 +167,10 @@ public class PythonEvaluatorFactory implements IEvaluatorFactory {
 		try {
 			AbstractEvaluator evaluator = evaluatorClass.getConstructor(goalClass).newInstance(goal);
 			return evaluator;
+		} catch (RuntimeException e) {
+			throw e;
 		} catch (Exception e) {
-			if (e instanceof RuntimeException) {
-				throw (RuntimeException) e;
-			} else {
-				throw new RuntimeException(e);
-			}
+			throw new RuntimeException(e);
 		}
 	}
 
