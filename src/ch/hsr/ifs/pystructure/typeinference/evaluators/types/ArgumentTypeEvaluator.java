@@ -32,7 +32,7 @@ import ch.hsr.ifs.pystructure.typeinference.contexts.CallContext;
 import ch.hsr.ifs.pystructure.typeinference.contexts.ModuleContext;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.GoalState;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
-import ch.hsr.ifs.pystructure.typeinference.goals.references.CallableGoal;
+import ch.hsr.ifs.pystructure.typeinference.goals.references.CallableReferencesGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.references.FunctionReferencesGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.references.MethodReferencesGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.DefinitionTypeGoal;
@@ -85,10 +85,10 @@ public class ArgumentTypeEvaluator extends DefinitionTypeEvaluator {
 			IType type =  g.resultType;
 			resultType.appendType(type);
 			
-		} else if (subgoal instanceof CallableGoal) {
+		} else if (subgoal instanceof CallableReferencesGoal) {
 			// TODO: Maybe only use one goal (CallableReferencesGoal) and do
 			// dispatching based on definition.
-			CallableGoal g = (CallableGoal) subgoal;
+			CallableReferencesGoal g = (CallableReferencesGoal) subgoal;
 			
 			List<IGoal> subgoals = new ArrayList<IGoal>();
 			

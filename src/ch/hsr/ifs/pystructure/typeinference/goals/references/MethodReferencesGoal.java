@@ -27,7 +27,7 @@ import ch.hsr.ifs.pystructure.typeinference.goals.base.ILocatable;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.Location;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Method;
 
-public class MethodReferencesGoal extends CallableGoal implements ILocatable {
+public class MethodReferencesGoal extends CallableReferencesGoal implements ILocatable {
 
 	private final Method method;
 

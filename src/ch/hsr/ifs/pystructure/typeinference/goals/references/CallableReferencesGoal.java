@@ -29,11 +29,11 @@ import ch.hsr.ifs.pystructure.typeinference.contexts.ModuleContext;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.AbstractGoal;
 import ch.hsr.ifs.pystructure.typeinference.results.references.FunctionReference;
 
-public abstract class CallableGoal extends AbstractGoal {
+public abstract class CallableReferencesGoal extends AbstractGoal {
 	
 	public final List<FunctionReference> references;
 
-	public CallableGoal(ModuleContext context) {
+	public CallableReferencesGoal(ModuleContext context) {
 		super(context);
 		references = new ArrayList<FunctionReference>();
 	}
