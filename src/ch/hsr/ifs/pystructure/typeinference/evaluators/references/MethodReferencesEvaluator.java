@@ -93,7 +93,6 @@ public class MethodReferencesEvaluator extends AbstractEvaluator {
 		if (subgoal instanceof ClassReferencesGoal) {
 			ClassReferencesGoal g = (ClassReferencesGoal) subgoal;
 			
-			System.out.println(g.references);
 			for (ClassReference reference : g.references) {
 				MetaclassType metaClassType = reference.getMetaclassType();
 				resolveMethod(reference, metaClassType, subgoals);
