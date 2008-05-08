@@ -29,10 +29,8 @@ import org.python.pydev.parser.jython.ast.Call;
 import org.python.pydev.parser.jython.ast.Index;
 import org.python.pydev.parser.jython.ast.Num;
 import org.python.pydev.parser.jython.ast.Subscript;
-import org.python.pydev.parser.jython.ast.Tuple;
 import org.python.pydev.parser.jython.ast.exprType;
 import org.python.pydev.parser.jython.ast.num_typeType;
-import org.python.pydev.parser.jython.ast.sliceType;
 
 import ch.hsr.ifs.pystructure.typeinference.basetype.CombinedType;
 import ch.hsr.ifs.pystructure.typeinference.basetype.IType;
@@ -94,11 +92,10 @@ public class SubscriptTypeEvaluator extends AbstractEvaluator {
 			/* Check if this is a direct tuple element access */
 			Integer directIndex = null;
 			
-			sliceType slice = subscript.slice;
-			if (slice instanceof Index && ((Index) slice).value instanceof Num) {
-				Index index = (Index) slice;
+			if (subscript.slice instanceof Index) {
+				Index indexSlice = (Index) subscript.slice;
 				/* May also be set to null if the index is no integer */
-				directIndex = NodeUtils.getInteger(((Num) index.value));
+				directIndex = NodeUtils.getInteger(indexSlice.value);
 			}
 			
 			List<IGoal> subgoals = new LinkedList<IGoal>();
@@ -139,21 +136,22 @@ public class SubscriptTypeEvaluator extends AbstractEvaluator {
 	 * If the index is out of range, null is returned.
 	 */
 	private ExpressionTypeGoal createTupleElementGoal(TupleType tupleType, int index) {
-		Tuple tuple = tupleType.getTuple();
+		exprType[] elements = tupleType.getTuple().elts;
 		
-		if (index >= tuple.elts.length) {
+		int actualIndex = (index < 0) ? (elements.length + index) : index;
+		
+		if (actualIndex < 0 || actualIndex >= elements.length) {
 			/*
-			 * More tuple elements are unpacked than are available
-			 * in the right hand side tuple. This only happens in
-			 * complex situations and then we ignore this tuple
-			 * element. Example:
+			 * The tuple element index is out of range. This only happens in
+			 * complex situations and then we ignore this tuple element.
+			 * Example:
 			 * 
 			 * a, b, c = 1, 2
 			 */
 			return null;
 		}
 		
-		exprType expression = tuple.elts[index];
+		exprType expression = elements[actualIndex];
 		
 		return new ExpressionTypeGoal(getGoal().getContext(), expression);
 	}

@@ -29,10 +29,12 @@ import org.python.pydev.parser.jython.ast.Index;
 import org.python.pydev.parser.jython.ast.NameTok;
 import org.python.pydev.parser.jython.ast.NameTokType;
 import org.python.pydev.parser.jython.ast.Num;
+import org.python.pydev.parser.jython.ast.UnaryOp;
 import org.python.pydev.parser.jython.ast.exprType;
 import org.python.pydev.parser.jython.ast.expr_contextType;
 import org.python.pydev.parser.jython.ast.name_contextType;
 import org.python.pydev.parser.jython.ast.num_typeType;
+import org.python.pydev.parser.jython.ast.unaryopType;
 
 public final class NodeUtils {
 
@@ -67,6 +69,24 @@ public final class NodeUtils {
 		default:
 			return (Integer) num.n;
 		}
+	}
+	
+	/**
+	 * Returns the integer value of the expression if it is an integer literal
+	 * (positive or negative) or null otherwise.
+	 */
+	public static Integer getInteger(exprType literalNumber) {
+		if (literalNumber instanceof Num) {
+			return getInteger((Num) literalNumber);
+		} else if (literalNumber instanceof UnaryOp) {
+			UnaryOp unaryOp = (UnaryOp) literalNumber;
+			if (unaryOp.op == unaryopType.USub && unaryOp.operand instanceof Num) {
+				return -1 * getInteger((Num) unaryOp.operand);
+			}
+		}
+		
+		/* Couldn't extract an integer, so return null */
+		return null;
 	}
 	
 	/**
