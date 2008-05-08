@@ -301,11 +301,9 @@ public class DefinitionVisitor extends StructuralVisitor {
 		// TODO: What about tuples?
 		if (node.target instanceof Name) {
 			String name = ((Name) node.target).id;
-			Definition loopVariable = new LoopVariableDefinition(module, name, node);
+			Definition loopVariable = new LoopVariableDefinition(module, name, node, node.iter);
 			bodyBlock.setDefinition(loopVariable);
 			parent.addDefinition(loopVariable);
-			
-			node.target.accept(this);
 		}
 
 		visitBlock(bodyBlock, node.body);

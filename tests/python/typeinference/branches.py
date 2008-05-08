@@ -32,11 +32,11 @@ b ## type float|int
 c = 1
 
 for c in []:
-    c ## type object
+    c # # FIXME type object
     c = 3.13
     c ## type float
 
-c ## type float|int|object
+c ## type float|int
 
 
 d = 2

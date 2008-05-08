@@ -66,6 +66,7 @@ import ch.hsr.ifs.pystructure.typeinference.evaluators.types.FixedResultEvaluato
 import ch.hsr.ifs.pystructure.typeinference.evaluators.types.IfExpTypeEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.types.ImplicitImportTypeEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.types.ImportTypeEvaluator;
+import ch.hsr.ifs.pystructure.typeinference.evaluators.types.LoopVariableTypeEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.types.MethodResolutionOrderEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.types.MethodResolveEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.types.ReturnTypeEvaluator;
@@ -199,8 +200,7 @@ public class PythonEvaluatorFactory implements IEvaluatorFactory {
 			return new FixedResultEvaluator(goal, new MetaclassType(klass));
 		}
 		if (def instanceof LoopVariableDefinition) {
-			// TODO: Implement LoopVariableTypeEvaluator
-			return new FixedResultEvaluator(goal, new ClassType("object"));
+			return new LoopVariableTypeEvaluator(goal, (LoopVariableDefinition) def);
 		}
 		if (def instanceof ExceptDefinition) {
 			// TODO: Implement ExceptTypeEvaluator

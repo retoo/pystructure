@@ -1,6 +1,16 @@
 class object():
     pass
 
+class _iterator(object):
+    def __init__(self, element):
+        self.element = element
+    
+    def __iter__(self):
+        return self
+    
+    def next(self):
+        return self.element
+
 class list(object):
     def append(self, element):
         self.element = element
@@ -34,3 +44,6 @@ class list(object):
 
     def __getslice__(self, i, j):
         return self
+
+    def __iter__(self):
+        return _iterator(self.element)

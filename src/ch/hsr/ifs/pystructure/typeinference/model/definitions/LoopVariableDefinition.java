@@ -23,14 +23,22 @@
 package ch.hsr.ifs.pystructure.typeinference.model.definitions;
 
 import org.python.pydev.parser.jython.ast.For;
+import org.python.pydev.parser.jython.ast.exprType;
 
 /**
  * Definition of a loop variable by a for loop.
  */
 public class LoopVariableDefinition extends Definition {
 
-	public LoopVariableDefinition(Module module, String name, For loop) {
+	private final exprType iter;
+
+	public LoopVariableDefinition(Module module, String name, For loop, exprType iter) {
 		super(module, name, loop);
+		this.iter = iter;
 	}
-	
+
+	public exprType getIter() {
+		return iter;
+	}
+
 }
