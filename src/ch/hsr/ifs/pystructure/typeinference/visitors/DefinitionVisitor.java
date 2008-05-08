@@ -23,7 +23,6 @@
 package ch.hsr.ifs.pystructure.typeinference.visitors;
 
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
@@ -38,9 +37,11 @@ import org.python.pydev.parser.jython.ast.Global;
 import org.python.pydev.parser.jython.ast.If;
 import org.python.pydev.parser.jython.ast.Import;
 import org.python.pydev.parser.jython.ast.ImportFrom;
+import org.python.pydev.parser.jython.ast.Index;
 import org.python.pydev.parser.jython.ast.Lambda;
 import org.python.pydev.parser.jython.ast.Name;
 import org.python.pydev.parser.jython.ast.NameTokType;
+import org.python.pydev.parser.jython.ast.Subscript;
 import org.python.pydev.parser.jython.ast.TryExcept;
 import org.python.pydev.parser.jython.ast.TryFinally;
 import org.python.pydev.parser.jython.ast.Tuple;
@@ -49,6 +50,7 @@ import org.python.pydev.parser.jython.ast.aliasType;
 import org.python.pydev.parser.jython.ast.argumentsType;
 import org.python.pydev.parser.jython.ast.excepthandlerType;
 import org.python.pydev.parser.jython.ast.exprType;
+import org.python.pydev.parser.jython.ast.expr_contextType;
 import org.python.pydev.parser.jython.ast.stmtType;
 import org.python.pydev.parser.jython.ast.suiteType;
 
@@ -66,9 +68,7 @@ import ch.hsr.ifs.pystructure.typeinference.model.definitions.ImportPath;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.LoopVariableDefinition;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Module;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.NameUse;
-import ch.hsr.ifs.pystructure.typeinference.model.definitions.TupleElement;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Use;
-import ch.hsr.ifs.pystructure.typeinference.model.definitions.Value;
 import ch.hsr.ifs.pystructure.typeinference.model.scopes.Block;
 import ch.hsr.ifs.pystructure.typeinference.model.scopes.ExternalScope;
 import ch.hsr.ifs.pystructure.typeinference.model.scopes.ModuleScope;
@@ -192,8 +192,8 @@ public class DefinitionVisitor extends StructuralVisitor {
 		node.value.accept(this);
 		node.value.parent = node;
 		for (exprType target : node.targets) {
-			Map<String, Value> values = getValues(target, node.value);
-			for (Entry<String, Value> entry : values.entrySet()) {
+			Map<String, exprType> values = getValues(target, node.value);
+			for (Entry<String, exprType> entry : values.entrySet()) {
 				String name = entry.getKey();
 				Definition d = new AssignDefinition(module, name, node, entry.getValue());
 				addDefinition(d);
@@ -205,31 +205,24 @@ public class DefinitionVisitor extends StructuralVisitor {
 	}
 
 	// TODO: Move this out of DefinitionVisitor
-	private Map<String, Value> getValues(exprType target, exprType value) {
-		Map<String, Value> values = new HashMap<String, Value>();
-		LinkedList<Integer> indexes = new LinkedList<Integer>();
-		getValues(values, indexes, target, value);
+	private Map<String, exprType> getValues(exprType target, exprType value) {
+		Map<String, exprType> values = new HashMap<String, exprType>();
+		getValues(values, target, value);
 		return values;
 	}
 	
-	private void getValues(Map<String, Value> values, LinkedList<Integer> indexes, exprType target, exprType value) {
+	private void getValues(Map<String, exprType> values, exprType target, exprType value) {
 		if (target instanceof Tuple) {
 			Tuple tuple = (Tuple) target;
 			for (int i = 0; i < tuple.elts.length; i++) {
 				exprType element = tuple.elts[i];
-				indexes.addLast(i);
-				getValues(values, indexes, element, value);
-				indexes.removeLast();
+				Index index = NodeUtils.createIndex(i);
+				Subscript subscript = new Subscript(value, index, expr_contextType.Load);
+				getValues(values, element, subscript);
 			}
 		} else if (target instanceof Name) {
 			String name = ((Name) target).id;
-			Value v;
-			if (indexes.size() == 0) {
-				v = new Value(value);
-			} else {
-				v = new TupleElement(value, indexes);
-			}
-			values.put(name, v);
+			values.put(name, value);
 		}
 	}
 	

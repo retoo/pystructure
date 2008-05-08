@@ -71,7 +71,6 @@ import ch.hsr.ifs.pystructure.typeinference.evaluators.types.MethodResolutionOrd
 import ch.hsr.ifs.pystructure.typeinference.evaluators.types.MethodResolveEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.types.ReturnTypeEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.types.SubscriptTypeEvaluator;
-import ch.hsr.ifs.pystructure.typeinference.evaluators.types.TupleElementTypeEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.references.AttributeReferencesGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.references.CalculateTypeHierarchyGoal;
@@ -87,7 +86,6 @@ import ch.hsr.ifs.pystructure.typeinference.goals.types.ExpressionTypeGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.MethodResolutionOrderGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.MethodResolveGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.ReturnTypeGoal;
-import ch.hsr.ifs.pystructure.typeinference.goals.types.TupleElementTypeGoal;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Argument;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.AssignDefinition;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Definition;
@@ -128,7 +126,6 @@ public class PythonEvaluatorFactory implements IEvaluatorFactory {
 		evaluators.put(ClassReferencesGoal.class, ClassReferencesEvaluator.class);
 		evaluators.put(CalculateTypeHierarchyGoal.class, CalculateTypeHierarchyEvaluator.class);
 		evaluators.put(ReturnTypeGoal.class, ReturnTypeEvaluator.class);
-		evaluators.put(TupleElementTypeGoal.class, TupleElementTypeEvaluator.class);
 		evaluators.put(ClassAttributeTypeGoal.class, ClassAttributeTypeEvaluator.class);
 		evaluators.put(MethodResolveGoal.class, MethodResolveEvaluator.class);
 		evaluators.put(MethodResolutionOrderGoal.class, MethodResolutionOrderEvaluator.class);

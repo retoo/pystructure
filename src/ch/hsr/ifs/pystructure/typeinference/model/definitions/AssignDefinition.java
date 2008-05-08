@@ -23,15 +23,16 @@
 package ch.hsr.ifs.pystructure.typeinference.model.definitions;
 
 import org.python.pydev.parser.jython.ast.Assign;
+import org.python.pydev.parser.jython.ast.exprType;
 
 /**
  * Definition of a variable by an assignment.
  */
 public class AssignDefinition extends Definition {
 
-	private final Value value;
+	private final exprType value;
 	
-	public AssignDefinition(Module module, String name, Assign assign, Value value) {
+	public AssignDefinition(Module module, String name, Assign assign, exprType value) {
 		super(module, name, assign);
 		this.value = value;
 	}
@@ -40,7 +41,8 @@ public class AssignDefinition extends Definition {
 		return "Variable " + getName() + getNodePosition();
 	}
 
-	public Value getValue() {
+	public exprType getValue() {
 		return value;
 	}
+
 }

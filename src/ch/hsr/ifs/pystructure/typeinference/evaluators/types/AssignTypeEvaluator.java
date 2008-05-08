@@ -24,16 +24,15 @@ package ch.hsr.ifs.pystructure.typeinference.evaluators.types;
 
 import java.util.List;
 
+import org.python.pydev.parser.jython.ast.exprType;
+
 import ch.hsr.ifs.pystructure.typeinference.contexts.ModuleContext;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.GoalState;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.AbstractTypeGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.DefinitionTypeGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.ExpressionTypeGoal;
-import ch.hsr.ifs.pystructure.typeinference.goals.types.TupleElementTypeGoal;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.AssignDefinition;
-import ch.hsr.ifs.pystructure.typeinference.model.definitions.TupleElement;
-import ch.hsr.ifs.pystructure.typeinference.model.definitions.Value;
 
 /**
  * Evaluator for assign nodes. For determining the type of the left hand side,
@@ -51,12 +50,8 @@ public class AssignTypeEvaluator extends DefinitionTypeEvaluator  {
 	@Override
 	public List<IGoal> init() {
 		ModuleContext context = getGoal().getContext();
-		Value value = assignDefinition.getValue();
-		if (value instanceof TupleElement) {
-			return wrap(new TupleElementTypeGoal(context, (TupleElement) value));
-		} else {
-			return wrap(new ExpressionTypeGoal(context, value.getExpression()));
-		}
+		exprType value = assignDefinition.getValue();
+		return wrap(new ExpressionTypeGoal(context, value));
 	}
 
 	@Override

@@ -109,7 +109,21 @@ public class SubscriptTypeEvaluator extends AbstractEvaluator {
 				if (directIndex != null && type instanceof TupleType) {
 					/* This is a direct tuple element access */
 					Tuple tuple = ((TupleType) type).getTuple();
+					
+					if (directIndex >= tuple.elts.length) {
+						/*
+						 * More tuple elements are unpacked than are available
+						 * in the right hand side tuple. This only happens in
+						 * complex situations and then we ignore this tuple
+						 * element. Example:
+						 * 
+						 * a, b, c = 1, 2
+						 */
+						continue;
+					}
+					
 					exprType expression = tuple.elts[directIndex];
+					
 					subgoals.add(new ExpressionTypeGoal(getGoal().getContext(), expression));
 				} else {
 					/* No direct tuple element access */

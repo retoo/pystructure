@@ -25,6 +25,7 @@ package ch.hsr.ifs.pystructure.typeinference.model.base;
 import org.python.pydev.parser.jython.SimpleNode;
 import org.python.pydev.parser.jython.ast.Attribute;
 import org.python.pydev.parser.jython.ast.Call;
+import org.python.pydev.parser.jython.ast.Index;
 import org.python.pydev.parser.jython.ast.NameTok;
 import org.python.pydev.parser.jython.ast.NameTokType;
 import org.python.pydev.parser.jython.ast.Num;
@@ -93,6 +94,14 @@ public final class NodeUtils {
 		NameTok methodTok = new NameTok(method, name_contextType.Attrib);
 		Attribute func = new Attribute(receiver, methodTok, expr_contextType.Load);
 		return new Call(func, arguments, null, null, null);
+	}
+	
+	/**
+	 * Create an Index node with the specified number as the index.
+	 */
+	public static Index createIndex(int number) {
+		Num num = new Num(Integer.valueOf(number), num_typeType.Int, String.valueOf(number));
+		return new Index(num);
 	}
 	
 	/**
