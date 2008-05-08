@@ -40,3 +40,8 @@ m, n, o = bad(True)
 m ## type int
 n ## type float|int
 o ## type str
+
+
+p = (42, 3.14)
+p[0] ## type int
+p[1] ## type float

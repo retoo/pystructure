@@ -27,9 +27,11 @@ import org.python.pydev.parser.jython.ast.Attribute;
 import org.python.pydev.parser.jython.ast.Call;
 import org.python.pydev.parser.jython.ast.NameTok;
 import org.python.pydev.parser.jython.ast.NameTokType;
+import org.python.pydev.parser.jython.ast.Num;
 import org.python.pydev.parser.jython.ast.exprType;
 import org.python.pydev.parser.jython.ast.expr_contextType;
 import org.python.pydev.parser.jython.ast.name_contextType;
+import org.python.pydev.parser.jython.ast.num_typeType;
 
 public final class NodeUtils {
 
@@ -45,6 +47,25 @@ public final class NodeUtils {
 
 	public static String getId(NameTokType name) {
 		return ((NameTok) name).id;
+	}
+	
+	/**
+	 * Returns the integer value of the Num node if it is one or null otherwise.
+	 */
+	public static Integer getInteger(Num num) {
+		switch (num.type) {
+		case num_typeType.Long:
+			return null;
+		case num_typeType.Float:
+			return null;
+		case num_typeType.Comp:
+			return null;
+		case num_typeType.Int:
+		case num_typeType.Oct:
+		case num_typeType.Hex:
+		default:
+			return (Integer) num.n;
+		}
 	}
 	
 	/**
