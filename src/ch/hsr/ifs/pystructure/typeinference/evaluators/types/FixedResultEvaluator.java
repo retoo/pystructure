@@ -42,7 +42,7 @@ public class FixedResultEvaluator extends AbstractEvaluator {
 		return IGoal.NO_GOALS;
 	}
 
-	public List<IGoal> subgoalDone(IGoal subgoal, GoalState state) {
+	public List<IGoal> subgoalDone(IGoal subgoal, GoalState subgoalState) {
 		return IGoal.NO_GOALS;
 	}
 	

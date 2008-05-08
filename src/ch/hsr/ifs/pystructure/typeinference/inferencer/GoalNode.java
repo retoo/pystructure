@@ -83,8 +83,8 @@ public class GoalNode {
 		return subgoalsDoneCount == subgoalsCount;
 	}
 
-	public List<IGoal> subgoalDone(IGoal goal, GoalState state) {
-		List<IGoal> newSubGoals = evaluator.subgoalDone(goal, state);
+	public List<IGoal> subgoalDone(IGoal goal, GoalState subgoalState) {
+		List<IGoal> newSubGoals = evaluator.subgoalDone(goal, subgoalState);
 		subgoalsDoneCount++;
 		subgoalsCount += newSubGoals.size();
 		return newSubGoals;

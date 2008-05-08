@@ -62,7 +62,7 @@ public class IfExpTypeEvaluator extends AbstractEvaluator {
 	}
 
 	@Override
-	public List<IGoal> subgoalDone(IGoal subgoal, GoalState state) {
+	public List<IGoal> subgoalDone(IGoal subgoal, GoalState subgoalState) {
 		if (!(subgoal instanceof ExpressionTypeGoal)) { unexpectedSubgoal(subgoal); }
 		
 		ExpressionTypeGoal g = (ExpressionTypeGoal) subgoal;

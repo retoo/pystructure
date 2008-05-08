@@ -66,7 +66,7 @@ public class PossibleReferencesEvaluator extends AbstractEvaluator {
 	}
 
 	@Override
-	public List<IGoal> subgoalDone(IGoal subgoal, GoalState state) {
+	public List<IGoal> subgoalDone(IGoal subgoal, GoalState subgoalState) {
 		return IGoal.NO_GOALS;
 	}
 

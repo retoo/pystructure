@@ -57,7 +57,7 @@ public class FunctionReferencesEvaluator extends AbstractEvaluator {
 	}
 	
 	@Override
-	public List<IGoal> subgoalDone(IGoal subgoal, GoalState state) {
+	public List<IGoal> subgoalDone(IGoal subgoal, GoalState subgoalState) {
 		if (!(subgoal instanceof PossibleReferencesGoal)) { unexpectedSubgoal(subgoal); }
 		
 		PossibleReferencesGoal g = (PossibleReferencesGoal) subgoal;

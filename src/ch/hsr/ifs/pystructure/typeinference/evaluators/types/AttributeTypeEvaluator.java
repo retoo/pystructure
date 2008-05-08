@@ -70,8 +70,8 @@ public class AttributeTypeEvaluator extends AbstractEvaluator {
 	}
 
 	@Override
-	public List<IGoal> subgoalDone(IGoal subgoal, GoalState state) {
-		if (state == GoalState.RECURSIVE) {
+	public List<IGoal> subgoalDone(IGoal subgoal, GoalState subgoalState) {
+		if (subgoalState == GoalState.RECURSIVE) {
 			// RECURSIVE could mean something like that:
 			//   self.attr = self.attr
 			// This doesn't add anything to the result type, so we ignore it.

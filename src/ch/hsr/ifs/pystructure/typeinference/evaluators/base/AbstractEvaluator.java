@@ -55,13 +55,13 @@ public abstract class AbstractEvaluator {
 	 * Gets called when a subgoal has been finished. The evaluator can create new subgoals if it likes 
 	 * 
 	 * @param subgoal finished subgoal
-	 * @param state state of the subgoal (might be RECURSIVE if the goal was causing a recursion)
+	 * @param subgoalState state of the subgoal (might be RECURSIVE if the goal was causing a recursion)
 	 * 
 	 * return {@link IGoal#NO_GOALS} if you have no goals
 	 * 
 	 * @return list of subgoals
 	 */
-	public abstract List<IGoal> subgoalDone(IGoal subgoal, GoalState state);
+	public abstract List<IGoal> subgoalDone(IGoal subgoal, GoalState subgoalState);
 	
 	/**
 	 * Can be implemented to do something when the evaluator finished (all

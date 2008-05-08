@@ -62,7 +62,7 @@ public class TupleElementTypeEvaluator extends AbstractEvaluator {
 	}
 
 	@Override
-	public List<IGoal> subgoalDone(IGoal subgoal, GoalState state) {
+	public List<IGoal> subgoalDone(IGoal subgoal, GoalState subgoalState) {
 		/* wie hier mit expression tuple goal umgehen */
 		if (this.state == State.EXPRESSION_WAIT) {
 			this.state = State.RESULT_WAIT;

@@ -42,7 +42,7 @@ public class MethodResolveEvaluator extends AbstractEvaluator {
 	}
 
 	@Override
-	public List<IGoal> subgoalDone(IGoal subgoal, GoalState state) {
+	public List<IGoal> subgoalDone(IGoal subgoal, GoalState subgoalState) {
 		if (subgoal instanceof MethodResolutionOrderGoal) {
 			MethodResolutionOrderGoal g = (MethodResolutionOrderGoal) subgoal;
 

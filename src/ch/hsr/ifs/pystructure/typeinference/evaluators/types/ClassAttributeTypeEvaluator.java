@@ -75,7 +75,7 @@ public class ClassAttributeTypeEvaluator extends AbstractEvaluator {
 	}
 	
 	@Override
-	public List<IGoal> subgoalDone(IGoal subgoal, GoalState state) {
+	public List<IGoal> subgoalDone(IGoal subgoal, GoalState subgoalState) {
 		ArrayList<IGoal> subgoals = new ArrayList<IGoal>();
 		
 		if (subgoal instanceof AttributeReferencesGoal) {

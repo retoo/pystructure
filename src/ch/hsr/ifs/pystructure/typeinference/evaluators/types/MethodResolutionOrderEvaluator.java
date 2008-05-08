@@ -76,10 +76,10 @@ public class MethodResolutionOrderEvaluator extends AbstractEvaluator {
 	}
 
 	@Override
-	public List<IGoal> subgoalDone(IGoal subgoal, GoalState state) {
+	public List<IGoal> subgoalDone(IGoal subgoal, GoalState subgoalState) {
 		List<IGoal> subgoals = new LinkedList<IGoal>();
 
-		if (state == GoalState.RECURSIVE) {
+		if (subgoalState == GoalState.RECURSIVE) {
 			throw new RuntimeException("Recursion occured while evaluating MRO of class " + this.klass);
 		}
 		

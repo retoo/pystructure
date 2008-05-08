@@ -87,7 +87,7 @@ public class MethodReferencesEvaluator extends AbstractEvaluator {
 	}
 	
 	@Override
-	public List<IGoal> subgoalDone(IGoal subgoal, GoalState state) {
+	public List<IGoal> subgoalDone(IGoal subgoal, GoalState subgoalState) {
 		List<IGoal> subgoals = new LinkedList<IGoal>();
 		
 		if (subgoal instanceof ClassReferencesGoal) {

@@ -78,7 +78,7 @@ public class ArgumentTypeEvaluator extends DefinitionTypeEvaluator {
 	}
 
 	@Override
-	public List<IGoal> subgoalDone(IGoal subgoal, GoalState state) {
+	public List<IGoal> subgoalDone(IGoal subgoal, GoalState subgoalState) {
 		if (subgoal instanceof ExpressionTypeGoal) {
 			
 			ExpressionTypeGoal g = (ExpressionTypeGoal) subgoal;

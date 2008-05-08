@@ -70,7 +70,7 @@ public class ImplicitImportTypeEvaluator extends DefinitionTypeEvaluator {
 	}
 	
 	@Override
-	public List<IGoal> subgoalDone(IGoal subgoal, GoalState state) {
+	public List<IGoal> subgoalDone(IGoal subgoal, GoalState subgoalState) {
 		if (subgoal instanceof DefinitionTypeGoal) {
 			DefinitionTypeGoal g = (DefinitionTypeGoal) subgoal;
 			
