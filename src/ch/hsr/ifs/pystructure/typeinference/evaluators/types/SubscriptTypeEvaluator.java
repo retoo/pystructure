@@ -108,23 +108,10 @@ public class SubscriptTypeEvaluator extends AbstractEvaluator {
 			for (IType type : g.resultType) {
 				if (directIndex != null && type instanceof TupleType) {
 					/* This is a direct tuple element access */
-					Tuple tuple = ((TupleType) type).getTuple();
-					
-					if (directIndex >= tuple.elts.length) {
-						/*
-						 * More tuple elements are unpacked than are available
-						 * in the right hand side tuple. This only happens in
-						 * complex situations and then we ignore this tuple
-						 * element. Example:
-						 * 
-						 * a, b, c = 1, 2
-						 */
-						continue;
+					IGoal tupleElementGoal = createTupleElementGoal((TupleType) type, directIndex);
+					if (tupleElementGoal != null) {
+						subgoals.add(tupleElementGoal);
 					}
-					
-					exprType expression = tuple.elts[directIndex];
-					
-					subgoals.add(new ExpressionTypeGoal(getGoal().getContext(), expression));
 				} else {
 					/* No direct tuple element access */
 					shouldAddMethodCallGoal = true;
@@ -141,6 +128,34 @@ public class SubscriptTypeEvaluator extends AbstractEvaluator {
 			resultType.appendType(g.resultType);
 			return IGoal.NO_GOALS;
 		}
+	}
+	
+	/**
+	 * For a direct tuple element access, we create an ExpressionTypeGoal for
+	 * the element:
+	 * 
+	 * (42, 3.14)[0]  # goal for expression 42 is created
+	 * 
+	 * If the index is out of range, null is returned.
+	 */
+	private ExpressionTypeGoal createTupleElementGoal(TupleType tupleType, int index) {
+		Tuple tuple = tupleType.getTuple();
+		
+		if (index >= tuple.elts.length) {
+			/*
+			 * More tuple elements are unpacked than are available
+			 * in the right hand side tuple. This only happens in
+			 * complex situations and then we ignore this tuple
+			 * element. Example:
+			 * 
+			 * a, b, c = 1, 2
+			 */
+			return null;
+		}
+		
+		exprType expression = tuple.elts[index];
+		
+		return new ExpressionTypeGoal(getGoal().getContext(), expression);
 	}
 
 	/**
