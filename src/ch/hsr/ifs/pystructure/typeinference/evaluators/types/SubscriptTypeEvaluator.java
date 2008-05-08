@@ -95,7 +95,7 @@ public class SubscriptTypeEvaluator extends AbstractEvaluator {
 			if (subscript.slice instanceof Index) {
 				Index indexSlice = (Index) subscript.slice;
 				/* May also be set to null if the index is no integer */
-				directIndex = NodeUtils.getInteger(indexSlice.value);
+				directIndex = NodeUtils.extractInteger(indexSlice.value);
 			}
 			
 			List<IGoal> subgoals = new LinkedList<IGoal>();

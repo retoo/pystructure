@@ -48,6 +48,9 @@ public final class NodeUtils {
 				: "";
 	}
 
+	/**
+	 * Returns the string id of the name token.
+	 */
 	public static String getId(NameTokType name) {
 		return ((NameTok) name).id;
 	}
@@ -55,7 +58,7 @@ public final class NodeUtils {
 	/**
 	 * Returns the integer value of the Num node if it is one or null otherwise.
 	 */
-	public static Integer getInteger(Num num) {
+	public static Integer extractInteger(Num num) {
 		switch (num.type) {
 		case num_typeType.Long:
 			return null;
@@ -75,13 +78,13 @@ public final class NodeUtils {
 	 * Returns the integer value of the expression if it is an integer literal
 	 * (positive or negative) or null otherwise.
 	 */
-	public static Integer getInteger(exprType literalNumber) {
+	public static Integer extractInteger(exprType literalNumber) {
 		if (literalNumber instanceof Num) {
-			return getInteger((Num) literalNumber);
+			return extractInteger((Num) literalNumber);
 		} else if (literalNumber instanceof UnaryOp) {
 			UnaryOp unaryOp = (UnaryOp) literalNumber;
 			if (unaryOp.op == unaryopType.USub && unaryOp.operand instanceof Num) {
-				return -1 * getInteger((Num) unaryOp.operand);
+				return -1 * extractInteger((Num) unaryOp.operand);
 			}
 		}
 		
