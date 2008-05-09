@@ -22,7 +22,6 @@
 
 package ch.hsr.ifs.pystructure.typeinference.visitors;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
@@ -37,20 +36,16 @@ import org.python.pydev.parser.jython.ast.Global;
 import org.python.pydev.parser.jython.ast.If;
 import org.python.pydev.parser.jython.ast.Import;
 import org.python.pydev.parser.jython.ast.ImportFrom;
-import org.python.pydev.parser.jython.ast.Index;
 import org.python.pydev.parser.jython.ast.Lambda;
 import org.python.pydev.parser.jython.ast.Name;
 import org.python.pydev.parser.jython.ast.NameTokType;
-import org.python.pydev.parser.jython.ast.Subscript;
 import org.python.pydev.parser.jython.ast.TryExcept;
 import org.python.pydev.parser.jython.ast.TryFinally;
-import org.python.pydev.parser.jython.ast.Tuple;
 import org.python.pydev.parser.jython.ast.While;
 import org.python.pydev.parser.jython.ast.aliasType;
 import org.python.pydev.parser.jython.ast.argumentsType;
 import org.python.pydev.parser.jython.ast.excepthandlerType;
 import org.python.pydev.parser.jython.ast.exprType;
-import org.python.pydev.parser.jython.ast.expr_contextType;
 import org.python.pydev.parser.jython.ast.stmtType;
 import org.python.pydev.parser.jython.ast.suiteType;
 
@@ -192,7 +187,7 @@ public class DefinitionVisitor extends StructuralVisitor {
 		node.value.accept(this);
 		node.value.parent = node;
 		for (exprType target : node.targets) {
-			Map<exprType, exprType> values = getValues(target, node.value);
+			Map<exprType, exprType> values = NodeUtils.createTupleElementAssignments(target, node.value);
 			for (Entry<exprType, exprType> entry : values.entrySet()) {
 				exprType targetPart = entry.getKey();
 				if (targetPart instanceof Name) {
@@ -207,27 +202,6 @@ public class DefinitionVisitor extends StructuralVisitor {
 		return null;
 	}
 
-	// TODO: Move this out of DefinitionVisitor
-	private Map<exprType, exprType> getValues(exprType target, exprType value) {
-		Map<exprType, exprType> values = new HashMap<exprType, exprType>();
-		getValues(values, target, value);
-		return values;
-	}
-	
-	private void getValues(Map<exprType, exprType> values, exprType target, exprType value) {
-		if (target instanceof Tuple) {
-			Tuple tuple = (Tuple) target;
-			for (int i = 0; i < tuple.elts.length; i++) {
-				exprType element = tuple.elts[i];
-				Index index = NodeUtils.createIndex(i);
-				Subscript subscript = new Subscript(value, index, expr_contextType.Load);
-				getValues(values, element, subscript);
-			}
-		} else {
-			values.put(target, value);
-		}
-	}
-	
 	/*
 	 * Node for bare names (variables), for example the "instance" of
 	 * "instance.method" but not the "method" (which is an attribute).

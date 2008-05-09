@@ -22,6 +22,9 @@
 
 package ch.hsr.ifs.pystructure.typeinference.model.base;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.python.pydev.parser.jython.SimpleNode;
 import org.python.pydev.parser.jython.ast.Attribute;
 import org.python.pydev.parser.jython.ast.Call;
@@ -29,6 +32,8 @@ import org.python.pydev.parser.jython.ast.Index;
 import org.python.pydev.parser.jython.ast.NameTok;
 import org.python.pydev.parser.jython.ast.NameTokType;
 import org.python.pydev.parser.jython.ast.Num;
+import org.python.pydev.parser.jython.ast.Subscript;
+import org.python.pydev.parser.jython.ast.Tuple;
 import org.python.pydev.parser.jython.ast.UnaryOp;
 import org.python.pydev.parser.jython.ast.exprType;
 import org.python.pydev.parser.jython.ast.expr_contextType;
@@ -108,7 +113,7 @@ public final class NodeUtils {
 		
 		return null;
 	}
-	
+
 	/**
 	 * Create a call node for a method call from the specified receiver
 	 * expression, method name and arguments: receiver.method(arg1, arg2)
@@ -118,7 +123,44 @@ public final class NodeUtils {
 		Attribute func = new Attribute(receiver, methodTok, expr_contextType.Load);
 		return new Call(func, arguments, null, null, null);
 	}
-	
+
+	/**
+	 * Creates multiple single assignments from a target which is possibly a
+	 * (nested) tuple. Example:
+	 * 
+	 * a, (b, c[i]) = 1, (2, 3)
+	 * 
+	 * "a, (b, c[i])" is the target and "1, (2, 3)" the value. The result is
+	 * the following map:
+	 * 
+	 * a    → (1, (2, 3))[0]
+	 * b    → (1, (2, 3))[1][0]
+	 * c[i] → (1, (2, 3))[1][1]
+	 * 
+	 * @param target assignment target, may be a tuple
+	 * @param value assignment value
+	 * @return a map from single targets to unpacked values
+	 */
+	public static Map<exprType, exprType> createTupleElementAssignments(exprType target, exprType value) {
+		Map<exprType, exprType> values = new HashMap<exprType, exprType>();
+		createTupleElementAssignments(target, value, values);
+		return values;
+	}
+
+	private static void createTupleElementAssignments(exprType target, exprType value, Map<exprType, exprType> values) {
+		if (target instanceof Tuple) {
+			Tuple tuple = (Tuple) target;
+			for (int i = 0; i < tuple.elts.length; i++) {
+				exprType element = tuple.elts[i];
+				Index index = NodeUtils.createIndex(i);
+				Subscript subscript = new Subscript(value, index, expr_contextType.Load);
+				createTupleElementAssignments(element, subscript, values);
+			}
+		} else {
+			values.put(target, value);
+		}
+	}
+
 	/**
 	 * Create an Index node with the specified number as the index.
 	 */
