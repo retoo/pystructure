@@ -192,11 +192,14 @@ public class DefinitionVisitor extends StructuralVisitor {
 		node.value.accept(this);
 		node.value.parent = node;
 		for (exprType target : node.targets) {
-			Map<String, exprType> values = getValues(target, node.value);
-			for (Entry<String, exprType> entry : values.entrySet()) {
-				String name = entry.getKey();
-				Definition d = new AssignDefinition(module, name, node, entry.getValue());
-				addDefinition(d);
+			Map<exprType, exprType> values = getValues(target, node.value);
+			for (Entry<exprType, exprType> entry : values.entrySet()) {
+				exprType targetPart = entry.getKey();
+				if (targetPart instanceof Name) {
+					String name = ((Name) targetPart).id;
+					Definition d = new AssignDefinition(module, name, node, entry.getValue());
+					addDefinition(d);
+				}
 			}
 			target.accept(this);
 			target.parent = node;
@@ -205,13 +208,13 @@ public class DefinitionVisitor extends StructuralVisitor {
 	}
 
 	// TODO: Move this out of DefinitionVisitor
-	private Map<String, exprType> getValues(exprType target, exprType value) {
-		Map<String, exprType> values = new HashMap<String, exprType>();
+	private Map<exprType, exprType> getValues(exprType target, exprType value) {
+		Map<exprType, exprType> values = new HashMap<exprType, exprType>();
 		getValues(values, target, value);
 		return values;
 	}
 	
-	private void getValues(Map<String, exprType> values, exprType target, exprType value) {
+	private void getValues(Map<exprType, exprType> values, exprType target, exprType value) {
 		if (target instanceof Tuple) {
 			Tuple tuple = (Tuple) target;
 			for (int i = 0; i < tuple.elts.length; i++) {
@@ -220,9 +223,8 @@ public class DefinitionVisitor extends StructuralVisitor {
 				Subscript subscript = new Subscript(value, index, expr_contextType.Load);
 				getValues(values, element, subscript);
 			}
-		} else if (target instanceof Name) {
-			String name = ((Name) target).id;
-			values.put(name, value);
+		} else {
+			values.put(target, value);
 		}
 	}
 	
