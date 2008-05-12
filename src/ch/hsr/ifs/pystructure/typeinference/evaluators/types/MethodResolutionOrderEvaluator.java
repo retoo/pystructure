@@ -7,7 +7,6 @@ import java.util.Set;
 
 import org.python.pydev.parser.jython.ast.exprType;
 
-import ch.hsr.ifs.pystructure.typeinference.basetype.CombinedType;
 import ch.hsr.ifs.pystructure.typeinference.basetype.IType;
 import ch.hsr.ifs.pystructure.typeinference.contexts.ModuleContext;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.base.AbstractEvaluator;
@@ -48,10 +47,13 @@ import ch.hsr.ifs.pystructure.typeinference.results.types.MetaclassType;
  *        find a head which doesn't occur in any tail the process has to be aborted, the 
  *        specified class hierarchy is cannot be resolved into a valid linearisation. 
  *   
- *  More details about the algorithm and the details behind it can be found in the document 
- *  'The Python 2.3 Method Resolution Order' by Michele Simionato (http://www.python.org/download/releases/2.3/mro/)
+ * More details about the algorithm and the details behind it can be found in the document 
+ * 'The Python 2.3 Method Resolution Order' by Michele Simionato (http://www.python.org/download/releases/2.3/mro/)
  * 
- * 
+ * At the beginning the evaluator just knows the base classe by their names. To find find the corresponding classes
+ * it first issues a {@link ExpressionTypeGoal} for every base class. After doing so it issues a {@link MethodResolutionOrderGoal} 
+ * for every fond base class. When the MRO of all base classes has been caluclated the evaluator continues to calculate MRO 
+ * of the class in question. 
  * 
  */
 public class MethodResolutionOrderEvaluator extends AbstractEvaluator {
@@ -96,13 +98,12 @@ public class MethodResolutionOrderEvaluator extends AbstractEvaluator {
 
 		ModuleContext context = new ModuleContext(getGoal().getContext(), klass.getModule());
 		for (exprType baseClasseExpression : klass.getBaseClasses()) {
-			BaseClass baseClass = new BaseClass(baseClasseExpression);
-
 			/* Create and register goal */
 			ExpressionTypeGoal expressionTypeGoal = new ExpressionTypeGoal(context, baseClasseExpression);
 			subgoals.add(expressionTypeGoal);
 
 			/* Internally register base class */
+			BaseClass baseClass = new BaseClass(baseClasseExpression);
 			this.index.put(expressionTypeGoal, baseClass);
 			this.bases.add(baseClass);
 		}
@@ -170,13 +171,18 @@ public class MethodResolutionOrderEvaluator extends AbstractEvaluator {
 		}
 	}
 
+	/**
+	 * Initiates the algorithms used to calculate the linearisation.
+	 * 
+	 * @return 
+	 */
 	private MethodResolutionOrder calculateLinearsation() {
 		LinkedList<MethodResolutionOrder> toMerge = new LinkedList<MethodResolutionOrder>();
 
 		MethodResolutionOrder directAnchestors = new MethodResolutionOrder();
 
 		for (BaseClass baseClass : bases) {
-			if (baseClass != null) {
+			if (baseClass.classType != null) {
 				if (baseClass.classType != null && baseClass.linearization != null) {
 					toMerge.add(new MethodResolutionOrder(baseClass.linearization));
 					directAnchestors.add(baseClass.classType.getKlass());
@@ -191,14 +197,24 @@ public class MethodResolutionOrderEvaluator extends AbstractEvaluator {
 		return MethodResolutionOrder.merge(this.klass, toMerge);
 	}
 
-	private static MetaclassType extractClass(ExpressionTypeGoal g) {
-		CombinedType result = g.resultType;
-
-		Set<IType> types = result.getTypes();
+	/**
+	 * Extracts the {@link MetaclassType} out of the given
+	 * {@link ExpressionTypeGoal}. The method reports problems with the goal,
+	 * for example when there is more than one class reported for the expression
+	 * (which shouldn't actually happen) or if the a different type than MetaclassType is being 
+	 * reported.  
+	 * 
+	 * So this function just does some casting. 
+	 * 
+	 * @param goal goal from which the metaclass type has to be extract from
+	 * @return actual {@link MetaclassType}
+	 */
+	private static MetaclassType extractClass(ExpressionTypeGoal goal) {
+		Set<IType> types = goal.resultType.getTypes();
 
 		if (!types.isEmpty()) {
 			if (types.size() > 1) {
-				System.err.println("The base class expression " + g.getExpression() + " is not uniquely resolveable");
+				System.err.println("The base class expression " + goal.getExpression() + " is not uniquely resolveable");
 			}
 
 			/* we just take the first one */
@@ -207,7 +223,7 @@ public class MethodResolutionOrderEvaluator extends AbstractEvaluator {
 			if (type instanceof MetaclassType) {
 				return (MetaclassType) type;
 			} else {
-				System.err.println("Unexpected type for base class expression: " + g.getExpression());
+				System.err.println("Unexpected type for base class expression: " + goal.getExpression());
 				return null;
 			}
 		} else {
