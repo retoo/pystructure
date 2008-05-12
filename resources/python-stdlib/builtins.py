@@ -56,8 +56,8 @@ class list(object):
 class dict(object):
 
     def __setitem__(self, key, value):
-        self.dict_key = key
-        self.dict_value = value
+        self._dict_key = key
+        self._dict_value = value
 
     def __getitem__(self, key):
-        return self.dict_value
+        return self._dict_value
