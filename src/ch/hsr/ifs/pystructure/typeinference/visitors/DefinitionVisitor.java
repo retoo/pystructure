@@ -29,6 +29,7 @@ import java.util.Map.Entry;
 
 import org.python.pydev.parser.jython.ast.Assign;
 import org.python.pydev.parser.jython.ast.Attribute;
+import org.python.pydev.parser.jython.ast.Call;
 import org.python.pydev.parser.jython.ast.ClassDef;
 import org.python.pydev.parser.jython.ast.For;
 import org.python.pydev.parser.jython.ast.FunctionDef;
@@ -36,9 +37,11 @@ import org.python.pydev.parser.jython.ast.Global;
 import org.python.pydev.parser.jython.ast.If;
 import org.python.pydev.parser.jython.ast.Import;
 import org.python.pydev.parser.jython.ast.ImportFrom;
+import org.python.pydev.parser.jython.ast.Index;
 import org.python.pydev.parser.jython.ast.Lambda;
 import org.python.pydev.parser.jython.ast.Name;
 import org.python.pydev.parser.jython.ast.NameTokType;
+import org.python.pydev.parser.jython.ast.Subscript;
 import org.python.pydev.parser.jython.ast.TryExcept;
 import org.python.pydev.parser.jython.ast.TryFinally;
 import org.python.pydev.parser.jython.ast.While;
@@ -46,6 +49,7 @@ import org.python.pydev.parser.jython.ast.aliasType;
 import org.python.pydev.parser.jython.ast.argumentsType;
 import org.python.pydev.parser.jython.ast.excepthandlerType;
 import org.python.pydev.parser.jython.ast.exprType;
+import org.python.pydev.parser.jython.ast.sliceType;
 import org.python.pydev.parser.jython.ast.stmtType;
 import org.python.pydev.parser.jython.ast.suiteType;
 
@@ -190,16 +194,34 @@ public class DefinitionVisitor extends StructuralVisitor {
 			Map<exprType, exprType> values = NodeUtils.createTupleElementAssignments(target, node.value);
 			for (Entry<exprType, exprType> entry : values.entrySet()) {
 				exprType targetPart = entry.getKey();
+				exprType value = entry.getValue();
 				if (targetPart instanceof Name) {
 					String name = ((Name) targetPart).id;
-					Definition d = new AssignDefinition(module, name, node, entry.getValue());
+					Definition d = new AssignDefinition(module, name, node, value);
 					addDefinition(d);
+				} else if (targetPart instanceof Subscript) {
+					processSubscriptAssignment(targetPart, value);
 				}
 			}
 			target.accept(this);
 			target.parent = node;
 		}
 		return null;
+	}
+
+	/**
+	 * d["key"] = 42  →  d.__setitem__("key", 42)
+	 */
+	private void processSubscriptAssignment(exprType target, exprType value) throws Exception {
+		Subscript subscript = (Subscript) target;
+		exprType receiver = subscript.value;
+		sliceType slice = subscript.slice;
+		if (slice instanceof Index) {
+			exprType key = ((Index) slice).value;
+			exprType[] arguments = new exprType[] {key, value};
+			Call setitemCall = NodeUtils.createMethodCall(receiver, "__setitem__", arguments);
+			setitemCall.accept(this);
+		}
 	}
 
 	/*

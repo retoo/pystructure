@@ -1,7 +1,9 @@
 class object():
     pass
 
+
 class _iterator(object):
+
     def __init__(self, element):
         self.element = element
     
@@ -11,7 +13,9 @@ class _iterator(object):
     def next(self):
         return self.element
 
+
 class list(object):
+
     def append(self, element):
         self.element = element
 
@@ -47,3 +51,13 @@ class list(object):
 
     def __iter__(self):
         return _iterator(self.element)
+
+
+class dict(object):
+
+    def __setitem__(self, key, value):
+        self.dict_key = key
+        self.dict_value = value
+
+    def __getitem__(self, key):
+        return self.dict_value
