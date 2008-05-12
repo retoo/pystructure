@@ -5,34 +5,34 @@ class object():
 class _iterator(object):
 
     def __init__(self, element):
-        self.element = element
+        self._iterator_element = element
     
     def __iter__(self):
         return self
     
     def next(self):
-        return self.element
+        return self._iterator_element
 
 
 class list(object):
 
     def append(self, element):
-        self.element = element
+        self._list_element = element
 
     def count(self, element):
         return 1
 
     def extend(self, other):
-        self.element = other[0]
+        self._list_element = other[0]
 
     def index(self, element):
         return 1
 
     def insert(self, index, element):
-        self.element = element
+        self._list_element = element
 
     def pop(self):
-        return self.element
+        return self._list_element
 
     def remove(self):
         pass
@@ -44,13 +44,13 @@ class list(object):
         pass
 
     def __getitem__(self, index):
-        return self.element
+        return self._list_element
 
     def __getslice__(self, i, j):
         return self
 
     def __iter__(self):
-        return _iterator(self.element)
+        return _iterator(self._list_element)
 
 
 class dict(object):
