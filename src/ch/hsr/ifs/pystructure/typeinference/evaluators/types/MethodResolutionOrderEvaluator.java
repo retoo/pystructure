@@ -19,6 +19,41 @@ import ch.hsr.ifs.pystructure.typeinference.model.definitions.Class;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.MethodResolutionOrder;
 import ch.hsr.ifs.pystructure.typeinference.results.types.MetaclassType;
 
+/**
+ * The {@link MethodResolutionOrderEvaluator} calculates the method resolution
+ * order (MRO) of a given class. The MRO defines in which order the interpreter has
+ * to look for inherited methods or attributes. 
+ * 
+ * The algorithm to calculate the MRO is exactly the same as used in the original 
+ * Python interpreteter (as of Python 2.3) and provides some special properties 
+ * in regards of multiple inheritance. 
+ * 
+ * Briefly described (TODO tönt das gut) the algorithm works as follows: 
+ *  1. The final result of the algorithm is a list of classes describing the MRO 
+ *     (also called linearisation) of a given class 
+ *  2. The MRO of a single class is just the class itself: class C() --> L(C) = [C]
+ *  3. When a class inherits only from a single class the MRO are both involved class, 
+ *     with the 'lower' class first: class S(B) --> L(S) = [S,B]
+ *  4. The MRO of classes with multiple base classes has to be calculated using a 
+ *     function called usually merge. The MRO of all base classes and the direct 
+ *     base classes have to be passed to the merge functions. 
+ *       class A(B, C) -> L(A) = [A] + merge(L(B), L(C), [B, C])
+ *  5. The merge works as follows:
+ *     a) all passed arguments are lists of classes, we call the first element
+ *        the head, and the remaining elements the tail. 
+ *     b) iterate over all lists and look for a tail which doesn't occur in any of
+ *        the existing tails. If there is such a head, remove the class stored in this
+ *        head (and other heads, if there are any) and add it to the result linearisation
+ *     c) repeat step b as long as there are any classes remaining. If the engine can't 
+ *        find a head which doesn't occur in any tail the process has to be aborted, the 
+ *        specified class hierarchy is cannot be resolved into a valid linearisation. 
+ *   
+ *  More details about the algorithm and the details behind it can be found in the document 
+ *  'The Python 2.3 Method Resolution Order' by Michele Simionato (http://www.python.org/download/releases/2.3/mro/)
+ * 
+ * 
+ * 
+ */
 public class MethodResolutionOrderEvaluator extends AbstractEvaluator {
 
 	private static final class BaseClass {
