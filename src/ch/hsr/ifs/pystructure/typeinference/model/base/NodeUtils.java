@@ -29,6 +29,7 @@ import org.python.pydev.parser.jython.SimpleNode;
 import org.python.pydev.parser.jython.ast.Attribute;
 import org.python.pydev.parser.jython.ast.Call;
 import org.python.pydev.parser.jython.ast.Index;
+import org.python.pydev.parser.jython.ast.Name;
 import org.python.pydev.parser.jython.ast.NameTok;
 import org.python.pydev.parser.jython.ast.NameTokType;
 import org.python.pydev.parser.jython.ast.Num;
@@ -112,6 +113,14 @@ public final class NodeUtils {
 		}
 		
 		return null;
+	}
+	
+	/**
+	 * Creates a call node for a function call.
+	 */
+	public static Call createFunctionCall(String function, exprType... arguments) {
+		Name name = new Name(function, expr_contextType.Load);
+		return new Call(name, arguments, null, null, null);
 	}
 
 	/**
