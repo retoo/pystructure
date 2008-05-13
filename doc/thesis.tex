@@ -24,7 +24,7 @@
 {\Large \bfseries Institute for Software}
 
 \vspace{2cm}
-{\Huge \bfseries PyStructure -- Autmated structural analysis of Python aplications}
+{\Huge \bfseries PyStructure -- Automated Structure and Dependency Analysis of Python Code}
 \vspace{2cm}
 
 {\Large \bfseries Bachelor Thesis: Spring 2008}
@@ -81,243 +81,115 @@ Supervised by Prof. Peter Sommerlad
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Introduction}
 
-\section{What is Refactoring?}
+\section{Structural Analysis}
 
-
-\section{Automatic Code Refactoring}
-
-\section{Roadmap}
-
-\subsection{Milestone 1}
-
-
-\textbf{Result}
-
-\subsection{Milestone 2}
-
-\textbf{Goal}
-
-\textbf{Result}
-
-\subsection{Milestone 3}
-
-\textbf{Result}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\chapter{Architecture}
-
-
-\section{User Interface}
-
-\section{Refactoring Engine}
-
-\section{Type Inference Engine}
-
-\section{Abstract Syntax Tree}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\chapter{Existing Infrastructure}
-
-
-\section{PyDev}
-
-\subsection{AST – Abstract Syntax Tree}\label{ast}
-
-
-
-\subsection{Adapters}
-
-
-\subsection{Visitors}
-
-
-\subsection{Rewriter}
-
-
-\section{Eclipse LTK}
-
-
-\subsection{Refactoring Procedure}
-
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\chapter{Implemented Refactorings \& Generators}
-
-
-\section{Generate Docstring}
-
-
-\subsubsection{Example}
-
-\subsubsection{Goal}
-
-
-\subsubsection{Special Cases}
-
-\subsubsection{Implementation}
-
-
-\section{Extract Local Variable}
-
-\subsubsection{Example}
-
-\subsubsection{Goal}
-
-\subsubsection{Special Cases}
-
-\subsubsection{Implementation}
-
-\subsubsection{Possible Extensions}
-
-\section{Inline Local Variable}
-
-
-\subsubsection{Example}
-
-
-\subsubsection{Goal}
-
-\subsubsection{Special Cases}
-
-\subsubsection{Limitation}
-
-
-\subsubsection{Implementation}
-
-\section{Rename}
-
-
-\subsection{Rename Local Variable}
-
-
-\subsubsection{Example}
-
-\subsubsection{Goal}
-
-\subsubsection{Special Cases}
-
-
-\subsection{Rename Class or Function}
-
-
-\subsection{Rename Method or Attribute}
-
-
-\subsection{Implementation}
-
-
-\subsubsection{Local Variables}
-
-
-\subsubsection{Classes and Functions}
-
-
-\subsubsection{Methods and Attributes}
-
-
-
+Structural Analysis
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Type Inference}
 
+\section{Introduction}
 
-\section{Uses of Type Inference}
+Idea \& Concept \\
+goal, ziel (wo wollen wir hin)\\
+(Goal engine, why \& how) \\
+(link to other possible solutions)
+Correctness \& Usefulness \\
+Process Overview \\
 
+\section{Parsing the Source Code}
+ From Source Code to AST (Jython)
 
-\section{Terminology}
-
-\subsection{Types}
-
-
-\subsection{Correctness and Usefulness}
-
-
-\section{Implementation}
-
-
-\subsection{Design}
-
-
-\subsection{Flow Analysis}
-
-\subsubsection{Branches}
+\section{Creating the Model}
+From AST to Model \\
+(StructureVisitor, DefinitionVisitor)\\
+Connecting Definitions and Uses\\
+(What's already known, what not (attributes...))\\
 
 
-\subsubsection{Scopes}
+\section{Inferencing Types}
+Goal Engine \\
+ (description of the goal engine)\\
+ (advantages/disadvantages)\\
+Evaluation\\
+ (goals \& evaluators explained)\\
+ (examples)\\
 
 
-\subsubsection{Global Variables}
+\section{Challenges/Problems}
+Container Element Types \\
+Call Context \& Instance Context \\
+Built-in Types \& Functions\\
+Inheritance\\
+ (C3 MRO)\\
+Recursion\\
 
-
-\subsubsection{Implementation}
-
-
-\subsection{Limitations}
-
-\subsubsection{Type of Collection Elements}
-
-
-\subsubsection{Built-in Types and Functions}
-
+\section{Caching}
+ Techniques, Performance, advantages/disadvantages, problems
+ Result, problems, performance, memory requirements (ganzer ti)
+\section{Improvements During the Development}
+ (DLTK \& goalengine refactoring) \\
+ (Avoid casting (result in Goal))\\
+ (Goaltype -> Evaluator Map)\\
+Other Type Inference Solutions\\
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Structural Analysis}
+How to interpret the information provided by the TI \\
+What kind of relations \\
+What kind of elements (Module, class, etc. mapping to s101g) \\
+How does the output look like \\
+Parsing a single expression vs inference all expressions (demand driven vs everything)\\
+ what are `all expressions`\\
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Results / Practical examples}
+Structure \\
+types (type annotator)\\
+Key figures\\
+
+
+
+%% What about tthis chapter? %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Structural Improvements}
-
-
 \section{Size Over Time}
-
 \section{Overall Structure}
-
-
 \section{Type Inference Engine}
-
-
 \section{Quality Assurance Infrastructure}
-
-
 \subsection{Continuous Integration}
-
-
 \subsection{Automatic Unit Testing}
-
-
 \subsection{Checkstyle}
-
-
 \subsection{Findbugs}
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\chapter{Summary}
-
 \section{Results}
 
+\chapter{Continuous Integration \& Testing}
+ Ways to test TI
+ Framework, markers
+  (examples, mro marker)
+ Continuous Integration
+  (lava lamp)
 
+\chapter{Outlook}
+ Possible follow-up projects
+ Possibilities.. etc.
+
+\chapter{Project Management}
+ Milestones \& Roadmap \\
+ (Problems, important decisions) \\
+ (QA Techniques) \\
+ (Used license) \\
+ Effort Diagram \\
+ Our Experiences \\
+ Acknowledgements 
 
 \section{Outlook}
-
 \subsection{PEPTIC in General}
-
-
 \subsection{Type Inference}
-
-
 \subsubsection{Common IDE Features}
-
-
 \subsubsection{Type Checking}
-
-
 \subsubsection{Structural Analysis}
-
-
 \subsubsection{Unused Code}
-
-
 \subsubsection{Compiler Optimisations}
-
 
 \clearpage
 
@@ -325,20 +197,12 @@ Supervised by Prof. Peter Sommerlad
 
 \clearpage
 
-\section{Our Experiences}
-
-\subsection{Robin Stocker}
-
-
-\subsection{Reto Schüttel}
-
-
 \section{Thanks}
 
 \begin{itemize}
 	\item to Peter Sommerlad and Thomas Corbat for their support during the project
 	\item to Christian Bachmann for the life-saving coffee machine in our study room. 
-	\item NOT to HSR for their banning of the above mentioned life-saving coffee machine out of the study room
+	\item NOT to HSR for their banning of the above mentioned life-saving coffee machine out of the study room\footnote{They actually banned it after a few weeks, but as we operated the coffee machine well hidden in a closet it wasn't discovered by the facility management)}
 \end{itemize}
 
 
