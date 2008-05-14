@@ -62,6 +62,7 @@ import ch.hsr.ifs.pystructure.typeinference.evaluators.types.AttributeTypeEvalua
 import ch.hsr.ifs.pystructure.typeinference.evaluators.types.BinOpTypeEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.types.CallTypeEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.types.ClassAttributeTypeEvaluator;
+import ch.hsr.ifs.pystructure.typeinference.evaluators.types.DictTypeEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.types.FixedResultEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.types.IfExpTypeEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.types.ImplicitImportTypeEvaluator;
@@ -269,7 +270,7 @@ public class PythonEvaluatorFactory implements IEvaluatorFactory {
 			return new FixedResultEvaluator(goal, new TupleType((Tuple) expr));
 		}
 		if (expr instanceof Dict) {
-			return new FixedResultEvaluator(goal, new ClassType("dict"));
+			return new DictTypeEvaluator(goal, (Dict) expr);
 		}
 		if (expr instanceof ListComp) {
 			/* FIXME: this is a expression like:

@@ -25,7 +25,7 @@ package ch.hsr.ifs.pystructure.typeinference.evaluators.types;
 import java.util.List;
 
 import org.python.pydev.parser.jython.ast.Call;
-import org.python.pydev.parser.jython.ast.exprType;
+import org.python.pydev.parser.jython.ast.Dict;
 
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.ExpressionTypeGoal;
@@ -35,33 +35,27 @@ import ch.hsr.ifs.pystructure.typeinference.results.references.AttributeReferenc
 import ch.hsr.ifs.pystructure.typeinference.visitors.Workspace;
 
 /**
- * Evaluator for evaluating the type of list displays:
- * 
- * l = [42, 3.14]
- * l[0] ## type float|int
- * 
- * The special thing here is that the elements (42, 3.14) in the literal
- * constructor need to be made available so they will be found.
+ * Evaluator for evaluating the type of dict displays.
  */
-public class ListTypeEvaluator extends DisplayTypeEvaluator {
+public class DictTypeEvaluator extends DisplayTypeEvaluator {
 
-	private final org.python.pydev.parser.jython.ast.List list;
+	private final Dict dict;
 
-	public ListTypeEvaluator(ExpressionTypeGoal goal, org.python.pydev.parser.jython.ast.List list) {
+	public DictTypeEvaluator(ExpressionTypeGoal goal, Dict dict) {
 		super(goal);
-		this.list = list;
+		this.dict = dict;
 	}
 
 	@Override
 	public List<IGoal> init() {
-		createClassType("list");
+		createClassType("dict");
 		
 		Workspace workspace = getGoal().getContext().getWorkspace();
 		Module module = getGoal().getContext().getModule();
 		
-		for (exprType element : list.elts) {
-			Call call = NodeUtils.createMethodCall(list, "append", element);
-			AttributeReference r = new AttributeReference("append", resultType, call.func, module);
+		for (int i = 0; i < dict.keys.length; i++) {
+			Call call = NodeUtils.createMethodCall(dict, "__setitem__", dict.keys[i], dict.values[i]);
+			AttributeReference r = new AttributeReference("__setitem__", resultType, call.func, module);
 			workspace.addPossibleAttributeReference(r);
 		}
 		
