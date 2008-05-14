@@ -176,7 +176,7 @@ public class MethodReferencesEvaluator extends AbstractEvaluator {
 	
 	private InstanceContext getInstanceContext() {
 		InstanceContext instanceContext = context.getInstanceContext();
-		if (method.getKlass().equals(instanceContext.getClassType().getKlass())) {
+		if (instanceContext != null && method.getKlass().equals(instanceContext.getClassType().getKlass())) {
 			return instanceContext;
 		} else {
 			return null;
