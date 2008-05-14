@@ -11,3 +11,9 @@ b[0:2] ## type list
 c = b[0::2]
 c ## type list
 c[0] ## type float
+
+d = [1, 2]
+d[0] ## type int
+
+e = [42, 3.14]
+e[0] ## type float|int

@@ -23,11 +23,14 @@
 package ch.hsr.ifs.pystructure.typeinference.visitors;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Module;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.PathElement;
+import ch.hsr.ifs.pystructure.typeinference.results.references.AttributeReference;
 import ch.hsr.ifs.pystructure.utils.IterableIterator;
 import ch.hsr.ifs.pystructure.utils.IteratorChain;
 import ch.hsr.ifs.pystructure.utils.ListUtils;
@@ -39,6 +42,8 @@ public class Workspace {
 	private final List<SourceFolder> sourceFolders;
 	private final ImportResolver importResolver;
 	private final Module builtinModule;
+
+	private Map<String, List<AttributeReference>> possibleAttributeReferences;
 
 	public Workspace(File sourceDir) {
 		this(ListUtils.wrap(sourceDir));
@@ -60,6 +65,7 @@ public class Workspace {
 		this.builtinModule = (Module) stdlib.getChild("builtins");
 		
 		this.importResolver = new ImportResolver(sourceFolders);
+		this.possibleAttributeReferences = new HashMap<String, List<AttributeReference>>();
 	}
 
 	public Module getModule(String name) {
@@ -98,6 +104,20 @@ public class Workspace {
 	
 	public Module getBuiltinModule() {
 		return builtinModule;
+	}
+
+	public void addPossibleAttributeReference(AttributeReference attributeReference) {
+		String name = attributeReference.getName();
+		List<AttributeReference> list = possibleAttributeReferences.get(name);
+		if (list == null) {
+			list = new LinkedList<AttributeReference>();
+			possibleAttributeReferences.put(name, list);
+		}
+		list.add(attributeReference);
+	}
+	
+	public List<AttributeReference> getPossibleAttributeReferences(String name) {
+		return possibleAttributeReferences.get(name);
 	}
 
 }

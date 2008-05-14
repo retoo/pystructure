@@ -46,6 +46,7 @@ import ch.hsr.ifs.pystructure.typeinference.model.definitions.Module;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.NameUse;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Use;
 import ch.hsr.ifs.pystructure.typeinference.results.references.AttributeReference;
+import ch.hsr.ifs.pystructure.typeinference.visitors.Workspace;
 
 /**
  * Evaluator for finding uses of a name, which could be possible references to a
@@ -71,6 +72,11 @@ public class PossibleAttributeReferencesEvaluator extends AbstractEvaluator {
 
 	@Override
 	public List<IGoal> init() {
+		Workspace workspace = getGoal().getContext().getWorkspace();
+		List<AttributeReference> possibleAttributeReferences = workspace.getPossibleAttributeReferences(name);
+		if (possibleAttributeReferences != null) {
+			references.addAll(possibleAttributeReferences);
+		}
 		return wrap(new PossibleReferencesGoal(getGoal().getContext(), name));
 	}
 

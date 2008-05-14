@@ -35,6 +35,7 @@ import ch.hsr.ifs.pystructure.typeinference.goals.types.ExpressionTypeGoal;
 import ch.hsr.ifs.pystructure.typeinference.model.base.NodeUtils;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Class;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Definition;
+import ch.hsr.ifs.pystructure.typeinference.results.references.AttributeReference;
 import ch.hsr.ifs.pystructure.typeinference.results.types.ClassType;
 import ch.hsr.ifs.pystructure.typeinference.visitors.Workspace;
 
@@ -75,8 +76,9 @@ public class ListTypeEvaluator extends AbstractEvaluator {
 		resultType.appendType(classType);
 		
 		for (exprType element : list.elts) {
-			// TODO: Create Call or MethodReference and attach it to classType.
-			System.out.println(element);
+			Call call = NodeUtils.createMethodCall(list, "append", element);
+			AttributeReference attributeReference = new AttributeReference("append", resultType, call.func, getGoal().getContext().getModule());
+			workspace.addPossibleAttributeReference(attributeReference);
 		}
 		
 		return IGoal.NO_GOALS;
