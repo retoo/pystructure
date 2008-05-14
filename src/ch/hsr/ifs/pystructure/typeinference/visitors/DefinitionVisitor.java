@@ -431,10 +431,6 @@ public class DefinitionVisitor extends StructuralVisitor {
 		return (Scope) scope;
 	}
 
-	public List<Use> getUses() {
-		return uses;
-	}
-	
 	/* import stuff */
 
 	/*
