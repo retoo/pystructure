@@ -120,7 +120,9 @@ public final class NodeUtils {
 	 */
 	public static Call createFunctionCall(String function, exprType... arguments) {
 		Name name = new Name(function, expr_contextType.Load);
-		return new Call(name, arguments, null, null, null);
+		Call call = new Call(name, arguments, null, null, null);
+		name.parent = call;
+		return call;
 	}
 
 	/**
@@ -130,7 +132,10 @@ public final class NodeUtils {
 	public static Call createMethodCall(exprType receiver, String method, exprType... arguments) {
 		NameTok methodTok = new NameTok(method, name_contextType.Attrib);
 		Attribute func = new Attribute(receiver, methodTok, expr_contextType.Load);
-		return new Call(func, arguments, null, null, null);
+		methodTok.parent = func;
+		Call call = new Call(func, arguments, null, null, null);
+		func.parent = call;
+		return call;
 	}
 
 	/**
