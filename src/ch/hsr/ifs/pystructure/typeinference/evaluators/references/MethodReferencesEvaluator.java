@@ -38,7 +38,6 @@ import ch.hsr.ifs.pystructure.typeinference.goals.references.ClassReferencesGoal
 import ch.hsr.ifs.pystructure.typeinference.goals.references.MethodReferencesGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.references.PossibleAttributeReferencesGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.MethodResolveGoal;
-import ch.hsr.ifs.pystructure.typeinference.model.definitions.Class;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Method;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Module;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Reference;
@@ -99,14 +98,13 @@ public class MethodReferencesEvaluator extends AbstractEvaluator {
 			}
 			
 		} else 	if (subgoal instanceof PossibleAttributeReferencesGoal) {
-			PossibleAttributeReferencesGoal g = (PossibleAttributeReferencesGoal) subgoal; 
+			PossibleAttributeReferencesGoal g = (PossibleAttributeReferencesGoal) subgoal;
 			
 			
 			// We were looking for a normal method.
 			for (AttributeReference reference : g.references) {
 				exprType attribute = reference.getExpression();
 				Module module = reference.getModule();
-				Class wantedClass = method.getKlass();
 				
 				for (IType parentType : reference.getParent()) {
 						
@@ -120,8 +118,8 @@ public class MethodReferencesEvaluator extends AbstractEvaluator {
 						ClassType referenceClassType = (ClassType) parentType;
 						boolean referenceValid = false;
 						
-						InstanceContext instanceContext = context.getInstanceContext();
-						if (instanceContext != null && wantedClass.equals(instanceContext.getClassType().getKlass()))  {
+						InstanceContext instanceContext = getInstanceContext();
+						if (instanceContext != null)  {
 							// InstanceContext applies
 							referenceValid = referenceClassType.equals(instanceContext.getClassType());
 						} else {
@@ -176,6 +174,15 @@ public class MethodReferencesEvaluator extends AbstractEvaluator {
 		list.add(reference);
 	}
 	
+	private InstanceContext getInstanceContext() {
+		InstanceContext instanceContext = context.getInstanceContext();
+		if (method.getKlass().equals(instanceContext.getClassType().getKlass())) {
+			return instanceContext;
+		} else {
+			return null;
+		}
+	}
+
 	/*
 	 * Caching disabled for now, because the result depends on the InstanceContext.
 	 */
