@@ -55,6 +55,7 @@ import org.python.pydev.parser.jython.ast.suiteType;
 
 import ch.hsr.ifs.pystructure.typeinference.model.base.NamePath;
 import ch.hsr.ifs.pystructure.typeinference.model.base.NodeUtils;
+import ch.hsr.ifs.pystructure.typeinference.model.definitions.AliasedImportDefinition;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Argument;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.AssignDefinition;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.AttributeUse;
@@ -111,7 +112,7 @@ public class DefinitionVisitor extends StructuralVisitor {
 		blocks.pop();
 
 		moduleScope.connectGlobals();
-
+	
 		return null;
 	}
 
@@ -230,8 +231,7 @@ public class DefinitionVisitor extends StructuralVisitor {
 	 */
 	@Override
 	public Object visitName(Name node) throws Exception {
-		NameUse use = new NameUse(node.id, node, module);
-		addNameUse(use);
+		addNameUse(node);
 		super.visitName(node);
 		return null;
 	}
@@ -410,13 +410,31 @@ public class DefinitionVisitor extends StructuralVisitor {
 		}
 	}
 
-	private void addNameUse(NameUse use) {
-		List<Definition> definitions = getBlock().getCurrentDefinitions(use.getName());
-		use.addDefinitions(definitions);
-		if (getScope() == moduleScope || getScope().isGlobal(use.getName())) {
-			moduleScope.addGlobalNameUse(use);
+	private void addNameUse(Name node) {
+		NameUse nameUse = new NameUse(node.id, node, module);
+		String name = nameUse.getName();
+		List<Definition> definitions = getBlock().getCurrentDefinitions(name);
+		
+		/* Check if this nameuse is alised by the import definieren (from module import Class as Alias). If 
+		 * this is the case we register another NameUse using the 'Alias' as name. This enables the 
+		 * PotentialReferences Evaluator to find the name, even when it is aliased.  
+		 */
+		for (Definition def : definitions) {
+			if (def instanceof AliasedImportDefinition) {
+				AliasedImportDefinition id = (AliasedImportDefinition) def;
+				
+				NameUse aliasedNameUse = new NameUse(id.getElement(), node, module);
+				aliasedNameUse.addDefinition(id);	
+				
+				uses.add(aliasedNameUse);
+			}
 		}
-		uses.add(use);
+		
+		nameUse.addDefinitions(definitions);
+		if (getScope() == moduleScope || getScope().isGlobal(name)) {
+			moduleScope.addGlobalNameUse(nameUse);
+		}
+		uses.add(nameUse);
 	}
 
 	private Block getBlock() {
@@ -496,9 +514,14 @@ public class DefinitionVisitor extends StructuralVisitor {
 		} else {
 			for (aliasType entry : node.names) {
 				String element = NodeUtils.getId(entry.name);
-				String alias = NodeUtils.getId(entry.asname == null ? entry.name : entry.asname);
 				
-				ImportDefinition definition = new ImportDefinition(module, node, importPath, element, alias);
+				ImportDefinition definition;
+				if (entry.asname != null) {
+					definition = new AliasedImportDefinition(module, node, importPath, element, NodeUtils.getId(entry.asname));
+				} else {
+					definition = new ImportDefinition(module, node, importPath, element, element);
+				}
+				
 				addDefinition(definition);
 			}
 		}
