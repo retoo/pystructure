@@ -17,3 +17,7 @@ d[0] ## type int
 
 e = [42, 3.14]
 e[0] ## type float|int
+
+f = []
+f.append(3.14)
+f[0] ## type float
