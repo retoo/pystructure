@@ -27,6 +27,25 @@ import ch.hsr.ifs.pystructure.typeinference.evaluators.base.AbstractEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.DefinitionTypeGoal;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Definition;
 
+/**
+ * The {@link DefinitionTypeEvaluator} is the base class for several Evluator 
+ * which are responsible for finding out the type of a given definition.
+ * 
+ * The sub evaluators are:
+ *   {@link ArgumentTypeEvaluator}: Type of arguments
+ *   {@link AssignTypeEvaluator}: Type of the value in a assignment
+ *   {@link ImplicitImportTypeEvaluator}: Type of implicitly imported  
+ *        stuff (from .. import * or python built ins)
+ *   {@link ImportTypeEvaluator}: Type of a imported object
+ *         (class, variable or function)  
+ *   
+ *   
+ *   The {@link DefinitionTypeEvaluator} handles the caching for all sub 
+ *   classes. Once resolved definitions are not resolved another time. Please 
+ *   note that some sub classes disable this behaviour in favour of better 
+ *   analysing techniques (namely: call context and instance context)
+ *   
+ */
 public abstract class DefinitionTypeEvaluator extends AbstractEvaluator {
 
 	private Definition definition;
@@ -38,6 +57,7 @@ public abstract class DefinitionTypeEvaluator extends AbstractEvaluator {
 		this.resultType = goal.resultType;
 	}
 	
+	@Override
 	public boolean checkCache() {
 		if (definition.type != null) {
 			this.resultType.appendType(definition.type);
