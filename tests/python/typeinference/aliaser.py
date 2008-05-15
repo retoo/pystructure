@@ -15,8 +15,8 @@ aa = AliasAlias("")
 aa.a_method("xxx")
 
 
-# from alias import function as aliased_function
-# from alias import function
-# importing functions doesn't work atm
-# aliased_function("foo")
-# function(1)
+from alias import function as aliased_function
+from alias import function
+
+aliased_function("foo")
+function(1)

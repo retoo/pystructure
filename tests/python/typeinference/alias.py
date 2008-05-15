@@ -9,4 +9,4 @@ class Real(object):
         
         
 def function(arg):
-    arg # # type str
+    arg ## type int|str
