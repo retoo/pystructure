@@ -24,7 +24,6 @@ package ch.hsr.ifs.pystructure.typeinference.evaluators.types;
 
 import java.util.List;
 
-import org.python.pydev.parser.jython.ast.Call;
 import org.python.pydev.parser.jython.ast.exprType;
 
 import ch.hsr.ifs.pystructure.typeinference.basetype.CombinedType;
@@ -33,7 +32,6 @@ import ch.hsr.ifs.pystructure.typeinference.goals.base.GoalState;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.DefinitionTypeGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.ExpressionTypeGoal;
-import ch.hsr.ifs.pystructure.typeinference.model.base.NodeUtils;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.LoopVariableDefinition;
 
 public class LoopVariableTypeEvaluator extends AbstractEvaluator {
@@ -54,11 +52,8 @@ public class LoopVariableTypeEvaluator extends AbstractEvaluator {
 		 * for element in list:  →  list.__iter__().next()
 		 */
 		
-		exprType iter = loopVariableDefinition.getIter();
-		Call iterCall = NodeUtils.createMethodCall(iter, "__iter__");
-		Call nextCall = NodeUtils.createMethodCall(iterCall, "next");
-		
-		return wrap(new ExpressionTypeGoal(getGoal().getContext(), nextCall));
+		exprType value = loopVariableDefinition.getValue();
+		return wrap(new ExpressionTypeGoal(getGoal().getContext(), value));
 	}
 
 	@Override

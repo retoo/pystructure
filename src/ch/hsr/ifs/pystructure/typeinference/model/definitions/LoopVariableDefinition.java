@@ -22,7 +22,7 @@
 
 package ch.hsr.ifs.pystructure.typeinference.model.definitions;
 
-import org.python.pydev.parser.jython.ast.For;
+import org.python.pydev.parser.jython.ast.Name;
 import org.python.pydev.parser.jython.ast.exprType;
 
 /**
@@ -30,15 +30,21 @@ import org.python.pydev.parser.jython.ast.exprType;
  */
 public class LoopVariableDefinition extends Definition {
 
-	private final exprType iter;
+	private final Name target;
+	private final exprType value;
 
-	public LoopVariableDefinition(Module module, String name, For loop, exprType iter) {
-		super(module, name, loop);
-		this.iter = iter;
+	public LoopVariableDefinition(Module module, String name, Name target, exprType value) {
+		super(module, name, target);
+		this.target = target;
+		this.value = value;
 	}
 
-	public exprType getIter() {
-		return iter;
+	public Name getTarget() {
+		return target;
+	}
+
+	public exprType getValue() {
+		return value;
 	}
 
 }

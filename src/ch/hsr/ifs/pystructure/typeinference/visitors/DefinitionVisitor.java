@@ -289,12 +289,32 @@ public class DefinitionVisitor extends StructuralVisitor {
 
 		Block bodyBlock = new Block(parent);
 
-		// TODO: What about tuples?
-		if (node.target instanceof Name) {
-			String name = ((Name) node.target).id;
-			Definition loopVariable = new LoopVariableDefinition(module, name, node, node.iter);
-			bodyBlock.setDefinition(loopVariable);
-			parent.addDefinition(loopVariable);
+		Call iterCall = NodeUtils.createMethodCall(node.iter, "__iter__");
+		Call nextCall = NodeUtils.createMethodCall(iterCall, "next");
+
+		Map<exprType, exprType> assignments = NodeUtils.createTupleElementAssignments(node.target, nextCall);
+		for (Map.Entry<exprType, exprType> entry : assignments.entrySet()) {
+			exprType target = entry.getKey();
+			exprType value  = entry.getValue();
+			
+			if (target instanceof Name) {
+				String name = ((Name) target).id;
+				Definition loopVariable = new LoopVariableDefinition(module, name, (Name) target, value);
+				bodyBlock.setDefinition(loopVariable);
+				parent.addDefinition(loopVariable);
+			} else if (target instanceof Subscript) {
+				processSubscriptAssignment(target, value);
+			} else if (target instanceof Attribute) {
+				/*
+				 * TODO: What to do about this?:
+				 * 
+				 * x = Class()
+				 * for x.attribute in [1, 2, 3]:
+				 *     print x.attribute
+				 */
+			}
+			
+			value.accept(this);
 		}
 
 		visitBlock(bodyBlock, node.body);
