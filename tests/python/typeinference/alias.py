@@ -6,3 +6,7 @@ class Real(object):
 
     def just_a_method(self, x):
         x ## type float|int
+        
+        
+def function(arg):
+    arg # # type str
