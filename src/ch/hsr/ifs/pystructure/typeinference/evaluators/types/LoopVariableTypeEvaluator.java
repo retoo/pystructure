@@ -26,24 +26,19 @@ import java.util.List;
 
 import org.python.pydev.parser.jython.ast.exprType;
 
-import ch.hsr.ifs.pystructure.typeinference.basetype.CombinedType;
-import ch.hsr.ifs.pystructure.typeinference.evaluators.base.AbstractEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.GoalState;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.DefinitionTypeGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.ExpressionTypeGoal;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.LoopVariableDefinition;
 
-public class LoopVariableTypeEvaluator extends AbstractEvaluator {
+public class LoopVariableTypeEvaluator extends DefinitionTypeEvaluator {
 
 	private final LoopVariableDefinition loopVariableDefinition;
-	private CombinedType resultType;
 
 	public LoopVariableTypeEvaluator(DefinitionTypeGoal goal, LoopVariableDefinition loopVariableDefinition) {
-		super(goal);
+		super(goal, loopVariableDefinition);
 		this.loopVariableDefinition = loopVariableDefinition;
-		
-		this.resultType = goal.resultType;
 	}
 
 	@Override
