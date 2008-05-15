@@ -168,7 +168,7 @@
 			<instrumentationClasspath>
 				<fileset dir="${build.src}">
 					<include name="**/*.class" />
-					<exclude name="-not-used-atm-" />
+					<exclude name="**/ClI.class" />
 				</fileset>
 			</instrumentationClasspath>
 		</cobertura-instrument>
