@@ -93,12 +93,10 @@ public class ImportTypeEvaluator extends DefinitionTypeEvaluator {
 
 	@Override
 	public List<IGoal> subgoalDone(IGoal subgoal, GoalState subgoalState) {
-		if (subgoal instanceof DefinitionTypeGoal) {
-			DefinitionTypeGoal g = (DefinitionTypeGoal) subgoal;
-			this.resultType.appendType(g.resultType);
-		} else {
-			unexpectedSubgoal(subgoal);
-		}
+		if (!(subgoal instanceof DefinitionTypeGoal)) { unexpectedSubgoal(subgoal); }
+		
+		DefinitionTypeGoal g = (DefinitionTypeGoal) subgoal;
+		resultType.appendType(g.resultType);
 		return IGoal.NO_GOALS;
 	}
 
