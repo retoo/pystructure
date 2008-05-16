@@ -11,3 +11,5 @@ a ## type int
 
 b = n * 1
 b ## type float
+
+0 or True ## type bool|int

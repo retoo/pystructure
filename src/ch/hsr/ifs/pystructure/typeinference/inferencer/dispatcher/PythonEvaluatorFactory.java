@@ -63,6 +63,7 @@ import ch.hsr.ifs.pystructure.typeinference.evaluators.types.ArgumentTypeEvaluat
 import ch.hsr.ifs.pystructure.typeinference.evaluators.types.AssignTypeEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.types.AttributeTypeEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.types.BinOpTypeEvaluator;
+import ch.hsr.ifs.pystructure.typeinference.evaluators.types.BoolOpTypeEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.types.CallTypeEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.types.ClassAttributeTypeEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.types.DictTypeEvaluator;
@@ -241,6 +242,9 @@ public class PythonEvaluatorFactory implements IEvaluatorFactory {
 		if (expr instanceof BinOp) {
 			return new BinOpTypeEvaluator(goal, (BinOp) expr);
 		}
+		if (expr instanceof BoolOp) {
+			return new BoolOpTypeEvaluator(goal, (BoolOp) expr);
+		}
 		if (expr instanceof IfExp) {
 			return new IfExpTypeEvaluator(goal, (IfExp) expr);
 		}
@@ -281,7 +285,7 @@ public class PythonEvaluatorFactory implements IEvaluatorFactory {
 			 */
 			return new FixedResultEvaluator(goal, new ClassType("list"));
 		}
-		if (expr instanceof Compare || expr instanceof UnaryOp || expr instanceof BoolOp) {
+		if (expr instanceof Compare || expr instanceof UnaryOp) {
 			return new FixedResultEvaluator(goal, new ClassType("bool"));
 		}
 		if (expr instanceof Lambda) {
