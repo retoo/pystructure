@@ -30,6 +30,12 @@ import ch.hsr.ifs.pystructure.typeinference.goals.base.GoalState;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.AbstractTypeGoal;
 
+/**
+ * Evaluator which just returns the result which is passed in the constructor.
+ * 
+ * Useful when the result is already known but an evaluator is required, e.g. in
+ * the dispatcher.
+ */
 public class FixedResultEvaluator extends AbstractEvaluator {
 
 	public FixedResultEvaluator(AbstractTypeGoal goal, IType classType) {
@@ -45,5 +51,5 @@ public class FixedResultEvaluator extends AbstractEvaluator {
 	public List<IGoal> subgoalDone(IGoal subgoal, GoalState subgoalState) {
 		return IGoal.NO_GOALS;
 	}
-	
+
 }
