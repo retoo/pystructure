@@ -130,6 +130,7 @@ public class Structure101Logger implements IGoalEngineLogger {
 			String outDir = System.getProperty("output.tests", "tests");
 			FileOutputStream out = new FileOutputStream(outDir + "/goalengine.xml");
 			outputter.output(document, out);
+			out.close();
 		} catch (IOException e) {
 			// ignore
 		}
