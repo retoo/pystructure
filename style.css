@@ -21,6 +21,7 @@ table td {
 }
 span.code {
 	white-space: pre;
+	font-family: monospace;
 }
 
 /* pygments css */
