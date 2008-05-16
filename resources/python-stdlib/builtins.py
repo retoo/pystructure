@@ -2,18 +2,6 @@ class object():
     pass
 
 
-class _iterator(object):
-
-    def __init__(self, element):
-        self._iterator_element = element
-    
-    def __iter__(self):
-        return self
-    
-    def next(self):
-        return self._iterator_element
-
-
 class list(object):
 
     def append(self, element):
@@ -50,7 +38,15 @@ class list(object):
         return self
 
     def __iter__(self):
-        return _iterator(self._list_element)
+        # The correct solution would be to do this:
+        #   return _iterator(self._list_element)
+        # But the problem with this is that the iterator will be the same for
+        # different lists, because the constructor call is the same, which is
+        # bad because the element types would be merged for all lists.
+        return self
+
+    def next(self):
+        return self._list_element
 
 
 class dict(object):
