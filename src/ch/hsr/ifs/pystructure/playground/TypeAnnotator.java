@@ -164,8 +164,10 @@ public class TypeAnnotator extends HtmlOutputter {
 					String goalFilename = "goals/" + result.uid + ".html";
 					
 					IType type = result.type;
-					String label = type.toString().equals("") ? "?" : type.toString();
-					tdTypes.addContent(link(label, goalFilename));
+					String typeName = type.getTypeName();
+					String label = typeName.equals("") ? "?" : typeName;
+					Element link = tag("a", label, "href", goalFilename, "title", type.toString());
+					tdTypes.addContent(link);
 				}
 			} else {
 				tdTypes.addContent(" ");
