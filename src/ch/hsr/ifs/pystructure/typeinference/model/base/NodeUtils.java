@@ -67,9 +67,7 @@ public final class NodeUtils {
 	public static Integer extractInteger(Num num) {
 		switch (num.type) {
 		case num_typeType.Long:
-			return null;
 		case num_typeType.Float:
-			return null;
 		case num_typeType.Comp:
 			return null;
 		case num_typeType.Int:
