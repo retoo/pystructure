@@ -49,3 +49,10 @@ p[2] ## type str
 p[-1] ## type str
 p[-2] ## type float
 p[-3] ## type int
+
+
+def return_tuple_of_arguments(arg1, arg2):
+    return (arg1, arg2)
+
+return_tuple_of_arguments(1, 2)[0] ## type int
+return_tuple_of_arguments(3.14, 1.1)[0] ## type float

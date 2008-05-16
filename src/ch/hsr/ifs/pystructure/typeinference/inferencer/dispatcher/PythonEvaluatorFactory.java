@@ -271,7 +271,7 @@ public class PythonEvaluatorFactory implements IEvaluatorFactory {
 			return new ListTypeEvaluator(goal, (List) expr);
 		}
 		if (expr instanceof Tuple) {
-			return new FixedResultEvaluator(goal, new TupleType((Tuple) expr));
+			return new FixedResultEvaluator(goal, new TupleType((Tuple) expr, goal.getContext()));
 		}
 		if (expr instanceof Dict) {
 			return new DictTypeEvaluator(goal, (Dict) expr);

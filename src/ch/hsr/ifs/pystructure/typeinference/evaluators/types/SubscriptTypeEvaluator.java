@@ -34,6 +34,7 @@ import org.python.pydev.parser.jython.ast.num_typeType;
 
 import ch.hsr.ifs.pystructure.typeinference.basetype.CombinedType;
 import ch.hsr.ifs.pystructure.typeinference.basetype.IType;
+import ch.hsr.ifs.pystructure.typeinference.contexts.ModuleContext;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.base.AbstractEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.GoalState;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
@@ -153,7 +154,8 @@ public class SubscriptTypeEvaluator extends AbstractEvaluator {
 		
 		exprType expression = elements[actualIndex];
 		
-		return new ExpressionTypeGoal(getGoal().getContext(), expression);
+		ModuleContext context = tupleType.getContext();
+		return new ExpressionTypeGoal(context, expression);
 	}
 
 	/**

@@ -24,17 +24,25 @@ package ch.hsr.ifs.pystructure.typeinference.results.types;
 
 import org.python.pydev.parser.jython.ast.Tuple;
 
+import ch.hsr.ifs.pystructure.typeinference.contexts.ModuleContext;
+
 public class TupleType extends AbstractType {
 
-	private Tuple tuple;
-	
-	public TupleType(Tuple tuple) {
+	private final Tuple tuple;
+	private final ModuleContext moduleContext;
+
+	public TupleType(Tuple tuple, ModuleContext moduleContext) {
 		super("tuple");
 		this.tuple = tuple;
+		this.moduleContext = moduleContext;
 	}
-	
+
 	public Tuple getTuple() {
 		return tuple;
 	}
-	
+
+	public ModuleContext getContext() {
+		return moduleContext;
+	}
+
 }
