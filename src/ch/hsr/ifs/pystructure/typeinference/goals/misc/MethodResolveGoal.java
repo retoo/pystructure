@@ -1,4 +1,4 @@
-package ch.hsr.ifs.pystructure.typeinference.goals.types;
+package ch.hsr.ifs.pystructure.typeinference.goals.misc;
 
 import java.util.LinkedList;
 import java.util.List;

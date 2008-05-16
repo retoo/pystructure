@@ -74,6 +74,8 @@ import ch.hsr.ifs.pystructure.typeinference.evaluators.types.LoopVariableTypeEva
 import ch.hsr.ifs.pystructure.typeinference.evaluators.types.ReturnTypeEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.types.SubscriptTypeEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
+import ch.hsr.ifs.pystructure.typeinference.goals.misc.MethodResolutionOrderGoal;
+import ch.hsr.ifs.pystructure.typeinference.goals.misc.MethodResolveGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.references.AttributeReferencesGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.references.CalculateTypeHierarchyGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.references.ClassReferencesGoal;
@@ -85,8 +87,6 @@ import ch.hsr.ifs.pystructure.typeinference.goals.types.AbstractTypeGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.ClassAttributeTypeGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.DefinitionTypeGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.ExpressionTypeGoal;
-import ch.hsr.ifs.pystructure.typeinference.goals.types.MethodResolutionOrderGoal;
-import ch.hsr.ifs.pystructure.typeinference.goals.types.MethodResolveGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.ReturnTypeGoal;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Argument;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.AssignDefinition;

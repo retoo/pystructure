@@ -1,4 +1,4 @@
-package ch.hsr.ifs.pystructure.typeinference.goals.types;
+package ch.hsr.ifs.pystructure.typeinference.goals.misc;
 
 import ch.hsr.ifs.pystructure.typeinference.contexts.ModuleContext;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.AbstractGoal;
