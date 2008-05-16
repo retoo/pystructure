@@ -3,6 +3,7 @@ package ch.hsr.ifs.pystructure.typeinference.evaluators.types;
 import java.util.List;
 
 import org.python.pydev.parser.jython.ast.Call;
+import org.python.pydev.parser.jython.ast.exprType;
 
 import ch.hsr.ifs.pystructure.typeinference.basetype.CombinedType;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.base.AbstractEvaluator;
@@ -43,7 +44,7 @@ public abstract class DisplayTypeEvaluator extends AbstractEvaluator {
 		return IGoal.NO_GOALS;
 	}
 
-	protected void createClassType(String className) {
+	protected void createClassType(String className, exprType display) {
 		Workspace workspace = getGoal().getContext().getWorkspace();
 		
 		List<Definition> definitions = workspace.getBuiltinModule().getDefinitions(className);
@@ -53,6 +54,8 @@ public abstract class DisplayTypeEvaluator extends AbstractEvaluator {
 		Class klass = (Class) definitions.get(0);
 		
 		Call constructorCall = NodeUtils.createFunctionCall(className);
+		constructorCall.beginLine = display.beginLine;
+		
 		ClassType classType = new ClassType(klass, constructorCall);
 		resultType.appendType(classType);
 	}

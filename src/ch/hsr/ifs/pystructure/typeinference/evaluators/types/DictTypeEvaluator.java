@@ -48,7 +48,7 @@ public class DictTypeEvaluator extends DisplayTypeEvaluator {
 
 	@Override
 	public List<IGoal> init() {
-		createClassType("dict");
+		createClassType("dict", dict);
 		
 		Workspace workspace = getGoal().getContext().getWorkspace();
 		Module module = getGoal().getContext().getModule();

@@ -54,7 +54,7 @@ public class ListTypeEvaluator extends DisplayTypeEvaluator {
 
 	@Override
 	public List<IGoal> init() {
-		createClassType("list");
+		createClassType("list", list);
 		
 		Workspace workspace = getGoal().getContext().getWorkspace();
 		Module module = getGoal().getContext().getModule();
