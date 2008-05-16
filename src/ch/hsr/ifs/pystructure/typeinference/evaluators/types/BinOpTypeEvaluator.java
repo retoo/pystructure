@@ -30,9 +30,6 @@ import org.python.pydev.parser.jython.ast.BinOp;
 import org.python.pydev.parser.jython.ast.Call;
 import org.python.pydev.parser.jython.ast.operatorType;
 
-import ch.hsr.ifs.pystructure.typeinference.basetype.CombinedType;
-import ch.hsr.ifs.pystructure.typeinference.evaluators.base.AbstractEvaluator;
-import ch.hsr.ifs.pystructure.typeinference.goals.base.GoalState;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.ExpressionTypeGoal;
 import ch.hsr.ifs.pystructure.typeinference.model.base.NodeUtils;
@@ -40,11 +37,9 @@ import ch.hsr.ifs.pystructure.typeinference.model.base.NodeUtils;
 /**
  * Evaluator for binary operations like +.
  */
-public class BinOpTypeEvaluator extends AbstractEvaluator {
+public class BinOpTypeEvaluator extends SimpleExpressionTypeEvaluator {
 
 	private final BinOp binOp;
-	
-	private CombinedType result;
 	
 	private static final Map<Integer, String> METHODS = new HashMap<Integer, String>();
 	static {
@@ -69,8 +64,6 @@ public class BinOpTypeEvaluator extends AbstractEvaluator {
 	public BinOpTypeEvaluator(ExpressionTypeGoal goal, BinOp binOp) {
 		super(goal);
 		this.binOp = binOp;
-		
-		this.result = goal.resultType;
 	}
 
 	@Override
@@ -91,15 +84,6 @@ public class BinOpTypeEvaluator extends AbstractEvaluator {
 		Call call = NodeUtils.createMethodCall(binOp.left, method, binOp.right);
 		
 		return wrap(new ExpressionTypeGoal(getGoal().getContext(), call));
-	}
-
-	@Override
-	public List<IGoal> subgoalDone(IGoal subgoal, GoalState subgoalState) {
-		if (!(subgoal instanceof ExpressionTypeGoal)) { unexpectedSubgoal(subgoal); }
-		
-		ExpressionTypeGoal g = (ExpressionTypeGoal) subgoal;
-		this.result.appendType(g.resultType);
-		return IGoal.NO_GOALS;
 	}
 
 }

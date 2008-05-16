@@ -29,9 +29,6 @@ import org.python.pydev.parser.jython.ast.Return;
 import org.python.pydev.parser.jython.ast.exprType;
 import org.python.pydev.parser.visitors.scope.ReturnVisitor;
 
-import ch.hsr.ifs.pystructure.typeinference.basetype.CombinedType;
-import ch.hsr.ifs.pystructure.typeinference.evaluators.base.AbstractEvaluator;
-import ch.hsr.ifs.pystructure.typeinference.goals.base.GoalState;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.ExpressionTypeGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.ReturnTypeGoal;
@@ -41,17 +38,13 @@ import ch.hsr.ifs.pystructure.typeinference.results.types.ClassType;
 /**
  * Evaluator for the return type of a function or method.
  */
-public class ReturnTypeEvaluator extends AbstractEvaluator {
+public class ReturnTypeEvaluator extends SimpleExpressionTypeEvaluator {
 
 	private final Function function;
 
-	private CombinedType resultType;
-
 	public ReturnTypeEvaluator(ReturnTypeGoal goal) {
 		super(goal);
-		function = goal.getFunction();
-
-		resultType = goal.resultType; 
+		this.function = goal.getFunction();
 	}
 
 	@Override
@@ -77,15 +70,6 @@ public class ReturnTypeEvaluator extends AbstractEvaluator {
 		}
 
 		return subgoals;
-	}
-
-	@Override
-	public List<IGoal> subgoalDone(IGoal subgoal, GoalState subgoalState) {
-		if (!(subgoal instanceof ExpressionTypeGoal)) { unexpectedSubgoal(subgoal); }
-		
-		ExpressionTypeGoal g = (ExpressionTypeGoal) subgoal;
-		resultType.appendType(g.resultType);
-		return IGoal.NO_GOALS;
 	}
 
 }

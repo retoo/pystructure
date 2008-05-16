@@ -27,9 +27,6 @@ import java.util.List;
 
 import org.python.pydev.parser.jython.ast.IfExp;
 
-import ch.hsr.ifs.pystructure.typeinference.basetype.CombinedType;
-import ch.hsr.ifs.pystructure.typeinference.evaluators.base.AbstractEvaluator;
-import ch.hsr.ifs.pystructure.typeinference.goals.base.GoalState;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.ExpressionTypeGoal;
 
@@ -41,16 +38,13 @@ import ch.hsr.ifs.pystructure.typeinference.goals.types.ExpressionTypeGoal;
  * 
  * The resulting type would be int|float.
  */
-public class IfExpTypeEvaluator extends AbstractEvaluator {
+public class IfExpTypeEvaluator extends SimpleExpressionTypeEvaluator {
 	
 	private final IfExp ifExp;
-	private CombinedType resultType;
 
 	public IfExpTypeEvaluator(ExpressionTypeGoal goal, IfExp ifExp) {
 		super(goal);
 		this.ifExp = ifExp;
-		
-		this.resultType = goal.resultType;
 	}
 
 	@Override
@@ -59,15 +53,6 @@ public class IfExpTypeEvaluator extends AbstractEvaluator {
 		subgoals.add(new ExpressionTypeGoal(getGoal().getContext(), ifExp.body));
 		subgoals.add(new ExpressionTypeGoal(getGoal().getContext(), ifExp.orelse));
 		return subgoals;
-	}
-
-	@Override
-	public List<IGoal> subgoalDone(IGoal subgoal, GoalState subgoalState) {
-		if (!(subgoal instanceof ExpressionTypeGoal)) { unexpectedSubgoal(subgoal); }
-		
-		ExpressionTypeGoal g = (ExpressionTypeGoal) subgoal;
-		resultType.appendType(g.resultType);
-		return IGoal.NO_GOALS;
 	}
 
 }

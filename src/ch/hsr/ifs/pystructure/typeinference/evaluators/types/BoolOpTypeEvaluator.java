@@ -28,9 +28,6 @@ import java.util.List;
 import org.python.pydev.parser.jython.ast.BoolOp;
 import org.python.pydev.parser.jython.ast.exprType;
 
-import ch.hsr.ifs.pystructure.typeinference.basetype.CombinedType;
-import ch.hsr.ifs.pystructure.typeinference.evaluators.base.AbstractEvaluator;
-import ch.hsr.ifs.pystructure.typeinference.goals.base.GoalState;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.ExpressionTypeGoal;
 
@@ -39,16 +36,13 @@ import ch.hsr.ifs.pystructure.typeinference.goals.types.ExpressionTypeGoal;
  * 
  * 0 or False or 3.14 ## type bool|float|int
  */
-public class BoolOpTypeEvaluator extends AbstractEvaluator {
+public class BoolOpTypeEvaluator extends SimpleExpressionTypeEvaluator {
 	
 	private final BoolOp boolOp;
-	private CombinedType resultType;
 
 	public BoolOpTypeEvaluator(ExpressionTypeGoal goal, BoolOp boolOp) {
 		super(goal);
 		this.boolOp = boolOp;
-		
-		this.resultType = goal.resultType;
 	}
 
 	@Override
@@ -58,15 +52,6 @@ public class BoolOpTypeEvaluator extends AbstractEvaluator {
 			subgoals.add(new ExpressionTypeGoal(getGoal().getContext(), value));
 		}
 		return subgoals;
-	}
-
-	@Override
-	public List<IGoal> subgoalDone(IGoal subgoal, GoalState subgoalState) {
-		if (!(subgoal instanceof ExpressionTypeGoal)) { unexpectedSubgoal(subgoal); }
-		
-		ExpressionTypeGoal g = (ExpressionTypeGoal) subgoal;
-		resultType.appendType(g.resultType);
-		return IGoal.NO_GOALS;
 	}
 
 }
