@@ -57,3 +57,7 @@ class dict(object):
 
     def __getitem__(self, key):
         return self._dict_value
+
+
+def range(arg1, arg2=None, arg3=None):
+    return [1]
