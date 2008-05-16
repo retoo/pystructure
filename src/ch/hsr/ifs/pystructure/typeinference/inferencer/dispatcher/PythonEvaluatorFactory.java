@@ -48,6 +48,9 @@ import org.python.pydev.parser.jython.ast.exprType;
 import org.python.pydev.parser.jython.ast.num_typeType;
 
 import ch.hsr.ifs.pystructure.typeinference.evaluators.base.AbstractEvaluator;
+import ch.hsr.ifs.pystructure.typeinference.evaluators.misc.FixedResultEvaluator;
+import ch.hsr.ifs.pystructure.typeinference.evaluators.misc.MethodResolutionOrderEvaluator;
+import ch.hsr.ifs.pystructure.typeinference.evaluators.misc.MethodResolveEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.references.AttributeReferencesEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.references.CalculateTypeHierarchyEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.references.ClassReferencesEvaluator;
@@ -63,14 +66,11 @@ import ch.hsr.ifs.pystructure.typeinference.evaluators.types.BinOpTypeEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.types.CallTypeEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.types.ClassAttributeTypeEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.types.DictTypeEvaluator;
-import ch.hsr.ifs.pystructure.typeinference.evaluators.types.FixedResultEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.types.IfExpTypeEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.types.ImplicitImportTypeEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.types.ImportTypeEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.types.ListTypeEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.types.LoopVariableTypeEvaluator;
-import ch.hsr.ifs.pystructure.typeinference.evaluators.types.MethodResolutionOrderEvaluator;
-import ch.hsr.ifs.pystructure.typeinference.evaluators.types.MethodResolveEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.types.ReturnTypeEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.types.SubscriptTypeEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
@@ -190,6 +190,9 @@ public class PythonEvaluatorFactory implements IEvaluatorFactory {
 		if (def instanceof ImplicitImportDefinition) {
 			return new ImplicitImportTypeEvaluator(goal, (ImplicitImportDefinition) def);
 		}
+		if (def instanceof LoopVariableDefinition) {
+			return new LoopVariableTypeEvaluator(goal, (LoopVariableDefinition) def);
+		}
 		if (def instanceof Function) {
 			Function function = (Function) def;
 			return new FixedResultEvaluator(goal, new FunctionType(module, function));
@@ -197,9 +200,6 @@ public class PythonEvaluatorFactory implements IEvaluatorFactory {
 		if (def instanceof ch.hsr.ifs.pystructure.typeinference.model.definitions.Class) {
 			ch.hsr.ifs.pystructure.typeinference.model.definitions.Class klass = (ch.hsr.ifs.pystructure.typeinference.model.definitions.Class) def;
 			return new FixedResultEvaluator(goal, new MetaclassType(klass));
-		}
-		if (def instanceof LoopVariableDefinition) {
-			return new LoopVariableTypeEvaluator(goal, (LoopVariableDefinition) def);
 		}
 		if (def instanceof ExceptDefinition) {
 			// TODO: Implement ExceptTypeEvaluator

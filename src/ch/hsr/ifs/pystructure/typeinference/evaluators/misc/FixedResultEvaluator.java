@@ -20,7 +20,7 @@
  *
  */
 
-package ch.hsr.ifs.pystructure.typeinference.evaluators.types;
+package ch.hsr.ifs.pystructure.typeinference.evaluators.misc;
 
 import java.util.List;
 

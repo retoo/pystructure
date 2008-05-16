@@ -1,4 +1,4 @@
-package ch.hsr.ifs.pystructure.typeinference.evaluators.types;
+package ch.hsr.ifs.pystructure.typeinference.evaluators.misc;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -183,7 +183,7 @@ public class MethodResolutionOrderEvaluator extends AbstractEvaluator {
 
 		for (BaseClass baseClass : bases) {
 			if (baseClass.classType != null) {
-				if (baseClass.classType != null && baseClass.linearization != null) {
+				if (baseClass.linearization != null) {
 					toMerge.add(new MethodResolutionOrder(baseClass.linearization));
 					directAnchestors.add(baseClass.classType.getKlass());
 				} else {
