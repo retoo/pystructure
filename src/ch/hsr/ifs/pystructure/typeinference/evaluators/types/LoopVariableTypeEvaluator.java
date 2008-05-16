@@ -60,4 +60,9 @@ public class LoopVariableTypeEvaluator extends DefinitionTypeEvaluator {
 		return IGoal.NO_GOALS;
 	}
 
+	@Override
+	public boolean checkCache() {
+		return false;
+	}
+
 }
