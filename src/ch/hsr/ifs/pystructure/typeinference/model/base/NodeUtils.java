@@ -173,6 +173,8 @@ public final class NodeUtils {
 				exprType element = tuple.elts[i];
 				Index index = NodeUtils.createIndex(i);
 				Subscript subscript = new Subscript(value, index, expr_contextType.Load);
+				index.beginLine = target.beginLine;
+				subscript.beginLine = target.beginLine;
 				createTupleElementAssignments(element, subscript, values);
 			}
 		} else {
