@@ -15,6 +15,20 @@ import ch.hsr.ifs.pystructure.typeinference.model.definitions.Definition;
 import ch.hsr.ifs.pystructure.typeinference.results.types.ClassType;
 import ch.hsr.ifs.pystructure.typeinference.visitors.Workspace;
 
+/**
+ * Evaluator for Python displays. Displays are somewhat like literals, but the
+ * difference is that a display results in a new object every time. Literals, on
+ * the other hand, return the same objects for the same literals. Or, in other
+ * (pythonic) words:
+ * 
+ * >>> "test" is "test"
+ * True
+ * >>> [1, 2] is [1, 2]
+ * False
+ * 
+ * There are list and dict displays. The initial values need to be processed by
+ * the evaluator and this is what this base class is for.
+ */
 public abstract class DisplayTypeEvaluator extends AbstractEvaluator {
 
 	protected final CombinedType resultType;
