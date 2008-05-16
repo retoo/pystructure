@@ -11,3 +11,6 @@ c.append(42)
 c.insert(0, "test")
 c.pop() ## type int|str
 c.count() ## type int
+
+d = set([1, 2, 3])
+d.pop() ## type int

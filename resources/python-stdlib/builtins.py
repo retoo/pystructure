@@ -59,5 +59,67 @@ class dict(object):
         return self._dict_value
 
 
+class set(object):
+    
+    def __init__(self, iterable):
+        self._set_element = iterable.__iter__().next()
+
+    def add(self, element):
+        self._set_element = element
+
+    def clear(self):
+        pass
+
+    def copy(self):
+        return self
+
+    def difference(self, other):
+        return self
+
+    def difference_update(self, other):
+        pass
+
+    def discard(self):
+        pass
+
+    def intersection(self, other):
+        return self
+
+    def intersection_update(self, other):
+        pass
+
+    def issubset(self, other):
+        return False
+
+    def issuperset(self, other):
+        return False
+
+    def pop(self):
+        return self._set_element
+
+    def remove(self, element):
+        pass
+
+    def symmetric_difference(self, other):
+        # Doesn't work yet because constructor call is the same for all sets
+        # s = set()
+        # s.add(self.pop())
+        # s.add(other.pop())
+        return self
+
+    def symmetric_difference_update(self, other):
+        self.add(other.pop())
+
+    def union(self, other):
+        # Doesn't work yet because constructor call is the same for all sets
+        # s = set()
+        # s.add(self.pop())
+        # s.add(other.pop())
+        return self
+
+    def update(self, other):
+        self.add(other.pop())
+
+
 def range(arg1, arg2=None, arg3=None):
     return [1]
