@@ -123,3 +123,15 @@ class set(object):
 
 def range(arg1, arg2=None, arg3=None):
     return [1]
+
+
+class enumerate(object):
+
+    def __init__(self, iterable):
+        self._enumerate_element = iterable.__iter__().next()
+
+    def __iter__(self):
+        return self
+
+    def next(self):
+        return (1, self._enumerate_element)
