@@ -55,6 +55,10 @@ public class ClassType extends AbstractType {
 		return klass;
 	}
 	
+	public Call getConstructorCall() {
+		return constructorCall;
+	}
+	
 	@Override
 	public String toString() {
 		if (klass == null) {
