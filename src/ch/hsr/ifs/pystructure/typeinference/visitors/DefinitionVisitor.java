@@ -200,11 +200,13 @@ public class DefinitionVisitor extends StructuralVisitor {
 					String name = ((Name) targetPart).id;
 					Definition d = new AssignDefinition(module, name, node, value);
 					addDefinition(d);
+					targetPart.accept(this);
 				} else if (targetPart instanceof Subscript) {
 					processSubscriptAssignment(targetPart, value);
+				} else {
+					targetPart.accept(this);
 				}
 			}
-			target.accept(this);
 			target.parent = node;
 		}
 		return null;
