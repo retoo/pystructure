@@ -36,6 +36,10 @@ public class CombinedType implements IType, Iterable<IType> {
 	private Set<IType> types;
 	
 	public CombinedType() {
+		/*
+		 * LinkedHashSet because we want a reproducible iteration order for
+		 * better debugging.
+		 */
 		types = new LinkedHashSet<IType>();
 	}
 	
