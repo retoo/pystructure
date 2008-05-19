@@ -186,7 +186,7 @@ public class TypeAnnotator extends HtmlOutputter {
 
 	private Map<Integer, List<Result>> groupResultsByLine(List<Result> results) {
 		/* group results by line nr */
-		HashMap<Integer, List<Result>> types = new HashMap<Integer, List<Result>>();
+		Map<Integer, List<Result>> types = new HashMap<Integer, List<Result>>();
 		for (Result result : results) {
 			List<Result> l = types.get(result.node.beginLine);
 			if (l == null) {
