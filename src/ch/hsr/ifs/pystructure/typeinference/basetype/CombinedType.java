@@ -22,8 +22,8 @@
 
 package ch.hsr.ifs.pystructure.typeinference.basetype;
 
-import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.SortedSet;
@@ -36,7 +36,7 @@ public class CombinedType implements IType, Iterable<IType> {
 	private Set<IType> types;
 	
 	public CombinedType() {
-		types = new HashSet<IType>();
+		types = new LinkedHashSet<IType>();
 	}
 	
 	public void appendType(IType type) {
