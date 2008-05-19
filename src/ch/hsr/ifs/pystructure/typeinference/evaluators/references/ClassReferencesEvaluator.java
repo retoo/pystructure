@@ -66,7 +66,7 @@ public class ClassReferencesEvaluator extends AbstractEvaluator {
 
 	@Override
 	public List<IGoal> init() {
-		return wrap(new CalculateTypeHierarchyGoal(getGoal().getContext())); 
+		return wrap(new CalculateTypeHierarchyGoal(getGoal().getContext()));
 	}
 
 
@@ -97,6 +97,7 @@ public class ClassReferencesEvaluator extends AbstractEvaluator {
 						if (uses == null) {
 							uses = new LinkedList<Use>();
 							usesForGoal.put(goal, uses);
+							subgoals.add(goal);
 						}
 						uses.add(use);
 					}
@@ -106,11 +107,6 @@ public class ClassReferencesEvaluator extends AbstractEvaluator {
 					// TODO: What about imports like these?: from module import Class as C
 				}
 			}
-			
-			for (IGoal goal : usesForGoal.keySet()) {
-				subgoals.add(goal);
-			}
-			
 			
 		} else if (subgoal instanceof DefinitionTypeGoal) {
 			DefinitionTypeGoal g = (DefinitionTypeGoal) subgoal;
