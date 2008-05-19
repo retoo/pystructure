@@ -45,7 +45,7 @@ import ch.hsr.ifs.pystructure.typeinference.results.types.MetaclassType;
 
 //TODO: Maybe merge with FunctionReferencesEvaluator.
 /**
- * Evaluator for finding all the references to a function.
+ * Evaluator for finding all the references to a class.
  */
 public class ClassReferencesEvaluator extends AbstractEvaluator {
 
