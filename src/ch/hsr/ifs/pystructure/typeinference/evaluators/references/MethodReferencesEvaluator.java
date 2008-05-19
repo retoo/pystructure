@@ -27,6 +27,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.python.pydev.parser.jython.ast.Call;
 import org.python.pydev.parser.jython.ast.exprType;
 
 import ch.hsr.ifs.pystructure.typeinference.basetype.IType;
@@ -92,10 +93,22 @@ public class MethodReferencesEvaluator extends AbstractEvaluator {
 		
 		if (subgoal instanceof ClassReferencesGoal) {
 			ClassReferencesGoal g = (ClassReferencesGoal) subgoal;
+
+			InstanceContext instanceContext = getInstanceContext();
 			
 			for (ClassReference reference : g.references) {
-				MetaclassType metaClassType = reference.getMetaclassType();
-				resolveMethod(reference, metaClassType, subgoals);
+				if (instanceContext != null) {
+					exprType expression = reference.getExpression();
+					Call constructorCall = instanceContext.getClassType().getConstructorCall();
+					if (expression.equals(constructorCall.func)) {
+						references.add(new ConstructorReference(method, expression, reference.getModule()));
+					} else {
+						/* Reference not valid, so ignore it. */
+					}
+				} else {
+					MetaclassType metaClassType = reference.getMetaclassType();
+					resolveMethod(reference, metaClassType, subgoals);
+				}
 			}
 			
 		} else 	if (subgoal instanceof PossibleAttributeReferencesGoal) {
