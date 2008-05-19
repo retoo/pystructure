@@ -285,12 +285,12 @@ public class DefinitionVisitor extends StructuralVisitor {
 	public Object visitFor(For node) throws Exception {
 		Block parent = getBlock();
 
-		node.iter.accept(this);
-
 		Block bodyBlock = new Block(parent);
 
 		Call iterCall = NodeUtils.createMethodCall(node.iter, "__iter__");
 		Call nextCall = NodeUtils.createMethodCall(iterCall, "next");
+		
+		nextCall.accept(this);
 
 		Map<exprType, exprType> assignments = NodeUtils.createTupleElementAssignments(node.target, nextCall);
 		for (Map.Entry<exprType, exprType> entry : assignments.entrySet()) {
@@ -313,8 +313,6 @@ public class DefinitionVisitor extends StructuralVisitor {
 				 *     print x.attribute
 				 */
 			}
-			
-			value.accept(this);
 		}
 
 		visitBlock(bodyBlock, node.body);
