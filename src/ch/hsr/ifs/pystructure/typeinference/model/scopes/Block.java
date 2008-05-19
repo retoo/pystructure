@@ -22,10 +22,10 @@
 
 package ch.hsr.ifs.pystructure.typeinference.model.scopes;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Definition;
 
@@ -53,7 +53,7 @@ public class Block {
 	public Block(Block parent) {
 		this.parent = parent;
 		this.blockDefinitions = new LinkedList<Definition>();
-		this.currentDefinitions = new TreeMap<String, List<Definition>>();
+		this.currentDefinitions = new HashMap<String, List<Definition>>();
 	}
 	
 	public void setDefinition(Definition definition) {
