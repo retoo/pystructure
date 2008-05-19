@@ -3,6 +3,7 @@ package ch.hsr.ifs.pystructure.typeinference.evaluators.misc;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.python.pydev.parser.jython.ast.exprType;
@@ -80,7 +81,7 @@ public class MethodResolutionOrderEvaluator extends AbstractEvaluator {
 
 	private final Class klass;
 	private LinkedList<BaseClass> bases;
-	private HashMap<IGoal, BaseClass> index;
+	private Map<IGoal, BaseClass> index;
 	private MethodResolutionOrderGoal goal;
 
 	public MethodResolutionOrderEvaluator(MethodResolutionOrderGoal goal) {

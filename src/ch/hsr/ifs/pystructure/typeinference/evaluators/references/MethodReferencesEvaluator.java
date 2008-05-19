@@ -25,6 +25,7 @@ package ch.hsr.ifs.pystructure.typeinference.evaluators.references;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import org.python.pydev.parser.jython.ast.exprType;
 
@@ -60,7 +61,7 @@ public class MethodReferencesEvaluator extends AbstractEvaluator {
 	private final Method method;
 	
 	private List<FunctionReference> references;
-	private HashMap<IGoal, List<Reference>> possibleReferences;
+	private Map<IGoal, List<Reference>> possibleReferences;
 
 	private ModuleContext context;
 	
