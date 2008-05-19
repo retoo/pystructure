@@ -37,13 +37,9 @@ import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.references.PossibleAttributeReferencesGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.references.PossibleReferencesGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.AbstractTypeGoal;
-import ch.hsr.ifs.pystructure.typeinference.goals.types.DefinitionTypeGoal;
 import ch.hsr.ifs.pystructure.typeinference.goals.types.ExpressionTypeGoal;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.AttributeUse;
-import ch.hsr.ifs.pystructure.typeinference.model.definitions.Definition;
-import ch.hsr.ifs.pystructure.typeinference.model.definitions.IAttributeDefinition;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Module;
-import ch.hsr.ifs.pystructure.typeinference.model.definitions.NameUse;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Use;
 import ch.hsr.ifs.pystructure.typeinference.results.references.AttributeReference;
 import ch.hsr.ifs.pystructure.typeinference.visitors.Workspace;
@@ -89,37 +85,19 @@ public class PossibleAttributeReferencesEvaluator extends AbstractEvaluator {
 			List<IGoal> subgoals = new LinkedList<IGoal>();
 
 			for (Use use : g.references) {
-				exprType expression = use.getExpression();
-				ModuleContext parentContext = getGoal().getContext();
-				ModuleContext context = new ModuleContext(parentContext, use.getModule());
 				
 				if (use instanceof AttributeUse) {
 					AttributeUse attributeUse = (AttributeUse) use;
+					
+					ModuleContext parentContext = getGoal().getContext();
+					ModuleContext context = new ModuleContext(parentContext, attributeUse.getModule());
+					
 					Attribute attribute = (Attribute) attributeUse.getExpression();
 					IGoal goal = new ExpressionTypeGoal(context, attribute.value);
 					
 					attributeNames.put(goal, attributeUse.getName());
 					attributeExpressions.put(goal, attribute);
 					subgoals.add(goal);
-					
-				} else if (use instanceof NameUse) {
-					// Maybe this case should better be done in
-					// DefinitionVisitor, so we can only work with AttributeUse
-					// here.
-					
-					NameUse nameUse = (NameUse) use;
-					
-					for (Definition definition : nameUse.getDefinitions()) {
-						// TODO: Global variables should implement IAttributeDefinition
-						if (definition instanceof IAttributeDefinition) {
-							Definition parent = ((IAttributeDefinition) definition).getAttributeParent();
-							IGoal goal = new DefinitionTypeGoal(context, parent);
-							
-							attributeNames.put(goal, nameUse.getName());
-							attributeExpressions.put(goal, expression);
-							subgoals.add(goal);
-						}
-					}
 				}
 			}
 			
