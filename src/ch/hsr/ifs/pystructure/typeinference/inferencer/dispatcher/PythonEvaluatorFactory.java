@@ -132,8 +132,6 @@ public class PythonEvaluatorFactory implements IEvaluatorFactory {
 		evaluators.put(ClassAttributeTypeGoal.class, ClassAttributeTypeEvaluator.class);
 		evaluators.put(MethodResolveGoal.class, MethodResolveEvaluator.class);
 		evaluators.put(MethodResolutionOrderGoal.class, MethodResolutionOrderEvaluator.class);
-		evaluators.put(PossibleReferencesGoal.class, PossibleReferencesEvaluator.class);
-		evaluators.put(PossibleReferencesGoal.class, PossibleReferencesEvaluator.class);
 	}
 
 	/* (non-Javadoc)
