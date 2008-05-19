@@ -55,23 +55,34 @@ public class ExpressionTypeGoal extends AbstractTypeGoal implements ILocatable {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (obj == this) {
-			return true;
-		}
-		if (obj instanceof ExpressionTypeGoal) {
-			ExpressionTypeGoal goal = (ExpressionTypeGoal) obj;
-			return expression == goal.expression;
-		}
-		return false;
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((expression == null) ? 0 : expression.hashCode());
+		return result;
 	}
 
 	@Override
-	public int hashCode() {
-		if (expression != null) {
-			return expression.hashCode();
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
 		}
-		return super.hashCode();
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		final ExpressionTypeGoal other = (ExpressionTypeGoal) obj;
+		if (expression == null) {
+			if (other.expression != null) {
+				return false;
+			}
+		} else if (!expression.equals(other.expression)) {
+			return false;
+		}
+		return true;
 	}
 
 }
