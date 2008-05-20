@@ -106,14 +106,14 @@ Process Overview \\
 
 \section{Parsing the Source Code}
 
-%{ Robin Korrektur & Feedback
-Before any analysis can be done on the application its source code has to be brought into form which is easier to process for programs. It's quite common to express an application's source code as a tree, where each interior node represents a programming language construct and the children of that node represent meaningful components of the construct. For example the simple code \code{foo("bar")} is a function node with the parameter as a string node attached to it. This structure is usually called Abstract Syntax Tree (AST).
+%{ Robin Feedback
+Before any analysis can be done on the application its source code has to be brought into a form which is easier to process for programs. It's quite common to express an application's source code as a tree, where an interior node represents a programming language construct and the children of that node represent meaningful components of the construct. For example the simple code \code{foo("bar")} is a call node with the parameter as a string node attached to it. This node structure is usually called abstract syntax tree (AST).
 
-Instead of writing a new parser PyStructure uses a modified version of the Jython\footnote{Jython is a Python implementation written in Java} parser. The modifications were done by the PyDev(TODO footnote) project to be able to interpret Python 2.5 source code, the normal Jython parser can only parse source code written for Python 2.2. In the long term it would be advantageous to use the unmodified Jython parser, but before 2.5 syntax is supported this is not really an option.
+Instead of writing a new parser, PyStructure uses a modified version of the Jython\footnote{Jython is a Python implementation for the JVM written in Java.} parser. The modifications were done by the PyDev(TODO footnote) project to be able to interpret Python 2.5 source code, the normal Jython parser can only parse source code written for Python 2.2. In the long term it would be advantageous to use the unmodified Jython parser, but before 2.5 syntax is supported this is not really an option.
 %}
 
-%{ Robin: Korrektur, plus ist Abschnitt wirklich wichtig? 
-It should be noted that the parser does not do that much beside converting the source code into a tree representation. It for example doesn't do any transformation of expressions which can be written in different ways. For example the expression \code{a + b} is handled by the Python interpret as \code{a.__add__(b)}, but the parser still interprets the code as \node{AddOp(a, B)} and therefore distinguishes it from literally calling the \code{__add__()} method \node{Call(a.__add__, args=b)}. 
+%{ Robin: ist Abschnitt wirklich wichtig? 
+It should be noted that the parser does not do that much beside converting the source code into a tree representation. It for example doesn't do any transformation of expressions which can be written in different ways. For example the expression \code{a + b} is handled by the Python interpreter as \code{a.__add__(b)}, but the parser still interprets the code as \node{BinOp(a, b, op=Add)} and therefore distinguishes it from literally calling the \code{__add__} method, which would be \node{Call(a.__add__, args=b)}. 
 %}
 
 \section{Creating the Model}
