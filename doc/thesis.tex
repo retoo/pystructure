@@ -119,6 +119,18 @@ It should be noted that the parser does not do that much beside converting the s
 %}
 
 \section{Creating the Model}
+
+The AST is just a syntactical representation of the source tree and doesn't include any semantic information. For example, in the following code, the AST doesn't know that the two uses of \id{foo} are related:
+
+\begin{lstlisting}
+foo = "Hello"
+print foo
+\end{lstlisting}
+
+So another level of abstraction is needed to represent these elements, which is called the model. Blabla...
+
+The first step of building the model is to extract the structural elements that make up a program.
+
 From AST to Model \\
 (StructureVisitor, DefinitionVisitor)\\
 Connecting Definitions and Uses\\
