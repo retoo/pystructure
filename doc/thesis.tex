@@ -133,6 +133,12 @@ So another level of abstraction is needed to represent these elements, which is 
 
 The first step of building the model is to extract the structural elements that make up a program, like modules, classes, methods and functions. These also represent scopes for variables. Creating this initial structure is done by the \class{StructureDefinitionVisitor}. It is a simple visitor which just visits class and function definitions (method definitions are the same as function definitions in the AST, and in the Python language itself). Then it creates \class{Class}, \class{Function} and \class{Method}. These objects wrap the AST nodes and also provide additional behaviour, for example \class{Class} knows which methods it includes. They also know which child structures are within them so that visiting them later is easier.
 
+\subsection{Connecting Definitions and Uses}
+
+Now we have the elements of the model, but there's not yet very much information provided by it. As described in the example with the \id{foo} variable, knowing which variable definitions and uses are related would be very useful. This is part of what the \class{DefinitionVisitor} does.
+
+% "Flow Analysis" von PEPTIC übernehmen?
+
 
 From AST to Model \\
 (StructureVisitor, DefinitionVisitor)\\
