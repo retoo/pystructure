@@ -211,6 +211,49 @@ Inheritance\\
  (C3 MRO)\\
 Recursion\\
 
+\subsection{Built-in Types and Functions}
+
+Python has a rich set of built-in types and functions, some of which every Python program uses. Without supporting these, the type inferencer would be useless, as can be seen in the following example:
+
+\begin{lstlisting}
+foos = list()
+foos.append(Foo(1))
+foos.append(Foo(2))
+for element in foos:
+    print element
+\end{lstlisting}
+
+If the type inferencer had no knowledge of how the \id{list} type works, it wouldn't be able to determine the type of \id{element}.
+
+Two of the possible solutions for making the inferencer aware of built-in types are:
+
+\begin{enumerate}
+	\item Add special evaluators for evaluating built-in types and implement the rules in Java code.
+	\item Create prototype implementations in Python code, which can be analysed like any other Python code.
+\end{enumerate}
+
+The second solution was chosen as it is both cleaner and easier to implement. A prototype implementation works by defining the functions and methods so that they return the same type as the original ones. The following extract from the implementation of the \id{list} type illustrates the concept:
+
+\begin{lstlisting}
+class list(object):
+
+    def append(self, element):
+        self._list_element = element
+
+    def __getitem__(self, index):
+        return self._list_element
+
+    def __getslice__(self, i, j):
+        return self
+
+    def count(self, element):
+        return 1
+
+    def sort(self):
+        return None
+\end{lstlisting}
+
+
 \section{Caching}
  Techniques, Performance, advantages/disadvantages, problems
  Result, problems, performance, memory requirements (ganzer ti)
