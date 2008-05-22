@@ -11,6 +11,34 @@
 \usepackage[usenames,dvipsnames]{color}
 \definecolor{titlegreen}{named}{OliveGreen}
 \definecolor{gray}{rgb}{0.9,0.9,0.9}
+\definecolor{butter1}{rgb}{0.9882,0.9137,0.3098}
+\definecolor{butter2}{rgb}{0.9294,0.8314,0.0}
+\definecolor{butter3}{rgb}{0.7686,0.6275,0.0}
+\definecolor{chameleon1}{rgb}{0.5412,0.8863,0.2039}
+\definecolor{chameleon2}{rgb}{0.451,0.8235,0.0863}
+\definecolor{chameleon3}{rgb}{0.3059,0.6039,0.0235}
+\definecolor{orange1}{rgb}{0.9882,0.6863,0.2431}
+\definecolor{orange2}{rgb}{0.9608,0.4745,0.0}
+\definecolor{orange3}{rgb}{0.8078,0.3608,0.0}
+\definecolor{skyblue1}{rgb}{0.4471,0.6235,0.8118}
+\definecolor{skyblue2}{rgb}{0.2039,0.3961,0.6431}
+\definecolor{skyblue3}{rgb}{0.1255,0.2902,0.5294}
+\definecolor{plum1}{rgb}{0.6784,0.498,0.6588}
+\definecolor{plum2}{rgb}{0.4588,0.3137,0.4824}
+\definecolor{plum3}{rgb}{0.3608,0.2078,0.4}
+\definecolor{chocolate1}{rgb}{0.9137,0.7255,0.4314}
+\definecolor{chocolate2}{rgb}{0.7569,0.4902,0.0667}
+\definecolor{chocolate3}{rgb}{0.5608,0.349,0.0078}
+\definecolor{scarletred1}{rgb}{0.9373,0.1608,0.1608}
+\definecolor{scarletred2}{rgb}{0.8,0.0,0.0}
+\definecolor{scarletred3}{rgb}{0.6431,0.0,0.0}
+\definecolor{aluminium1}{rgb}{0.9333,0.9333,0.9255}
+\definecolor{aluminium2}{rgb}{0.8275,0.8431,0.8118}
+\definecolor{aluminium3}{rgb}{0.7294,0.7412,0.7137}
+\definecolor{aluminium4}{rgb}{0.5333,0.5412,0.5216}
+\definecolor{aluminium5}{rgb}{0.3333,0.3412,0.3255}
+\definecolor{aluminium6}{rgb}{0.1804,0.2039,0.2118}
+
 
 % Font
 \usepackage{lmodern}
@@ -42,7 +70,7 @@
 \usepackage{listings}
 
 \newcommand{\id}{\lstinline}
-\newcommand{\type}{\lstinline}
+\newcommand{\type}[1]{\textcolor{skyblue3}{\texttt{#1}}}
 \newcommand{\code}{\lstinline}
 \newcommand{\node}{\lstinline}
 \newcommand{\class}{\lstinline}
@@ -79,3 +107,19 @@ stringstyle=\color{Red}
     }
   \end{wrapfigure}
 }
+
+
+
+
+% colorCode
+% def main(input)
+%   input.each do |line|
+%     (r, g, b, name) = line.strip.split(/\s+/, 4)
+%     colors = [r, g, b].collect{|c| ((c.to_f * 10000) / 255).round.to_f / 10000}
+%     
+%     name = name.gsub(" ", "").downcase
+%     puts "\\definecolor{#{name}}{rgb}{#{colors.join(",")}}"
+% 
+%   end
+% end
+% 
