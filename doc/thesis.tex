@@ -203,6 +203,7 @@ def evaluate_goal(root_goal):
             queue.add(goal_node)
 \end{lstlisting}
 
+
 \section{Challenges/Problems}
 Container Element Types \\
 Call Context \& Instance Context \\
@@ -253,6 +254,31 @@ class list(object):
         return None
 \end{lstlisting}
 
+% TODO: Describe how the TI finds the list class (SourceFolder for stdlib, builtins.py, ImplicitImportDefinition).
+
+\subsection{Imports with import *}
+
+There's a Python feature\footnote{Some would say it's not a feature, but a wart, because it pollutes the local namespace with unused names. It is generally advised to use \code{import *} only very sparingly.} to import all the names from a module using the syntax \code{from module import *}. An example, this is the code in \file{module.py}:
+
+\begin{lstlisting}
+def function():
+    return "Hi, I'm a function."
+\end{lstlisting}
+
+And this is the code in \file{main.py} in the same directory:
+
+\begin{lstlisting}
+from module import *
+function()
+\end{lstlisting}
+
+Normally, when just importing one function, one writes \code{from module import function} but that can become tedious when one wants to directly import many names. The difficulty with supporting \code{import *} is that the inferencer cannot know \emph{what} was imported until it has also processed the module from where the names are imported. One solution would be to do eager loading of other modules, but that complicates the module loading process and goes counter to the demand-driven approach.
+
+Let's take the example from above and look at the implemented solution.
+
+When the \class{DefinitionVisitor} processes the first line of \file{main.py} and sees that it is an \code{import *}, it will add the import path (\id{module} in this case) to the \class{ExternalScope}. On the next line, the \class{DefinitionVisitor} searches for the definition of \id{function}. It will check the module scope and won't find it, so it will check the parent scope of the module, which is the \class{ExternalScope}. This returns an \class{ImplicitImportDefinition} which holds the name and the list of \code{import *} paths which were added to it up to this point.
+
+% TODO: 
 
 \section{Caching}
  Techniques, Performance, advantages/disadvantages, problems
