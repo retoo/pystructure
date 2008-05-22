@@ -155,18 +155,27 @@ Evaluation\\
  (examples)\\
 
 
-The goal engine is the central piece which does all the coordination between evaluators and goals. It basically has a working queue of goal nodes, which is the combination of a goal and the evaluator which was created to evaluate the goal. The algorithm is:
+The goal engine is the central piece which does all the coordination between evaluators and goals. It basically has a working queue of goal nodes, which is the combination of a goal and the evaluator which was created to evaluate the goal. The algorithm works like in this simplified pseudocode:
 
 \begin{lstlisting}
 def evaluate_goal(root_goal):
     queue = []
     add_goal(queue, root_goal)
+
     while len(queue) != 0:
         goal_node = queue.pop()
+
         if goal_node.is_new():
             subgoals = goal_node.init()
             add_goals(queue, subgoals)
-        # ...            
+
+        if goal_node.are_all_subgoals_done():
+            goal_node.finish()
+            for parent in goal_node.parents:
+                subgoals = parent.subgoal_done(goal_node)
+                add_goals(queue, subgoals)
+        else:
+            queue.add(goal_node)
 \end{lstlisting}
 
 \section{Challenges/Problems}
