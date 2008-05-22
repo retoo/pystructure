@@ -278,7 +278,7 @@ Let's take the example from above and look at the implemented solution.
 
 When the \class{DefinitionVisitor} processes the first line of \file{main.py} and sees that it is an \code{import *}, it will add the import path (\id{module} in this case) to the \class{ExternalScope}. On the next line, the \class{DefinitionVisitor} searches for the definition of \id{function}. It will check the module scope and won't find it, so it will check the parent scope of the module, which is the \class{ExternalScope}. This returns an \class{ImplicitImportDefinition} which holds the name and the list of \code{import *} paths which were added to it up to this point.
 
-% TODO: 
+% TODO: Describe what happens in the ImplicitImportTypeEvaluator.
 
 \section{Caching}
  Techniques, Performance, advantages/disadvantages, problems
