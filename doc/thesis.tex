@@ -257,6 +257,8 @@ Recursion\\
 
 \subsection{Built-in Types and Functions}
 
+%{ rschuett: Korrigieren
+
 What would a language be without its built-in types, like \type{int}, \type{str} or \type{list} for Python? Nothing, because all our own code is based on these data structures provided by the language. Similarly, what would a type inference system be without support for these built-in types? Not very usable, as shown in the following example:
 
 \begin{lstlisting}
@@ -268,6 +270,8 @@ for element in foos:
 \end{lstlisting}
 
 If the type inferencer had no knowledge of how the \id{list} type works, it wouldn't be able to determine the type of \id{element}.
+
+\subsubsection{Specifying the Behaviour}
 
 Two of the possible solutions for making the inferencer aware of built-in types are:
 
@@ -297,9 +301,30 @@ class list(object):
         return None
 \end{lstlisting}
 
-% TODO: Describe how the TI finds the list class (SourceFolder for stdlib, builtins.py, ImplicitImportDefinition).
+\subsubsection{Finding the Definitions}
 
-\subsection{Imports with import *}
+Now the type inferencer knows how the built-in types behave, but it doesn't yet know that a call like \code{list()} actually means the built-in type. This is actually quite easy to fix. When the DefinitionVisitor encounters a use of \id{list} or any other name which has no definitions in the module, it creates an \class{ImplicitImportDefinition} for it. Later when a goal is created for finding the type of this definition, the evaluator knows that it must look in the special module \file{builtins.py} where the built-ins are defined. It is actually a bit more complicated because of \code{import *} imports, see \vref{import_star} for the details.
+
+Apart from the built-in types which don't need to be imported explicitly, there are other things in the Python standard library which do need to be imported, like the \id{sys} module. The \id{builtins} module and the other standard library modules reside in a special directory in the PyStructure tree. The \class{Workspace} class knows about this directory and creates a \class{SourceFolder} for it which at the end of all the source folders searched for imports.
+
+\subsubsection{Syntax for Initialising Data Structures}
+
+For common data structures like \id{list} or \id{dict}, Python provides convenient syntactical shortcuts for initialising their contents, for example:
+
+\begin{lstlisting}
+values = [1, 2, 3, 4]
+numerals = {1: "unu", 2: "du", 3: "tri", 4: "kvar"}
+\end{lstlisting}
+
+Normally, for finding the element type of \id{list}, calls of the method \id{append} are searched. But because syntax is used to add the values to the list, there are no actual \id{append} calls.
+
+One solution would be to create a special evaluator for finding the type of \id{list} elements, which knows that it also has to look at the constructors. But this solution is bad because it runs counter to the idea of supporting built-in types in the most generic manner.
+
+In PyStructure it is solved in the evaluator which finds the type of the \node{List} node. The result of the evaluator is of course \type{list}, but the evaluator does more. For each element expression (\code{1}, \code{2}, \code{3} and \code{4} in the example), it creates a new call node for \id{append} and the corresponding attribute reference. It registers these attribute references in the workspace. Later when a \class{PossibleAttributeReferencesEvaluator} is run for \id{append}, it adds the references to the list of possible attribute references which is the result of the evaluator. The rest of the evaluation proceeds as usual.
+
+%}
+
+\subsection{Imports with import *}\label{import_star}
 
 %{ rschuett: korrigieren
 
