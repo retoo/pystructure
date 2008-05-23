@@ -342,7 +342,7 @@ from module import *
 function()
 \end{lstlisting}
 
-Normally, when just importing one function, one writes \code{from module import function} but that can become tedious when one wants to directly import many names. The difficulty with supporting \code{import *} is that the inferencer cannot know \emph{what} was imported until it has also processed the module from where the names are imported. One solution would be to do eager loading of other modules, but that complicates the module loading process and goes counter to the demand-driven approach.
+Normally, when just importing one function, one writes \code{from module import function} but that can become tedious when one wants to directly import many names. The difficulty with supporting \code{import *} is that the inferencer cannot know \emph{what} was imported until it has also processed the module from where the names are imported. One solution would be to do eager loading of other modules, but that complicates the module loading process and runs counter to the demand-driven approach.
 
 Let's take the example from above and look at the implemented solution.
 
