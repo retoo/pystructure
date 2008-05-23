@@ -239,12 +239,19 @@ Providing an easy way to debug the type inferencer was a challenging problem. Th
 
 There were even some cases where a bug only appeared when the goals were processed in a particular order. Because all \emph{open} goals are treated equally it was possible that some goals are processed early or later
 % { rstocker: korrektur & kürzen(?), evtl. auch mehr was fürs challenges 
-\footnote{In one particular (annoying) case the bug could be triggered by uncommenting the construction of a simple Random object (which wasn't assigned to a variable and therefore got discarded). But even this simple change changed some orderings of hashsets/maps and therefore possibly the order of goals being processed. Of course the TI was meant to work independent of the used ordering, but in few cases the bug pattern only appeard in special orderings.}
+\footnote{In one particular (annoying) case the bug could be triggered by uncommenting the construction of a simple Random object (which wasn't assigned to a variable and therefore got discarded). But even this simple change changed some orderings of hashsets/maps and therefore possibly the order of goals being processed. Of course the TI was meant to work independent of the used ordering, but in few cases the bug pattern only appeared in special orderings.}
 %)
 
 \subsection{How}
 
+% { rstocker: korrektur, und überleg mal ob wir hier wirklich methodennamen angeben sollen 
 
+Instead of just adding debugging code to the goal engine a logging interface was defined which then gets called by the engine during the different stages of the evaluation. The interface \class{IGoalEngineLogger} describes a set of hooks which can be used for a wide variety of debuggers and loggers: The beginning and the end of the evaluation process (\id{evaluationStarted()} \& \id{evaluationFinished()}) and two hooks which get called when a goal has been created or finished (\id{goalCreated()} \& \id{goalFinished)}).
+
+Using this interface a logger called \class{ConsoleLogger} was developed which visualises the evaluation process as a printed tree on the console. This turned out to be very useful as it shows what goal was created when and by whom.
+
+
+%}
 
 
 \section{Challenges/Problems}
