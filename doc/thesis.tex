@@ -91,11 +91,10 @@ Structural Analysis
 \section{Introduction}
 
 \subsection{Idea – Why inferring types?}
-%{ rstocker Korrektur
-Before any meaningful structure analysis of a program is possible the individual components have to be identified and analysed. To know what dependencies a component (e.g. a class) it first has to be determined what kind of other components are being used. For example if the GUI class calls methods of other classes in the business logic we clearly have a dependency between the component GUI and the class BusinessLogic. Looking at this example it becomes obvious that knowing the type of a given expression is imperative for any meaningful structural analysis.
 
-This leads to the question, how can the type of a given expression be determined? In Java this question would be very simple, the definition always states the type \footnote{for example \code{boolean isOdd(int i)}, method \code{isOdd} has a parameter \code{i} with the type \code{int} and returns a boolean}. In Python the types aren't specified at all, they are only known at runtime (by the interpreter). To still be able to determine them an heuristic has to be used which infers the types by looking at the context, ``Where was the variable defined?'', ``Who called that function?'' and so on. This heuristic is usually called type inferencer (TI).
-%}
+Before any meaningful structure analysis of a program is possible the individual components have to be identified and analysed. To know what dependencies a component (e.g. a class) has, it first has to be determined what kind of other components are being used. For example if the GUI class calls a method of a class in the business logic we clearly have a dependency between these two components. It becomes obvious that knowing the type of a given expression, in this example the method call, is imperative for any meaningful structural analysis.
+
+This leads to the question, how can the type of a given expression be determined? In Java this question would be very simple, the definition always states the type.\footnote{In the example \code{boolean isOdd(int i)}, method \code{isOdd} has a parameter \code{i} with the type \type{int} and returns a \type{boolean}.} In Python the types aren't specified at all, they are only known at runtime by the interpreter. To still be able to determine them, a heuristic has to be used which infers the types by looking at the context and finding answers to questions like ``Where was the variable defined?'' and ``Who called that function?''. This heuristic is usually called type inferencer (TI).
 
 \subsection{Goal}
 
