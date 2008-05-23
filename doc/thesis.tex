@@ -121,15 +121,35 @@ vehicle = Car() if input == "car" else Plane()
 In this case the type inferencer has to realise that \code{vehicle} can be \type{Car} or \type{Plane}.
 %)
 
-\subsection{Concept}
+{Concept}
 
-Process Overview \\
-
-goal, ziel (wo wollen wir hin)\\
 (Goal engine, why \& how) \\
 (link to other possible solutions)
 Correctness \& Usefulness \\
 
+\section{Process Overview}
+
+% { rstocker korrektur 
+
+The type inferencer is divided into three main process stages:
+
+\begin{itemize}
+	\item Parser – Parses the source code and generates an abstract syntax tree (AST)
+	\item Definition Visitor – Builds a model of the program
+	\item Type Inferencer – Evaluates the type of an expression
+\end{itemize}
+
+\begin{figure}[h!]
+ \centering
+ \includegraphics[width=1 \textwidth]{process_overview}
+ \label{fig:process_overview}
+\end{figure}
+
+
+
+The first two steps, the parsing of the source code and the generation of the model, lay the foundation for the type inferencer. They do a static analysis of the whole project and are independent of what expressions should be evaluated. As long as the underlying source code doesn't change these preparations can be reused for any number of type inferencer evaluations.
+
+%}
 
 \section{Parsing the Source Code}
 
@@ -139,25 +159,32 @@ Before any analysis can be done on the application its source code has to be bro
 Instead of writing a new parser, PyStructure uses a modified version of the Jython\footnote{Jython is a Python implementation for the JVM written in Java.} parser. The modifications were done by the PyDev(TODO footnote) project to be able to interpret Python 2.5 source code, the normal Jython parser can only parse source code written for Python 2.2. In the long term it would be advantageous to use the unmodified Jython parser, but before 2.5 syntax is supported this is not really an option.
 %}
 
+
 %{ Robin: ist Abschnitt wirklich wichtig? 
 It should be noted that the parser does not do that much beside converting the source code into a tree representation. It for example doesn't do any transformation of expressions which can be written in different ways. For example the expression \code{a + b} is handled by the Python interpreter as \code{a.__add__(b)}, but the parser still interprets the code as \node{BinOp(a, b, op=Add)} and therefore distinguishes it from literally calling the \code{__add__} method, which would be \node{Call(a.__add__, args=b)}. 
 %}
 
 \section{Creating the Model}
 
-The AST is just a syntactical representation of the source tree and doesn't include any semantic information. For example, in the following code, the AST doesn't know that the two uses of \id{foo} are related:
+% { rstocker: bisschen korrigiert, gefällt mir aber immer noch ned super. 
+
+
+The representation of a program provided by the AST is very basic and working directly with it is quite cumbersome. 
+One drawback of the AST is that it just shows a syntactical representation of the source code and doesn't include any semantic information. For example, in the following code, the AST doesn't know that the two uses of \id{foo} are related:
 
 \begin{lstlisting}
 foo = "Hello"
 print foo
 \end{lstlisting}
 
-So another level of abstraction is needed to represent these elements, which is called the model. Blabla...
+Therefore PyStructure uses a second stage in which it processes the AST furthers and does some static analysis which then can be used by the type inferencer
+
+% }
 
 \subsection{Creating the Structure}
 
-%{ Reto: Korrigieren
-The first step of building the model is to extract the structural elements that make up a program, like modules, classes, methods and functions. These also represent scopes for variables. Creating this initial structure is done by the \class{StructureDefinitionVisitor}. It is a simple visitor which just visits class and function definitions (method definitions are the same as function definitions in the AST, and in the Python language itself). Then it creates \class{Class}, \class{Function} and \class{Method}. These objects wrap the AST nodes and also provide additional behaviour, for example \class{Class} knows which methods it includes. They also know which child structures are within them so that visiting them later is easier.
+%{ rstocker: korrektur revieween
+The first step of building the model is to extract the structural elements that make up a program, like modules, classes, methods and functions. These also represent scopes for variables. Creating this initial structure is done by the \class{StructureDefinitionVisitor}. It is a simple visitor which just visits class and function definitions (method definitions are the same as function definitions in the AST, and in the Python language itself). Then it creates \class{Class}, \class{Function} and \class{Method} objects. These objects wrap the AST nodes and also provide additional functionality, for example \class{Class} knows which methods it includes. They also know which child structures are within them so that visiting them later is easier.
 %}
 
 \subsection{Connecting Definitions and Uses}
@@ -204,6 +231,23 @@ def evaluate_goal(root_goal):
         else:
             queue.add(goal_node)
 \end{lstlisting}
+
+
+\section{Debugging}
+
+% TODO: rstocker: Wollen wir da wirklich ne subsection machen 
+\subsection{Why?}
+
+Providing an easy way to debug the type inferencer was a challenging problem. The concept of using a goal engine which controls the whole evaluation process is rather unusual and all common debug scheme don't handle it very well. In a normal debugger the developer can always look at the call stack to see what functions were called in what order. But the stack trace when debugging a goal doesn't provide much details, it doesn't show what goal was creating the current goal nor what other goals currently are active.
+
+There were even some cases where a bug only appeared when the goals were processed in a particular order. Because all \emph{open} goals are treated equally it was possible that some goals are processed early or later
+% { rstocker: korrektur & kürzen(?), evtl. auch mehr was fürs challenges 
+\footnote{In one particular (annoying) case the bug could be triggered by uncommenting the construction of a simple Random object (which wasn't assigned to a variable and therefore got discarded). But even this simple change changed some orderings of hashsets/maps and therefore possibly the order of goals being processed. Of course the TI was meant to work independent of the used ordering, but in few cases the bug pattern only appeard in special orderings.}
+%)
+
+\subsection{How}
+
+
 
 
 \section{Challenges/Problems}
