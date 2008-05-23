@@ -302,6 +302,8 @@ class list(object):
 
 \subsection{Imports with import *}
 
+%{ rschuett: korrigieren
+
 There's a Python feature\footnote{Some would say it's not a feature, but a wart, because it pollutes the local namespace with unused names. It is generally advised to use \code{import *} only very sparingly.} to import all the names from a module using the syntax \code{from module import *}. An example, this is the code in \file{module.py}:
 
 \begin{lstlisting}
@@ -322,7 +324,9 @@ Let's take the example from above and look at the implemented solution.
 
 When the \class{DefinitionVisitor} processes the first line of \file{main.py} and sees that it is an \code{import *}, it will add the import path (\id{module} in this case) to the \class{ExternalScope}. On the next line, the \class{DefinitionVisitor} searches for the definition of \id{function}. It will check the module scope and won't find it, so it will check the parent scope of the module, which is the \class{ExternalScope}. This returns an \class{ImplicitImportDefinition} which holds the name and the list of \code{import *} paths which were added to it up to this point.
 
-% TODO: Describe what happens in the ImplicitImportTypeEvaluator.
+Later, when a goal is created for evaluating what \id{function} returns, the evaluation will find the  \class{ImplicitImportDefinition} and the \class{ImplicitImportDefinitionEvaluator} will be started. It walks through the import paths and tries to find the definition behind the name \id{function} until it has found it. If the imported definition is itself an \class{ImplicitImportDefinition}, its paths are added to the front of the paths which need to be searched (leading to a depth-first search).
+
+%}
 
 \section{Caching}
  Techniques, Performance, advantages/disadvantages, problems
