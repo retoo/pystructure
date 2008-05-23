@@ -170,14 +170,14 @@ It should be noted that the parser does not do that much beside converting the s
 
 
 The representation of a program provided by the AST is very basic and working directly with it is quite cumbersome. 
-One drawback of the AST is that it just shows a syntactical representation of the source code and doesn't include any semantic information. For example, in the following code, the AST doesn't know that the two uses of \id{foo} are related:
+One drawback of the AST is that it's just a \emph{syntactical} representation of the source code and doesn't include any semantic information. For example, in the following code, the AST doesn't know that the two uses of \id{foo} are related:
 
 \begin{lstlisting}
 foo = "Hello"
 print foo
 \end{lstlisting}
 
-Therefore PyStructure uses a second stage in which it processes the AST furthers and does some static analysis which then can be used by the type inferencer
+Therefore PyStructure uses a second stage in which it processes the AST further and does some static analysis which then can be used by the type inferencer.
 
 % }
 
