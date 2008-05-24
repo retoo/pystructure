@@ -257,7 +257,7 @@ Recursion
 \subsection{Container Element Types}
 
 % rschuett: Kannst du mal durchlesen, irgendwie finde ich das ganze zu lange.
-
+\todo{rstocker: ich finds ned zu lange, aber ich finde wir reden viel zu spät vom eigenltichen Problem (eigentlich erst nach zwei grossen Beispielen. Kann man das ned schon früher erklären?)}
 When using container types like \id{list} or \id{dict}, each instance of such a type should be treated differently regarding the type of the contained elements. Considering this example:
 
 \begin{lstlisting}
@@ -291,13 +291,14 @@ a = c1.get()
 b = c2.get()
 \end{lstlisting}
 
-The types for \id{a} and \id{b} should be the same as in the example with the lists. But with a type inferencer not aware of different instances, the result is actually \type{int|str} for both variables. Why is that? Looking at the evaluation for the type of \id{a}, the problem becomes clear (the finding of references was ommited for brevity):
+The types for \id{a} and \id{b} should be the same as in the example with the lists. But with a type inferencer not aware of different instances, the result is actually \type{int|str} for both variables. Why is that? Looking at the evaluation for the type of \id{a}, the problem becomes clear (the finding of references was omitted for brevity):
 
 \begin{enumerate}
 	\item[1.] What is the return type of \code{c1.get()}?
 	\begin{enumerate}
 		\item[2.] What is the type of \code{c1}?
 		\item[] $\rightarrow$ The type is \type{Container}.
+		\item[] Therefore the method \id{get} in the class \type{Container} has to be examined. \todo{rstocker: hier brauchts ne überleitung, gut so? }
 		\item[3.] What is the type of \code{self.element} in the \code{Container.get} method?
 		\begin{enumerate}
 			\item [4.] What is the type of the \code{element} argument of the \code{Container.set} method?
