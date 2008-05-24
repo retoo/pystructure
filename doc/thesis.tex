@@ -98,27 +98,28 @@ This leads to the question, how can the type of a given expression be determined
 
 \subsection{Goal}
 
-%{ rstocker korrektur. Und wie findest du die überleitung vom letzten abschnitt, geht das irgendwie besser? 
-As explained in the last chapter a central aspect of the PyStructure was the development of a type inferencer which can infer/evaluate the type of a given expression. 
+%{ rschuett: Korrekturen anschauen
 
-\textbf{The type inferencer should be able to resolve the type of the following expressions:}
+So, developing a type inferencer was a central goal of the project. To be useful for structural analysis, it should be able to resolve the type of the following expressions:
+
 \begin{itemize}
 	\item Local \& global variables
-	\item Parameters
+	\item Arguments
 	\item Attributes
-	\item Return value of methods
+	\item Return values of functions \& methods
 \end{itemize}
 
-Of course the type inferencer should take the application as a whole into account and develop a best guess what the given expression's type could be. For example in case of parameters the type inferencer should look for all places where the particular method is called and what parameter type was used.
+Of course the type inferencer should take the application as a whole into account and develop a best guess what the given expression's type could be. For example in the case of a method argument, the type inferencer should look for all places where the particular method is called and what argument type was used.
 
-The type inferencer should also be able to handle the case where more than one type is possible for a single expression, a simple example for such a example\footnote{ternary operator is a bit different in Python than in other languages, the example means: \code{z = Math.rand() > 0.5 ? 123 : "123"}} would be: 
+The type inferencer should also be able to handle the case where more than one type is possible for a single expression, a simple example\footnote{The ternary operator is a bit different in Python than in other languages, the example means: \code{vehicle = (input == "car") ? Car() : Plane()}} would be:
 
 \begin{lstlisting}
 vehicle = Car() if input == "car" else Plane()
 \end{lstlisting}
 
 In this case the type inferencer has to realise that \code{vehicle} can be \type{Car} or \type{Plane}.
-%)
+
+%}
 
 {Concept}
 
