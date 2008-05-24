@@ -98,8 +98,6 @@ This leads to the question, how can the type of a given expression be determined
 
 \subsection{Goal}
 
-%{ rschuett: Korrekturen anschauen
-
 So, developing a type inferencer was a central goal of the project. To be useful for structural analysis, it should be able to resolve the type of the following expressions:
 
 \begin{itemize}
@@ -118,8 +116,6 @@ vehicle = Car() if input == "car" else Plane()
 \end{lstlisting}
 
 In this case the type inferencer has to realise that \code{vehicle} can be \type{Car} or \type{Plane}.
-
-%}
 
 {Concept}
 
