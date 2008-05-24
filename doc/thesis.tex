@@ -223,30 +223,6 @@ def evaluate_goal(root_goal):
 \end{lstlisting}
 
 
-\section{Debugging}
-
-% TODO: rstocker: Wollen wir da wirklich ne subsection machen 
-\subsection{Why?}
-
-Providing an easy way to debug the type inferencer was a challenging problem. The concept of using a goal engine which controls the whole evaluation process is rather unusual and all common debug scheme don't handle it very well. In a normal debugger the developer can always look at the call stack to see what functions were called in what order. But the stack trace when debugging a goal doesn't provide much details, it doesn't show what goal was creating the current goal nor what other goals currently are active.
-
-There were even some cases where a bug only appeared when the goals were processed in a particular order. Because all \emph{open} goals are treated equally it was possible that some goals are processed early or later
-% { rstocker: korrektur & kürzen(?), evtl. auch mehr was fürs challenges 
-\footnote{In one particular (annoying) case the bug could be triggered by uncommenting the construction of a simple Random object (which wasn't assigned to a variable and therefore got discarded). But even this simple change changed some orderings of hashsets/maps and therefore possibly the order of goals being processed. Of course the TI was meant to work independent of the used ordering, but in few cases the bug pattern only appeared in special orderings.}
-%)
-
-\subsection{How}
-
-% { rstocker: korrektur, und überleg mal ob wir hier wirklich methodennamen angeben sollen 
-
-Instead of just adding debugging code to the goal engine a logging interface was defined which then gets called by the engine during the different stages of the evaluation. The interface \class{IGoalEngineLogger} describes a set of hooks which can be used for a wide variety of debuggers and loggers: The beginning and the end of the evaluation process (\id{evaluationStarted()} \& \id{evaluationFinished()}) and two hooks which get called when a goal has been created or finished (\id{goalCreated()} \& \id{goalFinished)}).
-
-Using this interface a logger called \class{ConsoleLogger} was developed which visualises the evaluation process as a printed tree on the console. This turned out to be very useful as it shows what goal was created when and by whom.
-
-
-%}
-
-
 \section{Challenges/Problems}
 Container Element Types \\
 Call Context \& Instance Context \\
@@ -419,6 +395,63 @@ Later, when a goal is created for evaluating what \id{function} returns, the eva
  (Avoid casting (result in Goal))\\
  (Goaltype -> Evaluator Map)\\
 Other Type Inference Solutions\\
+
+\section{Debugging}
+
+% TODO: rstocker: Wollen wir da wirklich ne subsection machen 
+\subsection{Why?}
+
+Providing an easy way to debug the type inferencer was a challenging problem. The concept of using a goal engine which controls the whole evaluation process is rather unusual and all common debug scheme don't handle it very well. In a normal debugger the developer can always look at the call stack to see what functions were called in what order. But the stack trace when debugging a goal doesn't provide much details, it doesn't show what goal was creating the current goal nor what other goals currently are active.
+
+There were even some cases where a bug only appeared when the goals were processed in a particular order. Because all \emph{open} goals are treated equally it was possible that some goals are processed early or later
+% { rstocker: korrektur & kürzen(?), evtl. auch mehr was fürs challenges 
+\footnote{In one particular (annoying) case the bug could be triggered by uncommenting the construction of a simple Random object (which wasn't assigned to a variable and therefore got discarded). But even this simple change changed some orderings of hashsets/maps and therefore possibly the order of goals being processed. Of course the TI was meant to work independent of the used ordering, but in few cases the bug pattern only appeared in special orderings.}
+%)
+
+\subsection{How}
+
+% { rstocker: korrektur, und überleg mal ob wir hier wirklich methodennamen angeben sollen 
+
+Instead of just adding debugging code to the goal engine a logging interface was defined which then gets called by the engine during the different stages of the evaluation. The interface \class{IGoalEngineLogger} describes a set of hooks which can be used for a wide variety of debuggers and loggers: The beginning and the end of the evaluation process (\id{evaluationStarted()} \& \id{evaluationFinished()}) and two hooks which get called when a goal has been created or finished (\id{goalCreated()} \& \id{goalFinished)}).
+
+Using this interface a logger called \class{ConsoleLogger} was developed which visualises the evaluation process as a printed tree on the console. This turned out to be very useful as it shows what goal was created when, by whom and when it was finished. 
+
+A simple example like:
+\begin{lstlisting}
+def foo(x):
+    x
+foo("bar")
+\end{lstlisting}
+
+results in a console output like:
+\todo{example probably too long4}
+\begin{verbatim}
+	Evaluation started of ExpressionTypeGoal: Name[id=x, ctx=Load]
+	|  Created VariableReference ExpressionTypeGoal: Name[id=x, ctx=Load]
+	|  |  Ceated ArgumentType DefinitionTypeGoal: Argument x of Function foo
+	|  |  |  Created FunctionReferences FunctionReferencesGoal: Function foo
+	|  |  |  |  Created PossibleReferences PossibleReferencesGoal: foo
+	|  |  |  |  Created VariableReference ExpressionTypeGoal: foo
+	|  |  |  |  Finished PossibleReferencesGoal
+	|  |  |  |  |  Created FixedResult DefinitionTypeGoal: Function foo
+	|  |  |  Created FixedResult ExpressionTypeGoal: "bar"
+	|  |  |  |  |  Finished DefinitionTypeGoal, result: Function foo
+	|  |  |  |  Finished ExpressionTypeGoal, result: Function foo
+	|  |  |  Finished FunctionReferencesGoal
+	|  |  |  Finished ExpressionTypeGoal, result: type str
+	|  |  Finished DefinitionTypeGoal, result: type str
+	|  Finished ExpressionTypeGoal, result: type str
+	Evaluation finished of ExpressionTypeGoal: Name[id=x, ctx=Load]
+
+	Expression: Name[id=x, ctx=Load] (L2 C5), context: Module example.7
+	Type is: type str
+	Engine finished
+\end{verbatim}
+
+Some details were removed to enhance readability. This example also illustrates the fact that goals don't have to be created or finished in a strict order, some times a different goal gets processed before a finished one is being cleaned up.
+
+%}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Structural Analysis}
