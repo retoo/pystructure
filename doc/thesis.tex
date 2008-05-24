@@ -127,9 +127,8 @@ In this case the type inferencer has to realise that \code{vehicle} can be \type
 (link to other possible solutions)
 Correctness \& Usefulness \\
 
-\section{Process Overview}
 
-% { rstocker korrektur 
+\section{Process Overview}
 
 The type inferencer is divided into three main process stages:
 
@@ -145,11 +144,8 @@ The type inferencer is divided into three main process stages:
  \label{fig:process_overview}
 \end{figure}
 
-
-
 The first two steps, the parsing of the source code and the generation of the model, lay the foundation for the type inferencer. They do a static analysis of the whole project and are independent of what expressions should be evaluated. As long as the underlying source code doesn't change these preparations can be reused for any number of type inferencer evaluations.
 
-%}
 
 \section{Parsing the Source Code}
 
