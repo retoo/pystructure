@@ -121,8 +121,16 @@ class set(object):
         self.add(other.pop())
 
 
-def range(arg1, arg2=None, arg3=None):
-    return [1]
+class range(object):
+
+    def __init__(self, arg1, arg2=None, arg3=None):
+        pass
+
+    def __iter__(self):
+        return self
+
+    def next(self):
+        return 1
 
 
 class enumerate(object):
