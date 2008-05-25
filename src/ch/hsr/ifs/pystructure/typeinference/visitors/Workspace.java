@@ -28,6 +28,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import ch.hsr.ifs.pystructure.typeinference.model.definitions.Class;
+import ch.hsr.ifs.pystructure.typeinference.model.definitions.Definition;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Module;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.PathElement;
 import ch.hsr.ifs.pystructure.typeinference.results.references.AttributeReference;
@@ -105,6 +107,15 @@ public class Workspace {
 	public Module getBuiltinModule() {
 		return builtinModule;
 	}
+	
+	public Class getBuiltinClass(String className) {
+		List<Definition> definitions = getBuiltinModule().getDefinitions(className);
+		if (definitions.size() != 1 || !(definitions.get(0) instanceof Class)) {
+			throw new RuntimeException("Built-in definition of " + className + " is invalid");
+		}
+		return (Class) definitions.get(0);
+	}
+
 
 	public void addPossibleAttributeReference(AttributeReference attributeReference) {
 		String name = attributeReference.getName();
