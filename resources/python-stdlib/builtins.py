@@ -143,3 +143,28 @@ class enumerate(object):
 
     def next(self):
         return (1, self._enumerate_element)
+
+
+class int(object):
+
+    def __add__(self, other): return 1
+    def __sub__(self, other): return 1
+    def __mul__(self, other): return 1
+    def __floordiv__(self, other): return 1
+    def __mod__(self, other): return 1
+    def __pow__(self, other): return 1
+    def __rshift__(self, other): return 1
+    def __and__(self, other): return 1
+    def __xor__(self, other): return 1
+    def __or__(self, other): return 1
+    def __div__(self, other): return 1
+
+
+class float(object):
+    pass
+
+class long(object):
+    pass
+
+class complex(object):
+    pass

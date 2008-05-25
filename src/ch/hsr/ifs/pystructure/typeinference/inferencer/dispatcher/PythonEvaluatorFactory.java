@@ -64,6 +64,7 @@ import ch.hsr.ifs.pystructure.typeinference.evaluators.types.AssignTypeEvaluator
 import ch.hsr.ifs.pystructure.typeinference.evaluators.types.AttributeTypeEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.types.BinOpTypeEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.types.BoolOpTypeEvaluator;
+import ch.hsr.ifs.pystructure.typeinference.evaluators.types.BuiltinTypeEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.types.CallTypeEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.types.ClassAttributeTypeEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.types.DictTypeEvaluator;
@@ -260,7 +261,7 @@ public class PythonEvaluatorFactory implements IEvaluatorFactory {
 		
 		if (expr instanceof Num) {
 			String type = getNumType((Num) expr);
-			return new FixedResultEvaluator(goal, new ClassType(type));
+			return new BuiltinTypeEvaluator(goal, type);
 		}
 		if (expr instanceof Str) {
 			Str str = (Str) expr;
