@@ -70,6 +70,7 @@ import ch.hsr.ifs.pystructure.typeinference.evaluators.types.DictTypeEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.types.IfExpTypeEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.types.ImplicitImportTypeEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.types.ImportTypeEvaluator;
+import ch.hsr.ifs.pystructure.typeinference.evaluators.types.ListCompTypeEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.types.ListTypeEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.types.LoopVariableTypeEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.types.ReturnTypeEvaluator;
@@ -275,13 +276,7 @@ public class PythonEvaluatorFactory implements IEvaluatorFactory {
 			return new DictTypeEvaluator(goal, (Dict) expr);
 		}
 		if (expr instanceof ListComp) {
-			/* FIXME: this is a expression like:
-			 *  [field for field in self.fields if field.isempty()
-			 *  
-			 *  we could use the generators.iter to find out what kind of 
-			 *  list we have to expect here, but for now we have no idea about lists anyway
-			 */
-			return new FixedResultEvaluator(goal, new ClassType("list"));
+			return new ListCompTypeEvaluator(goal, (ListComp) expr);
 		}
 		if (expr instanceof Compare || expr instanceof UnaryOp) {
 			return new FixedResultEvaluator(goal, new ClassType("bool"));

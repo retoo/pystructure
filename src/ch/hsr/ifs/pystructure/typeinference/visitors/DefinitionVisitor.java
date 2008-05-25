@@ -31,6 +31,7 @@ import org.python.pydev.parser.jython.ast.Assign;
 import org.python.pydev.parser.jython.ast.Attribute;
 import org.python.pydev.parser.jython.ast.Call;
 import org.python.pydev.parser.jython.ast.ClassDef;
+import org.python.pydev.parser.jython.ast.Comprehension;
 import org.python.pydev.parser.jython.ast.For;
 import org.python.pydev.parser.jython.ast.FunctionDef;
 import org.python.pydev.parser.jython.ast.Global;
@@ -39,6 +40,7 @@ import org.python.pydev.parser.jython.ast.Import;
 import org.python.pydev.parser.jython.ast.ImportFrom;
 import org.python.pydev.parser.jython.ast.Index;
 import org.python.pydev.parser.jython.ast.Lambda;
+import org.python.pydev.parser.jython.ast.ListComp;
 import org.python.pydev.parser.jython.ast.Name;
 import org.python.pydev.parser.jython.ast.NameTokType;
 import org.python.pydev.parser.jython.ast.Subscript;
@@ -47,6 +49,7 @@ import org.python.pydev.parser.jython.ast.TryFinally;
 import org.python.pydev.parser.jython.ast.While;
 import org.python.pydev.parser.jython.ast.aliasType;
 import org.python.pydev.parser.jython.ast.argumentsType;
+import org.python.pydev.parser.jython.ast.comprehensionType;
 import org.python.pydev.parser.jython.ast.excepthandlerType;
 import org.python.pydev.parser.jython.ast.exprType;
 import org.python.pydev.parser.jython.ast.sliceType;
@@ -326,6 +329,43 @@ public class DefinitionVisitor extends StructuralVisitor {
 		parent.addCurrentDefinitions(bodyBlock);
 		parent.addCurrentDefinitions(orelseBlock);
 
+		return null;
+	}
+
+	@Override
+	public Object visitListComp(ListComp node) throws Exception {
+		Block block = new Block(getBlock());
+		
+		for (comprehensionType generator : node.generators) {
+			/* Comprehension is the only subclass of comprehensionType */
+			Comprehension comp = (Comprehension) generator;
+			
+			Call iterCall = NodeUtils.createMethodCall(comp.iter, "__iter__");
+			Call nextCall = NodeUtils.createMethodCall(iterCall, "next");
+			
+			nextCall.accept(this);
+			
+			Map<exprType, exprType> assignments = NodeUtils.createTupleElementAssignments(comp.target, nextCall);
+			for (Map.Entry<exprType, exprType> entry : assignments.entrySet()) {
+				exprType target = entry.getKey();
+				exprType value  = entry.getValue();
+				
+				if (target instanceof Name) {
+					String name = ((Name) target).id;
+					Definition loopVariable = new LoopVariableDefinition(module, name, (Name) target, value);
+					block.setDefinition(loopVariable);
+				} else if (target instanceof Subscript) {
+					processSubscriptAssignment(target, value);
+				} else if (target instanceof Attribute) {
+					// Ignore for now
+				}
+			}
+		}
+		
+		blocks.push(block);
+		node.elt.accept(this);
+		blocks.pop();
+		
 		return null;
 	}
 
