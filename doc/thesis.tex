@@ -323,8 +323,10 @@ As a first step the the user of the type inferencer has to create a root goal wh
 \subsubsection{Select evaluator for goal}
 When the root goal is created it has to be fed into the goal engine. Every goal has to be processed by one of the available evaluators. Which one has to be used is determined by the so called Evaluator Factory (class \class{PythonEvaluatorFactory}) which returns the appropriate evaluator depending on the kind of goal and the possibly on other criteria. 
 
-\subsubsection{Evaluator}
+For example in the case of a expression type goal the evaluator factory also considers the type of the enclosing expression. Is it a method call the 
 
+\subsubsection{Evaluator}
+Now the actual work begins, the evaluator gets initialised with the goal as a parameter. THe 
 
 
 Goal Engine \\
@@ -360,6 +362,7 @@ def evaluate_goal(root_goal):
             queue.add(goal_node)
 \end{lstlisting}
 
+\todo{describe some goal engine behaviors like, cyclic recursion, caching, crazy ordering and so on, 
 
 \section{Challenges/Problems}
 
