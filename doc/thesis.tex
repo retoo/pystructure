@@ -152,6 +152,8 @@ The first two steps, the parsing of the source code and the generation of the mo
 
 Before any analysis can be done on the application its source code has to be brought into a form which is easier to process for programs. It's quite common to express an application's source code as a tree, where an interior node represents a programming language construct and the children of that node represent meaningful components of the construct. For example the simple code \code{foo("bar")} is a call node with the parameter as a string node attached to it. This node structure is usually called abstract syntax tree (AST).
 
+\todo{Why don't we show the pretty printed ast of the example above}
+
 Instead of writing a new parser, PyStructure uses a modified version of the Jython\footnote{Jython is a Python implementation for the JVM written in Java.} parser. The modifications were done by the PyDev\footnote{PyDev is an IDE for Python developers based on Eclipse and written in Java.} project to be able to interpret Python 2.5 source code, the normal Jython parser can only parse source code written for Python 2.2. In the long term it would be advantageous to use the unmodified Jython parser, but before 2.5 syntax is supported this is not really an option.
 
 %{ Robin: ist Abschnitt wirklich wichtig? 
@@ -190,7 +192,7 @@ The first step of building the model is to extract the structural elements that 
 
 Now we have the elements of the model, but there's not yet very much information provided by it. As described in the example with the \id{foo} variable, knowing which variable definitions and uses are related would be very useful. This is part of what the \class{DefinitionVisitor} does and is called flow analysis.
 
-Flow analysis is an important part of type inference. In Python, it is possible that a variable is assigned multiple times with different types. This doesn't matter if the values are assigned sequentially and without conditional branches:
+Flow analysis is an important part of type inference. In Python, it is possible that a variable is assigned multiple times with different types. This doesn't matter if the values are assigned sequentially and without conditional branches\todo{was heisst das?}:
 
 \begin{lstlisting}
 var = 42
@@ -204,12 +206,14 @@ The two definitions are made unconditionally, which means the two uses of var ea
 
 If an analyser doesn't actually respect the flow of the variables and just takes all assignments to the same name as belonging to the same variable, it is called flow-insensitive. The type of all \id{var} names in the example then would be \type{int|str}. PyStructure is flow-sensitive, which means it is as precise as possible when there's more than one assignment of a variable in the same scope. The advantage is that it results in better precision for inferring types and it is also a very useful feature to have for the use case of an IDE, where it helps with certain refactorings.
 
+\todo{ich würde hier noch erwähnen dass diese analyse unabhängig ovn den eigentlichen typen ist. ALso z.b. wenn da ned var=42 sondern var = some_func() stehen würde könnte die benutzung von var trotzdem schon statisch an die definition gehängt werden, obwohl der typ ja nicht bekannt ist}
+
 \subsubsection{Branches}
 
 When conditional assignments are involved, it is more difficult to clearly say which type a variable is of:
 
 \begin{lstlisting}
-if random():
+if random():\todo{ich würd hier some_random_method nehmen, sonst versucht der leser noc hwas ins random() hineinzuinterpretieren. oder sometimestruesometimesnot ;)}
     x = 42
     print x
 else:
@@ -218,7 +222,7 @@ else:
 print x
 \end{lstlisting}
 
-At the first \code{print} statement, \id{x} is of type \type{int}. At the second, it is of type \type{float}, because of the assignment above it. At the \code{print} statement after the if/else block, it is of type \type{int|float}, because which branch is executed is only determined at runtime. Therefore the engine has to say that both types are possible.
+At the first \code{print} statement, \id{x} is of type \type{int}. At the second, it is of type \type{float}, because of the assignment above it. At the \code{print} statement after the if/else block, it is of type \type{int|float}, because which branch is executed is only determined at runtime. Therefore the engine has to say that both types are possible. 
 
 \subsubsection{Scopes}
 
