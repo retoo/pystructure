@@ -181,7 +181,9 @@ The first step of building the model is to extract the structural elements that 
 
 \subsection{Connecting Definitions and Uses}
 
-Now we have the elements of the model, but there's not yet very much information provided by it. As described in the example with the \id{foo} variable, knowing which variable definitions and uses are related would be very useful. This is part of what the \class{DefinitionVisitor} does.
+% rschuett: subsection korrigieren
+
+Now we have the elements of the model, but there's not yet very much information provided by it. As described in the example with the \id{foo} variable, knowing which variable definitions and uses are related would be very useful. This is part of what the \class{DefinitionVisitor} does and is called flow analysis.
 
 Flow analysis is an important part of type inference. In Python, it is possible that a variable is assigned multiple times with different types. This doesn't matter if the values are assigned sequentially and without conditional branches:
 
@@ -194,6 +196,8 @@ print var
 \end{lstlisting}
 
 The two definitions are made unconditionally, which means the two uses of var each belong to the definition right before them. So, the type of the first \id{var} is \type{int}, while the second's is \type{str}.
+
+If an analyser doesn't actually respect the flow of the variables and just takes all assignments to the same name as belonging to the same variable, it is called flow-insensitive. The type of all \id{var} names in the example then would be \type{int|str}. PyStructure is flow-sensitive, which means it is as precise as possible when there's more than one assignment of a variable in the same scope. The advantage is that it results in better precision for inferring types and it is also a very useful feature to have for the use case of an IDE, where it helps with certain refactorings.
 
 \subsubsection{Branches}
 
@@ -209,7 +213,7 @@ else:
 print x
 \end{lstlisting}
 
-At the first \id{print} statement, \id{x} is of type \type{int}. At the second, it is of type \type{float}, because of the assignment above it. At the \id{print} statement after the if/else block, it is of type \type{int|float}, because which branch is executed is only determined at runtime. Therefore the engine has to say that both types are possible.
+At the first \code{print} statement, \id{x} is of type \type{int}. At the second, it is of type \type{float}, because of the assignment above it. At the \code{print} statement after the if/else block, it is of type \type{int|float}, because which branch is executed is only determined at runtime. Therefore the engine has to say that both types are possible.
 
 \subsubsection{Scopes}
 
@@ -633,6 +637,12 @@ Key figures\\
  Effort Diagram \\
  Our Experiences \\
  Acknowledgements 
+
+\subsection{Parts of Documentation from Previous Project}
+
+\begin{itemize}
+	\item 90~\% of \emph{Connecting Definitions and Uses} % TODO: percentage, add reference
+\end{itemize}
 
 \section{Outlook}
 \subsection{PEPTIC in General}
