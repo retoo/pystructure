@@ -412,8 +412,6 @@ Without separating these two uses, the type inferencer would answer that the typ
 
 \subsection{Container Element Types}
 
-% rschuett: Jetzt ist Beschreibung des Problems gleich nach erstem Beispiel, gut?
-
 When using container types like \id{list} or \id{dict}, each instance of such a type should be treated differently regarding the type of the contained elements. Considering this example:
 
 \begin{lstlisting}
@@ -480,8 +478,6 @@ Inheritance\\
 
 \subsection{Built-in Types and Functions}
 
-%{ rschuett: Korrigieren
-
 What would a language be without its built-in types, like \type{int}, \type{str} or \type{list} for Python? Nothing, because all our own code is based on these data structures provided by the language. Similarly, what would a type inference system be without support for these built-in types? Not very usable, as shown in the following example:
 
 \begin{lstlisting}
@@ -500,11 +496,10 @@ Two of the possible solutions for making the inferencer aware of built-in types 
 
 \begin{enumerate}
 	\item Add special evaluators for evaluating built-in types and implement the rules in Java code.
-	\itme \todo{what do you think about that:}Treat the built-ins specially using separate evaluators and implement the necessary rules in these (therefore in Java)
-	\item Create prototype implementations in Python code, 
-	
-	which can be analysed like any other Python code.
+	\item Create prototype implementations in Python code, which type-wise behave like the original Python implementation..
 \end{enumerate}
+
+% rstocker, hab jetzt die liste oben anders gemacht, dafür ist jetzt der satz unten redundant.
 
 The second solution was chosen as it is both cleaner and easier to implement. A prototype implementation works by defining the functions and methods so that they return the same type as the original ones. The following extract from the implementation of the \id{list} type illustrates the concept:
 
