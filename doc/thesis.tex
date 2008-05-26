@@ -155,7 +155,12 @@ The first two steps, the parsing of the source code and the generation of the mo
 
 Before any analysis can be done on the application its source code has to be brought into a form which is easier to process for programs. It's quite common to express an application's source code as a tree, where an interior node represents a programming language construct and the children of that node represent meaningful components of the construct. For example the simple code \code{foo("bar")} is a call node with the parameter as a string node attached to it. This node structure is usually called abstract syntax tree (AST).
 
-\todo{Why don't we show the pretty printed ast of the example above}
+\begin{lstlisting}
+Call
+|   func = Name("foo"),
+|   args = 
+|   |   Str("bar")
+\end{lstlisting}
 
 Instead of writing a new parser, PyStructure uses a modified version of the Jython\footnote{Jython is a Python implementation for the JVM written in Java.} parser. The modifications were done by the PyDev\footnote{PyDev is an IDE for Python developers based on Eclipse and written in Java.} project to be able to interpret Python 2.5 source code, the normal Jython parser can only parse source code written for Python 2.2. In the long term it would be advantageous to use the unmodified Jython parser, but before 2.5 syntax is supported this is not really an option.
 
@@ -534,11 +539,8 @@ One solution would be to create a special evaluator for finding the type of \id{
 
 In PyStructure it is solved in the evaluator which finds the type of the \node{List} node. The result of the evaluator is of course \type{list}, but the evaluator does more. For each element expression (\code{1}, \code{2}, \code{3} and \code{4} in the example), it creates a new call node for \id{append} and the corresponding attribute reference. It registers these attribute references in the workspace. Later when a \class{PossibleAttributeReferencesEvaluator} is run for \id{append}, it adds the references to the list of possible attribute references which is the result of the evaluator. The rest of the evaluation proceeds as usual.
 
-%}
 
 \subsection{Imports with import *}\label{import_star}
-
-%{ rschuett: korrigieren
 
 There's a Python feature\footnote{Some would say it's not a feature, but a wart, because it pollutes the local namespace with unused names. It is generally advised to use \code{import *} only very sparingly.} to import all the names from a module using the syntax \code{from module import *}. An example, this is the code in \file{module.py}:
 
@@ -562,7 +564,7 @@ When the \class{DefinitionVisitor} processes the first line of \file{main.py} an
 
 Later, when a goal is created for evaluating what \id{function} returns, the evaluation will find the  \class{ImplicitImportDefinition} and the \class{ImplicitImportDefinitionEvaluator} will be started. It walks through the import paths and tries to find the definition behind the name \id{function} until it has found it. If the imported definition is itself an \class{ImplicitImportDefinition}, its paths are added to the front of the paths which need to be searched (leading to a depth-first search).
 
-%}
+% TODO: Wo erkären wie eigentlich aliasing ? 
 
 \section{Caching}
  Techniques, Performance, advantages/disadvantages, problems
