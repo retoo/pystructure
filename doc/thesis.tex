@@ -331,7 +331,7 @@ In short the evaluation works as follows: The user of the library picks a expres
 
 \subsubsection{Picking a root goal}
 
-As a first step the the user of the type inferencer has to create a root goal which describes the actual main goal. Usually this goal is an \class{ExpressionTypeGoal} which determines the type for a given expression (hence the name\todo{doofer kommentar:)?}). The expression in question can be any expression stored in the AST. They can for example be found by using a visitor like the \class{ExpressionAtLineVisitor} or by iterating over all expressions (like the Type Spider does\todo{reference to the Spider}).
+As a first step the the user of the type inferencer has to create a root goal which describes the actual main goal. Usually this goal is an \class{ExpressionTypeGoal} which determines the type for a given expression (hence the name). The expression in question can be any expression stored in the AST. They can for example be found by using a visitor like the \class{ExpressionAtLineVisitor} or by iterating over all expressions (like the Type Spider does \todo{reference to the Spider}).
 
 \subsubsection{Select evaluator for goal}
 When the root goal is created it has to be fed into the goal engine. Every goal has to be processed by one of the available evaluators. Which one has to be used is determined by the so called Evaluator Factory (class \class{PythonEvaluatorFactory}) which returns the appropriate evaluator depending on the kind of goal and the possibly on other criteria. 
@@ -340,12 +340,16 @@ For example in the case of a expression type goal the evaluator factory also con
 
 
 \subsubsection{Evaluator}
-Now the actual work begins, the evaluator gets initialised with the goal as a parameter. As a first step the eveluator's \id{init()}\todo{methodenamen = id?} method is called. The evaluator then has a first chance to do it's job. If necessary (and it often is) the evaluator can create sub goals and return them. The evaluator's goal is not considered finished as long as there are any remaining sub goals. Every time a sub goal is finished the evaluator's method \id{suGoalDone(subgoal)} is being called. Here again the evaluator has the chance to create any sub goals. 
+Now the actual work begins, the evaluator gets initialised with the goal as a parameter. As a first step the eveluator's \id{init()} method is called. The evaluator then has a first chance to do it's job. If necessary (and it often is) the evaluator can create sub goals and return them. The evaluator's goal is not considered finished as long as there are any remaining sub goals. Every time a sub goal is finished the evaluator's \id{subgoalDone(subgoal)} method is being called. Here again the evaluator has the chance to create any sub goals. 
 
 From the goal engine's perspective there's no difference between sub and root goals, they are handled equally. But of course as soon as the root goal is finished the evaluator returns found solution to the user.
 
 % }
 
+
+\subsection{Examples}
+
+\todo{here we describe the actual function of the TI by some examples}
 
 Goal Engine \\
  (description of the goal engine)\\
@@ -384,12 +388,11 @@ def evaluate_goal(root_goal):
 
 \section{Challenges/Problems}
 
-% rschuett: Einführung korrigieren
+In this section, some of the difficult parts of developing a type inference system for Python are described in more detail. Each problem is illustrated with examples and shows the solution which was implemented in PyStructure is explained.
 
-In this section, some of the difficult parts of developing a type inference system for Python are inspected. Each problem is illustrated with examples and then the solution which was implemented in PyStructure is explained.
+\subsection{Recursion}
 
-
-Recursion
+\todo{describe recursion}
 
 \subsection{Contexts}
 
@@ -489,7 +492,7 @@ for element in foos:
     print element
 \end{lstlisting}
 
-If the type inferencer had no knowledge of how the \id{list} type works, it wouldn't be able to determine the type of \id{element}.
+If the type inferencer had no knowledge of how the \id{list} type works, it wouldn't be able to determine the type of \id{element}. \todo{why? perhaps we have to elaborate a bit here}
 
 \subsubsection{Specifying the Behaviour}
 
@@ -497,7 +500,10 @@ Two of the possible solutions for making the inferencer aware of built-in types 
 
 \begin{enumerate}
 	\item Add special evaluators for evaluating built-in types and implement the rules in Java code.
-	\item Create prototype implementations in Python code, which can be analysed like any other Python code.
+	\itme \todo{what do you think about that:}Treat the built-ins specially using separate evaluators and implement the necessary rules in these (therefore in Java)
+	\item Create prototype implementations in Python code, 
+	
+	which can be analysed like any other Python code.
 \end{enumerate}
 
 The second solution was chosen as it is both cleaner and easier to implement. A prototype implementation works by defining the functions and methods so that they return the same type as the original ones. The following extract from the implementation of the \id{list} type illustrates the concept:
