@@ -3,7 +3,7 @@
 \usepackage{pystructure}
 
 \usepackage{svn} % For handling of SVN keywords
-\SVN $LastChangedDate: 2008-01-25 14:34:07 +0100 (Fr, 25 Jan 2008) $
+\SVN $LastChangedDate$
 
 \begin{document}
 
@@ -25,6 +25,12 @@
 
 \vspace{2cm}
 {\Huge \bfseries PyStructure -- Automated Structure and Dependency Analysis of Python Code}
+
+% { TOOD delete me 
+\vspace{0.5cm}
+{\Large \bfseries DRAFT VERSION}
+%}
+
 \vspace{2cm}
 
 {\Large \bfseries Bachelor Thesis: Spring 2008}
@@ -302,11 +308,15 @@ In the first part of this section the actual evaluation process is explained and
 
 In short the evaluation works as follows: The user of the library picks a expression somewhere in the code and then creates a expression type goal for this expression. This goal, called root goal, is then fed into the goal engine which starts to process it. Every goal has to be processed by one of the evaluator. Which evaluator has to be used is determined by the evaluator factory according to the goal's type and other criteria. The particular evaluator then gets initialised and processes the goal. The evaluator can (and usually will) create sub goals which are then processed as well. As the goals are being successfully finished their result are being reported back to the root goal. As soon as the root goal finished the result gets returned to the user.
 %) 
+
 \subsubsection{Picking a root goal}
 
 As a first step the the user of the type inferencer has to create a root goal which describes the actual main goal. Usually this goal is an \class{ExpressionTypeGoal} which determines the type for a given expression (hence the name\todo{doofer kommentar:)?}). The expression in question can be any expression stored in the AST. They can for example be found by using a visitor like the \class{ExpressionAtLineVisitor} or by iterating over all expressions (like the Type Spider does\todo{reference to the Spider}).
 
+\subsubsection{Select evaluator for goal}
+When the root goal is created it has to be fed into the goal engine. Every goal has to be processed by one of the available evaluators. Which one has to be used is determined by the so called Evaluator Factory (class \class{PythonEvaluatorFactory}) which returns the appropriate evaluator depending on the kind of goal and the possibly on other criteria. 
 
+\subsubsection{Evaluator}
 
 
 
