@@ -243,8 +243,8 @@ Without separating these two uses, the type inferencer would answer that the typ
 
 \subsection{Container Element Types}
 
-% rschuett: Kannst du mal durchlesen, irgendwie finde ich das ganze zu lange.
-\todo{rstocker: ich finds ned zu lange, aber ich finde wir reden viel zu spät vom eigenltichen Problem (eigentlich erst nach zwei grossen Beispielen. Kann man das ned schon früher erklären?)}
+% rschuett: Jetzt ist Beschreibung des Problems gleich nach erstem Beispiel, gut?
+
 When using container types like \id{list} or \id{dict}, each instance of such a type should be treated differently regarding the type of the contained elements. Considering this example:
 
 \begin{lstlisting}
@@ -258,7 +258,7 @@ a = list_a[0]
 b = list_b[0]
 \end{lstlisting}
 
-What should the types of the two variables at the end be? Of course it should be \type{int} for \id{a} and \type{str} for \id{b}. Here's the same situation without using list:
+What should the types of the two variables at the end be? Of course it should be \type{int} for \id{a} and \type{str} for \id{b}. But with a type inferencer not aware of different instances, the result is actually \type{int|str} for both variables. Why is that? Let's look at another example of the same problem where we can see what the implementation of the container class is:
 
 \begin{lstlisting}
 class Container(object):
@@ -278,17 +278,18 @@ a = c1.get()
 b = c2.get()
 \end{lstlisting}
 
-The types for \id{a} and \id{b} should be the same as in the example with the lists. But with a type inferencer not aware of different instances, the result is actually \type{int|str} for both variables. Why is that? Looking at the evaluation for the type of \id{a}, the problem becomes clear (the finding of references was omitted for brevity):
+The types for \id{a} and \id{b} are the same as in the example with the lists. The problem becomes clear when looking at the evaluation for the type of \id{a} (the finding of references was omitted for brevity):
 
 \begin{enumerate}
 	\item[1.] What is the return type of \code{c1.get()}?
 	\begin{enumerate}
 		\item[2.] What is the type of \code{c1}?
 		\item[] $\rightarrow$ The type is \type{Container}.
-		\item[] Therefore the method \id{get} in the class \type{Container} has to be examined. \todo{rstocker: hier brauchts ne überleitung, gut so? }
-		\item[3.] What is the type of \code{self.element} in the \code{Container.get} method?
+		\item[3.] What is the type of \code{c1.get}?
+		\item[] $\rightarrow$ It is the \id{get} method in the \id{Container} class.
+		\item[4.] What is the type of \code{self.element} in the \id{get} method?
 		\begin{enumerate}
-			\item [4.] What is the type of the \code{element} argument of the \code{Container.set} method?
+			\item [5.] What is the type of the \code{element} argument of the \code{Container.set} method?
 			\item [] $\rightarrow$ The type is \type{int|str} (from the two \code{set} calls).
 		\end{enumerate}
 	\end{enumerate}
