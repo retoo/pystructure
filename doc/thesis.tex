@@ -221,11 +221,25 @@ def evaluate_goal(root_goal):
 
 
 \section{Challenges/Problems}
-Container Element Types \\
-Call Context \& Instance Context \\
 Inheritance\\
  (C3 MRO)\\
 Recursion
+
+\subsection{Contexts}
+
+The return type of a function or method may depend on the types of its arguments. An inferencer can be more precise if it treats calls with different arguments differently. The following example shows such a function used with two different arguments:
+
+\begin{lstlisting}
+def add_one(value):
+    return value + 1
+
+a = add_one(41)
+b = add_one(1.5)
+\end{lstlisting}
+
+Without separating these two uses, the type inferencer would answer that the type of both \id{a} and \id{b} is \type{int|float}. But a more precise answer would be that \id{a} is \type{int} and \id{b} is \type{float}.
+
+% TODO: Solution, InstanceContext
 
 \subsection{Container Element Types}
 
