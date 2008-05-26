@@ -153,7 +153,13 @@ Instead of writing a new parser, PyStructure uses a modified version of the Jyth
 It should be noted that the parser does not do that much beside converting the source code into a tree representation. It for example doesn't do any transformation of expressions which can be written in different ways. For example the expression \code{a + b} is handled by the Python interpreter as \code{a.__add__(b)}, but the parser still interprets the code as \node{BinOp(a, b, op=Add)} and therefore distinguishes it from literally calling the \code{__add__} method, which would be \node{Call(a.__add__, args=b)}. 
 %}
 
+
 \section{Creating the Model}
+
+From AST to Model \\
+(StructureVisitor, DefinitionVisitor)\\
+Connecting Definitions and Uses\\
+(What's already known, what not (attributes...))
 
 % { rstocker: bisschen korrigiert, gefällt mir aber immer noch ned super. 
 
@@ -178,12 +184,6 @@ The first step of building the model is to extract the structural elements that 
 Now we have the elements of the model, but there's not yet very much information provided by it. As described in the example with the \id{foo} variable, knowing which variable definitions and uses are related would be very useful. This is part of what the \class{DefinitionVisitor} does.
 
 \todo{"Flow Analysis" von PEPTIC übernehmen?}
-
-
-From AST to Model \\
-(StructureVisitor, DefinitionVisitor)\\
-Connecting Definitions and Uses\\
-(What's already known, what not (attributes...))\\
 
 
 \section{Inferencing Types}
