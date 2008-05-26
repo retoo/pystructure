@@ -183,7 +183,107 @@ The first step of building the model is to extract the structural elements that 
 
 Now we have the elements of the model, but there's not yet very much information provided by it. As described in the example with the \id{foo} variable, knowing which variable definitions and uses are related would be very useful. This is part of what the \class{DefinitionVisitor} does.
 
-\todo{"Flow Analysis" von PEPTIC übernehmen?}
+Flow analysis is an important part of type inference. In Python, it is possible that a variable is assigned multiple times with different types. This doesn't matter if the values are assigned sequentially and without conditional branches:
+
+\begin{lstlisting}
+var = 42
+print var
+
+var = "Hi"
+print var
+\end{lstlisting}
+
+The two definitions are made unconditionally, which means the two uses of var each belong to the definition right before them. So, the type of the first \id{var} is \type{int}, while the second's is \type{str}.
+
+\subsubsection{Branches}
+
+When conditional assignments are involved, it is more difficult to clearly say which type a variable is of:
+
+\begin{lstlisting}
+if random():
+    x = 42
+    print x
+else:
+    x = 3.14
+    print x
+print x
+\end{lstlisting}
+
+At the first \id{print} statement, \id{x} is of type \type{int}. At the second, it is of type \type{float}, because of the assignment above it. At the \id{print} statement after the if/else block, it is of type \type{int|float}, because which branch is executed is only determined at runtime. Therefore the engine has to say that both types are possible.
+
+\subsubsection{Scopes}
+
+If a variable from an outer scope is read, it isn't possible to specifically determine its type, because that depends on where the variable is assigned:
+
+\begin{lstlisting}
+def func():
+    print g
+
+g = 1
+func()
+
+g = 3.14
+func()
+\end{lstlisting}
+
+The two calls of \id{func} will print values of different types, because the outer variable \id{g} is accessed after it has been assigned another value. In the function itself, it's not possible to say if the type is \type{int} or \type{float}, because both are possible, so the resulting type is \type{int|float}.
+
+\subsubsection{Global Variables}
+
+Global variables complicate the flow analysis, because they can be assigned from anywhere:
+
+\begin{lstlisting}
+g = 1
+
+def func():
+    global g
+    g = 3.14
+
+print g
+func()
+print g
+\end{lstlisting}
+
+Between the two \id{print} statements, the variable \id{g} was assigned another value from within \id{func}. Therefore, the variable \id{g} in the global scope is of type \type{int|float}.
+
+\subsubsection{Implementation}
+
+Flow analysis as shown above is primarily implemented in one visitor, the \class{DefinitionVisitor}. It visits the AST and registers \emph{definitions} and \emph{uses} of names (variables, methods, classes). Each use can have multiple possible definitions associated with it, and each definitions can have multiple uses. In other words, they have a many-to-many relationship.
+
+To resolve the definition of a name, it uses a structure of nested blocks and scopes. Scopes are introduced by \code{class} and \code{def} statements, and there's also a scope for the module the code is in. Blocks correspond to lines of code which are usually grouped by indentation\footnote{Python actually makes indentation even mandatory and therefore doesn't need block delimiters like curly braces or end statements.}. Scopes are blocks too, just with special semantics. The following example is used to explain the algorithm:
+
+\begin{lstlisting}[numbers=left]
+x = "unrelated"
+print x
+
+def func():
+    x = 1
+    if random():
+        y = 42
+        print x
+    else:
+        y = 3.14
+        print y
+    print y
+
+func()
+\end{lstlisting}
+
+The first line defines a variable with the name \id{x}, the second is a use of this definition.
+
+On line 4, there's a function definition with the name \id{func}. It introduces a scope for the function. Because in the scope of the function, variables from the whole outer scope could be used, the visiting of the function body is deferred to later.
+
+Line 14 is a name use of \id{func}. That it is a function call doesn't matter for the \class{DefinitionVisitor}.
+
+The visitor now visits the body of the function. The scope of the function is created, with the module scope as the parent scope. At line 5, there's a definition of the name \id{x}.
+
+At line 7, a block starts for the if clause and there's a definition for \id{y}. Line 8 uses the \id{x} variable. To find the corresponding definition(s), the enclosing block is searched for the current definition of \id{x}. The search continues to the next parent block if it isn't found. So the definition from line 5 is found and the use associated with it.
+
+At line 10, the else clause begins. There's another definition of \id{y} here. Line 11 uses \id{y} and its definition is found directly in the block.
+
+On line 12, the two blocks of the if have ended. The definitions of both blocks are now set as the current definitions of \id{y}, they are said to flow out from the block. So the use on this line may refer to both the definitions in the if/else block and the use is created accordingly.
+
+No definitions flow from the scope, so the visitor has done its work and can return the results, the name uses and definitions.
 
 
 \section{Inferencing Types}
