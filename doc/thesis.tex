@@ -257,7 +257,7 @@ Between the two \id{print} statements, the variable \id{g} was assigned another 
 
 \subsubsection{Implementation}
 
-Flow analysis as shown above is primarily implemented in one visitor, the \class{DefinitionVisitor}. It visits the AST and registers \emph{definitions} and \emph{uses} of names (variables, methods, classes). Each use can have multiple possible definitions associated with it, and each definitions can have multiple uses. In other words, they have a many-to-many relationship.
+Flow analysis as shown above is primarily implemented in the \class{DefinitionVisitor}. It visits the AST and registers \emph{definitions} and \emph{uses} of names (variables, methods, classes). Each use can have multiple possible definitions associated with it, and each definitions can have multiple uses. In other words, they have a many-to-many relationship.
 
 To resolve the definition of a name, it uses a structure of nested blocks and scopes. Scopes are introduced by \code{class} and \code{def} statements, and there's also a scope for the module the code is in. Blocks correspond to lines of code which are usually grouped by indentation\footnote{Python actually makes indentation even mandatory and therefore doesn't need block delimiters like curly braces or end statements.}. Scopes are blocks too, just with special semantics. The following example is used to explain the algorithm:
 
@@ -444,7 +444,7 @@ So the problem is that the inferencer treats the \id{Container} class as if ever
 \todo{Write me}
 
 Inheritance\\
- (C3 MRO)\\
+ (C3 MRO)
 
 \subsection{Built-in Types and Functions}
 
