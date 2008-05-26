@@ -316,6 +316,8 @@ In the first part of this section the actual evaluation process is explained and
 In short the evaluation works as follows: The user of the library picks a expression somewhere in the code and then creates a expression type goal for this expression. This goal, called root goal, is then fed into the goal engine which starts to process it. Every goal has to be processed by one of the evaluator. Which evaluator has to be used is determined by the evaluator factory according to the goal's type and other criteria. The particular evaluator then gets initialised and processes the goal. The evaluator can (and usually will) create sub goals which are then processed as well. As the goals are being successfully finished their result are being reported back to the root goal. As soon as the root goal finished the result gets returned to the user.
 %) 
 
+%{ rstocker korrigieren
+
 \subsubsection{Picking a root goal}
 
 As a first step the the user of the type inferencer has to create a root goal which describes the actual main goal. Usually this goal is an \class{ExpressionTypeGoal} which determines the type for a given expression (hence the name\todo{doofer kommentar:)?}). The expression in question can be any expression stored in the AST. They can for example be found by using a visitor like the \class{ExpressionAtLineVisitor} or by iterating over all expressions (like the Type Spider does\todo{reference to the Spider}).
@@ -327,7 +329,12 @@ For example in the case of a expression type goal the evaluator factory also con
 
 
 \subsubsection{Evaluator}
-Now the actual work begins, the evaluator gets initialised with the goal as a parameter. As a first step the eveluator's \id{init()}\todo{methodenamen = id?}
+Now the actual work begins, the evaluator gets initialised with the goal as a parameter. As a first step the eveluator's \id{init()}\todo{methodenamen = id?} method is called. The evaluator then has a first chance to do it's job. If necessary (and it often is) the evaluator can create sub goals and return them. The evaluator's goal is not considered finished as long as there are any remaining sub goals. Every time a sub goal is finished the evaluator's method \id{suGoalDone(subgoal)} is being called. Here again the evaluator has the chance to create any sub goals. 
+
+From the goal engine's perspective there's no difference between sub and root goals, they are handled equally. But of course as soon as the root goal is finished the evaluator returns found solution to the user.
+
+% }
+
 
 Goal Engine \\
  (description of the goal engine)\\
