@@ -157,7 +157,6 @@ It should be noted that the parser does not do that much beside converting the s
 
 % { rstocker: bisschen korrigiert, gefällt mir aber immer noch ned super. 
 
-
 The representation of a program provided by the AST is very basic and working directly with it is quite cumbersome. 
 One drawback of the AST is that it's just a \emph{syntactical} representation of the source code and doesn't include any semantic information. For example, in the following code, the AST doesn't know that the two uses of \id{foo} are related:
 
@@ -188,12 +187,33 @@ Connecting Definitions and Uses\\
 
 
 \section{Inferencing Types}
+
+Now, after all the source has been parsed an a generalised model of the program has been build the actual analysing can begin. 
+
+In the first part of this section the actual evaluation process is explained and the second part describes the underlying goal engine which is responsible for organising the different goals during the evaluation.
+
+\subsection{Evaluation}
+
+% { rstocker: bitte durchlesen kommentieren und korrigieren
+
+In short the evaluation works as follows: The user of the library picks a expression somewhere in the code and then creates a expression type goal for this expression. This goal, called root goal, is then fed into the goal engine which starts to process it. Every goal has to be processed by one of the evaluator. Which evaluator has to be used is determined by the evaluator factory according to the goal's type and other criteria. The particular evaluator then gets initialised and processes the goal. The evaluator can (and usually will) create sub goals which are then processed as well. As the goals are being successfully finished their result are being reported back to the root goal. As soon as the root goal finished the result gets returned to the user.
+%) 
+\subsubsection{Picking a root goal}
+
+As a first step the the user of the type inferencer has to create a root goal which describes the actual main goal. Usually this goal is an \class{ExpressionTypeGoal} which determines the type for a given expression (hence the name\todo{doofer kommentar:)?}). The expression in question can be any expression stored in the AST. They can for example be found by using a visitor like the \class{ExpressionAtLineVisitor} or by iterating over all expressions (like the Type Spider does\todo{reference to the Spider}).
+
+
+
+
+
 Goal Engine \\
  (description of the goal engine)\\
  (advantages/disadvantages)\\
 Evaluation\\
  (goals \& evaluators explained)\\
  (examples)\\
+
+
 
 
 The goal engine is the central piece which does all the coordination between evaluators and goals. It basically has a working queue of goal nodes, which is the combination of a goal and the evaluator which was created to evaluate the goal. The algorithm works like in this simplified pseudocode:
