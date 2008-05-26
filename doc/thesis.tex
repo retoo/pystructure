@@ -206,14 +206,15 @@ The two definitions are made unconditionally, which means the two uses of var ea
 
 If an analyser doesn't actually respect the flow of the variables and just takes all assignments to the same name as belonging to the same variable, it is called flow-insensitive. The type of all \id{var} names in the example then would be \type{int|str}. PyStructure is flow-sensitive, which means it is as precise as possible when there's more than one assignment of a variable in the same scope. The advantage is that it results in better precision for inferring types and it is also a very useful feature to have for the use case of an IDE, where it helps with certain refactorings.
 
-\todo{ich würde hier noch erwähnen dass diese analyse unabhängig ovn den eigentlichen typen ist. ALso z.b. wenn da ned var=42 sondern var = some_func() stehen würde könnte die benutzung von var trotzdem schon statisch an die definition gehängt werden, obwohl der typ ja nicht bekannt ist}
+
+\todo{ich wuerde hier noch erwähnen dass diese analyse unabhängig ovn den eigentlichen typen ist. ALso z.b. wenn da ned var=42 sondern var = some func() stehen wuerde koennte die benutzung von var trotzdem schon statisch an die definition gehaengt werden, obwohl der typ ja nicht bekannt ist}
 
 \subsubsection{Branches}
 
 When conditional assignments are involved, it is more difficult to clearly say which type a variable is of:
 
 \begin{lstlisting}
-if random():\todo{ich würd hier some_random_method nehmen, sonst versucht der leser noc hwas ins random() hineinzuinterpretieren. oder sometimestruesometimesnot ;)}
+if random():\todo{ich wuerd hier some_random_method nehmen, sonst versucht der leser noc hwas ins random() hineinzuinterpretieren. oder sometimestruesometimesnot ;)}
     x = 42
     print x
 else:
