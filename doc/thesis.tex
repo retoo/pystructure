@@ -166,11 +166,6 @@ It should be noted that the parser does not do that much beside converting the s
 
 \section{Creating the Model}
 
-From AST to Model \\
-(StructureVisitor, DefinitionVisitor)\\
-Connecting Definitions and Uses\\
-(What's already known, what not (attributes...))
-
 % { rstocker: bisschen korrigiert, gefällt mir aber immer noch ned super. 
 
 The representation of a program provided by the AST is very basic and working directly with it is quite cumbersome. 
@@ -191,13 +186,13 @@ The first step of building the model is to extract the structural elements that 
 
 \subsection{Connecting Definitions and Uses}
 
-% rschuett: subsection korrigieren
+%{ rschuett: Bitte noch mal durchlesen, vielleicht muss man noch die Reihenfolge überarbeiten, was wann erklärt wird.
 
 Now we have the elements of the model, but there's not yet very much information provided by it. As described in the example with the \id{foo} variable, knowing which variable definitions and uses are related would be very useful. This is part of what the \class{DefinitionVisitor} does and is called flow analysis.
 
-Flow analysis is an important part of type inference. In Python, it is possible that a variable is assigned multiple times with different types. This doesn't matter if the values are assigned sequentially and without conditional branches\todo{was heisst das?}:
+Flow analysis is an important part of type inference. In Python, it is possible that a variable is assigned multiple times with different types. This doesn't matter if the values are assigned sequentially and without any \code{if} blocks:
 
-\begin{lstlisting}
+\begin{lstlisting}[numbers=left]
 var = 42
 print var
 
@@ -205,12 +200,22 @@ var = "Hi"
 print var
 \end{lstlisting}
 
-The two definitions are made unconditionally, which means the two uses of var each belong to the definition right before them. So, the type of the first \id{var} is \type{int}, while the second's is \type{str}.
+The flow analysis deals with these two elements:
 
-If an analyser doesn't actually respect the flow of the variables and just takes all assignments to the same name as belonging to the same variable, it is called flow-insensitive. The type of all \id{var} names in the example then would be \type{int|str}. PyStructure is flow-sensitive, which means it is as precise as possible when there's more than one assignment of a variable in the same scope. The advantage is that it results in better precision for inferring types and it is also a very useful feature to have for the use case of an IDE, where it helps with certain refactorings.
+\begin{description}
+	\item[Definition] Binding of a value to a name, e.g. an assignment or a \code{for} loop variable.
+	\item[Use] Reference of a name, e.g. a variable name.
+\end{description}
 
+In the example, both occurrences of \id{var} on line 1 and 4 are definitions and those on lines 2 and 5 are uses. The two definitions are made unconditionally, which means the two uses each belong to the definition right before them. So, when the types are inferred, the first \id{var} is \type{int} and the second is \type{str}.
 
-\todo{ich wuerde hier noch erwähnen dass diese analyse unabhängig ovn den eigentlichen typen ist. ALso z.b. wenn da ned var=42 sondern var = some func() stehen wuerde koennte die benutzung von var trotzdem schon statisch an die definition gehaengt werden, obwohl der typ ja nicht bekannt ist}
+If an analyser doesn't actually respect the flow of the variables and just takes all assignments to the same name as belonging to the same variable, it is called flow-insensitive. In the example this would mean that both uses would be connected to both definitions.
+
+PyStructure is flow-sensitive, which means it is as precise as possible when there's more than one assignment of a variable in the same scope. The advantage is that it results in better precision for inferring types and it is also a very useful feature to have for the use case of an IDE, where it helps with certain refactorings.
+
+It should be noted that at this point, no types are involved, it just deals with definitions and uses of names. In the following examples, types are only used to illustrate how the flow analyser should connect definitions and uses.
+
+%}
 
 \subsubsection{Branches}
 
@@ -301,6 +306,10 @@ At line 10, the else clause begins. There's another definition of \id{y} here. L
 On line 12, the two blocks of the if have ended. The definitions of both blocks are now set as the current definitions of \id{y}, they are said to flow out from the block. So the use on this line may refer to both the definitions in the if/else block and the use is created accordingly.
 
 No definitions flow from the scope, so the visitor has done its work and can return the results, the name uses and definitions.
+
+\subsection{Limits of the Model}
+
+(What's already known, what not (attributes...))
 
 
 \section{Inferencing Types}
