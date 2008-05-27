@@ -314,7 +314,14 @@ No definitions flow from the scope, so the visitor has done its work and can ret
 
 \subsection{Limits of the Model}
 
-(What's already known, what not (attributes...))
+There are things which are not represented in the model because it is built without using type inference. Some of these things are:
+
+\begin{itemize}
+	\item Which data attributes a class has isn't known, because they are not declared anywhere, they are just assigned as needed.
+	\item The class hierarchy isn't known in advance, because the specification of the base class is just an expression and could be the result of a function call or an imported class.
+	\item What exactly is being imported by an import statement.
+	% rschuett: Hast du noch mehr Ideen?
+\end{itemize}
 
 
 \section{Inferring Types}
