@@ -427,7 +427,7 @@ In this section, some of the difficult parts of developing a type inference syst
 
 \todo{describe recursion}
 
-\subsection{Contexts}
+\subsection{Call Context}
 
 The return type of a function or method may depend on the types of its arguments. An inferencer can be more precise if it treats calls with different arguments differently. The following example shows such a function used with two different arguments:
 
@@ -439,9 +439,27 @@ a = add_one(41)
 b = add_one(1.5)
 \end{lstlisting}
 
-Without separating these two uses, the type inferencer would answer that the type of both \id{a} and \id{b} is \type{int|float}. But a more precise answer would be that \id{a} is \type{int} and \id{b} is \type{float}.
+% rschuett: ab hier korrigieren
 
-% TODO: Solution, InstanceContext
+Without separating these two uses, the type inferencer would answer that the type of both \id{a} and \id{b} is \type{int|float}. But a more precise answer would be that \id{a} is \type{int} and \id{b} is \type{float}. It is necessary to analyse return types differently depending on how the functions are called, it is necessary to respect the \emph{call context}.
+
+Let's look at the evaluation of the return type of the first \id{add_one} call to explain how it is solved in PyStructure. The information about the call is stored in a \class{CallContext}. It is created in the \class{CallTypeEvaluator} for function calls (as opposed to constructor calls, which don't need a call context). The call context contains the following information:
+
+\begin{itemize}
+	\item Definition of the function which is called, e.g. the \id{add_one} function defined on the first line
+	\item Call node for the function call, e.g. \code{add_one(41)}
+	\item Module where the Call node is located
+\end{itemize}
+
+The \class{CallTypeEvaluator} then creates a \class{ReturnTypeGoal} and associates the previously created context with it. The evaluation then proceeds as usual.
+
+If the return value doesn't depend on an argument type, the call context will never be needed, which is fine. But when it does and the evaluation comes to an argument, the \class{ArgumentTypeEvaluator} is run. In the example this would be for the \id{value} argument of \id{add_one}. The evaluator then gets the ``topmost'' call context and determines whether the call context applies by comparing the function of the argument it has to evaluate and the function of the call context. If they are equal, this means that the call context is actually for this function and not for another one.
+
+So, if the call context applies, the expression which corresponds to the argument is determined and a subgoal for the type of the expression is created. In the example, the expression is \code{41} and its type will be \type{int}. This type is then returned as the result of the \class{ArgumentTypeEvaluator}, leading to the final result of \type{int} for the \class{CallTypeEvaluator}.
+
+If the call context doesn't apply, the \class{ArgumentTypeEvaluator} does the usual thing of finding all the calls and returning the union of all the argument expressions.
+
+% TODO: Reference
 
 \subsection{Container Element Types}
 
