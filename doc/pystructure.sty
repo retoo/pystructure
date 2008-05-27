@@ -3,8 +3,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage[pdftex]{graphicx}
 \usepackage[british]{babel}
-% verbatim for comment environment
-\usepackage{verbatim}
+
 \graphicspath{{img/}{../}{../../}}
 
 % Colours
@@ -73,6 +72,7 @@
 
 % Code listings
 \usepackage{listings}
+\usepackage{verbatim}
 
 \newcommand{\id}{\lstinline}
 \newcommand{\type}[1]{\textcolor{skyblue3}{\texttt{#1}}}
@@ -86,7 +86,11 @@
 morendkeywords={self,object,int,float,str,list,dict}
 }
 
-\lstset{language=OurPython, basicstyle=\small\ttfamily, frame=shadowbox,
+\newcommand{\verbatimfont}{\small\ttfamily}
+
+\renewcommand{\verbatim@font}{\verbatimfont}
+
+\lstset{language=OurPython, basicstyle=\verbatimfont, frame=shadowbox,
 numberstyle=\tiny, numbersep=6mm,
 framexleftmargin=3mm, framextopmargin=2mm, framexbottommargin=2mm,
 aboveskip=5mm, belowskip=5mm, xleftmargin=4mm,
