@@ -1,4 +1,4 @@
-\documentclass[12pt,halfparskip,BCOR10mm]{scrreprt}
+\documentclass[12pt,halfparskip,DIV11,BCOR10mm]{scrreprt}
 
 \usepackage{pystructure}
 
@@ -275,7 +275,7 @@ Between the two \id{print} statements, the variable \id{g} was assigned another 
 
 \subsubsection{Implementation}
 
-Flow analysis as shown above is primarily implemented in the \class{DefinitionVisitor}. It visits the AST and registers \emph{definitions} and \emph{uses} of names (variables, methods, classes). Each use can have multiple possible definitions associated with it, and each definitions can have multiple uses. In other words, they have a many-to-many relationship.
+Flow analysis as shown above is primarily implemented in one visitor, the \class{DefinitionVisitor}. It visits the AST and registers \emph{definitions} and \emph{uses} of names (variables, methods, classes). Each use can have multiple possible definitions associated with it, and each definitions can have multiple uses. In other words, they have a many-to-many relationship.
 
 To resolve the definition of a name, it uses a structure of nested blocks and scopes. Scopes are introduced by \code{class} and \code{def} statements, and there's also a scope for the module the code is in. Blocks correspond to lines of code which are usually grouped by indentation\footnote{Python actually makes indentation even mandatory and therefore doesn't need block delimiters like curly braces or end statements.}. Scopes are blocks too, just with special semantics. The following example is used to explain the algorithm:
 
@@ -547,7 +547,7 @@ Normally, for finding the element type of \id{list}, calls of the method \id{app
 
 One solution would be to create a special evaluator for finding the type of \id{list} elements, which knows that it also has to look at the constructors. But this solution is bad because it runs counter to the idea of supporting built-in types in the most generic manner.
 
-In PyStructure it is solved in the evaluator which finds the type of the \node{List} node. The result of the evaluator is of course \type{list}, but the evaluator does more. For each element expression (\code{1}, \code{2}, \code{3} and \code{4} in the example), it creates a new call node for \id{append} and the corresponding attribute reference. It registers these attribute references in the workspace. Later when a \class{PossibleAttributeReferencesEvaluator} is run for \id{append}, it adds the references to the list of possible attribute references which is the result of the evaluator. The rest of the evaluation proceeds as usual.
+In PyStructure it is solved in the evaluator which finds the type of the \node{List} node. The result of the evaluator is of course \type{list}, but the evaluator does more. For each element expression (\code{1}, \code{2}, \code{3} and \code{4} in the example), it creates a new call node for \id{append} and the corresponding attribute reference. It registers these references in the workspace. Later when the evaluator for possible attribute references of \id{append} is run, it adds the references to the list of possible attribute references which is the result of the evaluator. The rest of the evaluation proceeds as usual.
 
 
 \subsection{Imports with import *}\label{import_star}
@@ -566,13 +566,19 @@ from module import *
 function()
 \end{lstlisting}
 
-Normally, when just importing one function, one writes \code{from module import function} but that can become tedious when one wants to directly import many names. The difficulty with supporting \code{import *} is that the inferencer cannot know \emph{what} was imported until it has also processed the module from where the names are imported. One solution would be to do eager loading of other modules, but that complicates the module loading process and runs counter to the demand-driven approach.
+Normally, when just importing one function, one writes:
+
+\begin{lstlisting}
+from module import function
+\end{lstlisting}
+
+But that can become tedious when one wants to directly import many names. The difficulty with supporting \code{import *} is that the inferencer cannot know \emph{what} was imported until it has also processed the module from where the names are imported. One solution would be to do eager loading of other modules, but that complicates the module loading process and runs counter to the demand-driven approach.
 
 Let's take the example from above and look at the implemented solution.
 
-When the \class{DefinitionVisitor} processes the first line of \file{main.py} and sees that it is an \code{import *}, it will add the import path (\id{module} in this case) to the \class{ExternalScope}. On the next line, the \class{DefinitionVisitor} searches for the definition of \id{function}. It will check the module scope and won't find it, so it will check the parent scope of the module, which is the \class{ExternalScope}. This returns an \class{ImplicitImportDefinition} which holds the name and the list of \code{import *} paths which were added to it up to this point.
+When the definition visitor processes the first line of \file{main.py} and sees that it is an \code{import *}, it will add the import path (\id{module} in this case) to the external scope. On the next line, the definition visitor searches for the definition of \id{function}. It will check the module scope and won't find it, so it will check the parent scope of the module, which is the external scope. This returns an \class{ImplicitImportDefinition} which holds the name and the list of \code{import *} paths which were added to it up to this point.
 
-Later, when a goal is created for evaluating what \id{function} returns, the evaluation will find the  \class{ImplicitImportDefinition} and the \class{ImplicitImportDefinitionEvaluator} will be started. It walks through the import paths and tries to find the definition behind the name \id{function} until it has found it. If the imported definition is itself an \class{ImplicitImportDefinition}, its paths are added to the front of the paths which need to be searched (leading to a depth-first search).
+Later, when a goal is created for evaluating what \id{function} returns, the evaluation will find the \class{ImplicitImportDefinition} and the evaluator for it will be started. It walks through the import paths and tries to find the definition behind the name \id{function} until it has found it. If the imported definition is itself an \class{ImplicitImportDefinition}, its paths are added to the front of the paths which need to be searched (leading to a depth-first search).
 
 % TODO: Wo erkären wie eigentlich aliasing ? 
 
