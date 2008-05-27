@@ -318,9 +318,12 @@ There are things which are not represented in the model because it is built with
 
 \begin{itemize}
 	\item Which data attributes a class has isn't known, because they are not declared anywhere, they are just assigned as needed.
-	\item The class hierarchy isn't known in advance, because the specification of the base class is just an expression and could be the result of a function call or an imported class.
+	\item The class hierarchy can't be statically resolved during the creation of the model, because the specification of the base class is just an expression and could be the result of a function call or an imported class}\footnote{
+	For example: \code{class Foo(method()): pass}. Of course this kind of base class definition is not seen that often.}.
+	% TODO: do a reference to the MRO C3 section
 	\item What exactly is being imported by an import statement.
-	% rschuett: Hast du noch mehr Ideen?
+	% r schuett: Hast du noch mehr Ideen? s
+	% rstocker: jap, nämlich das es im model immer noch mehrer wege gibt um das selbe auszudrücken: bsp. __add__() und +(). Also quasi ast ist halt immer noch ast
 \end{itemize}
 
 
