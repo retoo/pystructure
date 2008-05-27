@@ -65,6 +65,31 @@ Supervised by Prof. Peter Sommerlad
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter*{Abstract}
 
+% Zu lang: When looking directly at source code, either because one is new to it or one wants to refactor some parts, it is difficult to get a high-level perspective of the components and their dependencies. ...
+
+% Von Proposal: Planning and analysing a program's structure and internal dependencies is a common task when working on larger projects. Such analysis helps to meet the defined architectural design goals or to find structural flaws like cyclic dependencies. A clear architecture becomes more and more important as software grows.
+
+Sometimes, it is useful to get an overview of the source code of a project, for example when one is new to a project or wants to refactor some parts. When directly looking at the source code, it is difficult to get a high-level perspective of the components and their dependencies. This is when a dedicated structure analysis program is useful.
+
+This project's goal was to develop a structural analyser for programs which are written in the Python programming language. The analyser should be able to parse an application's source code, analyse it and then generate a graph representing the internal structure of the project.
+
+As Python is a dynamic language most of the interesting details (i.e. types) are not known before the application is running. The analyser has to ``guess'' the correct types by looking at the whole code base. This is done with a heuristic called a type inferencer.
+
+The analyser provides the following information:
+
+\begin{itemize}
+	\item All involved components, like modules, classes and methods
+	\item Dependencies between these components, caused by:
+	\begin{itemize}
+		\item Method calls
+		\item Variables, arguments or attributes of a certain type
+		\item Inheritance
+	\end{itemize}
+	\item Structure of modules and packages
+\end{itemize}
+
+The generated data can be used by other programs for various further analysis. One example is Structure 101g developed by Headway Software which takes arbitrary dependency data and visualises it.
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter*{Management Summary}
