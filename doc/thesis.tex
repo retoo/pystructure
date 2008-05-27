@@ -318,12 +318,12 @@ There are things which are not represented in the model because it is built with
 
 \begin{itemize}
 	\item Which data attributes a class has isn't known, because they are not declared anywhere, they are just assigned as needed.
-	\item The class hierarchy can't be statically resolved during the creation of the model, because the specification of the base class is just an expression and could be the result of a function call or an imported class\footnote{
-	For example: \code{class Foo(method()): pass}. Of course this kind of base class definition is not seen that often.}.
+	\item The class hierarchy can't be resolved during the creation of the model, because the specification of the base class is just an expression and could be the result of a function call or an imported class.\footnote{
+	For example: \code{class Foo(calculate_baseclass()): pass}. Of course this kind of class definition is not seen that often.}
 	% TODO: do a reference to the MRO C3 section
 	\item What exactly is being imported by an import statement.
-	% r schuett: Hast du noch mehr Ideen? s
-	% rstocker: jap, nämlich das es im model immer noch mehrer wege gibt um das selbe auszudrücken: bsp. __add__() und +(). Also quasi ast ist halt immer noch ast
+	\item The model is based on the AST nodes, which means that there may still be multiple ways an operation is represented. For example, \code{x + y} is the same as \code{x.__add__(y)} from a type inference perspective. Therefore these variants have to be handled in the type inferencer.
+	% TODO: reference section in outlook/results about transformation of AST to AAST
 \end{itemize}
 
 
