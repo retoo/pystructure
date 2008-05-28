@@ -66,7 +66,9 @@ Supervised by Prof. Peter Sommerlad
 
 % Von Proposal: Planning and analysing a program's structure and internal dependencies is a common task when working on larger projects. Such analysis helps to meet the defined architectural design goals or to find structural flaws like cyclic dependencies. A clear architecture becomes more and more important as software grows.
 
-Sometimes, it is useful to get an overview of the source code of a project, for example when one is new to a project or wants to refactor some parts. When directly looking at the source code, it is difficult to get a high-level perspective of the components and their dependencies. This is when a dedicated structure analysis program is useful.
+When developing software it is useful to get an overview of the source code of a project, for example when one is new to a project or wants to reorganise its structure. When directly looking at the source code, it is difficult to get a high-level perspective of the components and their dependencies. Graphical models commonly used like domain or architectural models (UML) help, but they usually  describe the \emph{intended} design, rather than the \emph{actual} structure of a program.
+% This is when a dedicated structure analysis program is useful.
+% In such cases it is often useful to do a structural analysis of the application.
 
 This project's goal was to develop a structural analyser for programs which are written in the Python programming language. The analyser should be able to parse an application's source code, analyse it and then generate a graph representing the internal structure of the project.
 
@@ -85,7 +87,7 @@ The analyser provides the following information:
 	\item Structure of modules and packages
 \end{itemize}
 
-The generated data can be used by other programs for various further analysis. One example is Structure 101g developed by Headway Software which takes arbitrary dependency data and visualises it.
+The generated data can be used by other programs for various further analysis. One example is Structure 101g developed by Headway Software which takes arbitrary dependency data and visualises it. But the data is also useful for various software development topics like code completion or automated refactorings in IDEs.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -828,7 +830,7 @@ Key figures
 \begin{itemize}
 	\item to Peter Sommerlad and Thomas Corbat for their support during the project
 	\item to Christian Bachmann for the life-saving coffee machine in our study room. 
-	\item NOT to HSR for their banning of the above mentioned life-saving coffee machine out of the study room.	
+	\item NOT to HSR for their banning of the above mentioned life-saving coffee machine out of the study room.
 \end{itemize}
 
 
