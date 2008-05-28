@@ -45,7 +45,7 @@ Reto Schüttel \\ \url{reto@schuettel.ch}
 Robin Stocker \\ \url{robin@nibor.org}
 
 \vspace{0,5cm}
-Supervised by Prof. Peter Sommerlad
+Supervised by Prof. Peter Sommerlad % TODO: e-mail address?
 
 % FIXME external partner
 
@@ -70,10 +70,10 @@ A vital part of software development is to have an overview of a program's inter
 
 PyStructure's goal was to develop an analyser which reveals these internal structures and dependencies of programs written in Python. The necessary information has to be gathered by statically analysing the source code. As Python is a dynamic language most of the interesting details (e.g. types) are not known before the application is run. The analyser has to ``guess'' the correct types by looking at the whole code base. This is done with a heuristic called a type inferencer.
 
-The analyser provides the following information:
+The implemented analyser extracts the following information:
 
 \begin{itemize}
-	\item All involved components, like modules, classes and methods
+	\item All involved components like modules, classes and methods
 	\item Dependencies between these components, caused by:
 	\begin{itemize}
 		\item Method calls
@@ -83,7 +83,7 @@ The analyser provides the following information:
 	\item Structure of modules and packages
 \end{itemize}
 
-The generated data can then be used by other programs for various further analysis. One example is Structure 101g developed by Headway Software which takes arbitrary dependency data and visualises it. But the information is also useful in other areas of software development like enhanced language support for IDEs (code completion, refactorings, etc.).
+The information is provided to the user as an XML export or by directly using the API. The resulting data can be used by other programs for various further analysis. One example is Structure 101g developed by Headway Software which takes arbitrary dependency data and visualises it. But the information is also useful in other areas of software development like enhanced language support for IDEs (code completion, refactorings, etc.).
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
