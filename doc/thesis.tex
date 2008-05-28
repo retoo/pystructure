@@ -381,6 +381,55 @@ From the goal engine's perspective there's no difference between subgoals and ro
 
 \subsection{Examples}
 
+\todo{rstocker : How should we call the user of the library? just user? or caller? we could mention somewhere in the beginning that by saying ``user'' we mean ``user of the library''}
+
+The internal workings of the type inferencer are easiest described using some examples. In this section some common situations are shown and it's explained how the TI solves these.
+
+\todo{rstocker/rschuett: somehwere in the TI chapter explain what is meant by goals and why these are stored in classes}
+
+\subsubsection{Simple assignment}
+
+The first example is quite simple, a new object of the type \type{Foo} is being instantiated and assigned to the variable \id{x}. 
+
+\begin{lstlisting}
+x = Foo()
+x # what type?
+\end{lstlisting}
+
+\begin{itemize}
+	\item The user initialises the TI by submitting a \class{ExpressionTypeGoal} with the expression \node{Name(x)} attached to it.
+	\item The TI (the evaluator factory) assesses the goal and assigns it to the \evalautor{VariableReferenceEvaluator} because the expression in question is a Name AST Node
+\end{itemize}
+To let the TI evaluate the type of the variable \id{x} an \class{ExpressionTypeGoal} has to be created and sent\todo{??} to the type inferencer.
+
+
+\begin{lstlisting}
+def function():
+	return Bar()
+
+x = function()
+\end{lstlisting}
+
+\begin{lstlisting}
+def function(arg):
+	x = arg
+	
+function(Baz())
+\end{lstlisting}
+
+\begin{lstlisting}
+class Truck():
+	def __init__(self):
+		self.cargo = Nothing()
+	
+	def load(something)
+		self.cargo = something
+
+a = Truck()
+
+x.cargo 
+\end{lstlisting}
+
 \todo{here we describe the actual function of the TI by some examples}
 
 Goal Engine \\
