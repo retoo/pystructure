@@ -66,13 +66,13 @@ Supervised by Prof. Peter Sommerlad
 
 % Von Proposal: Planning and analysing a program's structure and internal dependencies is a common task when working on larger projects. Such analysis helps to meet the defined architectural design goals or to find structural flaws like cyclic dependencies. A clear architecture becomes more and more important as software grows.
 
-When developing software it is useful to get an overview of the source code of a project, for example when one is new to a project or wants to reorganise its structure. When directly looking at the source code, it is difficult to get a high-level perspective of the components and their dependencies. Graphical models commonly used like domain or architectural models (UML) help, but they usually  describe the \emph{intended} design, rather than the \emph{actual} structure of a program.
+When developing software it is important to have an overview of a program's internal structure. For example when getting acquainted with a new project or when a reorganisation of its structure is necessary. When directly looking at the source code, it is often difficult to get a high-level view of the components and the dependencies between them. Graphical models commonly used such as domain or architecture diagrams help, but they usually just describe the \emph{intended} design, rather than the \emph{actual} structure of a program. 
 % This is when a dedicated structure analysis program is useful.
 % In such cases it is often useful to do a structural analysis of the application.
 
-This project's goal was to develop a structural analyser for programs which are written in the Python programming language. The analyser should be able to parse an application's source code, analyse it and then generate a graph representing the internal structure of the project.
+PyStructure's goal was to develop a structural analyser for programs written in the Python programming language. The analyser should be able to parse an application's source code, analyse it and then generate a graph representing the internal structure of the project.
 
-As Python is a dynamic language most of the interesting details (i.e. types) are not known before the application is running. The analyser has to ``guess'' the correct types by looking at the whole code base. This is done with a heuristic called a type inferencer.
+As Python is a dynamic language most of the interesting details (e.g. types) are not known before the application is run. The analyser has to ``guess'' the correct types by looking at the whole code base. This is done with a heuristic called a type inferencer.
 
 The analyser provides the following information:
 
@@ -87,7 +87,7 @@ The analyser provides the following information:
 	\item Structure of modules and packages
 \end{itemize}
 
-The generated data can be used by other programs for various further analysis. One example is Structure 101g developed by Headway Software which takes arbitrary dependency data and visualises it. But the data is also useful for various software development topics like code completion or automated refactorings in IDEs.
+The generated data can be used by other programs for various further analysis. One example is Structure 101g developed by Headway Software  which takes arbitrary dependency data and visualises it. But the information is also useful in other areas of software development like enhanced language support for IDEs (code completion, refactorings, etc.).
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
