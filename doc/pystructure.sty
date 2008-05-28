@@ -5,6 +5,7 @@
 \usepackage[british]{babel}
 
 \graphicspath{{img/}{../}{../../}}
+\usepackage[usenames,dvipsnames]{color}
 
 % Colours
 % This colour palette is derived from the Tango Color Palette (published as public domain)
@@ -12,8 +13,7 @@
 % 
 % This list was genereated with the script at the end of the file
 % BEGIN GENERATED (DO NOT EDIT)
-\usepackage[usenames,dvipsnames]{color}
-\definecolor{titlegreen}{named}{OliveGreen}
+
 \definecolor{gray}{rgb}{0.9,0.9,0.9}
 \definecolor{butter1}{rgb}{0.9882,0.9137,0.3098}
 \definecolor{butter2}{rgb}{0.9294,0.8314,0.0}
@@ -43,7 +43,7 @@
 \definecolor{aluminium5}{rgb}{0.3333,0.3412,0.3255}
 \definecolor{aluminium6}{rgb}{0.1804,0.2039,0.2118}
 % END GENERATED (DO NOT EDIT)
-
+\definecolor{titlegreen}{rgb}{0.1804,0.2039,0.2118}
 % Font
 \usepackage{lmodern}
 \usepackage{mathpazo} % Palatino font
@@ -78,9 +78,10 @@
 \newcommand{\type}[1]{\textcolor{skyblue3}{\texttt{#1}}}
 \newcommand{\code}{\lstinline}
 \newcommand{\node}{\lstinline}
-\newcommand{\class}[1]{\textcolor{Brown}{\texttt{#1}}}
+\newcommand{\class}[1]{\textcolor{chocolate3}{\texttt{#1}}}
 \newcommand{\file}{\texttt}
-\newcommand{\todo}[1]{\textcolor{Red}{\textbf{#1}}}
+\newcommand{\todo}[1]{\textcolor{scarletred3}{\textbf{#1}}}
+\newcommand{\evalautor}[1]{\textcolor{chocolate3}{\texttt{#1}}}
 
 \lstdefinelanguage[]{OurPython}[]{Python}{
 morendkeywords={self,object,int,float,str,list,dict}
@@ -94,11 +95,11 @@ morendkeywords={self,object,int,float,str,list,dict}
 numberstyle=\tiny, numbersep=6mm,
 framexleftmargin=3mm, framextopmargin=2mm, framexbottommargin=2mm,
 aboveskip=5mm, belowskip=5mm, xleftmargin=4mm,
-rulesepcolor=\color{gray}, showstringspaces=false,
-keywordstyle=\color{OliveGreen}\bfseries,
-ndkeywordstyle=\color{Bittersweet},
-identifierstyle=\color{Brown},
-stringstyle=\color{Red}
+rulesepcolor=\color{aluminium1}, showstringspaces=false,
+keywordstyle=\color{chameleon3}\bfseries,
+ndkeywordstyle=\color{orange3},
+identifierstyle=\color{chocolate3},
+stringstyle=\color{scarletred3}
 }
 
 % Command for floating info boxes
