@@ -203,8 +203,6 @@ foo = "Hello"
 print foo
 \end{lstlisting}
 
-%{ rschuett: korrigieren
-
 Therefore PyStructure uses a second stage in which it processes the AST further. It does some static analysis to create a model which provides a base for the type inferencer to work with. The model consists of the following:
 
 \begin{itemize}
@@ -212,6 +210,8 @@ Therefore PyStructure uses a second stage in which it processes the AST further.
 	\item Variables and where they are defined and used
 \end{itemize}
 
+% { rstocker: weiter betoneen, zu fiel
+At this stage types are still ignored, they are solely handled in the third stage described further below.
 %}
 
 \subsection{Creating the Structure}
