@@ -450,7 +450,7 @@ Evaluation\\
 
 \subsection{Goal Engine}
 
-The goal engine is the central piece which does all the coordination between evaluators and goals. It basically has a working queue of goal nodes, which is the combination of a goal and the evaluator which was created to evaluate the goal. The algorithm works like in this simplified pseudocode:
+The goal engine is the central piece which coordinates between evaluators and goals. It basically keeps goal nodes in a working queue. A goal node combines a goal and its evaluator. The algorithm works like in this simplified pseudocode:
 
 \begin{lstlisting}
 def evaluate_goal(root_goal):
@@ -458,20 +458,24 @@ def evaluate_goal(root_goal):
     add_goal(queue, root_goal)
 
     while len(queue) != 0:
-        goal_node = queue.pop()
+        goal_node = queue.pop_front()
 
         if goal_node.is_new():
             subgoals = goal_node.init()
             add_goals(queue, subgoals)
 
-        if goal_node.are_all_subgoals_done():
+        if goal_node.is_done():
             goal_node.finish()
             for parent in goal_node.parents:
                 subgoals = parent.subgoal_done(goal_node)
                 add_goals(queue, subgoals)
         else:
-            queue.add(goal_node)
+            queue.append(goal_node)
 \end{lstlisting}
+
+A goal is done when all its subgoals are done or when it created no subgoals in the first place.
+
+% TODO: endless loop?
 
 \todo{describe some goal engine behaviors like, cyclic recursion, caching, crazy ordering and so on}
 
@@ -497,7 +501,7 @@ b = add_one(1.5)
 
 % rschuett: ab hier korrigieren
 
-Without separating these two uses, the type inferencer would answer that the type of both \id{a} and \id{b} is \type{int|float}. But a more precise answer would be that \id{a} is \type{int} and \id{b} is \type{float}. It is necessary to analyse return types differently depending on how the functions are called, it is necessary to respect the \emph{call context}.
+Without separating these two calls, the type inferencer would answer that the type of both \id{a} and \id{b} is \type{int|float}. But a more precise answer would be that \id{a} is \type{int} and \id{b} is \type{float}. It is necessary to analyse return types differently depending on how the functions are called, it is necessary to respect the \emph{call context}.
 
 Let's look at the evaluation of the return type of the first \id{add_one} call to explain how it is solved in PyStructure. The information about the call is stored in a \class{CallContext}. It is created in the \class{CallTypeEvaluator} for function calls (as opposed to constructor calls, which don't need a call context). The call context contains the following information:
 
@@ -585,7 +589,7 @@ Inheritance\\
 
 \subsection{Built-in Types and Functions}
 
-What would a language be without its built-in types, like \type{int}, \type{str} or \type{list} for Python? Nothing, because all our own code is based on these data structures provided by the language. Similarly, what would a type inference system be without support for these built-in types? Not very usable, as shown in the following example:
+Python has a rich set of built-in types and functions, some of which are used by almost every program like \type{int}, \type{str} or \type{list}. Without supporting these, the type inferencer would not be very usable in practice, as can be seen in the following example:
 
 \begin{lstlisting}
 foos = list()
@@ -603,10 +607,8 @@ Two of the possible solutions for making the inferencer aware of built-in types 
 
 \begin{enumerate}
 	\item Add special evaluators for evaluating built-in types and implement the rules in Java code.
-	\item Create prototype implementations in Python code, which type-wise behave like the original Python implementation..
+	\item Create prototype implementations in Python code, which behave like the real Python regarding the return types.
 \end{enumerate}
-
-% rstocker, hab jetzt die liste oben anders gemacht, dafür ist jetzt der satz unten redundant.
 
 The second solution was chosen as it is both cleaner and easier to implement. A prototype implementation works by defining the functions and methods so that they return the same type as the original ones. The following extract from the implementation of the \id{list} type illustrates the concept:
 
@@ -629,11 +631,15 @@ class list(object):
         return None
 \end{lstlisting}
 
+It doesn't matter that the return values make no sense because only the types are relevant to the inferencer.
+
 \subsubsection{Finding the Definitions}
 
-Now the type inferencer knows how the built-in types behave, but it doesn't yet know that a call like \code{list()} actually means the built-in type. This is actually quite easy to fix. When the DefinitionVisitor encounters a use of \id{list} or any other name which has no definitions in the module, it creates an \class{ImplicitImportDefinition} for it. Later when a goal is created for finding the type of this definition, the evaluator knows that it must look in the special module \file{builtins.py} where the built-ins are defined. It is actually a bit more complicated because of \code{import *} imports, see \vref{import_star} for the details.
+With this approach of simulated built-in types, the inferencer knows how these types behave, but it doesn't yet know that a call like \code{list()} actually means the built-in type. This is actually quite easy to fix. When the DefinitionVisitor encounters a use of \id{list} or any other name which has no definitions in the module, it creates an \class{ImplicitImportDefinition} for it. Later when a goal is created for finding the type of this definition, the evaluator knows that it must look in the special module \file{builtins.py} where the built-ins are defined. It is actually a bit more complicated because of \code{import *} imports, see \vref{import_star} for details.
 
-Apart from the built-in types which don't need to be imported explicitly, there are other things in the Python standard library which do need to be imported, like the \id{sys} module. The \id{builtins} module and the other standard library modules reside in a special directory in the PyStructure tree. The \class{Workspace} class knows about this directory and creates a \class{SourceFolder} for it which at the end of all the source folders searched for imports.
+Apart from built-in types which don't need to be imported explicitly, there are other things in the Python standard library which do need to be imported, like the \id{sys} module. The \id{builtins} module and other standard library modules reside in a special directory in the PyStructure tree. The \class{Workspace} class knows about this directory and creates a \class{SourceFolder} for it which at the end of all the source folders searched for imports.
+
+% TODO: Add diagram
 
 \subsubsection{Syntax for Initialising Data Structures}
 
@@ -650,6 +656,7 @@ One solution would be to create a special evaluator for finding the type of \id{
 
 In PyStructure it is solved in the evaluator which finds the type of the \node{List} node. The result of the evaluator is of course \type{list}, but the evaluator does more. For each element expression (\code{1}, \code{2}, \code{3} and \code{4} in the example), it creates a new call node for \id{append} and the corresponding attribute reference. It registers these references in the workspace. Later when the evaluator for possible attribute references of \id{append} is run, it adds the references to the list of possible attribute references which is the result of the evaluator. The rest of the evaluation proceeds as usual.
 
+For \id{dict}, the procedure is the same except that initial elements are represented by calls of \id{__setitem__}, for example \code{numerals.__setitem__(1, "unu")}.
 
 \subsection{Imports with import *}\label{import_star}
 
@@ -681,6 +688,7 @@ When the definition visitor processes the first line of \file{main.py} and sees 
 
 Later, when a goal is created for evaluating what \id{function} returns, the evaluation will find the \class{ImplicitImportDefinition} and the evaluator for it will be started. It walks through the import paths and tries to find the definition behind the name \id{function} until it has found it. If the imported definition is itself an \class{ImplicitImportDefinition}, its paths are added to the front of the paths which need to be searched (leading to a depth-first search).
 
+% TODO: add diagram
 % TODO: Wo erkären wie eigentlich aliasing ? 
 
 \section{Caching}
