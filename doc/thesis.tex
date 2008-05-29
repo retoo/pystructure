@@ -124,9 +124,11 @@ Before any meaningful structure analysis of a program is possible the individual
 
 This leads to the question, how can the type of a given expression be determined? In Java this question would be very simple, the definition always states the type.\footnote{In the example \code{boolean isOdd(int i)}, method \code{isOdd} has a parameter \code{i} with the type \type{int} and returns a \type{boolean}.} In Python the types aren't specified at all, they are only known at runtime by the interpreter. To still be able to determine them, a heuristic has to be used which infers the types by looking at the context and finding answers to questions like ``Where was the variable defined?'' and ``Who called that function?''. This heuristic is usually called type inferencer (TI).
 
+% TODO: Write about differences between dynamically and statically (and explicitly) typed languages.
+
 \subsection{Goal}
 
-So, developing a type inferencer was a central goal of the project. To be useful for structural analysis, it should be able to resolve the type of the following expressions:
+So, developing a type inferencer was a central goal of the project. To be useful for structural analysis, it should be able to resolve the type of the following components:
 
 \begin{itemize}
 	\item Local \& global variables
@@ -135,7 +137,7 @@ So, developing a type inferencer was a central goal of the project. To be useful
 	\item Return values of functions \& methods
 \end{itemize}
 
-Of course the type inferencer should take the application as a whole into account and develop a best guess what the given expression's type could be. For example in the case of a method argument, the type inferencer should look for all places where the particular method is called and what argument type was used.
+Of course the type inferencer should take the application as a whole into account and develop a best guess what the given expression's type could be. For example, in the case of a method argument, the type inferencer should look for all places where the particular method is called and what argument type was used.
 
 The type inferencer should also be able to handle the case where more than one type is possible for a single expression, a simple example\footnote{The ternary operator is a bit different in Python than in other languages, the example means: \code{vehicle = (input == "car") ? Car() : Plane()}} would be:
 
@@ -143,7 +145,7 @@ The type inferencer should also be able to handle the case where more than one t
 vehicle = Car() if input == "car" else Plane()
 \end{lstlisting}
 
-In this case the type inferencer has to realise that \code{vehicle} can be \type{Car} or \type{Plane}.
+In this case the type inferencer has to detect that \code{vehicle} can be of type \type{Car} or \type{Plane}.
 
 {Concept}
 
@@ -157,9 +159,9 @@ Correctness \& Usefulness
 The type inferencer is divided into three main process stages:
 
 \begin{itemize}
-	\item Parser – Parses the source code and generates an abstract syntax tree (AST)
-	\item Definition Visitor – Builds a model of the program
-	\item Type Inferencer – Evaluates the type of an expression
+	\item \textbf{Parser} – Parses source code and generates an abstract syntax tree (AST)
+	\item \textbf{Definition Visitor} – Builds a model of the program (modules, classes, methods, related variables)
+	\item \textbf{Type Inferencer} – Evaluates the type of an expression
 \end{itemize}
 
 \begin{figure}[h!]
@@ -168,7 +170,7 @@ The type inferencer is divided into three main process stages:
  \label{fig:process_overview}
 \end{figure}
 
-The first two steps, the parsing of the source code and the generation of the model, lay the foundation for the type inferencer. They do a static analysis of the whole project and are independent of what expressions should be evaluated. As long as the underlying source code doesn't change these preparations can be reused for any number of type inferencer evaluations.
+The first two steps, the parsing of source code and generation of the model, lay the foundation for the type inferencer. They do a static analysis of the whole project and are independent of what expressions should be evaluated. As long as the underlying source code doesn't change these preparations can be reused for any number of type inferencer evaluations.
 
 
 \section{Parsing the Source Code}
