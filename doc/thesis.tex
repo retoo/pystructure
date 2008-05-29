@@ -191,8 +191,6 @@ It should be noted that the parser does not do that much besides converting the 
 
 \section{Creating the Model}
 
-% { rstocker: bisschen korrigiert, gefällt mir aber immer noch ned super. 
-
 The representation of a program provided by the AST is very basic and working directly with it is quite cumbersome. 
 One drawback of the AST is that it's just a \emph{syntactical} representation of the source code and doesn't include any semantic information. For example, in the following code, the AST doesn't know that the two uses of \id{foo} are related:
 
@@ -201,9 +199,16 @@ foo = "Hello"
 print foo
 \end{lstlisting}
 
-Therefore PyStructure uses a second stage in which it processes the AST further and does some static analysis which then can be used by the type inferencer.
+%{ rschuett: korrigieren
 
-% }
+Therefore PyStructure uses a second stage in which it processes the AST further. It does some static analysis to create a model which provides a base for the type inferencer to work with. The model consists of the following:
+
+\begin{itemize}
+	\item Objects representing the nested structure of the program, such as \class{Module}, \class{Class} or \class{Method}, as well as how they relate to each other, for example \class{Class} knows which methods it contains
+	\item Variables and where they are defined and used
+\end{itemize}
+
+%}
 
 \subsection{Creating the Structure}
 
