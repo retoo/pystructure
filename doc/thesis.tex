@@ -177,7 +177,15 @@ The type inferencer is divided into three main process stages:
 The first two steps, the parsing of source code and generation of the model, lay the foundation for the type inferencer. They do a static analysis of the whole project and are independent of what expressions should be evaluated. As long as the underlying source code doesn't change these preparations can be reused for any number of type inferencer evaluations.
 
 
+
+
 \section{Parsing the Source Code}
+
+\begin{wrapfigure}{r}{0.1\textwidth}
+		\vspace{-0.5cm}
+    \includegraphics[width=0.15\textwidth]{process_overview_parser}
+		\vspace{0cm}
+\end{wrapfigure}
 
 Before any analysis can be done on the application its source code has to be brought into a form which is easier to process for programs. It's quite common to express an application's source code as a tree, where an interior node represents a programming language construct and the children of that node represent meaningful components of the construct. For example the simple code \code{foo("bar")} is a call node with the parameter as a string node attached to it. This node structure is usually called abstract syntax tree (AST).
 
@@ -215,6 +223,12 @@ At this stage types are still ignored, they are solely handled in the third stag
 %}
 
 \subsection{Creating the Structure}
+
+\begin{wrapfigure}{r}{0.1\textwidth}
+		\vspace{-0.5cm}
+    \includegraphics[width=0.15\textwidth]{process_overview_model}
+		\vspace{0cm}
+\end{wrapfigure}
 
 The first step of building the model is to extract the structural elements that make up a program, like modules, classes, methods and functions. These also represent scopes for variables.
 
@@ -362,9 +376,41 @@ There are things which are not represented in the model because it is built with
 
 \section{Inferring Types}
 
+\begin{wrapfigure}{r}{0.1\textwidth}
+		\vspace{-0.5cm}
+    \includegraphics[width=0.15\textwidth]{process_overview_ti}
+		\vspace{0cm}
+\end{wrapfigure}
+
 Now, after all the source has been parsed an a generalised model of the program has been build the actual analysing can begin. 
 
-In the first part of this section the actual evaluation process is explained and the second part describes the underlying goal engine which is responsible for organising the different goals during the evaluation.
+In the first part of this section the \textbf{Goal Engine} and the general \textbf{Evaluation} is described. Knowing how these underlying mechanisms work is important to understand the type inferencer itself. In the second chapter the \textbf{Type Inferring Algorithm} itself is explained using some examples. 
+
+\subsection{Goal Engine}
+
+The goal engine is a central part of the type inferencer, it is responsible for the orchestration of the whole evaluation and the underlying algorithm. 
+
+The goal engine consists of the following main components:
+
+\subsubsection{Goals}
+Goals, as the name says, defines the \emph{goal} of a single step in the type inferencer. Usually a goal can't be solved directly, but requires a several sub goals to get to a conclusion.
+
+When a goal is solved the result gets stored into the goal object and returned to the evaluator who created it.
+
+\textbf{Examples:}
+
+\begin{itemize}
+	\item ``What does this function return?''  $\rightarrow$  \class{ReturnTypeGoal}
+	\item ``Where is this name defined?'' $\rightarrow$ \class{DefinitionTypeGoal}
+\end{itemize}
+
+\subsubsection{Evaluators}
+
+The counterpart of the goals are the evaluators, which are responsible for solving a particular goal. If they need any further information they can create sub goals. The evaluator gets notified when a subgoal is finished.
+
+\subsubsection{Evaluator Factory}
+
+The final part which brings goal and the evaluators together is the evaluator factory. It is responsible for choosing the right evaluator for a particular goal. 
 
 \subsection{Evaluation}
 
@@ -372,27 +418,27 @@ Summarised, the evaluation works as follows: The user of the library picks an ex
 
 \subsubsection{Picking a root goal}
 
-As a first step the user of the type inferencer has to create a root goal which describes the actual main goal. Usually this goal is an \class{ExpressionTypeGoal} which instructs the goal engine to determine the type of a given expression (hence the name). The expression in question can be any expression from the AST. They can for example be found by using a visitor like the \class{ExpressionAtLineVisitor} or by iterating over all expressions (like the type spider does \todo{reference to the Spider}).
+As a first step the user of the type inferencer, usually the structural analyser, has to define what has to be evaluated. This \emph{main} goal is called root goal. Usually this goal is an \class{ExpressionTypeGoal} which instructs the goal engine to determine the type of a given expression (hence the name). The expression in question can be any expression from the AST. They can for example be found by using a visitor like the \class{ExpressionAtLineVisitor} or by iterating over all expressions (like the type spider does \todo{reference to the Spider}).
 
 \subsubsection{Select evaluator for goal}
 
-When the root goal is created it has to be fed into the goal engine. Every goal has to be processed by one of the available evaluators. Which one has to be used is determined by the so-called evaluator factory (class \class{PythonEvaluatorFactory}) which returns the appropriate evaluator depending on the kind of goal and possibly other criteria.
+When the root goal is created it has to be fed into the goal engine. Every goal has to be processed by one of the available evaluators. Which one has to be used is determined by \class{PythonEvaluatorFactory}.
 
-For example in the case of an expression type goal the evaluator factory also considers the type of the associated expression. For example if the expression is a method call the goal gets delegated to the \class{CallTypeEvaluator}, an attribute expression is processed by the \class{AttributeTypeEvaluator} and so on.\todo{Should we a provide a list of these mappings somewhere}
+The \class{PythonEvaluatorFactory} takes several criteria into account, for example in the case of an expression type goal the type of the associated expression is also considered. For example if the expression is a method call the goal gets delegated to the \class{CallTypeEvaluator}, an attribute expression is processed by the \class{AttributeTypeEvaluator} and so on.\todo{rstocker: Should we a provide a list of these mappings somewhere?}
+
+\subsubsection{More information}
 
 \subsubsection{Evaluator}
 
 Now the actual work begins, the evaluator gets initialised with the goal as a parameter. As a first step the eveluator's \id{init()} method is called. The evaluator then has a first chance to do it's job. If necessary (and it often is) the evaluator can create subgoals and return them. The evaluator's goal is not considered finished as long as there are any remaining subgoals. Every time a subgoal is finished the evaluator's \id{subgoalDone(subgoal)} method is called. Here again the evaluator has the chance to create some subgoals.
 
-From the goal engine's perspective there's no difference between subgoals and root goals, they are handled equally. But of course as soon as the root goal is finished the evaluator returns the found result to the user.
+From the goal engine's perspective there's no difference between subgoals and root goals, they are handled equally. But of course as soon as the root goal is finished the goal engine returns the found result to the user.
 
-\subsection{Examples}
+\subsection{Type Inferring Algorithm}
 
 \todo{rstocker : How should we call the user of the library? just user? or caller? we could mention somewhere in the beginning that by saying ``user'' we mean ``user of the library''}
 
 The internal workings of the type inferencer are easiest described using some examples. In this section some common situations are shown and it's explained how the TI solves these.
-
-\todo{rstocker/rschuett: somehwere in the TI chapter explain what is meant by goals and why these are stored in classes}
 
 \subsubsection{Simple assignment}
 
