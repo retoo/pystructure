@@ -211,16 +211,14 @@ foo = "Hello"
 print foo
 \end{lstlisting}
 
-Therefore PyStructure uses a second stage in which it processes the AST further. It does some static analysis to create a model which provides a base for the type inferencer to work with. The model consists of the following:
+They are just represented as two independent \node{Name} nodes in the AST. Also, it isn't easily possible to get all methods of a class without using a visitor every time. Therefore PyStructure uses a second stage in which it processes the AST further. It does some static analysis to create a model which provides a base for the type inferencer to work with. The model consists of the following:
 
 \begin{itemize}
 	\item Objects representing the nested structure of the program, such as \class{Module}, \class{Class} or \class{Method}, as well as how they relate to each other, for example \class{Class} knows which methods it contains
 	\item Variables and where they are defined and used
 \end{itemize}
 
-% { rstocker: weiter betoneen, zu fiel
-At this stage types are still ignored, they are solely handled in the third stage described further below.
-%}
+Types are not yet involved at this stage, the model is just a foundation to make it easier for the type inferencer to do its work. The model is created once and stays the same for all goal evaluations.
 
 \subsection{Creating the Structure}
 
@@ -236,9 +234,30 @@ Creating this initial structure is done by the \class{StructureDefinitionVisitor
 
 \subsection{Connecting Definitions and Uses}
 
-Now we have the elements of the model, but to make the type inference step easier, more is needed. As described in the example with the \id{foo} variable, knowing which variable definitions and uses are related would be very useful. This is part of what the \class{DefinitionVisitor} does and is called flow analysis.
+% rschuett: Bitte nochmals bis zu Implementation durchlesen
 
-Flow analysis is an important part of type inference. In Python, it is possible that a variable is assigned multiple times with different types. The type inferencer can still determine the type uniquely if the values are assigned sequentially and without any \code{if} blocks:
+Now we have the elements of the model, but more is needed. As described in the example with the \id{foo} variable, knowing the variables where they are defined and used is important for the type inferencer. Determining this is called flow analysis and is based on these two elements:
+
+\begin{itemize}
+	\item \textbf{Definition:} Binding of a value to a name, for example through:
+	\begin{itemize}
+		\item Variable assignment
+		\item Class or function definition
+		\item Argument declaration
+		\item Loop variable declaration
+		\item Imports
+	\end{itemize}
+	\item \textbf{Use:} Reference of a name, for example:
+	\begin{itemize}
+		\item Variable name
+		\item Class or function name
+		\item Argument name
+	\end{itemize}
+\end{itemize}
+
+The task of the flow analyser is to create these elements and connect each use with all its possible definitions.
+
+In the following example, both occurrences of \id{var} on line 1 and 4 are definitions and those on lines 2 and 5 are uses:
 
 \begin{lstlisting}[numbers=left]
 var = 42
@@ -248,22 +267,11 @@ var = "Hi"
 print var
 \end{lstlisting}
 
-The flow analysis deals with these two elements:
-
-\begin{description}
-	\item[Definition] Binding of a value to a name, e.g. an assignment or a \code{for} loop variable.
-	\item[Use] Reference of a name, e.g. a variable name.
-\end{description}
-
-In the example, both occurrences of \id{var} on line 1 and 4 are definitions and those on lines 2 and 5 are uses. The two definitions are made unconditionally, which means the two uses each belong to the definition right before them. So, when the types are inferred, the first \id{var} is \type{int} and the second is \type{str}.
-
-If an analyser doesn't actually respect the flow of the variables and just takes all assignments to the same name as belonging to the same variable, it is called flow-insensitive. In the example this would mean that both uses would be connected to both definitions.
-
-% todo: does this sound redundant?
+The two definitions are made unconditionally, which means the two uses each belong to the definition right before them. So the value of the first \id{var} is \code{42}, while the second's is \code{"Hi"}. When an analyser does it this way and respects the flow of the variables, it is called flow-sensitive. If an analyser just takes all assignments to the same name as belonging to the same variable, it is called flow-insensitive.
 
 PyStructure is flow-sensitive, which means it is as precise as possible when there's more than one assignment of a variable in the same scope. The advantage is that it results in better precision for inferring types and it is also a very useful feature to have for the use case of an IDE, where it helps with certain refactorings.
 
-It should be noted that at this point, no types are involved, it just deals with definitions and uses of names. In the following examples, types are only used to illustrate how the flow analyser should connect definitions and uses.
+Unfortunately, a flow-sensitive analyser is more difficult to implement. The following examples show some tricky situations and how the analyser should resolve them.
 
 \subsubsection{Branches}
 
@@ -279,7 +287,7 @@ else:
 print x
 \end{lstlisting}
 
-At the first \code{print} statement, \id{x} is of type \type{int}. At the second, it is of type \type{float}, because of the assignment above it. At the \code{print} statement after the if/else block, it is of type \type{int|float}, because which branch is executed is only determined at runtime. Therefore the engine has to say that both types are possible. 
+At the first \code{print} statement, \id{x} belongs to the assignment with \code{42}. At the second, it is connected with the assignment above it of \code{3.14}. At the \code{print} statement after the if/else block, both definitions are possible, because which branch is executed is only known at runtime and can't be determined by the analyser. Therefore the use has to be connected to both definitions.
 
 \subsubsection{Scopes}
 
@@ -296,7 +304,7 @@ g = 3.14
 func()
 \end{lstlisting}
 
-The two calls of \id{func} will print values of different types, because the outer variable \id{g} is accessed after it has been assigned another value. In the function itself, it's not possible to say if the type is \type{int} or \type{float}, because both are possible, so the resulting type is \type{int|float}.
+The two calls of \id{func} will print different values, because the outer variable \id{g} is accessed after it has been assigned another value. In the function itself, it's not possible to say which definition belongs to the use of \id{g}, so both are connected.
 
 \subsubsection{Global Variables}
 
@@ -314,13 +322,13 @@ func()
 print g
 \end{lstlisting}
 
-Between the two \id{print} statements, the variable \id{g} was assigned another value from within \id{func}. Therefore, the variable \id{g} in the global scope is of type \type{int|float}.
+Between the two \id{print} statements, the variable \id{g} was assigned another value from within \id{func}. Therefore, the variable \id{g} in the global scope belongs to both definitions.
 
 \subsubsection{Implementation}
 
-Flow analysis as shown above is primarily implemented in one visitor, the \class{DefinitionVisitor}. It visits the AST and registers \emph{definitions} and \emph{uses} of names (variables, methods, classes). Each use can have multiple possible definitions associated with it, and each definitions can have multiple uses. In other words, they have a many-to-many relationship.
+Flow analysis as shown above is primarily implemented in one visitor, the \class{DefinitionVisitor}. It visits the AST and creates \emph{definitions} and \emph{uses} of names. Each use can have multiple possible definitions associated with it, and each definitions can belong to multiple uses. In other words, they have a many-to-many relationship.
 
-To resolve the definition of a name, it uses a structure of nested blocks and scopes. Scopes are introduced by \code{class} and \code{def} statements, and there's also a scope for the module the code is in. Blocks correspond to lines of code which are usually grouped by indentation\footnote{Python actually makes indentation even mandatory and therefore doesn't need block delimiters like curly braces or end statements.}. Scopes are blocks too, just with special semantics. The following example is used to explain the algorithm:
+To resolve the definition of a name, the visitor uses a structure of nested blocks and scopes. Scopes are introduced by class and function definitions, and there's also a scope for the module the code is in. Blocks correspond to lines of code which are usually grouped by indentation.\footnote{Python actually makes indentation even mandatory and therefore doesn't need block delimiters like curly braces or end statements.} Scopes are blocks too, just with special behaviour. The following example is used to explain the algorithm:
 
 \begin{lstlisting}[numbers=left]
 x = "unrelated"
@@ -868,7 +876,7 @@ Key figures
 \section{Parts of Documentation from Previous Project}
 
 \begin{itemize}
-	\item 90~\% of \emph{Connecting Definitions and Uses} % TODO: percentage, add reference
+	\item 70~\% of \emph{Connecting Definitions and Uses} % TODO: percentage, add reference
 \end{itemize}
 
 \section{Outlook}
