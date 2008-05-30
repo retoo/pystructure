@@ -534,7 +534,18 @@ In this section, some of the difficult parts of developing a type inference syst
 
 \subsection{Recursion}
 
-\todo{describe recursion}
+Recursion is a normal part of programming languages where a function is called from within itself until a certain condition is met and the recursion stops. It is often used for algorithms like the factorial function:
+
+\begin{lstlisting}
+def factorial(number):
+    if number <= 1:
+        return 1
+    return number * factorial(number - 1)
+\end{lstlisting}
+
+For a naive goal engine which isn't prepared to handle it, recursion results in an endless loop in the goal engine. An example is the the evaluation of the return type of the \id{factorial} function. The first return value (\code{1}) doesn't cause problems, but the second does. For calculating the type of the second return value, the return type of \id{factorial} is needed again. So another return type evaluator for \id{factorial} is created and the whole story begins anew.
+
+% TODO: Equal goals in goal engine, cycle detection
 
 \subsection{Call Context}
 
