@@ -62,28 +62,23 @@ Supervised by Prof. Peter Sommerlad % TODO: e-mail address?
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter*{Abstract}
 
-% Zu lang: When looking directly at source code, either because one is new to it or one wants to refactor some parts, it is difficult to get a high-level perspective of the components and their dependencies. ...
+A vital part of software development is defining a good architecture when planning a project. But during implementation, the intended structures are often neglected and the program's architecture grows in a different way than planned – a problem called \emph{architectural decay}. When only looking at source code, tracking the architecture and keeping a high-level view of dependencies between components is difficult. Commonly used graphical models such as domain or architecture diagrams are helpful, but they usually just describe the \emph{intended} design, rather than the \emph{actual} structure.
 
-% Von Proposal: Planning and analysing a program's structure and internal dependencies is a common task when working on larger projects. Such analysis helps to meet the defined architectural design goals or to find structural flaws like cyclic dependencies. A clear architecture becomes more and more important as software grows.
-
-A vital part of software development is to define a good architectural model when planning a project. But during implementation the intended structures are often neglected and the program's architecture grows in a different way than planned – a problem called \emph{architectural decay}. When only looking at the source code,  tracking the architecture and keeping a high-level view of the dependencies between components is difficult. Commonly used graphical models such as domain or architecture diagrams are helpful, but they usually just describe the \emph{intended} design, rather than the \emph{actual} structure.
-
-PyStructure's goal was to develop an analyser which reveals these internal structures and dependencies in a Python program. The necessary information has to be gathered by statically analysing its source code. Dependencies are identified by determining what types are used in a particular component. But as Python is a dynamically typed language the types are not known before the application is run. Therefore a major aspect of the project was to develop an algorithm, called type inferencer, which is able to deduce types by mimicking the evaluation process of the interpreter.
+PyStructure's goal was to develop an analyser which reveals these internal structures and dependencies in a Python program by statically analysing its source code. Dependencies are identified by determining what types are used in a particular component. But as Python is a dynamically typed language, types are not known before the application is run. Therefore a major aspect of the project was to develop an algorithm, called type inferencer, which deduces types by mimicking the evaluation process of the Python interpreter.
 
 The following details are extracted by the structural analyser:
 
 \begin{itemize}
 	\item All involved components such as modules, classes and methods
-	\item Dependencies between these components, caused by:
+	\item Dependencies between these components caused by:
 	\begin{itemize}
 		\item Method calls
 		\item Variables, arguments or attributes of a certain type
 		\item Inheritance
 	\end{itemize}
-	\item Structure of modules and packages
 \end{itemize}
 
-The extracted structure can then be visualised by Structure 101g, a program developed by Headway Software. Structure 101g presents the dependencies as graphs in various levels of detail or abstraction. It also provides a wide variety of analysis tools, like detecting cyclic dependencies or validating the current structure against a predefined architecture. This allows the user to effectively monitor the progress of a project's architecture during its development.
+The extracted data can be visualised by Structure 101g, a program developed by Headway Software. Structure 101g shows dependencies as graphs in various levels of detail and provides a wide variety of analysis tools, like detecting cyclic dependencies or validating the current architecture. This allows to effectively monitor the progress of a project's architecture during development.
 
 The structural data itself is also useful in other areas of software development like enhanced accuracy for automatic refactoring or better support for code completion in integrated development environments.
 
