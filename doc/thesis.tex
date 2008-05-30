@@ -503,7 +503,7 @@ b = add_one(1.5)
 
 Without separating these two calls, the type inferencer would answer that the type of both \id{a} and \id{b} is \type{int|float}. But a more precise answer would be that \id{a} is \type{int} and \id{b} is \type{float}. It is necessary to analyse return types differently depending on how the functions are called, it is necessary to respect the \emph{call context}.
 
-Let's look at the evaluation of the return type of the first \id{add_one} call to explain how it is solved in PyStructure. The information about the call is stored in a \class{CallContext}. It is created in the \class{CallTypeEvaluator} for function calls (as opposed to constructor calls, which don't need a call context). The call context contains the following information:
+Let's look at the evaluation of the return type of the first \id{add_one} call to explain how it is solved in PyStructure. The information about the call itself is stored in a \class{CallContext}. It is created in the \class{CallTypeEvaluator} for function calls. The call context contains the following information:
 
 \begin{itemize}
 	\item Definition of the function which is called, e.g. the \id{add_one} function defined on the first line
@@ -511,13 +511,21 @@ Let's look at the evaluation of the return type of the first \id{add_one} call t
 	\item Module where the Call node is located
 \end{itemize}
 
-The \class{CallTypeEvaluator} then creates a \class{ReturnTypeGoal} and associates the previously created context with it. The evaluation then proceeds as usual.
+The \class{CallTypeEvaluator} then creates a \class{ReturnTypeGoal} of the \id{add_one} function and associates the previously created context with it. The evaluation then proceeds as usual. 
 
-If the return value doesn't depend on an argument type, the call context will never be needed, which is fine. But when it does and the evaluation comes to an argument, the \class{ArgumentTypeEvaluator} is run. In the example this would be for the \id{value} argument of \id{add_one}. The evaluator then gets the ``topmost'' call context and determines whether the call context applies by comparing the function of the argument it has to evaluate and the function of the call context. If they are equal, this means that the call context is actually for this function and not for another one.
+Now two situations are possible:
 
-So, if the call context applies, the expression which corresponds to the argument is determined and a subgoal for the type of the expression is created. In the example, the expression is \code{41} and its type will be \type{int}. This type is then returned as the result of the \class{ArgumentTypeEvaluator}, leading to the final result of \type{int} for the \class{CallTypeEvaluator}.
+\textbf{Argument doesn't affect return value}
 
-If the call context doesn't apply, the \class{ArgumentTypeEvaluator} does the usual thing of finding all the calls and returning the union of all the argument expressions.
+This means that the evaluation works as usual, meaning that the evaluator has to look for all possible callers and check what they all pass as an argument. 
+
+\textbf{Argument affects return value}
+
+The case happens if during the evaluation of the return type the  \class{ArgumentTypeEvaluator} is being run. In the example above this would happen when the evaluator tries to find the type of the argument \id{value}. The trick is now the check if only the call in the context (i.e. the \class{CallContext}) should be considered. To check that the evaluator verifies that the function in the ``topmost'' call context points to the function currently being evaluated. 
+
+If this is the case the evaluator doesn't evaluate the parameter of all callers, but only the one mentioned in the call context. In the example this would mean that only the first call \code{add_one(41)} is taken into consideration.
+
+If the call context doesn't point to the current function, the \class{ArgumentTypeEvaluator} does the usual thing of finding all the calls and returning the union of all the argument expressions.
 
 % TODO: Reference
 
