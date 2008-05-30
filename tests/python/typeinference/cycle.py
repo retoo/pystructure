@@ -32,3 +32,16 @@ def c():
         return ""
     
 c() ## type str
+
+
+class Dumbo(object):
+    def size(self):
+        return 4
+
+def foo():
+    if random():
+        return foo().size()
+    else:
+        return Dumbo()
+
+foo() ## type Dumbo|int
