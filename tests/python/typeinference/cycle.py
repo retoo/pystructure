@@ -1,3 +1,11 @@
+def factorial(number):
+    if number <= 1:
+        return 1
+    return number * factorial(number - 1)
+
+factorial(10) ## type int
+
+
 def a(x):
     x ## type int|str
     if random():
