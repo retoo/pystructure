@@ -58,7 +58,7 @@ import ch.hsr.ifs.pystructure.typeinference.evaluators.references.FunctionRefere
 import ch.hsr.ifs.pystructure.typeinference.evaluators.references.MethodReferencesEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.references.PossibleAttributeReferencesEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.references.PossibleReferencesEvaluator;
-import ch.hsr.ifs.pystructure.typeinference.evaluators.references.VariableReferenceEvaluator;
+import ch.hsr.ifs.pystructure.typeinference.evaluators.references.NameTypeEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.types.ArgumentTypeEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.types.AssignTypeEvaluator;
 import ch.hsr.ifs.pystructure.typeinference.evaluators.types.AttributeTypeEvaluator;
@@ -231,7 +231,7 @@ public class PythonEvaluatorFactory implements IEvaluatorFactory {
 			if (name.id.equals("True") || name.id.equals("False")) {
 				return new FixedResultEvaluator(goal, new ClassType("bool"));
 			}
-			return new VariableReferenceEvaluator(goal, name);
+			return new NameTypeEvaluator(goal, name);
 		}
 		if (expr instanceof Call) {
 			return new CallTypeEvaluator(goal, (Call) expr);

@@ -40,15 +40,16 @@ import ch.hsr.ifs.pystructure.typeinference.model.definitions.NameUse;
 import ch.hsr.ifs.pystructure.typeinference.model.definitions.Use;
 
 /**
- * Evaluator for the type of an unqualified name, like <code>var</code>.
+ * Evaluator for the type of an unqualified name, like <code>var</code> or
+ * <code>func</code>.
  */
-public class VariableReferenceEvaluator extends AbstractEvaluator {
+public class NameTypeEvaluator extends AbstractEvaluator {
 
 	private final Name name;
 	
 	private CombinedType resultType;
 	
-	public VariableReferenceEvaluator(ExpressionTypeGoal goal, Name name) {
+	public NameTypeEvaluator(ExpressionTypeGoal goal, Name name) {
 		super(goal);
 		this.name = name;
 		
