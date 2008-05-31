@@ -895,6 +895,29 @@ Key figures
 \section{Results}
 
 \chapter{Continuous Integration \& Testing}
+
+To be able to add tests for the type inferencer in the easiest way possible, we developed a test framework for it. Each test case is a Python file in a test directory. Assertions are added by putting markers at the end of lines of interest. An example:
+
+\begin{lstlisting}
+def add_one(value):
+    value ## type float|int
+    return value + 1
+
+add_one ## type function
+
+add_one(41) ## type int
+add_one(1.5) ## type float
+
+# Wrong test on purpose
+add_one(1) ## type float
+\end{lstlisting}
+
+The \code{##} is the start marker for an assertion, the \code{type} is the name of the assertion and the part after that is the expected value. For each assertion, a goal is created and passed to the goal engine. The result is stringified and compared with the expected value. If it differs, an \type{InferencerAssertionError} is thrown with the information about the failure, for example:
+
+\begin{verbatim}
+type of <add_one(1)>: expected <float> but was <int> (simple.py:11)
+\end{verbatim}
+
  Ways to test TI
  Framework, markers
   (examples, mro marker)
