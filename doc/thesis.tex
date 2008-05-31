@@ -454,7 +454,7 @@ x # what type?
 
 \begin{itemize}
 	\item The user initialises the TI by submitting a \class{ExpressionTypeGoal} with the expression \node{Name(x)} attached to it.
-	\item The TI (the evaluator factory) assesses the goal and assigns it to the \evalautor{VariableReferenceEvaluator} because the expression in question is a Name AST Node
+	\item The TI (the evaluator factory) assesses the goal and assigns it to the \evalautor{NameTypeEvaluator} because the expression in question is a Name AST Node
 \end{itemize}
 To let the TI evaluate the type of the variable \id{x} an \class{ExpressionTypeGoal} has to be created and sent\todo{??} to the type inferencer.
 
@@ -798,11 +798,11 @@ results in a console output like:
 \todo{example probably too long4}
 \begin{verbatim}
 	Evaluation started of ExpressionTypeGoal: Name[id=x, ctx=Load]
-	|  Created VariableReference ExpressionTypeGoal: Name[id=x, ctx=Load]
+	|  Created NameType ExpressionTypeGoal: Name[id=x, ctx=Load]
 	|  |  Ceated ArgumentType DefinitionTypeGoal: Argument x of Function foo
 	|  |  |  Created FunctionReferences FunctionReferencesGoal: Function foo
 	|  |  |  |  Created PossibleReferences PossibleReferencesGoal: foo
-	|  |  |  |  Created VariableReference ExpressionTypeGoal: foo
+	|  |  |  |  Created NameType ExpressionTypeGoal: foo
 	|  |  |  |  Finished PossibleReferencesGoal
 	|  |  |  |  |  Created FixedResult DefinitionTypeGoal: Function foo
 	|  |  |  Created FixedResult ExpressionTypeGoal: "bar"
