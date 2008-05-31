@@ -168,3 +168,7 @@ class long(object):
 
 class complex(object):
     pass
+
+
+def len(obj):
+    return 1

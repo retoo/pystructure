@@ -14,3 +14,5 @@ c.count() ## type int
 
 d = set([1, 2, 3])
 d.pop() ## type int
+
+len("test") ## type int
