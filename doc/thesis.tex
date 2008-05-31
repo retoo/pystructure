@@ -674,6 +674,8 @@ The types for \id{a} and \id{b} are the same as in the example with the lists. T
 
 So the problem is that the inferencer treats the \id{Container} class as if every instance had the same type of the \id{self.element} attribute. It doesn't differentiate between instances, only between classes.
 
+In PyStructure, the constructor call node is used to differentiate between instances of the same class. For this, an additional field \id{constructorCall} was added to \class{ClassType}, the object representing an instance of a class. It is set when a \class{ClassType} is created.
+ 
 ... \cite{ddp}
 
 % TODO: Solution (ClassType with constructorCall, InstanceContext), references (Lex Spoon, context from other paper)
