@@ -803,9 +803,43 @@ Later, when a goal is created for evaluating what \id{function} returns, the eva
 
  (DLTK \& goalengine refactoring) \\
  (Avoid casting (result in Goal))\\
- (Goaltype -> Evaluator Map)\\
 Other Type Inference Solutions
 
+\subsection{Use of a Map in Evaluator Factory}
+
+%{ rschuett: korrigieren
+
+The evaluator factory is used to create the corresponding evaluator for a goal. For a number of goals, there is a one-to-one connection between goal and evaluator. At the beginning, this was implemented like this (just an excerpt):
+
+\begin{lstlisting}[language=java]
+if (goal instanceof ClassReferencesGoal) {
+    return new ClassReferencesEvaluator(
+            (ClassReferencesGoal) goal);
+}
+if (goal instanceof ReturnTypeGoal) {
+    return new ReturnTypeEvaluator(
+            (ReturnTypeGoal) goal);
+}
+\end{lstlisting}
+
+To remove duplication, these cases were put in a map like this:
+
+\begin{lstlisting}[language=java]
+evaluators.put(ClassReferencesGoal.class,
+               ClassReferencesEvaluator.class);
+evaluators.put(ReturnTypeGoal.class,
+               ReturnTypeEvaluator.class);
+\end{lstlisting}
+
+And then, to create the evaluator, some reflection magic is used to create a new evaluator using the class from the map. It works like this (handling of reflection exceptions was omitted):
+
+\begin{lstlisting}[language=java]
+Class<? extends IGoal> g = goal.getClass();
+Class<? extends AbstractEvaluator> e = evaluators.get(g);
+return e.getConstructor(g).newInstance(goal);
+\end{lstlisting}
+
+%}
 
 \section{Debugging}
 
