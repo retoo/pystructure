@@ -45,13 +45,13 @@ import ch.hsr.ifs.pystructure.typeinference.model.definitions.Use;
  */
 public class NameTypeEvaluator extends AbstractEvaluator {
 
-	private final Name name;
+	private final Name nameNode;
 	
 	private CombinedType resultType;
 	
 	public NameTypeEvaluator(ExpressionTypeGoal goal, Name name) {
 		super(goal);
-		this.name = name;
+		this.nameNode = name;
 		
 		this.resultType = goal.resultType;
 	}
@@ -66,7 +66,7 @@ public class NameTypeEvaluator extends AbstractEvaluator {
 		for (Use use : module.getContainedUses()) {
 			if (use instanceof NameUse) {
 				NameUse nameUse = (NameUse) use;
-				if (name.equals(nameUse.getExpression())) {
+				if (nameNode.equals(nameUse.getExpression())) {
 					for (Definition definition : nameUse.getDefinitions()) {
 						subgoals.add(new DefinitionTypeGoal(getGoal().getContext(), definition));
 					}
