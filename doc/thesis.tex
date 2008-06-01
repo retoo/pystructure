@@ -172,14 +172,11 @@ The type inferencer is divided into three main process stages:
 The first two steps, the parsing of source code and generation of the model, lay the foundation for the type inferencer. They do a static analysis of the whole project and are independent of what expressions should be evaluated. As long as the underlying source code doesn't change these preparations can be reused for any number of type inferencer evaluations.
 
 
-
-
 \section{Parsing the Source Code}
 
-\begin{wrapfigure}{r}{0.1\textwidth}
-		\vspace{-0.5cm}
-    \includegraphics[width=0.15\textwidth]{process_overview_parser}
-		\vspace{0cm}
+\begin{wrapfigure}{r}{2.5cm}
+	\vspace{-0.6cm}
+	\includegraphics[width=2.5cm]{process_overview_parser}
 \end{wrapfigure}
 
 Before any analysis can be done on the application its source code has to be brought into a form which is easier to process for programs. It's quite common to express an application's source code as a tree, where an interior node represents a programming language construct and the children of that node represent meaningful components of the construct. For example the simple code \code{foo("bar")} is a call node with the parameter as a string node attached to it. This node structure is usually called abstract syntax tree (AST).
@@ -198,8 +195,16 @@ It should be noted that the parser does not do that much besides converting the 
 
 \section{Creating the Model}
 
+\begin{wrapfigure}{r}{2.5cm}
+	\vspace{-0.7cm}
+	\includegraphics[width=2.5cm]{process_overview_model}
+	\vspace{-1cm}
+\end{wrapfigure}
+
 The representation of a program provided by the AST is very basic and working directly with it is quite cumbersome. 
-One drawback of the AST is that it's just a \emph{syntactical} representation of the source code and doesn't include any semantic information. For example, in the following code, the AST doesn't know that the two uses of \id{foo} are related:
+One drawback of the AST is that it's just a \emph{syntactical} representation of the source code and doesn't include any semantic information.
+
+For example, in the following code, the AST doesn't know that the two uses of \id{foo} are related:
 
 \begin{lstlisting}
 foo = "Hello"
@@ -217,15 +222,9 @@ Types are not yet involved at this stage, the model is just a foundation to make
 
 \subsection{Creating the Structure}
 
-\begin{wrapfigure}{r}{0.1\textwidth}
-		\vspace{-0.5cm}
-    \includegraphics[width=0.15\textwidth]{process_overview_model}
-		\vspace{0cm}
-\end{wrapfigure}
-
 The first step of building the model is to extract the structural elements that make up a program, like modules, classes, methods and functions. These also represent scopes for variables.
 
-Creating this initial structure is done by the \class{StructureDefinitionVisitor}. It is a simple visitor which just visits class and function definitions (method definitions are the same in the AST). Then it creates \class{Class}, \class{Function} and \class{Method} objects, which wrap the AST nodes. They also provide additional functionality, for example the \class{Module} knows which classes and functions it includes and \class{Class} contains methods.
+Creating this initial structure is done by the structure definition visitor. It is a simple visitor which just visits class and function definitions (method definitions are the same in the AST). Then it creates \class{Class}, \class{Function} and \class{Method} objects, which wrap the AST nodes. They also provide additional functionality, for example the \class{Module} knows which classes and functions it includes and \class{Class} contains methods.
 
 \subsection{Connecting Definitions and Uses}
 
@@ -379,10 +378,9 @@ There are things which are not represented in the model because it is built with
 
 \section{Inferring Types}
 
-\begin{wrapfigure}{r}{0.1\textwidth}
-		\vspace{-0.5cm}
-    \includegraphics[width=0.15\textwidth]{process_overview_ti}
-		\vspace{0cm}
+\begin{wrapfigure}{r}{2.5cm}
+	\vspace{-0.6cm}
+	\includegraphics[width=2.5cm]{process_overview_ti}
 \end{wrapfigure}
 
 Now, after all the source has been parsed an a generalised model of the program has been build the actual analysing can begin. 
