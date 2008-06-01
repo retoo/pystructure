@@ -49,9 +49,9 @@ public class NameTypeEvaluator extends AbstractEvaluator {
 	
 	private CombinedType resultType;
 	
-	public NameTypeEvaluator(ExpressionTypeGoal goal, Name name) {
+	public NameTypeEvaluator(ExpressionTypeGoal goal, Name nameNode) {
 		super(goal);
-		this.nameNode = name;
+		this.nameNode = nameNode;
 		
 		this.resultType = goal.resultType;
 	}
