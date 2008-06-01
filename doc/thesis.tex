@@ -194,6 +194,7 @@ It should be noted that the parser does not do that much besides converting the 
 
 
 \section{Creating the Model}
+\label{creating_the_model}
 
 \begin{wrapfigure}{r}{2.5cm}
 	\vspace{-0.7cm}
@@ -228,9 +229,7 @@ Creating this initial structure is done by the structure definition visitor. It 
 
 \subsection{Connecting Definitions and Uses}
 
-% rschuett: Bitte nochmals bis zu Implementation durchlesen
-
-Now we have the elements of the model, but more is needed. As described in the example with the \id{foo} variable, knowing the variables where they are defined and used is important for the type inferencer. Determining this is called flow analysis and is based on these two elements:
+Now we have the elements of the model, but more is needed. As described in the example with the \id{foo} variable in section \vref{creating_the_model}, knowing the variables where they are defined and used is important for the type inferencer. Determining this is called flow analysis and is based on these two elements:
 
 \begin{itemize}
 	\item \textbf{Definition:} Binding of a value to a name, for example through:
@@ -281,7 +280,9 @@ else:
 print x
 \end{lstlisting}
 
-At the first \code{print} statement, \id{x} belongs to the assignment with \code{42}. At the second, it is connected with the assignment above it of \code{3.14}. At the \code{print} statement after the if/else block, both definitions are possible, because which branch is executed is only known at runtime and can't be determined by the analyser. Therefore the use has to be connected to both definitions.
+At the first \code{print} statement, \id{x} belongs to the assignment with \code{42}. At the second, it is connected with the assignment above it of \code{3.14}. At the \code{print} statement after the if/else block, both definitions are possible, because which branch is executed is only known at runtime and can't be determined by the analyser. 
+
+Therefore the use has to be connected to both definitions.
 
 \subsubsection{Scopes}
 
@@ -298,7 +299,9 @@ g = 3.14
 func()
 \end{lstlisting}
 
-The two calls of \id{func} will print different values, because the outer variable \id{g} is accessed after it has been assigned another value. In the function itself, it's not possible to say which definition belongs to the use of \id{g}, so both are connected.
+The two calls of \id{func} will print different values, because the outer variable \id{g} is accessed after it has been assigned another value. 
+
+In the function itself, it's not possible to say which definition belongs to the use of \id{g}, so both are connected.
 
 \subsubsection{Global Variables}
 
@@ -316,7 +319,9 @@ func()
 print g
 \end{lstlisting}
 
-Between the two \id{print} statements, the variable \id{g} was assigned another value from within \id{func}. Therefore, the variable \id{g} in the global scope belongs to both definitions.
+Between the two \id{print} statements, the variable \id{g} was assigned another value from within \id{func}. 
+
+Therefore, the variable \id{g} in the global scope is linked to both definitions.
 
 \subsubsection{Implementation}
 
