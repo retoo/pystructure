@@ -899,6 +899,8 @@ Key figures
 
 \chapter{Continuous Integration \& Testing}
 
+\section{Type Inference Tests}
+
 To be able to add tests for the type inferencer in the easiest way possible, we developed a test framework for it. Each test case is a Python file in a test directory. Assertions are added by putting markers at the end of lines of interest. An example:
 
 \begin{lstlisting}
@@ -911,21 +913,46 @@ add_one ## type function
 add_one(41) ## type int
 add_one(1.5) ## type float
 
-# Wrong test on purpose
+# Wrong expected type on purpose
 add_one(1) ## type float
 \end{lstlisting}
 
-The \code{##} is the start marker for an assertion, the \code{type} is the name of the assertion and the part after that is the expected value. For each assertion, a goal is created and passed to the goal engine. The result is stringified and compared with the expected value. If it differs, an \type{InferencerAssertionError} is thrown with the information about the failure, for example:
+The \code{##} is the marker for an assertion, the \texttt{type} is the name of the assertion and the part after that is the expected value.
+
+The implementation is fairly trivial. All the markers in a file are found and a new assertion is created with the type and line number. When the test is run the assertion finds the expression on its line by using an \class{ExpressionAtLineVisitor}. It creates an expression type goal, asks the goal engine to evaluate it and then compares the result with the expected result. If they don't match, a custom error \type{InferencerAssertionError} is thrown with the information about the failure. In the last line of the above example, the expected value was messed up:
 
 \begin{verbatim}
 type of <add_one(1)>: expected <float> but was <int> (simple.py:11)
 \end{verbatim}
 
- Ways to test TI
- Framework, markers
-  (examples, mro marker)
- Continuous Integration
+So, adding a new test is a matter of adding a new Python file to the directory, writing some code and adding some assertions by appending \code{## type expected} to a line of an expression. The test will automatically be picked up by the suite and run. This makes it very painless to write tests and that in turn makes it more likely that tests are written.
+
+\subsection{Inheritance Tests}
+
+When implementing inheritance support, we needed a way to test the method resolution order (MRO) of classes. So we added a new marker type, \code{mro} which compares the MRO of the expression with the expected value. For example:
+
+\begin{lstlisting}
+class A(object): pass
+class B(object): pass
+class C(object): pass
+class X(A): pass
+class Y(A): pass
+class Z(X,B,Y,C): pass
+
+A ## mro A,object
+B ## mro B,object
+C ## mro C,object
+X ## mro X,A,object
+Y ## mro Y,A,object
+Z ## mro Z,X,B,Y,A,C,object
+\end{lstlisting}
+
+Should the need for other sorts of tests arise, it is just a matter of adding another assertion type.
+
+\section{Continuous Integration}
+
   (lava lamp)
+
 
 \chapter{Outlook}
  Possible follow-up projects
