@@ -69,13 +69,13 @@ PyStructure's goal was to develop an analyser which reveals these internal struc
 The following details are extracted by the structural analyser:
 
 \begin{itemize}
-	\item All involved components such as modules, classes and methods
-	\item Dependencies between these components caused by:
-	\begin{itemize}
-		\item Method calls
-		\item Variables, arguments or attributes of a certain type
-		\item Inheritance
-	\end{itemize}
+    \item All involved components such as modules, classes and methods
+    \item Dependencies between these components caused by:
+    \begin{itemize}
+        \item Method calls
+        \item Variables, arguments or attributes of a certain type
+        \item Inheritance
+    \end{itemize}
 \end{itemize}
 
 The extracted data can be visualised by Structure 101g, a program developed by Headway Software. Structure 101g shows dependencies as graphs in various levels of detail and provides a wide variety of analysis tools, like detecting cyclic dependencies or validating the current architecture. This allows to effectively monitor the progress of a project's architecture during development.
@@ -123,10 +123,10 @@ This leads to the question, how can the type of a given expression be determined
 So, developing a type inferencer was a central goal of the project. To be useful for structural analysis, it should be able to resolve the type of the following components:
 
 \begin{itemize}
-	\item Local \& global variables
-	\item Arguments
-	\item Attributes
-	\item Return values of functions \& methods
+    \item Local \& global variables
+    \item Arguments
+    \item Attributes
+    \item Return values of functions \& methods
 \end{itemize}
 
 Of course the type inferencer should take the application as a whole into account and develop a best guess what the given expression's type could be. For example, in the case of a method argument, the type inferencer should look for all places where the particular method is called and what argument type was used.
@@ -155,9 +155,9 @@ Correctness \& Usefulness
 The type inferencer is divided into three main process stages:
 
 \begin{itemize}
-	\item \textbf{Parser} – Parses source code and generates an abstract syntax tree (AST)
-	\item \textbf{Definition Visitor} – Builds a model of the program (modules, classes, methods, related variables)
-	\item \textbf{Type Inferencer} – Evaluates the type of an expression
+    \item \textbf{Parser} – Parses source code and generates an abstract syntax tree (AST)
+    \item \textbf{Definition Visitor} – Builds a model of the program (modules, classes, methods, related variables)
+    \item \textbf{Type Inferencer} – Evaluates the type of an expression
 \end{itemize}
 
 \begin{figure}[h!]
@@ -175,8 +175,8 @@ This chapter describes how the foundation for the type inferencer and the struct
 \section{Parsing the Source Code}
 
 \begin{wrapfigure}{r}{2.5cm}
-	\vspace{-0.6cm}
-	\includegraphics[width=2.5cm]{process_overview_parser}
+    \vspace{-0.6cm}
+    \includegraphics[width=2.5cm]{process_overview_parser}
 \end{wrapfigure}
 
 Before any analysis can be done on the application its source code has to be brought into a form which is easier to process for programs. It's quite common to express an application's source code as a tree, where an interior node represents a programming language construct and the children of that node represent meaningful components of the construct. For example the simple code \code{foo("bar")} is a call node with the parameter as a string node attached to it. This node structure is usually called abstract syntax tree (AST).
@@ -197,9 +197,9 @@ It should be noted that the parser does not do that much besides converting the 
 \label{creating_the_model}
 
 \begin{wrapfigure}{r}{2.5cm}
-	\vspace{-0.7cm}
-	\includegraphics[width=2.5cm]{process_overview_model}
-	\vspace{-1cm}
+    \vspace{-0.7cm}
+    \includegraphics[width=2.5cm]{process_overview_model}
+    \vspace{-1cm}
 \end{wrapfigure}
 
 The representation of a program provided by the AST is very basic and working directly with it is quite cumbersome. 
@@ -215,8 +215,8 @@ print foo
 They are just represented as two independent \node{Name} nodes in the AST. Also, it isn't easily possible to get all methods of a class without using a visitor every time. Therefore PyStructure uses a second stage in which it processes the AST further. It does some static analysis to create a model which provides a base for the type inferencer to work with. The model consists of the following:
 
 \begin{itemize}
-	\item Objects representing the nested structure of the program, such as \class{Module}, \class{Class} or \class{Method}, as well as how they relate to each other, for example \class{Class} knows which methods it contains
-	\item Variables and where they are defined and used
+    \item Objects representing the nested structure of the program, such as \class{Module}, \class{Class} or \class{Method}, as well as how they relate to each other, for example \class{Class} knows which methods it contains
+    \item Variables and where they are defined and used
 \end{itemize}
 
 Types are not yet involved at this stage, the model is just a foundation to make it easier for the type inferencer to do its work. The model is created once and stays the same for all goal evaluations.
@@ -232,20 +232,20 @@ Creating this initial structure is done by the structure definition visitor. It 
 Now we have the elements of the model, but more is needed. As described in the example with the \id{foo} variable in section \vref{creating_the_model}, knowing the variables where they are defined and used is important for the type inferencer. Determining this is called flow analysis and is based on these two elements:
 
 \begin{itemize}
-	\item \textbf{Definition:} Binding of a value to a name, for example through:
-	\begin{itemize}
-		\item Variable assignment
-		\item Class or function definition
-		\item Argument declaration
-		\item Loop variable declaration
-		\item Imports
-	\end{itemize}
-	\item \textbf{Use:} Reference of a name, for example:
-	\begin{itemize}
-		\item Variable name
-		\item Class or function name
-		\item Argument name
-	\end{itemize}
+    \item \textbf{Definition:} Binding of a value to a name, for example through:
+    \begin{itemize}
+        \item Variable assignment
+        \item Class or function definition
+        \item Argument declaration
+        \item Loop variable declaration
+        \item Imports
+    \end{itemize}
+    \item \textbf{Use:} Reference of a name, for example:
+    \begin{itemize}
+        \item Variable name
+        \item Class or function name
+        \item Argument name
+    \end{itemize}
 \end{itemize}
 
 The task of the flow analyser is to create these elements and connect each use with all its possible definitions.
@@ -371,21 +371,21 @@ No definitions flow from the scope, so the visitor has done its work and can ret
 There are things which are not represented in the model because it is built without using type inference. Some of these things are:
 
 \begin{itemize}
-	\item Which data attributes a class has isn't known, because they are not declared anywhere, they are just assigned as needed.
-	\item The class hierarchy can't be resolved during the creation of the model, because the specification of the base class is just an expression and could be the result of a function call or an imported class.\footnote{
-	For example: \code{class Foo(calculate_baseclass()): pass}. Of course this kind of class definition is not seen that often.}
-	% TODO: do a reference to the MRO C3 section
-	\item What exactly is being imported by an import statement.
-	\item The model is based on the AST nodes, which means that there may still be multiple ways an operation is represented. For example, \code{x + y} is the same as \code{x.__add__(y)} from a type inference perspective. Therefore these variants have to be handled in the type inferencer.
-	% TODO: reference section in outlook/results about transformation of AST to AAST
+    \item Which data attributes a class has isn't known, because they are not declared anywhere, they are just assigned as needed.
+    \item The class hierarchy can't be resolved during the creation of the model, because the specification of the base class is just an expression and could be the result of a function call or an imported class.\footnote{
+    For example: \code{class Foo(calculate_baseclass()): pass}. Of course this kind of class definition is not seen that often.}
+    % TODO: do a reference to the MRO C3 section
+    \item What exactly is being imported by an import statement.
+    \item The model is based on the AST nodes, which means that there may still be multiple ways an operation is represented. For example, \code{x + y} is the same as \code{x.__add__(y)} from a type inference perspective. Therefore these variants have to be handled in the type inferencer.
+    % TODO: reference section in outlook/results about transformation of AST to AAST
 \end{itemize}
 
 
 \chapter{Type Inference}
 
 \begin{wrapfigure}{r}{2.5cm}
-	\vspace{-0.6cm}
-	\includegraphics[width=2.5cm]{process_overview_ti}
+    \vspace{-0.6cm}
+    \includegraphics[width=2.5cm]{process_overview_ti}
 \end{wrapfigure}
 
 Now, after all the source has been parsed and a generalised model of the program has been built the actual analysis can begin. 
@@ -490,7 +490,7 @@ class Bar():
     pass
 
 def function():
-	return Bar()
+    return Bar()
 
 x = function()
 x # what type?
@@ -517,16 +517,16 @@ class Baz():
     pass
 
 def function(arg):
-	x = arg
-	x # what is x
-	
+    x = arg
+    x # what is x
+    
 function(Baz())
 \end{lstlisting}
 
 \begin{itemize}
 	\item Again the beginning is quite similar to the previous examples, \id{x} is assigned \id{arg}. And \id{arg} is defined in an \node{Argument} node. The \class{DefinitionTypeGoal} for it is therefore passed to an \class{ArgumentTypeEvaluator}.
-	\item First the \class{ArgumentTypeEvaluator} has to find all callers of the function \id{function}. To find these it creates a \class{FunctionReferencesGoal}.
-	\item The \class{FunctionReferencesEvaluator} first looks for all potential references by setting up a \class{PossibleReferencesGoal} with the name of the function attached to it.
+    \item First the \class{ArgumentTypeEvaluator} has to find all callers of the function \id{function}. To find these it creates a \class{FunctionReferencesGoal}.
+    \item The \class{FunctionReferencesEvaluator} first looks for all potential references by setting up a \class{PossibleReferencesGoal} with the name of the function attached to it.
 	\item The \class{PossibleReferencesEvaluator} iterates over all name uses (in all modules) and checks if their name matches the function's. \textbf{} \\\textbf{Note:} \emph{The \class{PossibleReferencesEvaluator} doesn't really care if the name uses found are actually calls or just something else which just happens to be named the same way.}
 	\item To find out which one of these potential references are real callers the \class{FunctionReferencesEvaluator} iterates over all of them and for each one creates an \class{ExpressionTypeGoal}.
 	\item The expressions get resolved and the \class{FunctionReferencesEvaluator} just keeps the references which point back to the function in question.
@@ -534,6 +534,13 @@ function(Baz())
 	\item[] In the example this would just be \code{Baz()}.
 \end{itemize}
 
+\subsubsection{Methods \& Attributes}
+
+Classes added yet another layer of complexity to the type inferencer. Methods calls are in Python written as \code{receiver.method()}. Here again the problem was to find all callers of a method. Like in the case of functions the evaluator has to check all potential matches if their names match. But this isn't enough,  additionally the receiver has to be of the correct type. Otherwise the TI would mix up a identically called method in two unrelated classes. 
+
+Attributes are even worse. Finding all references of an attribute is quite comparable to finding methods. But in Python attributes are nowhere defined, the developer can just use them and they are created ad hoc. Because attributes are public this doesn't haven to be in the module in which the class was defined.
+
+In this example the TI evaluates the type of the truck's attribute cargo.
 
 \begin{lstlisting}
 class Stones(object): pass
@@ -546,8 +553,32 @@ class Truck():
 
 a = Truck()
 a.load(Stones())
-a.cargo
+a.cargo # what's the type?
 \end{lstlisting}
+
+\begin{itemize}
+    \item The expression being evaluated is in this case: \code{a.cargo}. \\
+          \textbf{Note:} \emph{In the AST this is stored as \node{Attribute[value = a, attr = cargo]}}
+    \item The \class{AttributeTypeEvaluator} is responsible for evaluating \node{Attribute} nodes
+    \item Evaluating attributes is done in two steps:
+    \begin{itemize}
+        \item[1.] Evaluate the receiver \\$\rightarrow$ a
+        \item[2.] Look for the method/attribute in the type of the receiver \\ $\rightarrow$ Attribute \id{cargo} in type \class{Truck}
+    \end{itemize}
+    \item[] \textbf{Note:} \emph{The first step was explained in previous examples, so it isn't described again.}
+    \item The \class{AttributeTypeEvaluator} learns that \id{a} is a \class{Truck} object. At this point it's still unsure if cargo is a method or a real attribute. To check if it is a method a \class{MethodResolveGoal} is being created.
+    \item The \class{MethodResolveGoal} is handled by the \class{MethodResolveEvaluator} which checks if there's a method with a given name in a particular class or base classes.\\
+          In the example \id{cargo} is a attribute and therefore a method can't be found
+    \item Because the \class{MethodResolveGoal} was unsuccessful \class{AttributeTypeEvaluator} evaluates if there is a attribute with this name by issuing a \class{ClassAttributeTypeGoal}.
+    \item The \class{ClassAttributeTypeEvaluator} starts by creating an {AttributeReferencesGoal} which tries to find all references of a particular attribute.
+    \item The \class{AttributeReferencesEvaluator} works similar to the \class{FunctionReferencesEvaluator} described in the second example:
+    \begin{enumerate}
+        \item Find all potential references uses using the \class{PossibleReferencesEvaluator}
+        \item Only keep references to \class{AttributUse}
+        \item Only keep references whose receiver has the correct type (is a Truck)
+    \end{enumerate}
+    
+\end{itemize}
 
 
 Goal Engine \\
@@ -627,10 +658,10 @@ recursive() # what type?
 For evaluating line 5, a new return type goal is created, which already existed because of line 7. So the existing return type goal is connected to the evaluator instead of the new one. After this, the goal node graph looks like this:
 
 \begin{figure}[H]
-	\centering
-	\includegraphics[width=0.7\textwidth, trim=30 380 80 30, clip=true]{recursive_goal}
-	\label{fig:recursive_goal}
-	\caption{Evaluation with a recursive goal}
+    \centering
+    \includegraphics[width=0.7\textwidth, trim=30 380 80 30, clip=true]{recursive_goal}
+    \label{fig:recursive_goal}
+    \caption{Evaluation with a recursive goal}
 \end{figure}
 
 The creation of the call type goal at step 5 is not yet recursive, because it is for a different call node. The recursive goal is the return type goal at 8, which forms a cycle with 5. This means that both evaluators are waiting for the result of each other. Because of this, neither evaluator ever finishes and the goal engine loops forever.
@@ -664,9 +695,9 @@ Without separating these two calls, the type inferencer would answer that the ty
 Let's look at the evaluation of the return type of the first \id{add_one} call to explain how it is solved in PyStructure. The \class{CallTypeEvaluator} will be run to evaluate the result of the call. Because it is a function call, the evaluator creates a \class{CallContext}, which contains the following information about the call:
 
 \begin{itemize}
-	\item Definition of the function which is called, e.g. the \id{add_one} function defined on the first line
-	\item Call node for the function call, e.g. \code{add_one(41)}
-	\item Module where the Call node is located
+    \item Definition of the function which is called, e.g. the \id{add_one} function defined on the first line
+    \item Call node for the function call, e.g. \code{add_one(41)}
+    \item Module where the Call node is located
 \end{itemize}
 
 The \class{CallTypeEvaluator} then creates a \class{ReturnTypeGoal} for the \id{add_one} function and associates the previously created context with it. The evaluation then proceeds as usual.
@@ -719,19 +750,19 @@ b = c2.get()
 The types for \id{a} and \id{b} are the same as in the example with the lists. The problem becomes clear when looking at the evaluation for the type of \id{a} (the finding of references was omitted for brevity):
 
 \begin{enumerate}
-	\item[1.] What is the return type of \code{c1.get()}?
-	\begin{enumerate}
-		\item[2.] What is the type of \code{c1}?
-		\item[] $\rightarrow$ The type is \type{Container}.
-		\item[3.] What is the type of \code{c1.get}?
-		\item[] $\rightarrow$ It is the \id{get} method in the \id{Container} class.
-		\item[4.] What is the type of \code{self.element} in the \id{get} method?
-		\begin{enumerate}
-			\item [5.] What is the type of the \code{element} argument of the \code{Container.set} method?
-			\item [] $\rightarrow$ The type is \type{int|str} (from the two \code{set} calls).
-		\end{enumerate}
-	\end{enumerate}
-	\item [] $\rightarrow$ The type is \type{int|str}.
+    \item[1.] What is the return type of \code{c1.get()}?
+    \begin{enumerate}
+        \item[2.] What is the type of \code{c1}?
+        \item[] $\rightarrow$ The type is \type{Container}.
+        \item[3.] What is the type of \code{c1.get}?
+        \item[] $\rightarrow$ It is the \id{get} method in the \id{Container} class.
+        \item[4.] What is the type of \code{self.element} in the \id{get} method?
+        \begin{enumerate}
+            \item [5.] What is the type of the \code{element} argument of the \code{Container.set} method?
+            \item [] $\rightarrow$ The type is \type{int|str} (from the two \code{set} calls).
+        \end{enumerate}
+    \end{enumerate}
+    \item [] $\rightarrow$ The type is \type{int|str}.
 \end{enumerate}
 
 So the problem is that the inferencer treats the \id{Container} class as if every instance had the same type of the \id{self.element} attribute. It doesn't differentiate between instances, only between classes.
@@ -768,8 +799,8 @@ If the type inferencer had no knowledge of how the \id{list} type works, it woul
 Two of the possible solutions for making the inferencer aware of built-in types are:
 
 \begin{enumerate}
-	\item Add special evaluators for evaluating built-in types and implement the rules in Java code.
-	\item Create prototype implementations in Python code, which behave like the real Python regarding the return types.
+    \item Add special evaluators for evaluating built-in types and implement the rules in Java code.
+    \item Create prototype implementations in Python code, which behave like the real Python regarding the return types.
 \end{enumerate}
 
 The second solution was chosen as it is both cleaner and easier to implement. A prototype implementation works by defining the functions and methods so that they return the same type as the original ones. The following extract from the implementation of the \id{list} type illustrates the concept:
@@ -889,9 +920,9 @@ if (subgoal instanceof ClassReferencesGoal) {
 Which is not very good because of these reasons:
 
 \begin{itemize}
-	\item The cast is unchecked and the only reason why we can say that it is correct is because we just \emph{know} that the result of a \class{ClassReferencesGoal} is of type \java{List<ClassReference>}.
-	\item Should the return type of a \class{ClassReferencesGoal} change during development, it isn't checked statically but an error is thrown at runtime (hopefully when the tests are run).
-	\item Writing the casting is cumbersome because one has to look up the type of the result in the evaluator which processes the goal.
+    \item The cast is unchecked and the only reason why we can say that it is correct is because we just \emph{know} that the result of a \class{ClassReferencesGoal} is of type \java{List<ClassReference>}.
+    \item Should the return type of a \class{ClassReferencesGoal} change during development, it isn't checked statically but an error is thrown at runtime (hopefully when the tests are run).
+    \item Writing the casting is cumbersome because one has to look up the type of the result in the evaluator which processes the goal.
 \end{itemize}
 
 In \java{subgoalDone}, it is necessary to differentiate between the different subgoal types anyway, so why not store the result of the goal in the goal itself? This is the way that was implemented, so the code from above now looks like this:
@@ -906,8 +937,8 @@ if (subgoal instanceof ClassReferencesGoal) {
 With this, all the aforementioned weaknesses go away. The following changes were also necessary:
 
 \begin{itemize}
-	\item The result is no longer passed to \java{subgoalDone}.
-	\item The evaluator which calculates the result for a goal stores the result in the goal itself instead of returning it to the goal engine.
+    \item The result is no longer passed to \java{subgoalDone}.
+    \item The evaluator which calculates the result for a goal stores the result in the goal itself instead of returning it to the goal engine.
 \end{itemize}
 
 %}
@@ -980,26 +1011,26 @@ foo("bar")
 results in a console output like:
 \todo{example probably too long4}
 \begin{verbatim}
-	Evaluation started of ExpressionTypeGoal: Name[id=x, ctx=Load]
-	|  Created NameType ExpressionTypeGoal: Name[id=x, ctx=Load]
-	|  |  Ceated ArgumentType DefinitionTypeGoal: Argument x of Function foo
-	|  |  |  Created FunctionReferences FunctionReferencesGoal: Function foo
-	|  |  |  |  Created PossibleReferences PossibleReferencesGoal: foo
-	|  |  |  |  Created NameType ExpressionTypeGoal: foo
-	|  |  |  |  Finished PossibleReferencesGoal
-	|  |  |  |  |  Created FixedResult DefinitionTypeGoal: Function foo
-	|  |  |  Created FixedResult ExpressionTypeGoal: "bar"
-	|  |  |  |  |  Finished DefinitionTypeGoal, result: Function foo
-	|  |  |  |  Finished ExpressionTypeGoal, result: Function foo
-	|  |  |  Finished FunctionReferencesGoal
-	|  |  |  Finished ExpressionTypeGoal, result: type str
-	|  |  Finished DefinitionTypeGoal, result: type str
-	|  Finished ExpressionTypeGoal, result: type str
-	Evaluation finished of ExpressionTypeGoal: Name[id=x, ctx=Load]
+    Evaluation started of ExpressionTypeGoal: Name[id=x, ctx=Load]
+    |  Created NameType ExpressionTypeGoal: Name[id=x, ctx=Load]
+    |  |  Ceated ArgumentType DefinitionTypeGoal: Argument x of Function foo
+    |  |  |  Created FunctionReferences FunctionReferencesGoal: Function foo
+    |  |  |  |  Created PossibleReferences PossibleReferencesGoal: foo
+    |  |  |  |  Created NameType ExpressionTypeGoal: foo
+    |  |  |  |  Finished PossibleReferencesGoal
+    |  |  |  |  |  Created FixedResult DefinitionTypeGoal: Function foo
+    |  |  |  Created FixedResult ExpressionTypeGoal: "bar"
+    |  |  |  |  |  Finished DefinitionTypeGoal, result: Function foo
+    |  |  |  |  Finished ExpressionTypeGoal, result: Function foo
+    |  |  |  Finished FunctionReferencesGoal
+    |  |  |  Finished ExpressionTypeGoal, result: type str
+    |  |  Finished DefinitionTypeGoal, result: type str
+    |  Finished ExpressionTypeGoal, result: type str
+    Evaluation finished of ExpressionTypeGoal: Name[id=x, ctx=Load]
 
-	Expression: Name[id=x, ctx=Load] (L2 C5), context: Module example.7
-	Type is: type str
-	Engine finished
+    Expression: Name[id=x, ctx=Load] (L2 C5), context: Module example.7
+    Type is: type str
+    Engine finished
 \end{verbatim}
 
 Some details were removed to enhance readability. This example also illustrates the fact that goals don't have to be created or finished in a strict order, some times a different goal gets processed before a finished one is being cleaned up.
@@ -1025,7 +1056,7 @@ Parsing a single expression vs inference all expressions (demand driven vs every
 Structure \\
 types (type annotator)\\
 Key figures
-
+\todo{maybe describe somewhere that it is very difficult to find all attributes of a given class.}
 
 
 %% What about tthis chapter? %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1118,7 +1149,7 @@ Should the need for other sorts of tests arise, it is just a matter of adding an
 \section{Parts of Documentation from Previous Project}
 
 \begin{itemize}
-	\item 70~\% of \emph{Connecting Definitions and Uses} % TODO: percentage, add reference
+    \item 70~\% of \emph{Connecting Definitions and Uses} % TODO: percentage, add reference
 \end{itemize}
 
 \section{Outlook}
@@ -1139,9 +1170,9 @@ Should the need for other sorts of tests arise, it is just a matter of adding an
 \section{Thanks}
 
 \begin{itemize}
-	\item to Peter Sommerlad and Thomas Corbat for their support during the project
-	\item to Christian Bachmann for the life-saving coffee machine in our study room. 
-	\item NOT to HSR for their banning of the above mentioned life-saving coffee machine out of the study room.
+    \item to Peter Sommerlad and Thomas Corbat for their support during the project
+    \item to Christian Bachmann for the life-saving coffee machine in our study room. 
+    \item NOT to HSR for their banning of the above mentioned life-saving coffee machine out of the study room.
 \end{itemize}
 
 
@@ -1156,46 +1187,46 @@ Should the need for other sorts of tests arise, it is just a matter of adding an
 
 
 \begin{itemize}
-	\item References
-	\begin{itemize}
-		\item Attribute References
-		\item Calculate Type Hierarchy
-		\item Class References
-		\item Function References
-		\item Method References
-		\item Possible Attribute References
-		\item Possible References
-		\item Variable Reference
-	\end{itemize}
-	\item Types
-	\begin{itemize}
-		\item Argument Type
-		\item Assign Type
-		\item Attribute Type
-		\item Bin Op Type
-		\item Bool Op Type
-		\item Builtin Type
-		\item Call Type
-		\item Class Attribute Type
-		\item Definition Type
-		\item Dict Type
-		\item Display Type
-		\item If Exp Type
-		\item Implicit Import Type
-		\item Import Type
-		\item List Comp Type
-		\item List Type
-		\item Loop Variable Type
-		\item Return Type
-		\item Simple Expression Type
-		\item Subscript Type
-	\end{itemize}
-	\item Misc
-	\begin{itemize}
-		\item Fixed Result
-		\item Method Resolution Order
-		\item Method Resolve
-	\end{itemize}
+    \item References
+    \begin{itemize}
+        \item Attribute References
+        \item Calculate Type Hierarchy
+        \item Class References
+        \item Function References
+        \item Method References
+        \item Possible Attribute References
+        \item Possible References
+        \item Variable Reference
+    \end{itemize}
+    \item Types
+    \begin{itemize}
+        \item Argument Type
+        \item Assign Type
+        \item Attribute Type
+        \item Bin Op Type
+        \item Bool Op Type
+        \item Builtin Type
+        \item Call Type
+        \item Class Attribute Type
+        \item Definition Type
+        \item Dict Type
+        \item Display Type
+        \item If Exp Type
+        \item Implicit Import Type
+        \item Import Type
+        \item List Comp Type
+        \item List Type
+        \item Loop Variable Type
+        \item Return Type
+        \item Simple Expression Type
+        \item Subscript Type
+    \end{itemize}
+    \item Misc
+    \begin{itemize}
+        \item Fixed Result
+        \item Method Resolution Order
+        \item Method Resolve
+    \end{itemize}
 \end{itemize}
 \listoffigures
 
