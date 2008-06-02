@@ -440,27 +440,41 @@ Now the actual work begins, the evaluator gets initialised with the goal as a pa
 
 From the goal engine's perspective there's no difference between subgoals and root goals, they are handled equally. But of course as soon as the root goal is finished the goal engine returns the found result to the user.
 
+\todo{explain types}
+
 \subsection{Type Inferring Algorithm}
 
-Using the goal engine the actual type inferencer can be described. To type inferencer is implemented using \textbf{15 goals} and \textbf{31 evaluators}
+Based on this goal engine the type inferencer algorithm is implemented, using \textbf{15 goals} and \textbf{31 evaluators}
 
-The internal workings of the type inferencer are easiest described using some examples. In this section some common situations are shown and it's explained how the TI solves these.
+The internal workings of the type inferencer are easiest described using some examples. In this section some common situations are shown and it is explained how the TI solves these. 
+
+It is important to understand that all these examples can be combined like puzzle parts in a puzzle. Although these examples look unrealistic simple, they can be combined in whatever order is necessary, and therefore catch a lot of different and complex  cases. 
 
 \subsubsection{Simple assignment}
 
 The first example is quite simple, a new object of the type \type{Foo} is being instantiated and assigned to the variable \id{x}. 
 
 \begin{lstlisting}
+class Foo(): pass
+
 x = Foo()
 x # what type?
 \end{lstlisting}
 
 \begin{itemize}
-	\item The user initialises the TI by submitting a \class{ExpressionTypeGoal} with the expression \node{Name(x)} attached to it.
-	\item The TI (the evaluator factory) assesses the goal and assigns it to the \evalautor{NameTypeEvaluator} because the expression in question is a Name AST Node
+	\item The Type inferencer gets initialised with a \class{ExpressionTypeGoal} with the expression \node{Name(x)} attached to it.
+	\item The evaluator factory assesses the goal and assigns it to the \class{NameTypeEvaluator} because the expression in question is a Name AST Node.
+	\item The \class{NameTypeEvaluator} finds the definition of \id{x} by looking for the corresponding \class{NameUse}. It then creates a \class{DefinitionTypeGoal} to determine it's type. Note: if there is more than one definition the evaluator just creates a goal for each of them. \todo{we could mention somewhere that this easy parallelising a advantage of the goal engine is}
+	\item In this case the node attached to the definition is a \node{Assign} node and therefore the goal gets mapped to the \class{AssignTypeEvaluator}.
+	\item All the \class{AssignTypeEvaluator} does is creating a new \class{ExpressionTypeGoal} for the assigned value. In this case this is: \code{Foo()}.
+	\item Note: As \id{Foo} is capitalised it is quite obvious that we are talking about the instantiation of an object here. But Python allows capitalised functions and therefore the TI can't be completely sure and therefore has to check what the type returned by that call is.
+	\item This new \class{ExpressionTypeGoal} gets also processed by the evaluator factory, but this time the goal gets assigned to the \class{CallTypeEvaluator} as the goal's node is a call: \code{Foo()}.
+	\item The evaluator first tries to determine if the name in question is a function or a class name. To do that it creates a expression type goal for the name. In this case this is the name \id{Foo}.
+	\item Now the process begins from the start, the type of the name \id{Foo} has to be evaluated. The \class{NameTypeEvaluator} finds the class definition, and the results in a \class{MetaClassType} being returned.
+	\item The result gets handed back to the \class{CallTypeEvaluator} which now knows that the call is in fact made to a constructor, so therefore the type returned by the call is a object of the class \class{Foo}. 
+	\item Not much is left to do, the final result is handed up the chain of evaluators. Until the evaluator of the root goal is reached, the first \class{NameTypeEvaluator}. 
+	\item After the root goal is finished the result is handed back to the caller of the library and the type inferencer is finished.	
 \end{itemize}
-To let the TI evaluate the type of the variable \id{x} an \class{ExpressionTypeGoal} has to be created and sent\todo{??} to the type inferencer.
-
 
 \begin{lstlisting}
 def function():
