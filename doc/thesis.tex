@@ -507,6 +507,9 @@ x # what type?
 So the only difference between creating a object and calling a method is that the function has to be checked for any return statements within the function. 
 
 \subsubsection{Arguments}
+
+The next example shows a different important problem: How are the types of arguments being found. So instead of finding the function which was called the TI works in this case the other way around: all callers of a function have to be located.\todo{rschuett: write me differently}
+
 \begin{lstlisting}
 class Baz(): pass
 def function(arg):
@@ -515,6 +518,16 @@ def function(arg):
 	
 function(Baz())
 \end{lstlisting}
+
+\begin{itemize}
+	\item Again the beginning is quite similar to the previous examples, \id{x} gets assigned by \id{arg}. And \id{arg} is defined in a \node{Argument} node. The \class{DefinitionTypeGoal} of it gets therefore assigned to the \class{ArgumentTypeEvaluator}.
+	\item First the \class{ArgumentTypeEvaluator} has to find all callers of the function \id{function}. To find these it creates a \class{FunctionReferencesGoal}.
+	\item The \class{FunctionReferencesEvaluator} first looks for all potential references by setting up a \class{PossibleReferencesGoal} with the name of the function attached to it.
+	\item The \class{PossibleReferencesEvaluator} iterates over all name uses (in all modules) and checks if their name match with the function being looked for. 
+	\item[] Note: The \class{PossibleReferencesEvaluator} doesn't really care if the name uses found are actually calls or just something else which just happens to be named the same way.
+
+\end{itemize}
+
 
 \begin{lstlisting}
 class Truck():
