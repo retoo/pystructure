@@ -35,7 +35,7 @@ public class Method extends Function {
 	public List<? extends Reference> references;
 
 	public Method(Module module, String name, FunctionDef functionDef, Class klass) {
-		super(module, name, functionDef, klass);
+		super(module, name, functionDef);
 		this.klass = klass;
 		this.references = null;
 	}
@@ -53,4 +53,5 @@ public class Method extends Function {
 	public Class getKlass() {
 		return klass;
 	}
+
 }

@@ -28,14 +28,10 @@ import org.python.pydev.parser.jython.ast.exprType;
 /**
  * Definition of a function.
  */
-public class Function extends StructureDefinition implements IAttributeDefinition {
+public class Function extends StructureDefinition {
 
-	private final Definition attributeParent;
-
-	public Function(Module module, String name, FunctionDef functionDef, Definition attributeParent) {
+	public Function(Module module, String name, FunctionDef functionDef) {
 		super(module, name, functionDef);
-		assert attributeParent != null;
-		this.attributeParent = attributeParent;
 	}
 
 	public boolean isFirstArgument(Argument argument) {
@@ -46,10 +42,6 @@ public class Function extends StructureDefinition implements IAttributeDefinitio
 	@Override
 	public FunctionDef getNode() {
 		return (FunctionDef) super.getNode();
-	}
-
-	public Definition getAttributeParent() {
-		return attributeParent;
 	}
 
 	public String toString() {

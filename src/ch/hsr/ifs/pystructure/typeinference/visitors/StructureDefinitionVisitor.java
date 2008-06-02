@@ -87,7 +87,7 @@ public class StructureDefinitionVisitor extends Visitor {
 
 			newParent = method;
 		} else {
-			Function function = new Function(module, name, node, parent);
+			Function function = new Function(module, name, node);
 			parent.addChild(function);
 
 			newParent = function;

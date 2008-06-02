@@ -36,7 +36,7 @@ import org.python.pydev.parser.jython.ast.exprType;
 /**
  * Definition of a class.
  */
-public class Class extends StructureDefinition implements IAttributeDefinition {
+public class Class extends StructureDefinition {
 
 	private final List<Method> methods;
 	private final Map<String, Attribute> attributes;
@@ -85,10 +85,6 @@ public class Class extends StructureDefinition implements IAttributeDefinition {
 	
 	public List<exprType> getBaseClasses() {
 		return baseClasses;
-	}
-
-	public Definition getAttributeParent() {
-		return getModule();
 	}
 
 	public Map<String, Attribute> getAttributes() {
