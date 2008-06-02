@@ -822,8 +822,56 @@ Later, when a goal is created for evaluating what \id{function} returns, the eva
 \section{Improvements During the Development}
 
  (DLTK \& goalengine refactoring) \\
- (Avoid casting (result in Goal))\\
 Other Type Inference Solutions
+
+\subsection{Store Result in Goal}
+
+% SVN changeset 136
+
+%{ rschuett: korrigieren, vielleicht ein bisschen mehr blabla :)
+
+The original design of the goal engine handled the result of goals differently. The result of a subgoal was passed as a parameter to the \id{subgoalDone} method of evaluators. The signature was:
+
+\begin{lstlisting}[language=java]
+public abstract List<IGoal>
+subgoalDone(IGoal subgoal, Object result,
+            GoalState state);
+\end{lstlisting}
+
+The \code{result} is \code{Object} because it depends on the type of subgoal what the result actually is. So the code in \code{subgoalDone} to get the result typically looked like this:
+
+\begin{lstlisting}[language=java]
+if (subgoal instanceof ClassReferencesGoal) {
+    List<ClassReference> classReferences =
+            (List<ClassReference>) result;
+    /* ... */
+\end{lstlisting}
+
+Which is not very good because of these reasons:
+
+\begin{itemize}
+	\item The cast is unchecked and the only reason why we can say that it is correct is because we just \emph{know} that the result of a \class{ClassReferencesGoal} is of type \code{List<ClassReference>}.
+	\item Should the return type of a \class{ClassReferencesGoal} change during development, it isn't checked statically but an error is thrown at runtime (hopefully when the tests are run).
+	\item Writing the casting is cumbersome because one has to look up the type of the result in the evaluator which processes the goal.
+\end{itemize}
+
+In \code{subgoalDone}, it is necessary to differentiate between the different subgoal types anyway, so why not store the result of the goal in the goal itself? This is the way that was implemented, so the code from above now looks like this:
+
+\begin{lstlisting}[language=java]
+if (subgoal instanceof ClassReferencesGoal) {
+    ClassReferencesGoal g = (ClassReferencesGoal) subgoal;
+    List<ClassReference> classReferences = g.references;
+    /* ... */
+\end{lstlisting}
+
+With this, all the aforementioned weaknesses go away. The following changes were also necessary:
+
+\begin{itemize}
+	\item The result is no longer passed to \code{subgoalDone}.
+	\item The evaluator which calculates the result for a goal stores the result in the goal itself instead of returning it to the goal engine.
+\end{itemize}
+
+%}
 
 \subsection{Use of a Map in Evaluator Factory}
 
