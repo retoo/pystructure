@@ -262,9 +262,7 @@ print var
 
 The two definitions are made unconditionally, which means the two uses each belong to the definition right before them. So the value of the first \id{var} is \code{42}, while the second's is \code{"Hi"}. When an analyser does it this way and respects the flow of the variables, it is called flow-sensitive. If an analyser just takes all assignments to the same name as belonging to the same variable, it is called flow-insensitive.
 
-PyStructure is flow-sensitive, which means it is as precise as possible when there's more than one assignment of a variable in the same scope. The advantage is that it results in better precision for inferring types and it is also a very useful feature to have for the use case of an IDE, where it helps with certain refactorings.
-
-Unfortunately, a flow-sensitive analyser is more difficult to implement. The following examples show some tricky situations and how the analyser should resolve them.
+PyStructure's analyser is flow-sensitive. The advantage is that it results in better precision for inferring types and it is also a very useful feature to have for the use case of an IDE, where it helps with certain refactorings. Unfortunately, a flow-sensitive analyser is more difficult to implement. The following examples show some tricky situations and how the analyser should resolve them.
 
 \subsubsection{Branches}
 
@@ -348,23 +346,30 @@ func()
 
 The first line defines a variable with the name \id{x}, the second is a use of this definition.
 
-On line 4, there's a function definition with the name \id{func}. It introduces a scope for the function. Because in the scope of the function, variables from the whole outer scope could be used, the visiting of the function body is deferred to later.
+On line 4, there's a function definition with the name \id{func}. It introduces a scope for the function. Because variables from the whole outer scope could be used from within the function, the visiting of the function body is deferred to later.
 
 Line 14 is a name use of \id{func}. That it is a function call doesn't matter for the \class{DefinitionVisitor}.
 
 The visitor now visits the body of the function. The scope of the function is created, with the module scope as the parent scope. At line 5, there's a definition of the name \id{x}.
 
-At line 7, a block starts for the if clause and there's a definition for \id{y}. Line 8 uses the \id{x} variable. To find the corresponding definition(s), the enclosing block is searched for the current definition of \id{x}. The search continues to the next parent block if it isn't found. So the definition from line 5 is found and the use associated with it.
+At line 7, a block starts for the if clause and there's a definition for \id{y}. Line 8 uses the \id{x} variable. To find the corresponding definition(s), the enclosing blocks is searched for the current definition of \id{x}. So the definition from line 5 is found and the use associated with it.
 
 At line 10, the else clause begins. There's another definition of \id{y} here. Line 11 uses \id{y} and its definition is found directly in the block.
 
 On line 12, the two blocks of the if have ended. The definitions of both blocks are now set as the current definitions of \id{y}, they are said to flow out from the block. So the use on this line may refer to both the definitions in the if/else block and the use is created accordingly.
 
-No definitions flow from the scope, so the visitor has done its work and can return the results, the name uses and definitions.
+Now the visitor is finished and can return the name uses and definitions.
 
-\todo{Maybe describe the algorithm in pseudocode?}
+\section{Model Overview}
 
-\todo{Write about how tuple assignments are handled? (Maybe better in Challenges)}
+After building the structure and connecting definitions and uses, the building of the model is finished. The components making up the model are:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8 \textwidth, trim=30 440 30 30, clip=true]{model}
+    \label{fig:model}
+    \caption{Domain Model}
+\end{figure}
 
 \section{Limits of the Model}
 
