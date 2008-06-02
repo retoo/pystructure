@@ -852,7 +852,7 @@ Other Type Inference Solutions
 
 The original design of the goal engine handled the result of goals differently. The result of a subgoal was passed as a parameter to the \id{subgoalDone} method of evaluators. The signature was:
 
-\begin{lstlisting}[language=java]
+\begin{lstlisting}[style=java]
 public abstract List<IGoal>
 subgoalDone(IGoal subgoal, Object result,
             GoalState state);
@@ -860,7 +860,7 @@ subgoalDone(IGoal subgoal, Object result,
 
 The \code{result} is \code{Object} because it depends on the type of subgoal what the result actually is. So the code in \code{subgoalDone} to get the result typically looked like this:
 
-\begin{lstlisting}[language=java]
+\begin{lstlisting}[style=java]
 if (subgoal instanceof ClassReferencesGoal) {
     List<ClassReference> classReferences =
             (List<ClassReference>) result;
@@ -877,7 +877,7 @@ Which is not very good because of these reasons:
 
 In \code{subgoalDone}, it is necessary to differentiate between the different subgoal types anyway, so why not store the result of the goal in the goal itself? This is the way that was implemented, so the code from above now looks like this:
 
-\begin{lstlisting}[language=java]
+\begin{lstlisting}[style=java]
 if (subgoal instanceof ClassReferencesGoal) {
     ClassReferencesGoal g = (ClassReferencesGoal) subgoal;
     List<ClassReference> classReferences = g.references;
@@ -901,7 +901,7 @@ With this, all the aforementioned weaknesses go away. The following changes were
 
 The evaluator factory is used to create the corresponding evaluator for a goal. For a number of goals, there is a one-to-one connection between goal and evaluator. At the beginning, this was implemented like this (just an excerpt):
 
-\begin{lstlisting}[language=java]
+\begin{lstlisting}[style=java]
 if (goal instanceof ClassReferencesGoal) {
     return new ClassReferencesEvaluator(
             (ClassReferencesGoal) goal);
@@ -914,7 +914,7 @@ if (goal instanceof ReturnTypeGoal) {
 
 To remove duplication, these cases were put in a map like this:
 
-\begin{lstlisting}[language=java]
+\begin{lstlisting}[style=java]
 evaluators.put(ClassReferencesGoal.class,
                ClassReferencesEvaluator.class);
 evaluators.put(ReturnTypeGoal.class,
@@ -923,7 +923,7 @@ evaluators.put(ReturnTypeGoal.class,
 
 And then, to create the evaluator, some reflection magic is used to create a new evaluator using the class from the map. It works like this (handling of reflection exceptions was omitted):
 
-\begin{lstlisting}[language=java]
+\begin{lstlisting}[style=java]
 Class<? extends IGoal> g = goal.getClass();
 Class<? extends AbstractEvaluator> e = evaluators.get(g);
 return e.getConstructor(g).newInstance(goal);

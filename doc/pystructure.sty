@@ -5,7 +5,7 @@
 \usepackage[british]{babel}
 
 \graphicspath{{img/}{../}{../../}}
-\usepackage[usenames,dvipsnames]{color}
+\usepackage{xcolor}
 
 % Colours
 % This colour palette is derived from the Tango Color Palette (published as public domain)
@@ -13,7 +13,6 @@
 % 
 % This list was genereated with the script at the end of the file
 % BEGIN GENERATED (DO NOT EDIT)
-
 \definecolor{gray}{rgb}{0.9,0.9,0.9}
 \definecolor{butter1}{rgb}{0.9882,0.9137,0.3098}
 \definecolor{butter2}{rgb}{0.9294,0.8314,0.0}
@@ -43,7 +42,12 @@
 \definecolor{aluminium5}{rgb}{0.3333,0.3412,0.3255}
 \definecolor{aluminium6}{rgb}{0.1804,0.2039,0.2118}
 % END GENERATED (DO NOT EDIT)
+
 \definecolor{titlegreen}{rgb}{0.1804,0.2039,0.2118}
+\definecolor{eclipsekeyword}{HTML}{7F0055}
+\definecolor{eclipsecomment}{HTML}{3F7F5F}
+\definecolor{eclipsestring}{HTML}{2A00FF}
+
 % Font
 \usepackage{lmodern}
 \usepackage{mathpazo} % Palatino font
@@ -91,15 +95,25 @@ morendkeywords={self,object,int,float,str,list,dict}
 
 \renewcommand{\verbatim@font}{\verbatimfont}
 
-\lstset{language=OurPython, basicstyle=\verbatimfont, frame=shadowbox,
-numberstyle=\tiny, numbersep=6mm,
-framexleftmargin=3mm, framextopmargin=2mm, framexbottommargin=2mm,
-aboveskip=5mm, belowskip=5mm, xleftmargin=4mm,
-rulesepcolor=\color{aluminium1}, showstringspaces=false,
+\lstdefinestyle{python}{language=OurPython,
 keywordstyle=\color{chameleon3}\bfseries,
 ndkeywordstyle=\color{orange3},
 identifierstyle=\color{chocolate3},
 stringstyle=\color{scarletred3}
+}
+
+\lstdefinestyle{java}{language=java, basicstyle=\verbatimfont\footnotesize,
+keywordstyle=\color{eclipsekeyword}\bfseries,
+identifierstyle=\color{black},
+stringstyle=\color{skyblue3},
+commentstyle=\color{eclipsecomment}
+}
+
+\lstset{style=python, basicstyle=\verbatimfont, frame=shadowbox,
+numberstyle=\tiny, numbersep=6mm,
+framexleftmargin=3mm, framextopmargin=2mm, framexbottommargin=2mm,
+aboveskip=5mm, belowskip=5mm, xleftmargin=4mm, showstringspaces=false,
+rulesepcolor=\color{aluminium1}
 }
 
 % Command for floating info boxes
