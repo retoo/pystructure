@@ -121,7 +121,7 @@ Structural Analysis
 
 Before any meaningful structure analysis of a program is possible the individual components have to be identified and analysed. To know what dependencies a component (e.g. a class) has, it first has to be determined what kind of other components are being used. For example if the GUI class calls a method of a class in the business logic we clearly have a dependency between these two components. It becomes obvious that knowing the type of a given expression, in this example the method call, is imperative for any meaningful structural analysis.
 
-This leads to the question, how can the type of a given expression be determined? In Java this question would be very simple, the definition always states the type.\footnote{In the example \code{boolean isOdd(int i)}, method \code{isOdd} has a parameter \code{i} with the type \type{int} and returns a \type{boolean}.} In Python the types aren't specified at all, they are only known at runtime by the interpreter. To still be able to determine them, a heuristic has to be used which infers the types by looking at the context and finding answers to questions like ``Where was the variable defined?'' and ``Who called that function?''. This heuristic is usually called type inferencer (TI).
+This leads to the question, how can the type of a given expression be determined? In Java this question would be very simple, the definition always states the type.\footnote{In the example \java{boolean isOdd(int i)}, method \java{isOdd} has a parameter \java{i} with the type \type{int} and returns a \type{boolean}.} In Python the types aren't specified at all, they are only known at runtime by the interpreter. To still be able to determine them, a heuristic has to be used which infers the types by looking at the context and finding answers to questions like ``Where was the variable defined?'' and ``Who called that function?''. This heuristic is usually called type inferencer (TI).
 
 % TODO: Write about differences between dynamically and statically (and explicitly) typed languages.
 
@@ -138,7 +138,7 @@ So, developing a type inferencer was a central goal of the project. To be useful
 
 Of course the type inferencer should take the application as a whole into account and develop a best guess what the given expression's type could be. For example, in the case of a method argument, the type inferencer should look for all places where the particular method is called and what argument type was used.
 
-The type inferencer should also be able to handle the case where more than one type is possible for a single expression, a simple example\footnote{The ternary operator is a bit different in Python than in other languages, the example means: \code{vehicle = (input == "car") ? Car() : Plane()}} would be:
+The type inferencer should also be able to handle the case where more than one type is possible for a single expression, a simple example\footnote{The ternary operator is a bit different in Python than in other languages, the example means: \java{vehicle = (input == "car") ? Car() : Plane()}} would be:
 
 \begin{lstlisting}
 vehicle = Car() if input == "car" else Plane()
@@ -438,7 +438,7 @@ The \class{PythonEvaluatorFactory} takes several criteria into account, for exam
 
 \subsubsection{Evaluator}
 
-Now the actual work begins, the evaluator gets initialised with the goal as a parameter. As a first step the eveluator's \id{init()} method is called. The evaluator then has a first chance to do it's job. If necessary (and it often is) the evaluator can create subgoals and return them. The evaluator's goal is not considered finished as long as there are any remaining subgoals. Every time a subgoal is finished the evaluator's \id{subgoalDone(subgoal)} method is called. Here again the evaluator has the chance to create some subgoals.
+Now the actual work begins, the evaluator gets initialised with the goal as a parameter. As a first step the eveluator's \java{init()} method is called. The evaluator then has a first chance to do it's job. If necessary (and it often is) the evaluator can create subgoals and return them. The evaluator's goal is not considered finished as long as there are any remaining subgoals. Every time a subgoal is finished the evaluator's \java{subgoalDone(subgoal)} method is called. Here again the evaluator has the chance to create some subgoals.
 
 From the goal engine's perspective there's no difference between subgoals and root goals, they are handled equally. But of course as soon as the root goal is finished the goal engine returns the found result to the user.
 
@@ -624,7 +624,7 @@ The solution is pretty simple. When an evaluator creates a subgoal that is alrea
 
 In the example at step 8, the goal engine checks for cycles. It walks upwards one step (over 5) and checks if this node is the same as the subgoal. It is, so there is a cycle.
 
-When a cycle is detected, the offending subgoal is not connected to the evaluator. In addition, \id{subgoalDone} is called on the evaluator with the \id{RECURSIVE} goal state for the subgoal. The evaluator can then react to the situation, for example by ignoring it. The call type evaluator does this and returns an empty type as its result, which means the whole result will be \type{int} because of the first \code{return}.
+When a cycle is detected, the offending subgoal is not connected to the evaluator. In addition, \java{subgoalDone} is called on the evaluator with the \java{RECURSIVE} goal state for the subgoal. The evaluator can then react to the situation, for example by ignoring it. The call type evaluator does this and returns an empty type as its result, which means the whole result will be \type{int} because of the first \code{return}.
 
 \subsection{Call Context}
 
@@ -717,7 +717,7 @@ The types for \id{a} and \id{b} are the same as in the example with the lists. T
 
 So the problem is that the inferencer treats the \id{Container} class as if every instance had the same type of the \id{self.element} attribute. It doesn't differentiate between instances, only between classes.
 
-In PyStructure, the constructor call node is used to differentiate between instances of the same class. For this, an additional field \id{constructorCall} was added to \class{ClassType}, the object representing an instance of a class. It is set when a \class{ClassType} is created.
+In PyStructure, the constructor call node is used to differentiate between instances of the same class. For this, an additional field \java{constructorCall} was added to \class{ClassType}, the object representing an instance of a class. It is set when a \class{ClassType} is created.
  
 ... \cite{ddp}
 
@@ -850,7 +850,7 @@ Other Type Inference Solutions
 
 %{ rschuett: korrigieren, vielleicht ein bisschen mehr blabla :)
 
-The original design of the goal engine handled the result of goals differently. The result of a subgoal was passed as a parameter to the \id{subgoalDone} method of evaluators. The signature was:
+The original design of the goal engine handled the result of goals differently. The result of a subgoal was passed as a parameter to the \java{subgoalDone} method of evaluators. The signature was:
 
 \begin{lstlisting}[style=java]
 public abstract List<IGoal>
@@ -858,7 +858,7 @@ subgoalDone(IGoal subgoal, Object result,
             GoalState state);
 \end{lstlisting}
 
-The \code{result} is \code{Object} because it depends on the type of subgoal what the result actually is. So the code in \code{subgoalDone} to get the result typically looked like this:
+The \java{result} is \java{Object} because it depends on the type of subgoal what the result actually is. So the code in \java{subgoalDone} to get the result typically looked like this:
 
 \begin{lstlisting}[style=java]
 if (subgoal instanceof ClassReferencesGoal) {
@@ -870,12 +870,12 @@ if (subgoal instanceof ClassReferencesGoal) {
 Which is not very good because of these reasons:
 
 \begin{itemize}
-	\item The cast is unchecked and the only reason why we can say that it is correct is because we just \emph{know} that the result of a \class{ClassReferencesGoal} is of type \code{List<ClassReference>}.
+	\item The cast is unchecked and the only reason why we can say that it is correct is because we just \emph{know} that the result of a \class{ClassReferencesGoal} is of type \java{List<ClassReference>}.
 	\item Should the return type of a \class{ClassReferencesGoal} change during development, it isn't checked statically but an error is thrown at runtime (hopefully when the tests are run).
 	\item Writing the casting is cumbersome because one has to look up the type of the result in the evaluator which processes the goal.
 \end{itemize}
 
-In \code{subgoalDone}, it is necessary to differentiate between the different subgoal types anyway, so why not store the result of the goal in the goal itself? This is the way that was implemented, so the code from above now looks like this:
+In \java{subgoalDone}, it is necessary to differentiate between the different subgoal types anyway, so why not store the result of the goal in the goal itself? This is the way that was implemented, so the code from above now looks like this:
 
 \begin{lstlisting}[style=java]
 if (subgoal instanceof ClassReferencesGoal) {
@@ -887,7 +887,7 @@ if (subgoal instanceof ClassReferencesGoal) {
 With this, all the aforementioned weaknesses go away. The following changes were also necessary:
 
 \begin{itemize}
-	\item The result is no longer passed to \code{subgoalDone}.
+	\item The result is no longer passed to \java{subgoalDone}.
 	\item The evaluator which calculates the result for a goal stores the result in the goal itself instead of returning it to the goal engine.
 \end{itemize}
 
@@ -947,7 +947,7 @@ There were even some cases where a bug only appeared when the goals were process
 
 % { rstocker: korrektur, und überleg mal ob wir hier wirklich methodennamen angeben sollen 
 
-Instead of just adding debugging code to the goal engine a logging interface was defined which then gets called by the engine during the different stages of the evaluation. The interface \class{IGoalEngineLogger} describes a set of hooks which can be used for a wide variety of debuggers and loggers: The beginning and the end of the evaluation process (\id{evaluationStarted()} \& \id{evaluationFinished()}) and two hooks which get called when a goal has been created or finished (\id{goalCreated()} \& \id{goalFinished)}).
+Instead of just adding debugging code to the goal engine a logging interface was defined which then gets called by the engine during the different stages of the evaluation. The interface \class{IGoalEngineLogger} describes a set of hooks which can be used for a wide variety of debuggers and loggers: The beginning and the end of the evaluation process (\java{evaluationStarted()} \& \java{evaluationFinished()}) and two hooks which get called when a goal has been created or finished (\java{goalCreated()} \& \java{goalFinished)}).
 
 Using this interface a logger called \class{ConsoleLogger} was developed which visualises the evaluation process as a printed tree on the console. This turned out to be very useful as it shows what goal was created when, by whom and when it was finished. 
 
@@ -1045,7 +1045,7 @@ add_one(1) ## type float
 
 The \code{##} is the marker for an assertion, the \texttt{type} is the name of the assertion and the part after that is the expected value.
 
-The implementation is fairly trivial. All the markers in a file are found and a new assertion is created with the type and line number. When the test is run the assertion finds the expression on its line by using an \class{ExpressionAtLineVisitor}. It creates an expression type goal, asks the goal engine to evaluate it and then compares the result with the expected result. If they don't match, a custom error \type{InferencerAssertionError} is thrown with the information about the failure. In the last line of the above example, the expected value was messed up:
+The implementation is fairly trivial. All the markers in a file are found and a new assertion is created with the type and line number. When the test is run the assertion finds the expression on its line by using an \class{ExpressionAtLineVisitor}. It creates an expression type goal, asks the goal engine to evaluate it and then compares the result with the expected result. If they don't match, a custom error \class{InferencerAssertionError} is thrown with the information about the failure. In the last line of the above example, the expected value was messed up:
 
 \begin{verbatim}
 type of <add_one(1)>: expected <float> but was <int> (simple.py:11)
@@ -1133,7 +1133,7 @@ Should the need for other sorts of tests arise, it is just a matter of adding an
 \chapter{Appendix}
 \pagenumbering{Alph}
 
-\section{Evalautors}
+\section{Evaluators}
 
 
 \begin{itemize}

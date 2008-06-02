@@ -78,15 +78,21 @@
 \usepackage{listings}
 \usepackage{verbatim}
 
+% Python
 \newcommand{\id}{\lstinline}
 \newcommand{\type}[1]{\textcolor{skyblue3}{\texttt{#1}}}
 \newcommand{\code}{\lstinline}
 \newcommand{\node}{\lstinline}
-\newcommand{\class}[1]{\textcolor{chocolate3}{\texttt{#1}}}
+
+% Java
+\newcommand{\java}[1]{\lstinline[style=java]{#1}}
+\newcommand{\class}[1]{\textcolor{black}{\texttt{#1}}}
+
+% Other
 \newcommand{\file}{\texttt}
 \newcommand{\todo}[1]{\textcolor{scarletred3}{\textbf{#1}}}
-\newcommand{\evalautor}[1]{\textcolor{chocolate3}{\texttt{#1}}}
 
+% Listings
 \lstdefinelanguage[]{OurPython}[]{Python}{
 morendkeywords={self,object,int,float,str,list,dict}
 }
