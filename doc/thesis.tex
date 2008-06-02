@@ -534,7 +534,7 @@ function(Baz())
     \item[] In the example this would just be \code{Baz()}.
 \end{itemize}
 
-\subsubsection{Methods \& Attributes}
+\subsection{Methods \& Attributes}
 
 Classes added yet another layer of complexity to the type inferencer. Methods calls are in Python written as \code{receiver.method()}. Here again the problem was to find all callers of a method. Like in the case of functions the evaluator has to check all potential matches if their names match. But this isn't enough,  additionally the receiver has to be of the correct type. Otherwise the TI would mix up a identically called method in two unrelated classes. 
 
@@ -577,6 +577,18 @@ a.cargo # what's the type?
         \item Only keep references to \class{AttributUse}
         \item Only keep references whose receiver has the correct type (is a Truck)
     \end{enumerate}
+    \item Using these three steps the the attribute reference evaluators returns three results:
+    \begin{itemize}
+        \item \code{self.cargo = None}
+        \item \code{self.cargo = something}
+        \item \code{a.cargo}
+    \end{itemize}
+    \item \textbf{Note:} \emph{\id{self} and \id{a} are all of type \class{Truck}}
+    \item Now the \class{ClassAttributeTypeEvaluator} knows all the places where the attribute was references. All what is left do do is to select all references which are used in a assignment (only the first two) and run an \class{ExpressionTypeGoal} on the values of them: \code{None} and \code{something}.
+    \item The assignment of \code{None} produces the type \class{NoneType}
+    \item The the second assignment of \id{something} is defined as a parameter of the method \id{store}. Resolving this parameter causes a \class{MethodReferenceGoal}, which itself produces yet another \class{AttributeReferencesGoal} to find all callers of the method.
+
+So here again, finding all callers of a method and finding all attribute references is quite similar, and therefore shares a lot of code/goals.
     
 \end{itemize}
 
