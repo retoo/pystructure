@@ -412,6 +412,8 @@ When a goal is solved the result gets stored into the goal object and returned t
 
 \subsubsection{Evaluators}
 
+% rstocker { bitte korrigieren
+
 The counterpart of the goals are the evaluators, which are responsible for solving a particular goal. If they need any further information they can create sub goals. The evaluator gets notified when a subgoal is finished.
 
 \subsubsection{Evaluator Factory}
@@ -450,6 +452,7 @@ The internal workings of the type inferencer are easiest described using some ex
 
 It is important to understand that all these examples can be combined like puzzle parts in a puzzle. Although these examples look unrealistic simple, they can be combined in whatever order is necessary, and therefore catch a lot of different and complex  cases. 
 
+
 \subsubsection{Simple assignment}
 
 The first example is quite simple, a new object of the type \type{Foo} is being instantiated and assigned to the variable \id{x}. 
@@ -476,11 +479,14 @@ x # what type?
 	\item After the root goal is finished the result is handed back to the caller of the library and the type inferencer is finished.	
 \end{itemize}
 
+% }
+
 \begin{lstlisting}
 def function():
 	return Bar()
 
 x = function()
+x ## what is this type
 \end{lstlisting}
 
 \begin{lstlisting}
