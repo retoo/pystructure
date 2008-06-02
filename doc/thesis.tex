@@ -388,9 +388,9 @@ There are things which are not represented in the model because it is built with
 	\includegraphics[width=2.5cm]{process_overview_ti}
 \end{wrapfigure}
 
-Now, after all the source has been parsed an a generalised model of the program has been build the actual analysing can begin. 
+Now, after all the source has been parsed and a generalised model of the program has been built the actual analysis can begin. 
 
-In the first part of this section the \textbf{Goal Engine} and the general \textbf{Evaluation} is described. Knowing how these underlying mechanisms work is important to understand the type inferencer itself. In the second chapter the \textbf{Type Inferring Algorithm} itself is explained using some examples. 
+In the first part of this section the \textbf{goal engine} and the general \textbf{evaluation} is described. Knowing how these underlying mechanisms work is important to understand the type inferencer itself. In the second chapter the \textbf{type inference algorithm} itself is explained using some examples. 
 
 \subsection{Goal Engine}
 
@@ -399,94 +399,96 @@ The goal engine is a central part of the type inferencer, it is responsible for 
 The goal engine consists of the following main components:
 
 \subsubsection{Goals}
-Goals, as the name says, defines the \emph{goal} of a single step in the type inferencer. Usually a goal can't be solved directly, but requires a several sub goals to get to a conclusion.
 
-When a goal is solved the result gets stored into the goal object and returned to the evaluator who created it.
+Goals, as the name says, defines the \emph{goal} of a single step in the type inferencer. Usually a goal can't be solved directly, but requires several subgoals to reach a conclusion.
+
+When a goal is solved the result is stored in the goal object and returned to the evaluator that created it.
 
 \textbf{Examples:}
 
 \begin{itemize}
 	\item ``What does this function return?''  $\rightarrow$  \class{ReturnTypeGoal}
-	\item ``Where is this name defined?'' $\rightarrow$ \class{DefinitionTypeGoal}
+	\item ``What is the type of this definition?'' $\rightarrow$ \class{DefinitionTypeGoal}
 \end{itemize}
 
 \subsubsection{Evaluators}
 
-% rstocker { bitte korrigieren
-
-The counterpart of the goals are the evaluators, which are responsible for solving a particular goal. If they need any further information they can create sub goals. The evaluator gets notified when a subgoal is finished.
+The counterpart of the goals are the evaluators, which are responsible for solving a particular goal. If they need any further information they can create subgoals. The evaluator is notified when a subgoal is finished.
 
 \subsubsection{Evaluator Factory}
 
-The final part which brings goal and the evaluators together is the evaluator factory. It is responsible for choosing the right evaluator for a particular goal. 
+The final part which brings goals and the evaluators together is the evaluator factory. It is responsible for choosing the right evaluator for a particular goal.
 
 \subsection{Evaluation}
 
-Summarised, the evaluation works as follows: The user of the library picks an expression somewhere in the code and then creates an ``expression type goal'' for this expression. This goal, called root goal, is then fed into the goal engine which starts to process it. Every goal has to be processed by one of the evaluator. Which evaluator has to be used is determined by the evaluator factory according to the goal's type and other criteria. The particular evaluator then gets initialised and processes the goal. The evaluator can (and usually will) create subgoals which are then processed as well. As the goals are being successfully finished their result are reported back to their parent goal. As soon as the root goal finishes, the result is returned to the user.
+Summarised, the evaluation works as follows: The user of the library picks an expression somewhere in the code and then creates an ``expression type goal'' for this expression. This goal, called root goal, is then fed into the goal engine which starts to process it. Every goal has to be processed by one evaluator. Which evaluator has to be used is determined by the evaluator factory according to the goal's type and other criteria. The particular evaluator is then initialised and processes the goal. The evaluator can (and usually will) create subgoals which are then processed as well. As a goal finishes successfully, its result is reported back to the parent goal. As soon as the root goal finishes, the result is returned to the user.
 
-\subsubsection{Picking a root goal}
+\subsubsection{Picking a Root Goal}
 
-As a first step the user of the type inferencer, usually the structural analyser, has to define what has to be evaluated. This \emph{main} goal is called root goal. Usually this goal is an \class{ExpressionTypeGoal} which instructs the goal engine to determine the type of a given expression (hence the name). The expression in question can be any expression from the AST. They can for example be found by using a visitor like the \class{ExpressionAtLineVisitor} or by iterating over all expressions (like the type spider does \todo{reference to the Spider}).
+As a first step the user of the type inferencer, usually the structural analyser, has to define what has to be evaluated. This \emph{main} goal is called root goal. Usually this goal is an \class{ExpressionTypeGoal} which instructs the goal engine to determine the type of a given expression (hence the name). The expression in question can be any expression from the AST. They can for example be selected using a visitor like the \class{ExpressionAtLineVisitor} or by iterating over all expressions (like the type spider does \todo{reference to the Spider}).
 
-\subsubsection{Select evaluator for goal}
+\subsubsection{Selecting the Evaluator for a Goal}
 
 When the root goal is created it has to be fed into the goal engine. Every goal has to be processed by one of the available evaluators. Which one has to be used is determined by \class{PythonEvaluatorFactory}.
 
-The \class{PythonEvaluatorFactory} takes several criteria into account, for example in the case of an expression type goal the type of the associated expression is also considered. For example if the expression is a method call the goal gets delegated to the \class{CallTypeEvaluator}, an attribute expression is processed by the \class{AttributeTypeEvaluator} and so on.\todo{rstocker: Should we a provide a list of these mappings somewhere?}
+The \class{PythonEvaluatorFactory} takes several criteria into account. In the case of an expression type goal the type of the associated expression is also considered. For example if the expression is a method call the goal is delegated to the \class{CallTypeEvaluator}, an attribute expression is processed by the \class{AttributeTypeEvaluator} and so on.\todo{rstocker: Should we a provide a list of these mappings somewhere?}
 
-\subsubsection{More information}
+\subsubsection{More Information}
 
 \subsubsection{Evaluator}
 
-Now the actual work begins, the evaluator gets initialised with the goal as a parameter. As a first step the eveluator's \java{init()} method is called. The evaluator then has a first chance to do it's job. If necessary (and it often is) the evaluator can create subgoals and return them. The evaluator's goal is not considered finished as long as there are any remaining subgoals. Every time a subgoal is finished the evaluator's \java{subgoalDone(subgoal)} method is called. Here again the evaluator has the chance to create some subgoals.
+Now the actual work begins, the evaluator is created with its goal as a parameter. As a first step the eveluator's \java{init()} method is called. The evaluator then has a first chance to do it's job. If necessary (and it often is) the evaluator can create subgoals and return them. The evaluator's goal is not considered finished as long as there are remaining unfinished subgoals. Every time a subgoal is finished the evaluator's \java{subgoalDone(subgoal)} method is called. Here again the evaluator has the chance to create more subgoals as needed.
 
-From the goal engine's perspective there's no difference between subgoals and root goals, they are handled equally. But of course as soon as the root goal is finished the goal engine returns the found result to the user.
+From the goal engine's perspective there's no difference between subgoals and root goals, they are handled equally. But of course as soon as the root goal is finished the goal engine returns the calculated result to the user.
 
 \todo{explain types}
 
-\subsection{Type Inferring Algorithm}
+\subsection{Type Inference Algorithm}
 
-Based on this goal engine the type inferencer algorithm is implemented, using \textbf{15 goals} and \textbf{31 evaluators}
+The implementation of the type inference algorithm consists of the goal engine and \textbf{15 goals} and \textbf{31 evaluators}.
 
-The internal workings of the type inferencer are easiest described using some examples. In this section some common situations are shown and it is explained how the TI solves these. 
+The internal workings of the type inferencer are best described using some examples. In this section some common situations are shown and it is explained how the type inferencer solves them.
 
-It is important to understand that all these examples can be combined like puzzle parts in a puzzle. Although these examples look unrealistic simple, they can be combined in whatever order is necessary, and therefore catch a lot of different and complex  cases. 
+It is important to understand that all goals of the examples can be mixed and matched freely. Although these examples look unrealistically simple, they can be combined in whatever order is necessary, and therefore catch a lot of different and complex cases.
 
 
-\subsubsection{Simple assignment}
+\subsubsection{Simple Assignment}
 
-The first example is quite simple, a new object of the type \type{Foo} is being instantiated and assigned to the variable \id{x}. 
+The first example is quite simple, a new object of the class \id{Foo} is instantiated and assigned to the variable \id{x}. 
 
 \begin{lstlisting}
-class Foo(): pass
+class Foo(object):
+    pass
 
 x = Foo()
 x # what type?
 \end{lstlisting}
 
 \begin{itemize}
-	\item The Type inferencer gets initialised with a \class{ExpressionTypeGoal} with the expression \node{Name(x)} attached to it.
-	\item The evaluator factory assesses the goal and assigns it to the \class{NameTypeEvaluator} because the expression in question is a Name AST Node.
-	\item The \class{NameTypeEvaluator} finds the definition of \id{x} by looking for the corresponding \class{NameUse}. It then creates a \class{DefinitionTypeGoal} to determine it's type. Note: if there is more than one definition the evaluator just creates a goal for each of them. \todo{we could mention somewhere that this easy parallelising a advantage of the goal engine is}
-	\item In this case the node attached to the definition is a \node{Assign} node and therefore the goal gets mapped to the \class{AssignTypeEvaluator}.
-	\item All the \class{AssignTypeEvaluator} does is creating a new \class{ExpressionTypeGoal} for the assigned value. In this case this is: \code{Foo()}.
-	\item Note: As \id{Foo} is capitalised it is quite obvious that we are talking about the instantiation of an object here. But Python allows capitalised functions and therefore the TI can't be completely sure and therefore has to check what the type returned by that call is.
-	\item This new \class{ExpressionTypeGoal} gets also processed by the evaluator factory, but this time the goal gets assigned to the \class{CallTypeEvaluator} as the goal's node is a call: \code{Foo()}.
-	\item The evaluator first tries to determine if the name in question is a function or a class name. To do that it creates a expression type goal for the name. In this case this is the name \id{Foo}.
-	\item Now the process begins from the start, the type of the name \id{Foo} has to be evaluated. The \class{NameTypeEvaluator} finds the class definition, and the results in a \class{MetaClassType} being returned.
-	\item The result gets handed back to the \class{CallTypeEvaluator} which now knows that the call is in fact made to a constructor, so therefore the type returned by the call is a object of the class \class{Foo}. 
-	\item Not much is left to do, the final result is handed up the chain of evaluators. Until the evaluator of the root goal is reached, the first \class{NameTypeEvaluator}. 
-	\item After the root goal is finished the result is handed back to the caller of the library and the type inferencer is finished.	
+	\item The type inferencer is initialised with an \class{ExpressionTypeGoal} with the node \node{Name(x)} associated to it.
+	\item The evaluator factory looks at the goal and creates an \class{NameTypeEvaluator} for it because the expression in question is a Name AST node.
+	\item The \class{NameTypeEvaluator} finds the definition of \id{x} by looking for the corresponding \class{NameUse} in the module. It then creates a \class{DefinitionTypeGoal} to determine its type. Note: if there is more than one definition the evaluator just creates a subgoal for each of them. \todo{we could mention somewhere that this easy parallelising a advantage of the goal engine is}
+	\item In this case the node attached to the definition is an \node{Assign} node and therefore the goal is mapped to the \class{AssignTypeEvaluator}.
+	\item All the \class{AssignTypeEvaluator} does is creating a new \class{ExpressionTypeGoal} for the corresponding value on the right-hand side of the assignment. In this case this is: \code{Foo()}.
+	\item Note: As \id{Foo} is capitalised it is quite obvious for the human observer that we are talking about the instantiation of an object here. But Python allows capitalised function names and therefore the TI can't be completely sure and therefore has to check what \id{Foo} actually is, a function or a class.
+	\item This new \class{ExpressionTypeGoal} is also processed by the evaluator factory, but this time a \class{CallTypeEvaluator} is created as the goal's expression is a \node{Call} node: \code{Foo()}.
+	\item The evaluator first tries to determine if the name in question is a function or a class. To do that it creates an expression type goal for the name. In this case this is the name \id{Foo}.
+	\item Now the type of the name \id{Foo} has to be evaluated, which works like with the \id{x} name at the beginning. The \class{NameTypeEvaluator} finds the class definition, and the returned result is a \class{MetaclassType}.
+	\item The result is handed back to the \class{CallTypeEvaluator} which now knows that the call is in fact a constructor, so therefore the type returned by the call is an object of the class \class{Foo}, which is a \class{ClassType}.
+	\item Not much is left to do. The final result is handed up the chain of evaluators until the evaluator of the root goal is reached, the first \class{NameTypeEvaluator}.
+	\item After the root goal is finished the result is handed back to the caller of the library and the type inference process is finished.
 \end{itemize}
 
-So briefly summarised the evaluation worked as follows: First the TI locates the variables definition,, in this case a assignment, then check what was assigned. 
+So, briefly summarised the evaluation works as follows: First the TI locates the variable's definition, in this case an assignment and then finds out what was assigned.
 
-\subsubsection{Function call}
+\subsubsection{Function Call}
 
-The second example is similar to the first one, but instead of the creation of new object a function is being called.
+The second example is similar to the first one, but instead of the creation of a new object a function is called.
 
 \begin{lstlisting}
-class Bar(): pass
+class Bar():
+    pass
+
 def function():
 	return Bar()
 
@@ -495,23 +497,25 @@ x # what type?
 \end{lstlisting}
 
 \begin{itemize}
-	\item The first few steps are similar to the first example, the evaluator eventually creates a \class{ExpressionTypeGoal} for the expression \code{function()}.
-	\item Because it is a \node{Call} node as above the \class{CallTypeEvaluator} gets involve again. And as in the last example the name of the function being called is resolved: \id{function}
-	\item The name \id{function} leads to the function definition and gets returned to the \class{CallTypeEvaluator}.
-	\item Now knowing that this is a function the evaluator creates a \class{ReturnTypeGoal} for it.
-	\item \class{ReturnTypeGoal}'s are handled by the \class{ReturnTypeEvaluator}, which does not much more than creating a \class{ExpressionTypeGoal} for every return statement in the function. 
-	\item[$\rightarrow$] In this case a new Bar object is being returned
-	\item From this point the evaluation continues again similar to the previous example. 
+	\item The first few steps are similar to the first example, the evaluator eventually creates an \class{ExpressionTypeGoal} for the expression \code{function()}.
+	\item Because it is a \node{Call} node as above, a \class{CallTypeEvaluator} is used again. And as in the last example the name of the function being called is resolved: \id{function}.
+	\item The name \id{function} leads to the function definition and is returned to the \class{CallTypeEvaluator}.
+	\item Now knowing that it's a function the evaluator creates a \class{ReturnTypeGoal} for it.
+	\item The \class{ReturnTypeGoal} is handled by the \class{ReturnTypeEvaluator}, which creates an \class{ExpressionTypeGoal} for every return statement in the function.
+	\item[$\rightarrow$] In this case the result of a \code{Bar()} call is returned.
+	\item From this point on the evaluation continues like in the previous example.
 \end{itemize}
 
-So the only difference between creating a object and calling a method is that the function has to be checked for any return statements within the function. 
+So the only difference between creating an object and calling a function is that for the function, all the return statements have to be analysed.
 
 \subsubsection{Arguments}
 
-The next example shows a different important problem: How are the types of arguments being found. So the TI doesn't have to find the function, but the other way around: all callers of a function.\todo{rschuett: write me differently}
+The next example shows a different important problem: How are the types of arguments found. This time, the TI doesn't have to find the function, but the other way around: all callers of a function.\todo{rschuett: write me differently}
 
 \begin{lstlisting}
-class Baz(): pass
+class Baz():
+    pass
+
 def function(arg):
 	x = arg
 	x # what is x
@@ -520,15 +524,14 @@ function(Baz())
 \end{lstlisting}
 
 \begin{itemize}
-	\item Again the beginning is quite similar to the previous examples, \id{x} gets assigned from \id{arg}. And \id{arg} is defined in a \node{Argument} node. The \class{DefinitionTypeGoal} of it gets therefore assigned to the \class{ArgumentTypeEvaluator}.
+	\item Again the beginning is quite similar to the previous examples, \id{x} is assigned \id{arg}. And \id{arg} is defined in an \node{Argument} node. The \class{DefinitionTypeGoal} for it is therefore passed to an \class{ArgumentTypeEvaluator}.
 	\item First the \class{ArgumentTypeEvaluator} has to find all callers of the function \id{function}. To find these it creates a \class{FunctionReferencesGoal}.
 	\item The \class{FunctionReferencesEvaluator} first looks for all potential references by setting up a \class{PossibleReferencesGoal} with the name of the function attached to it.
-	\item The \class{PossibleReferencesEvaluator} iterates over all name uses (in all modules) and checks if their name match with the function being looked for. \textbf{} \\\textbf{Note:} \emph{The \class{PossibleReferencesEvaluator} doesn't really care if the name uses found are actually calls or just something else which just happens to be named the same way.}
-	\item To find out which one of these potential references are real callers the  \class{FunctionReferencesEvaluator} iterates over all them and creates for each one a \class{ExpressionTypeGoal}. 
-	\item The expressions get resolved and the \class{FunctionReferencesEvaluator} just keep the references which point back to the function in question.
-	\item Finally with all the callers known the \class{ArgumentTypeEvaluator} can evaluate the types of the passed arguments by creating \class{ExpressionTypeGoals} for each one.
-	\item[] In the example this would just be \code{Baz()}
-
+	\item The \class{PossibleReferencesEvaluator} iterates over all name uses (in all modules) and checks if their name matches the function's. \textbf{} \\\textbf{Note:} \emph{The \class{PossibleReferencesEvaluator} doesn't really care if the name uses found are actually calls or just something else which just happens to be named the same way.}
+	\item To find out which one of these potential references are real callers the \class{FunctionReferencesEvaluator} iterates over all of them and for each one creates an \class{ExpressionTypeGoal}.
+	\item The expressions get resolved and the \class{FunctionReferencesEvaluator} just keeps the references which point back to the function in question.
+	\item Finally with all the callers known the \class{ArgumentTypeEvaluator} can evaluate the types of the passed arguments by creating an \class{ExpressionTypeGoal} for each one.
+	\item[] In the example this would just be \code{Baz()}.
 \end{itemize}
 
 
