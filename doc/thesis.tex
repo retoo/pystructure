@@ -479,19 +479,39 @@ x # what type?
 	\item After the root goal is finished the result is handed back to the caller of the library and the type inferencer is finished.	
 \end{itemize}
 
-% }
+So briefly summarised the evaluation worked as follows: First the TI locates the variables definition,, in this case a assignment, then check what was assigned. 
+
+\subsubsection{Function call}
+
+The second example is similar to the first one, but instead of the creation of new object a function is being called.
 
 \begin{lstlisting}
+class Bar(): pass
 def function():
 	return Bar()
 
 x = function()
-x ## what is this type
+x # what type?
 \end{lstlisting}
 
+\begin{itemize}
+	\item The first few steps are similar to the first example, the evaluator eventually creates a \class{ExpressionTypeGoal} for the expression \code{function()}.
+	\item Because it is a \node{Call} node as above the \class{CallTypeEvaluator} gets involve again. And as in the last example the name of the function being called is resolved: \id{function}
+	\item The name \id{function} leads to the function definition and gets returned to the \class{CallTypeEvaluator}.
+	\item Now knowing that this is a function the evaluator creates a \class{ReturnTypeGoal} for it.
+	\item \class{ReturnTypeGoal}'s are handled by the \class{ReturnTypeEvaluator}, which does not much more than creating a \class{ExpressionTypeGoal} for every return statement in the function. 
+	\item[$\rightarrow$] In this case a new Bar object is being returned
+	\item From this point the evaluation continues again similar to the previous example. 
+\end{itemize}
+
+So the only difference between creating a object and calling a method is that the function has to be checked for any return statements within the function. 
+
+\subsubsection{Arguments}
 \begin{lstlisting}
+class Baz(): pass
 def function(arg):
 	x = arg
+	x # what is x
 	
 function(Baz())
 \end{lstlisting}
