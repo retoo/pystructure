@@ -1152,21 +1152,21 @@ Key figures
 \todo{maybe describe somewhere that it is very difficult to find all attributes of a given class.}
 
 
-%% What about tthis chapter? %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\chapter{Structural Improvements}
-\section{Size Over Time}
-\section{Overall Structure}
-\section{Type Inference Engine}
-\section{Quality Assurance Infrastructure}
-\subsection{Continuous Integration}
-\subsection{Automatic Unit Testing}
-\subsection{Checkstyle}
-\subsection{Findbugs}
-\section{Results}
+\chapter{Quality Assurance}
 
-\chapter{Continuous Integration \& Testing}
+% \section{Size Over Time}
+% \section{Overall Structure}
+% \section{Type Inference Engine}
+% \section{Quality Assurance Infrastructure}
+% \subsection{Continuous Integration}
+% \subsection{Automatic Unit Testing}
+% \subsection{Checkstyle}
+% \subsection{Findbugs}
+% \section{Results}
 
-\section{Type Inference Tests}
+\section{Infrastructure}
+
+\subsection{Type Inference Tests}
 
 To be able to add tests for the type inferencer in the easiest way possible, we developed a test framework for it. Each test case is a Python file in a test directory. Assertions are added by putting markers at the end of lines of interest. An example:
 
@@ -1194,7 +1194,7 @@ type of <add_one(1)>: expected <float> but was <int> (simple.py:11)
 
 So, adding a new test is a matter of adding a new Python file to the directory, writing some code and adding some assertions by appending \code{## type expected} to a line of an expression. The test will automatically be picked up by the suite and run. This makes it very painless to write tests and that in turn makes it more likely that tests are written.
 
-\subsection{Inheritance Tests}
+\subsubsection{Inheritance Tests}
 
 When implementing inheritance support, we needed a way to test the method resolution order (MRO) of classes. So we added a new marker type, \code{mro} which compares the MRO of the expression with the expected value. For example:
 
@@ -1216,7 +1216,7 @@ Z ## mro Z,X,B,Y,A,C,object
 
 Should the need for other sorts of tests arise, it is just a matter of adding another assertion type.
 
-\section{Continuous Integration}
+\subsection{Continuous Integration}
 
   (lava lamp)
 

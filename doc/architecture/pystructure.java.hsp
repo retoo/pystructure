@@ -3,7 +3,7 @@
    <property name="hide-externals" value="true" />
    <property name="detail-mode" value="true" />
    <classpath>
-     <classpathentry kind="lib" path="../../bin" />
+      <classpathentry kind="lib" path="/home/robin/pystructure/bin" />
    </classpath>
    <excludes>
       <exclude expression="org.python.pydev.*" />
@@ -59,6 +59,69 @@
             </cell>
          </row>
          <description>General Application Overview</description>
+      </grid>
+      <grid name="Parts" enforce="true" strict="false">
+         <row>
+            <cell name="CLI" pattern="ch.hsr.ifs.pystructure.CLI" vexpanded="true" visibility="public" />
+         </row>
+         <row>
+            <cell name="export.structure101" pattern="ch.hsr.ifs.pystructure.export.structure101.*" vexpanded="false" visibility="public">
+               <grid>
+                  <row>
+                     <cell name="structure101" pattern="ch.hsr.ifs.pystructure.export.structure101.?" vexpanded="true" visibility="public" />
+                  </row>
+                  <row>
+                     <cell name="elements" pattern="ch.hsr.ifs.pystructure.export.structure101.elements.?" vexpanded="true" visibility="public" />
+                  </row>
+               </grid>
+            </cell>
+         </row>
+         <row>
+            <cell name="typeinference" pattern="ch.hsr.ifs.pystructure.typeinference.*" vexpanded="false" visibility="public">
+               <grid>
+                  <row>
+                     <cell name="inferencer" pattern="ch.hsr.ifs.pystructure.typeinference.inferencer.*" vexpanded="true" visibility="public" />
+                  </row>
+                  <row>
+                     <cell name="evaluators" pattern="ch.hsr.ifs.pystructure.typeinference.evaluators.*" vexpanded="true" visibility="public" />
+                  </row>
+                  <row>
+                     <cell name="goals" pattern="ch.hsr.ifs.pystructure.typeinference.goals.*" vexpanded="true" visibility="public">
+                        <grid>
+                           <row>
+                              <cell name="misc" pattern="ch.hsr.ifs.pystructure.typeinference.goals.misc.?" vexpanded="true" visibility="public" />
+                              <cell name="references" pattern="ch.hsr.ifs.pystructure.typeinference.goals.references.?" vexpanded="true" visibility="public" />
+                              <cell name="types" pattern="ch.hsr.ifs.pystructure.typeinference.goals.types.?" vexpanded="true" visibility="public" />
+                           </row>
+                           <row>
+                              <cell name="base" pattern="ch.hsr.ifs.pystructure.typeinference.goals.base.?" vexpanded="true" visibility="public" />
+                           </row>
+                        </grid>
+                     </cell>
+                  </row>
+                  <row>
+                     <cell name="contexts" pattern="ch.hsr.ifs.pystructure.typeinference.contexts.?" vexpanded="true" visibility="public" />
+                  </row>
+                  <row>
+                     <cell name="visitors" pattern="ch.hsr.ifs.pystructure.typeinference.visitors.?" vexpanded="true" visibility="public" />
+                  </row>
+                  <row>
+                     <cell name="results" pattern="ch.hsr.ifs.pystructure.typeinference.results.*" vexpanded="true" visibility="public" />
+                  </row>
+                  <row>
+                     <cell name="model" pattern="ch.hsr.ifs.pystructure.typeinference.model.*" vexpanded="true" visibility="public" />
+                  </row>
+                  <row>
+                     <cell name="basetype" pattern="ch.hsr.ifs.pystructure.typeinference.basetype.?" vexpanded="true" visibility="public" />
+                  </row>
+               </grid>
+            </cell>
+         </row>
+         <row>
+            <cell name="parser" pattern="ch.hsr.ifs.pystructure.parser.?" vexpanded="true" visibility="public" />
+            <cell name="utils" pattern="ch.hsr.ifs.pystructure.utils.?" vexpanded="true" visibility="public" />
+         </row>
+         <description>&lt;empty&gt;</description>
       </grid>
    </grid-set>
 </local-project>
