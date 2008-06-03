@@ -521,7 +521,7 @@ A goal is done when all its subgoals are done or when it created no subgoals in 
 
 \subsection{Evaluation Process}
 
-Summarised, the evaluation works as follows: The user of the library picks an expression somewhere in the code and then creates an ``expression type goal'' for this expression. This goal, called root goal, is then fed into the goal engine which starts to process it. Every goal has to be processed by one evaluator. Which evaluator has to be used is determined by the evaluator factory according to the goal's type and other criteria. The particular evaluator is then initialised and processes the goal. The evaluator can (and usually will) create subgoals which are then processed as well. As a goal finishes successfully, its result is reported back to the parent goal. As soon as the root goal finishes, the result is returned to the user.
+Summarised, the evaluation works as follows: First a an expression of interest has to be chosen somewhere in the code. The expression is then attached to an ``expression type goal''. This goal, called root goal because it is the root of the evaluation, is then fed into the goal engine which starts to process it. Every goal has to be processed by one evaluator. Which evaluator has to be used is determined by the evaluator factory according to the goal's type and other criteria. The particular evaluator is then initialised and processes the goal. The evaluator can (and usually will) create subgoals which are then processed as well. As a goal finishes successfully, its result is reported back to the parent goal. As soon as the root goal finishes, the result is returned to the user.
 
 \subsubsection{Picking a Root Goal}
 
@@ -1074,9 +1074,6 @@ return e.getConstructor(g).newInstance(goal);
 Providing an easy way to debug the type inferencer was a challenging problem. The concept of using a goal engine which controls the whole evaluation process is rather unusual and all common debug scheme don't handle it very well. In a normal debugger the developer can always look at the call stack to see what functions were called in what order. But the stack trace when debugging a goal doesn't provide much details, it doesn't show what goal was creating the current goal nor what other goals currently are active.
 
 There were even some cases where a bug only appeared when the goals were processed in a particular order. Because all \emph{open} goals are treated equally it was possible that some goals are processed early or later
-% { rstocker: korrektur & kürzen(?), evtl. auch mehr was fürs challenges 
-\footnote{In one particular (annoying) case the bug could be triggered by uncommenting the construction of a simple Random object (which wasn't assigned to a variable and therefore got discarded). But even this simple change changed some orderings of hashsets/maps and therefore possibly the order of goals being processed. Of course the TI was meant to work independent of the used ordering, but in few cases the bug pattern only appeared in special orderings.}
-%)
 
 \subsection{How}
 
