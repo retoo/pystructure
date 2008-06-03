@@ -399,7 +399,13 @@ In the first part of this section the \textbf{goal engine} and the general \text
 
 \section{Goal Engine}
 
-The goal engine is a central part of the type inferencer, it is responsible for the orchestration of the whole evaluation and the underlying algorithm.
+% (advantages/disadvantages)\\
+% (contexts)\\
+% TODO: Write somewhere that the goal node graph is a directed acyclic graph (DAG)
+
+The goal engine is a central part of the type inferencer, it is responsible for the orchestration of the whole evaluation and the underlying algorithm. To understand how the type inference algorithm works it is important to understand the goal engine. Theoretically the goal engine could be used to solve any type of goals.
+
+\subsection{Components}
 
 The goal engine consists of the following main components:
 
@@ -414,7 +420,62 @@ When a goal is solved the result is stored in the goal object and returned to th
 \begin{itemize}
     \item ``What does this function return?''  $\rightarrow$  \class{ReturnTypeGoal}
     \item ``What is the type of this definition?'' $\rightarrow$ \class{DefinitionTypeGoal}
+    \item ``Where is this method called?'' $\rightarrow$ \class{MethodReferenceGoal}
 \end{itemize}
+
+\subsubsection{Results}
+
+% { rstocker  neuer abschnitt
+
+When a goal gets solved the result is stored within the goal. How this result does look like depends on the kind of goals. 
+
+In PyStructure there are two main kind of goals (and therefore results):
+
+\paragraph{Types}
+
+Report what kind of type a given expression has. There is a distinction drawn between different kind of types. These are:
+
+\begin{itemize}
+    \item \textbf{Classtype} A particular instance of a class
+    \item \textbf{Meta Classtype} A class object
+    \item \textbf{Method \& Function Type}
+    \item \textbf{Package Type}
+    \item \textbf{Combined Type} Union of several types
+\end{itemize}
+
+In the example: \code{t = Truck()} – \id{Truck} is a Meta Classtype were as \id{t} is a Classtype.
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8 \textwidth, trim=30 500 60 30, clip=true]{ti_results}
+    \label{fig:ti_results}
+    \caption{Domain of the result types}
+\end{figure}
+
+\paragraph{References}
+
+Some goals return a list of references when being solved. As explained later this is for example used when the type infer inferencer has to find all callers of a given method.
+
+Several kinds of references are being resolved:
+
+\begin{itemize}
+	\item Attribute References
+	\item Class References
+	\item Function References
+	\item Method References
+	\item Constructor References
+\end{itemize}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7 \textwidth, trim=30 530 125 30, clip=true]{ti_references}
+    \label{fig:ti_referenes}
+    \caption{Domain Model of the reference types}
+\end{figure}
+
+% }
 
 \subsubsection{Evaluators}
 
@@ -424,30 +485,59 @@ The counterpart of the goals are the evaluators, which are responsible for solvi
 
 The final part which brings goals and the evaluators together is the evaluator factory. It is responsible for choosing the right evaluator for a particular goal.
 
-\section{Evaluation}
+\subsubsection{Goal Queue}
+
+Internally the goal engine  basically keeps goal nodes in a working queue. A goal node combines a goal and its evaluator. The algorithm works like in this simplified pseudocode:
+
+\begin{lstlisting}
+def evaluate_goal(root_goal):
+    queue = []
+    add_goal(queue, root_goal)
+
+    while len(queue) != 0:
+        goal_node = queue.pop_front()
+
+        if goal_node.is_new():
+            subgoals = goal_node.init()
+            add_goals(queue, subgoals)
+
+        if goal_node.is_done():
+            goal_node.finish()
+            for parent in goal_node.parents:
+                subgoals = parent.subgoal_done(goal_node)
+                add_goals(queue, subgoals)
+        else:
+            queue.append(goal_node)
+\end{lstlisting}
+
+A goal is done when all its subgoals are done or when it created no subgoals in the first place.
+
+% TODO: endless loop?
+
+\todo{describe some goal engine behaviors like, cyclic recursion, caching, crazy ordering and so on}
+
+
+
+\subsection{Evaluation Process}
 
 Summarised, the evaluation works as follows: The user of the library picks an expression somewhere in the code and then creates an ``expression type goal'' for this expression. This goal, called root goal, is then fed into the goal engine which starts to process it. Every goal has to be processed by one evaluator. Which evaluator has to be used is determined by the evaluator factory according to the goal's type and other criteria. The particular evaluator is then initialised and processes the goal. The evaluator can (and usually will) create subgoals which are then processed as well. As a goal finishes successfully, its result is reported back to the parent goal. As soon as the root goal finishes, the result is returned to the user.
 
-\subsection{Picking a Root Goal}
+\subsubsection{Picking a Root Goal}
 
 As a first step the user of the type inferencer, usually the structural analyser, has to define what has to be evaluated. This \emph{main} goal is called root goal. Usually this goal is an \class{ExpressionTypeGoal} which instructs the goal engine to determine the type of a given expression (hence the name). The expression in question can be any expression from the AST. They can for example be selected using a visitor like the \class{ExpressionAtLineVisitor} or by iterating over all expressions (like the type spider does \todo{reference to the Spider}).
 
-\subsection{Selecting the Evaluator for a Goal}
+\subsubsection{Selecting the Evaluator for a Goal}
 
 When the root goal is created it has to be fed into the goal engine. Every goal has to be processed by one of the available evaluators. Which one has to be used is determined by \class{PythonEvaluatorFactory}.
 
 The \class{PythonEvaluatorFactory} takes several criteria into account. In the case of an expression type goal the type of the associated expression is also considered. For example if the expression is a method call the goal is delegated to the \class{CallTypeEvaluator}, an attribute expression is processed by the \class{AttributeTypeEvaluator} and so on.\todo{rstocker: Should we a provide a list of these mappings somewhere?}
 
-\subsection{More Information}
-
-\subsection{Evaluator}
+\subsubsection{Evaluator}
 
 Now the actual work begins, the evaluator is created with its goal as a parameter. As a first step the eveluator's \java{init()} method is called. The evaluator then has a first chance to do it's job. If necessary (and it often is) the evaluator can create subgoals and return them. The evaluator's goal is not considered finished as long as there are remaining unfinished subgoals. Every time a subgoal is finished the evaluator's \java{subgoalDone(subgoal)} method is called. Here again the evaluator has the chance to create more subgoals as needed.
 
 From the goal engine's perspective there's no difference between subgoals and root goals, they are handled equally. But of course as soon as the root goal is finished the goal engine returns the calculated result to the user.
-
-\todo{explain types}
-
+    
 \section{Type Inference Algorithm}
 
 The implementation of the type inference algorithm consists of the goal engine and \textbf{15 goals} and \textbf{31 evaluators}.
@@ -596,48 +686,6 @@ a.cargo # what's the type?
 So here again, finding all callers of a method and finding all attribute references is quite similar, and therefore shares a lot of code/goals.
     
 \end{itemize}
-
-
-Goal Engine \\
- (description of the goal engine)\\
- (advantages/disadvantages)\\
-Evaluation\\
- (goals \& evaluators explained)\\
- (contexts)\\
- (examples)
-
-% TODO: Write somewhere that the goal node graph is a directed acyclic graph (DAG)
-
-\section{Goal Engine}
-
-The goal engine is the central piece which coordinates between evaluators and goals. It basically keeps goal nodes in a working queue. A goal node combines a goal and its evaluator. The algorithm works like in this simplified pseudocode:
-
-\begin{lstlisting}
-def evaluate_goal(root_goal):
-    queue = []
-    add_goal(queue, root_goal)
-
-    while len(queue) != 0:
-        goal_node = queue.pop_front()
-
-        if goal_node.is_new():
-            subgoals = goal_node.init()
-            add_goals(queue, subgoals)
-
-        if goal_node.is_done():
-            goal_node.finish()
-            for parent in goal_node.parents:
-                subgoals = parent.subgoal_done(goal_node)
-                add_goals(queue, subgoals)
-        else:
-            queue.append(goal_node)
-\end{lstlisting}
-
-A goal is done when all its subgoals are done or when it created no subgoals in the first place.
-
-% TODO: endless loop?
-
-\todo{describe some goal engine behaviors like, cyclic recursion, caching, crazy ordering and so on}
 
 \section{Challenges/Problems}
 
