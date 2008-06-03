@@ -756,8 +756,6 @@ a = add_one(41)
 b = add_one(1.5)
 \end{lstlisting}
 
-% rschuett: ab hier korrigieren
-
 Without separating these two calls, the type inferencer would answer that the type of both \id{a} and \id{b} is \type{int|float}. But a more precise answer would be that \id{a} is \type{int} and \id{b} is \type{float}. It is necessary to analyse return types differently depending on how the functions are called, it is necessary to respect the \emph{call context}.
 
 Let's look at the evaluation of the return type of the first \id{add_one} call to explain how it is solved in PyStructure. The \class{CallTypeEvaluator} will be run to evaluate the result of the call. Because it is a function call, the evaluator creates a \class{CallContext}, which contains the following information about the call:
