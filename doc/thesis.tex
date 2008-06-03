@@ -1223,6 +1223,18 @@ Z ## mro Z,X,B,Y,A,C,object
 
 Should the need for other sorts of tests arise, it is just a matter of adding another assertion type.
 
+\subsection{Checkstyle}
+
+We used Checkstyle to help us have a uniform Java coding standard. It's a tool which checks if the source code adheres to a certain coding style, for example that opening braces are always on the same line, and issues warnings if it violates it. There's an Eclipse plugin which annotates the source code when there's a violation. We also integrated it into our continuous integration system, so that build warnings are issued.
+
+% TODO: Reference to Checkstyle?
+
+\subsection{FindBugs}
+
+FindBugs is an automatic fault detection tool that can find problems in Java programs. It uses analysis techniques to identify code patterns known to be problematic – so-called bug patterns. We reviewed all the problems reported by FindBugs and decided to fix them or not. We have fixed all problems which either have been easy or important.
+
+% TODO: Reference to FindBugs?
+
 \subsection{Continuous Integration}
 
   (lava lamp)
