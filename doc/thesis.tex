@@ -821,6 +821,7 @@ If the call context doesn't apply, the \class{ArgumentTypeEvaluator} does the us
 % TODO: Reference to some random paper
 
 \subsection{Container Element Types}
+\label{container_element_types}
 
 When using container types like \id{list} or \id{dict}, each instance of such a type should be treated differently regarding the type of the contained elements. Considering this example:
 
@@ -1175,12 +1176,17 @@ Parsing a single expression vs inference all expressions (demand driven vs every
  what are `all expressions`
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\chapter{Results / Practical examples}
+\chapter{Results}
 
 Structure \\
 types (type annotator)\\
 Key figures
 \todo{maybe describe somewhere that it is very difficult to find all attributes of a given class.}
+
+
+\chapter{Outlook}
+ Possible follow-up projects
+ Possibilities.. etc.
 
 
 \chapter{Quality Assurance}
@@ -1271,11 +1277,56 @@ FindBugs is an automatic fault detection tool that can find problems in Java pro
 % TODO: Write about CruiseControl and how it does all the above things automatically. Maybe also about lava lamps.
 
 
-\chapter{Outlook}
- Possible follow-up projects
- Possibilities.. etc.
-
 \chapter{Project Management}
+
+% TODO: PEPTIC
+
+\section{Roadmap}
+
+\subsubsection{Milestone 0.5 – Week 3 – 3 March 2008}
+
+\begin{itemize}
+    \item Decide whether PEPTIC's goal engine or a new one should be used
+\end{itemize}
+
+The goal of the first mini-milestone was deciding whether we should continue using and developing the type inference system from our previous project or whether to base the structural analysis on something new. This meant reading papers and looking for other techniques to do whole-program analysis.
+
+In the end we decided to go with our own goal engine because we wanted to keep it demand-driven and useful for IDEs. Additionally, using another technique would have meant rewriting large parts of the type inference system.
+
+\subsubsection{Milestone 1 – Week 7 – 2 April 2008}
+
+\begin{itemize}
+    \item Minimal prototype which understands and analyses basic applications
+    \item Important missing features:
+    \begin{itemize}
+        \item Inheritance
+        \item List or other containers
+    \end{itemize}
+\end{itemize}
+
+This milestone was about producing a prototype that could analyse a basic application and export it to the Structure 101g XML format. Because the prototype relies on all components of PyStructure, the structural analyser and the exporter had to be created and we had to think about how to connect the exporter with the analyser and the analyser with the type inference system.
+
+\subsubsection{Milestone 2 – Week 14 – 21 May 2008}
+
+\begin{itemize}
+    \item Second prototype which is able to analyse most common applications
+    \item Support for lists and inheritance
+\end{itemize}
+
+This milestone was primarily focused on two hard type inference features, inheritance and the analysis of container element types (see \vref{container_element_types}).
+
+% TODO: mehr schreiben
+
+\subsubsection{Milestone 3 – Week 16 – 4 June 2008}
+
+\begin{itemize}
+    \item Final version which is usable for real-world projects
+\end{itemize}
+
+For the final milestone, the goal was to add support for built-in types and other refinements to make the system usable for real-world projects.
+
+% TODO: mehr schreiben
+
  Milestones \& Roadmap \\
  (Problems, important decisions) \\
  (QA Techniques) \\
@@ -1292,15 +1343,6 @@ FindBugs is an automatic fault detection tool that can find problems in Java pro
 \begin{itemize}
     \item 70~\% of \emph{Connecting Definitions and Uses} % TODO: percentage, add reference
 \end{itemize}
-
-\section{Outlook}
-\subsection{PEPTIC in General}
-\subsection{Type Inference}
-\subsubsection{Common IDE Features}
-\subsubsection{Type Checking}
-\subsubsection{Structural Analysis}
-\subsubsection{Unused Code}
-\subsubsection{Compiler Optimisations}
 
 \clearpage
 
