@@ -122,17 +122,6 @@ In the case of the GUI this is quite common and not that severe. But imagine tha
 
 It has to be said that mutual dependencies on the class level, just between classes, are completely normal and often inevitable. 
 
-\section{Structural Analysis}
-
-
-\begin{wrapfigure}{r}{2.5cm}
-    \vspace{-0.6cm}
-    \includegraphics[width=2.5cm]{dependencies}
-\end{wrapfigure}
-
-But what actually is structural analysis? What exactly is analysed? 
-
-
 
 \section{Type Inference}
 
@@ -168,18 +157,7 @@ vehicle = Car() if input == "car" else Plane()
 
 In this case the type inferencer has to detect that \code{vehicle} can be of type \type{Car} or \type{Plane}.
 
-\section{Structural Analysis}
-
-Structural Analysis
-
-{Concept}
-
-(Goal engine, why \& how) \\
-(link to other possible solutions)
-Correctness \& Usefulness
-
-
-\section{Process Overview}
+\subsection{Process Overview}
 
 The type inferencer is divided into three main process stages:
 
@@ -196,6 +174,30 @@ The type inferencer is divided into three main process stages:
 \end{figure}
 
 The first two steps, the parsing of source code and generation of the model, lay the foundation for the type inferencer. They do a static analysis of the whole project and are independent of what expressions should be evaluated. As long as the underlying source code doesn't change these preparations can be reused for any number of type inferencer evaluations.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Structural Analysis}
+
+\begin{wrapfigure}{r}{5cm}
+    \vspace{-0.6cm}
+    \includegraphics[width=5cm]{dependencies}
+    \vspace{-4cm}
+\end{wrapfigure}
+
+
+Structural Analysis
+
+{Concept}
+
+(Goal engine, why \& how) \\
+(link to other possible solutions)
+Correctness \& Usefulness
+
+
+
+
+But what actually is structural analysis? What exactly is analysed? 
+
 
 \chapter{Model}
 
