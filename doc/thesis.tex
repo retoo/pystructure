@@ -114,6 +114,8 @@ The structural data itself is also useful in other areas of software development
 
 Before any meaningful structure analysis of a program is possible the individual components have to be identified and analysed. To know what dependencies a component (e.g. a class) has, it first has to be determined what kind of other components are being used. For example if the GUI class calls a method of a class in the business logic we clearly have a dependency between these two components. It becomes obvious that knowing the type of a given expression, in this example the method call, is imperative for any meaningful structural analysis.
 
+% rstocker better now?
+
 This leads to the question, how can the type of a given expression be determined? In Java this question would be very simple, as a explicitly typed language the definition always states the type.
 \footnote{In the example \java{boolean isOdd(int i)}, method \java{isOdd} has a parameter \java{i} with the type \type{int} and returns a \type{boolean}.} Python, on the other hand, is a \emph{dynamically} typed language. Types aren't specified at all, they are only known at runtime by the interpreter. To still be able to determine them, a heuristic has to be used which infers the types by looking at the context and finding answers to questions like ``Where was the variable defined?'' and ``Who called that function?''. This heuristic is usually called type inferencer (TI). As the term \emph{heuristic} implies is it impossible to evaluate the type in every case, in certain cases assumptions have to be done.
 
