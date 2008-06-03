@@ -1030,8 +1030,6 @@ With this, all the aforementioned weaknesses go away. The following changes were
 
 % SVN changeset 202
 
-%{ rschuett: korrigieren
-
 The evaluator factory is used to create the corresponding evaluator for a goal. For a number of goals, there is a one-to-one connection between goal and evaluator. At the beginning, this was implemented like this (just an excerpt):
 
 \begin{lstlisting}[style=java]
@@ -1045,7 +1043,7 @@ if (goal instanceof ReturnTypeGoal) {
 }
 \end{lstlisting}
 
-To remove duplication, these cases were put in a map like this:
+With more than 10 goals being mapped statically this kind of mapping was quite cumbersome. To remove duplication, these cases were put in a map like this:
 
 \begin{lstlisting}[style=java]
 evaluators.put(ClassReferencesGoal.class,
@@ -1057,9 +1055,9 @@ evaluators.put(ReturnTypeGoal.class,
 And then, to create the evaluator, some reflection magic is used to create a new evaluator using the class from the map. It works like this (handling of reflection exceptions was omitted):
 
 \begin{lstlisting}[style=java]
-Class<? extends IGoal> g = goal.getClass();
-Class<? extends AbstractEvaluator> e = evaluators.get(g);
-return e.getConstructor(g).newInstance(goal);
+Class<? extends IGoal> goalClass = goal.getClass();
+Class<? extends AbstractEvaluator> evalClass = evaluators.get(g);
+return evalClass.getConstructor(goalClass).newInstance(goal);
 \end{lstlisting}
 
 %}
