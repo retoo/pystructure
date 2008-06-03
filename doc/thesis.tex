@@ -693,8 +693,6 @@ In this section, some of the difficult parts of developing a type inference syst
 
 \subsection{Recursion}
 
-% rschuett: Ganze subsection korrigieren
-
 Recursion is a normal part of programming languages where a function is called from within itself until a certain condition is met and the recursion stops. It is often used for algorithms like the factorial function:
 
 \begin{lstlisting}
@@ -704,11 +702,11 @@ def factorial(number):
     return number * factorial(number - 1)
 \end{lstlisting}
 
-For a naive goal engine that isn't prepared to handle it, recursion results in an endless loop in the goal engine. An example is the the evaluation of the return type of the \id{factorial} function. The first return value (\code{1}) doesn't cause problems, but the second does. For calculating the type of the second return value, the return type of \id{factorial} is needed again. So another return type evaluator for \id{factorial} is created and the whole story begins anew, resulting in an endless loop.
+For a naive type inferencer that isn't prepared to handle it, recursion results in an endless loop in the goal engine. An example is the the evaluation of the return type of the \id{factorial} function. The first return value (\code{1}) doesn't cause problems, but the second does. For calculating the type of the second return value, the return type of \id{factorial} is needed again. So another return type evaluator for \id{factorial} is created and the whole story begins anew, resulting in an endless loop.
 
 \subsubsection{Handling Duplicate Goals}
 
-But PyStructure's goal engine has a mechanism in place to detect that a goal has already been created. When this is the case, it just connects the already existing goal node with the evaluator. When the existing goal is finished, the result is passed to the evaluator as usual. But does this suffice to prevent endless looping? Let's look at a simpler recursive example to answer that question:
+PyStructure's goal engine has a mechanism in place to detect that a goal has already been created. When this is the case, it just connects the already existing goal node with the evaluator which has asked for the same goal. When the existing goal is finished, the result is passed to the evaluator as usual. But does this suffice to prevent endless looping? Let's look at a simpler recursive example to answer that question:
 
 \begin{lstlisting}[numbers=left]
 def recursive():
@@ -740,6 +738,8 @@ The solution is pretty simple. When an evaluator creates a subgoal that is alrea
 In the example at step 8, the goal engine checks for cycles. It walks upwards one step (over 5) and checks if this node is the same as the subgoal. It is, so there is a cycle.
 
 When a cycle is detected, the offending subgoal is not connected to the evaluator. In addition, \java{subgoalDone} is called on the evaluator with the \java{RECURSIVE} goal state for the subgoal. The evaluator can then react to the situation, for example by ignoring it. The call type evaluator does this and returns an empty type as its result, which means the whole result will be \type{int} because of the first \code{return}.
+
+This doesn't only prevent an endless loop, but still allows the TI to evaluate the return type of a recursive function correctly.
 
 \subsection{Call Context}
 
