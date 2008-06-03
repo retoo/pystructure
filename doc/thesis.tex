@@ -833,11 +833,15 @@ The types for \id{a} and \id{b} are the same as in the example with the lists. T
 
 So the problem is that the inferencer treats the \id{Container} class as if every instance had the same type of the \id{self.element} attribute. It doesn't differentiate between instances, only between classes.
 
-In PyStructure, the constructor call node is used to differentiate between instances of the same class. For this, an additional field \java{constructorCall} was added to \class{ClassType}, the object representing an instance of a class. It is set when a \class{ClassType} is created.
- 
-... \cite{ddp}
+%{ rschuett: korrigieren
 
-% TODO: Solution (ClassType with constructorCall, InstanceContext), references (Lex Spoon, context from other paper)
+In PyStructure, the constructor call node is used to differentiate between instances of the same class. For this, an additional field \java{constructorCall} was added to \class{ClassType}, the object representing an instance of a class. It is set when a \class{ClassType} is created and is included in the comparison for equals.
+
+There's also an \class{InstanceContext} for similar reasons as the \class{CallContext}. It is created when a method is called on an object with the information about the object instance. Later, it is used in the \class{MethodReferencesEvaluator} to only return references to a method on the particular instance, if an instance context for the class was set. So, for example, only calls to the \id{set} method of the right instance are returned.
+
+The idea of separating instances depending on where they were constructed was previously described by Lex Spoon for the DDP algorithm, in the section ``Extending DDP with source-tagged classes'' \cite{ddp}.
+
+%}
 
 \subsection{Inheritance}
 
