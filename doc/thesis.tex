@@ -850,7 +850,7 @@ In PyStructure, the constructor call node is used to differentiate between insta
 
 There's also an \class{InstanceContext} for similar reasons as the \class{CallContext}. It is created when a method is called on an object with the information about the object instance. Later, it is used in the \class{MethodReferencesEvaluator} to only return references to a method on the particular instance, if an instance context for the class was set. So, for example, only calls to the \id{set} method of the right instance are returned.
 
-The idea of separating instances depending on where they were constructed was previously described by Lex Spoon for the DDP algorithm, in the section ``Extending DDP with source-tagged classes'' \cite{ddp}.
+The idea of separating instances depending on where they were constructed was previously described by Lex Spoon for the DDP algorithm, in the section ``Extending DDP with source-tagged classes'' of \cite{ddp}.
 
 %}
 
