@@ -605,7 +605,7 @@ So the only difference between creating an object and calling a function is that
 
 \subsection{Arguments}
 
-The next example shows a different important problem: How are the types of arguments found. This time, the TI doesn't have to find the function, but the other way around: all callers of a function.\todo{rschuett: write me differently}
+The next example shows a different important problem: How are the types of arguments found. To determine these it isn't sufficient to know only the definition, all callers of the function have to be known as well
 
 \begin{lstlisting}
 class Baz():
@@ -767,15 +767,15 @@ Let's look at the evaluation of the return type of the first \id{add_one} call t
 
 The \class{CallTypeEvaluator} then creates a \class{ReturnTypeGoal} for the \id{add_one} function and associates the previously created context with it. The evaluation then proceeds as usual.
 
-If it turns out that the return type doesn't depend on an argument type, the call context will never be needed and the evaluation finishes normally.
+Should it turn out that the return type doesn't depend on an argument type, the call context will never be needed and the evaluation finishes normally.
 
 If the return type does depend on an argument type, as is the case in the example, the evaluation will inevitably come to an argument, which means that the \class{ArgumentTypeEvaluator} will be run. In the example, this would happen when the evaluator tries to find the type of the argument \id{value}. The trick is now to check if only one specific call or all calls should be considered. To do this, the evaluator verifies that the function in the call context points to the function currently being evaluated.
 
-If this is the case the evaluator doesn't evaluate the argument of all callers, but only the one mentioned in the call context. In the example this means that only the argument of the first call is taken into consideration, which is \code{41}. The final return type then is \type{int}.
+When this is the case the evaluator doesn't evaluate the argument of all callers, but only the one mentioned in the call context. In the example this means that only the argument of the first call is taken into consideration, which is \code{41}. The final return type then is \type{int}.
 
 If the call context doesn't apply, the \class{ArgumentTypeEvaluator} does the usual thing of finding all the calls and returning the union of all the argument expressions. This is the case when an argument type goal is evaluated as the root goal and not as a subgoal of a return type goal.
 
-% TODO: Reference
+% TODO: Reference to some random paper
 
 \subsection{Container Element Types}
 
