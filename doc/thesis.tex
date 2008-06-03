@@ -733,7 +733,21 @@ The creation of the call type goal at step 5 is not yet recursive, because it is
 
 So, merely detecting duplicate goals isn't enough to get rid of endless loops. What is needed is a way to prevent cycles from happening in the goal engine.
 
-The solution is pretty simple. When an evaluator creates a subgoal that is already part of the goal graph, the goal engine checks if connecting the existing goal with the evaluator would result in a cycle. This works by walking ``upwards'' through the goal graph, starting with the evaluator and then its parent goal nodes. When one of these parent goals is the same as the previously created subgoal, there is a cycle.
+The solution is pretty simple. When an evaluator creates a subgoal that is already part of the goal graph, the goal engine checks if connecting the existing goal with the evaluator would result in a cycle.
+
+This works by walking ``upwards'' through the goal graph, starting with the evaluator and then its parent goal nodes. When one of these parent goals is the same as the previously created subgoal, there is a cycle. The cycle detection works like this:
+
+\begin{lstlisting}
+def is_in_parents_of(node, other):
+    if node == other:
+        return True
+    for parent in other.parents:
+        if is_in_parents_of(node, parent):
+            return True
+    return False
+\end{lstlisting}
+
+And it is used like this: \code{is_in_parents_of(subgoal, parent)}.
 
 In the example at step 8, the goal engine checks for cycles. It walks upwards one step (over 5) and checks if this node is the same as the subgoal. It is, so there is a cycle.
 
