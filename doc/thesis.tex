@@ -105,6 +105,35 @@ The structural data itself is also useful in other areas of software development
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Introduction}
 
+\section{Structural analysis}
+
+\subsection{Why care?}
+
+\paragraph{Architecture}
+Keeping software manageable and simple as it grows is a very challenging tasks. Having a good idea from the beginning how the architecture of a software should look like is very important. Equally important, but much more challenging is actually keeping the software within the planned architecture. It's quite easy to draw some boxes representing the different components on to a white board, but even a experienced developer have a hard time to know all the time what should belong where and what is being used by it.
+
+\paragraph{Isolate component}
+Or imagine that you need to extract a rather big part of an application into a independent piece software. Without having a clear idea about a project's structure all one can do is to just remove the essential part and check the errors while running the program or during the compilation. Wouldn't it be nice if you could just a part of your application, be it method, class or a whole package and an instant later you could see what a) is used by this particular component (dependencies) and b) what uses it (consumers).
+
+\paragraph{Cycles} Another common unpleasant situation is when two high level components have an interdependency. For example it is usual that a GUI has full access to the business logic, but if there's some part in the business logic which knowingly accesses the GUI the two components are getting mutual dependent on each other. Between high level component this is often undesired as this means that one component cannot live without the other. 
+
+\todo{rstocker: bah, ich finde das cycles zeugs ned so gut}
+In the case of the GUI this is quite common and not that severe. But imagine that a new requirements arises which asks for the business logic to be a web server application. Suddenly bigger parts of both GUI and the logic would have to be refactored to accommodate the two needs. 
+
+It has to be said that mutual dependencies on the class level, just between classes, are completely normal and often inevitable. 
+
+\section{Structural Analysis}
+
+
+\begin{wrapfigure}{r}{2.5cm}
+    \vspace{-0.6cm}
+    \includegraphics[width=2.5cm]{dependencies}
+\end{wrapfigure}
+
+But what actually is structural analysis? What exactly is analysed? 
+
+
+
 \section{Type Inference}
 
 \subsection{Idea – Why inferring types?}
