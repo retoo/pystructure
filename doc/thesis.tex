@@ -840,10 +840,29 @@ In PyStructure, the constructor call node is used to differentiate between insta
 
 \subsection{Inheritance}
 
-\todo{Write me}
+Adding support for inheritance was much more difficult than anticipated. The main problem was that Python uses a rather sophisticated algorithm to calculate the inheritance linearisation. The algorithm has been implemented using the \class{MethodResolutionOrderEvaluator} which calculates the method resolution
+order (MRO) of a given class. The MRO defines in which order the interpreter has to look for inherited methods or attributes. 
 
-Inheritance\\
- (C3 MRO)
+The algorithm which is used by the TI to calculate the MRO is is exactly the same as used in the original 
+Python interpreter (as of Python 2.3).
+
+Briefly described the algorithm works as follows: 
+\begin{enumerate}
+    \item The final result of the algorithm is a list of classes describing the MRO (also called linearisation) of a given class 
+    \item The MRO of a single class is just the class itself: \node{class C()} $\rightarrow$ \node{L(C) = [C]}
+    \item When a class inherits only from a single class the MRO are both involved classes,  with the \emph{lower} class first: \node{class S(B)} $\rightarrow$ \node{L(S) = [S,B]}
+    \item The MRO of a class with multiple base classes has to be calculated using a function called merge. The merge function needs two parameters: 1. the MRO of all base classes, 2. all direct base classes.  \node{class A(B, C)} $\rightarrow$ \node{L(A) = [A] + merge(L(B), L(C), [B, C])}
+    \item The merge works as follows:
+ \begin{enumerate}
+    \item all passed arguments are lists of classes. Using such lists, we call the first element the head, and the remaining elements the tail. 
+    \item iterate over all lists and look for a class in a head which doesn't occur in any of the existing tails. If there is such a class, remove the head (and possibly other heads, if they contain the same class) and add the class to end of the result linearisation
+    \item repeat step b as long as there are any classes remaining. If the engine can't find a head which doesn't occur in any tail the process has to be aborted, the specified class hierarchy is cannot be resolved into a valid linearisation. 
+ \end{enumerate}
+\end{enumerate}
+
+More details about the algorithm and the details behind it can be found in \cite{mro}.
+
+At the beginning the evaluator just knows the base class by their names. To find find the corresponding classes it first issues a \class{ExpressionTypeGoal} for every base class. After doing so it issues a \class{ MethodResolutionOrderGoal} for every base class found. When the MRO of all base classes has been calculated the evaluator continues to calculate the MRO of the class itself using the merge algorithm explained above.
 
 \subsection{Built-in Types and Functions}
 
@@ -956,8 +975,8 @@ Later, when a goal is created for evaluating what \id{function} returns, the eva
 
 \section{Improvements During the Development}
 
- (DLTK \& goalengine refactoring) \\
-Other Type Inference Solutions
+%  (DLTK \& goalengine refactoring) \\
+% Other Type Inference Solutions
 
 \subsection{Store Result in Goal}
 
@@ -1139,8 +1158,6 @@ Key figures
 \chapter{Continuous Integration \& Testing}
 
 \section{Type Inference Tests}
-
-% rschuett: section korrigieren
 
 To be able to add tests for the type inferencer in the easiest way possible, we developed a test framework for it. Each test case is a Python file in a test directory. Assertions are added by putting markers at the end of lines of interest. An example:
 
