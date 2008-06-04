@@ -1242,32 +1242,45 @@ Despite the worse runtime performance we decided to use the second approach for 
 
 The structure is exported for further external analysis as an XML file. The content is separated into two parts, first a list of the components and second as the list of dependencies between the components.
 
-Python modules are represented as \id{module} tags with their full path within the python project as the attribute name. All components beneath modules are stored using the \id{submodule} tag, with a attribute \id{type} specifying the actual type of component: \emph{class, function, method or attribute}
+Python modules are represented as \emph{module} elements. The modules name and its full path within the project folder are specified in the \emph{name} attribute. All components beneath modules are stored using the \emph{submodule} tag, with an attribute \emph{type} specifying the actual type of component (\emph{class, function, method or attribute}) and their name in the \emph{name} attribute.
 
-\begin{lstlisting}{language=xml}
+All modules and sub modules are given an unique identifier in the attribute \emph{id}. PyStructure uses the full qualified module name (in Python module notation) for the modules and the Java hash value for all other components. These identifiers are used to define the dependencies. 
+
+\begin{lstlisting}[language=xml]
+...
 <module type="module" name="sudoku.board" 
         id="sudoku.board">
   <submodule type="class" name="Board" id="0">
     <submodule type="method" name="__init__" id="1" />
     <submodule type="method" name="load_file" id="2" />
     <submodule type="attribute" name="fields" id="3" />
+    ...
   </submodule>
 </module>
+...
+\end{lstlisting}
+
+The second part of the XML provides a list of all dependencies between the components. This is simply a list of \id{dependencies} elements, each of them specifying a \emph{type} (\emph{calls, references, extends, parameter and is type}) and a source and target component using the attributes \emph{from} and \emph{to}.
+
+It should be noted \todo{darf man das so sagen?} that only the actual explicit dependencies are stored. The inherited dependencies between the high level components are omitted.
+
+\begin{lstlisting}[language=xml]
+<dependencies>
+    <dependency type="references" from="1" to="44" />
+    <dependency type="references" from="21" to="122" />
+    <dependency type="references" from="31" to="12" />
+    ...
+</dependency>
 \end{lstlisting}
 
 
-
-How to interpret the information provided by the TI \\
-What kind of relations \\
-What kind of elements (Module, class, etc. mapping to s101g) \\
-How does the output look like \\
-Parsing a single expression vs inference all expressions (demand driven vs everything)\\
- what are `all expressions`
+%How to interpret the information provided by the TI \\
+%What kind of relations \\
+%What kind of elements (Module, class, etc. mapping to s101g) \\
+%How does the output look like \\
+%Parsing a single expression vs inference all expressions (demand driven vs everything)\\
+% what are `all expressions`
  
-
-But what actually is structural analysis? What exactly is analysed? 
-
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Results}
 
