@@ -1216,7 +1216,7 @@ Summarised this single line of code causes all the following dependencies:
 
 Concluding, it can be said that any use of objects or methods causes some kind of dependencies.
 
-\section{Analysis}\todo{rstocker/rschuett: besserer titel}
+\section{Method of Analysis}
 
 But how is the necessary information extracted from the application? There is the type inferencer which is able to determine the type of a single expression, but how are all dependencies detected?
 
@@ -1240,11 +1240,11 @@ Despite the worse runtime performance we decided to use the second approach for 
 
 \section{Export}
 
-The structure is exported for further external analysis as an XML file. The content is separated into two parts, first a list of the components and second as the list of dependencies between the components.
+The structure is exported for further external analysis as an XML file. The content is separated into two parts, first a list of the components and second a list of dependencies between the components.
 
-Python modules are represented as \emph{module} elements. The modules name and its full path within the project folder are specified in the \emph{name} attribute. All components beneath modules are stored using the \emph{submodule} tag, with an attribute \emph{type} specifying the actual type of component (\emph{class, function, method or attribute}) and their name in the \emph{name} attribute.
+Python modules are represented as \emph{module} elements. The module's name and its full path within the project folder are specified in the \emph{name} attribute. All components beneath modules are stored using the \emph{submodule} tag, with the attribute \emph{type} specifying the actual type of component (\emph{class, function, method or attribute}) and their name in the \emph{name} attribute.
 
-All modules and sub modules are given an unique identifier in the attribute \emph{id}. PyStructure uses the full qualified module name (in Python module notation) for the modules and the Java hash value for all other components. These identifiers are used to define the dependencies. 
+All modules and submodules are given a unique identifier in the attribute \emph{id}. PyStructure uses the fully qualified module name (in Python module notation) for the modules and a unique number for all other components. These identifiers are used to define the dependencies.
 
 \begin{lstlisting}[language=xml]
 ...
@@ -1260,9 +1260,9 @@ All modules and sub modules are given an unique identifier in the attribute \emp
 ...
 \end{lstlisting}
 
-The second part of the XML provides a list of all dependencies between the components. This is simply a list of \id{dependencies} elements, each of them specifying a \emph{type} (\emph{calls, references, extends, parameter and is type}) and a source and target component using the attributes \emph{from} and \emph{to}.
+The second part of the XML provides a list of all dependencies between the components. This is simply a list of \emph{dependency} elements, each of them specifying a \emph{type} (\emph{calls, references, extends, parameter and is type}) and a source and target component using the attributes \emph{from} and \emph{to}.
 
-It should be noted \todo{darf man das so sagen?} that only the actual explicit dependencies are stored. The inherited dependencies between the high level components are omitted.
+It should be noted that only the actual explicit dependencies are stored. The inherited dependencies between the high level components are omitted from the XML, because Structure 101g can infer them.
 
 \begin{lstlisting}[language=xml]
 <dependencies>
