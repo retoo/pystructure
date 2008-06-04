@@ -44,4 +44,9 @@ public class FunctionType extends AbstractType {
 		return function;
 	}
 	
+	@Override
+	public String toString() {
+		return function.toString();
+	}
+	
 }
