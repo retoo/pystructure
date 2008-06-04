@@ -87,12 +87,29 @@ The structural data itself is also useful in other areas of software development
 
 \section*{Motivation}
 
+%Structure and dependency analysis is a useful tool to have when developing software.
+
 \section*{Goal}
+
+The goal of the PyStructure project was to develop a structural analyser for Python projects. ...
+
+In our previous project, called PEPTIC, we developed some refactorings for PyDev, an Eclipse plugin that provides a Python IDE. To support the refactorings with the necessary information, we created a type inference engine.
 
 \section*{Results}
 
+The type inference system has improved a lot during the development. We implemented some advanced features like determining the type of list elements.
+
 \section*{Outlook}
 
+There is still room for improvements and optimisations for the type inference system, like:
+
+\begin{itemize}
+    \item The performance of the goal engine for bigger projects and in general can be improved very much. By doing better and more caching of goals, similar calculations can be done only once without sacrificing the precision of the results.
+    \item Support for more language constructs and built-in types can be added.
+    % rschuett: Was noch?
+\end{itemize}
+
+The PEPTIC/PyDev project still uses the old type inference engine for refactorings, because the new engine has been developed in a separate repository. For the refactorings to make use of the new features, the code has to be ported to the new engine. This will probably also lead to changes to the type inference system itself, because we did not take special care for the requirements of an IDE during this project.
 
 \newpage
 
