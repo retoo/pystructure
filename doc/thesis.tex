@@ -1239,8 +1239,10 @@ On the other hand this approach would cause a lot of wasted CPU time as a lot of
 Despite the worse runtime performance we decided to use the second approach for PyStructure. To reduce the additional effort we invested more time into the caching of results in the TI itself. It is much easier to selectively increase caching for some goals/evaluators. Additionally, the caching also benefits other uses of the type inferencer, not just the structural analyser.
 
 \section{Export}
+The structure can be exported as an XML file for further analysis. The format which is currently being used is specified for Structure 101g uses. It primarily reveals the components and dependencies of a programs structure. 
 
-The structure is exported for further external analysis as an XML file. The content is separated into two parts, first a list of the components and second a list of dependencies between the components.
+The content of the XML is separated into two parts, first a list of the components and second a list of dependencies between the components.
+
 
 Python modules are represented as \emph{module} elements. The module's name and its full path within the project folder are specified in the \emph{name} attribute. All components beneath modules are stored using the \emph{submodule} tag, with the attribute \emph{type} specifying the actual type of component (\emph{class, function, method or attribute}) and their name in the \emph{name} attribute.
 
@@ -1293,8 +1295,8 @@ Key figures
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Outlook}
 
- Possible follow-up projects
- Possibilities.. etc.
+%TODO:  Possible follow-up projects
+% Possibilities.. etc.
 
 \section{Type Inference}
 
