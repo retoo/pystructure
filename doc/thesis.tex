@@ -110,6 +110,11 @@ The structural data itself is also useful in other areas of software development
 \subsection{Why care?}
 
 \paragraph{Architecture}
+\begin{wrapfigure}{r}{5cm}
+    \vspace{-0.6cm}
+    \includegraphics[width=5cm, trim=10 10 10 10    , clip=true]{dependencies}
+    \vspace{-1cm}
+\end{wrapfigure}
 Keeping software manageable and simple as it grows is a very challenging tasks. Having a good idea from the beginning how the architecture of a software should look like is very important. Equally important, but much more challenging is actually keeping the software within the planned architecture. It's quite easy to draw some boxes representing the different components on to a white board, but even a experienced developer have a hard time to know all the time what should belong where and what is being used by it.
 
 \paragraph{Isolate component}
@@ -174,30 +179,6 @@ The type inferencer is divided into three main process stages:
 \end{figure}
 
 The first two steps, the parsing of source code and generation of the model, lay the foundation for the type inferencer. They do a static analysis of the whole project and are independent of what expressions should be evaluated. As long as the underlying source code doesn't change these preparations can be reused for any number of type inferencer evaluations.
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\chapter{Structural Analysis}
-
-\begin{wrapfigure}{r}{5cm}
-    \vspace{-0.6cm}
-    \includegraphics[width=5cm]{dependencies}
-    \vspace{-4cm}
-\end{wrapfigure}
-
-
-Structural Analysis
-
-{Concept}
-
-(Goal engine, why \& how) \\
-(link to other possible solutions)
-Correctness \& Usefulness
-
-
-
-
-But what actually is structural analysis? What exactly is analysed? 
-
 
 \chapter{Model}
 
@@ -1164,8 +1145,6 @@ Some details were removed to enhance readability. This example also illustrates 
 \todo{describing the type annotator might be a good idea here}
 
 %}
-
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Structural Analysis}
 
@@ -1175,6 +1154,9 @@ What kind of elements (Module, class, etc. mapping to s101g) \\
 How does the output look like \\
 Parsing a single expression vs inference all expressions (demand driven vs everything)\\
  what are `all expressions`
+
+
+But what actually is structural analysis? What exactly is analysed? 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Results}
