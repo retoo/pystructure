@@ -1225,7 +1225,7 @@ A much more uncomplicated way would be to just iterate over all expressions and 
 
 On the other hand this approach would cause a lot of wasted CPU time as a lot of the evaluation would be unnecessarily done more than once.
 
-Despite the worse runtime performance it was decided to use the second approach for PyStructure. \todo{hier können wir ein paar we's verwenden evtl} To reduce the additional effort we invested more time into the caching of results in the TI itself. It is much easier to selectively increase caching for some goals/evaluators. Additionally, the caching also benefits other uses of the type inferencer, not just the structural analyser.
+Despite the worse runtime performance we decided to use the second approach for PyStructure. To reduce the additional effort we invested more time into the caching of results in the TI itself. It is much easier to selectively increase caching for some goals/evaluators. Additionally, the caching also benefits other uses of the type inferencer, not just the structural analyser.
 
 \section{Export}
 
