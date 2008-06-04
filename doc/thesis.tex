@@ -259,6 +259,7 @@ The first step of building the model is to extract the structural elements that 
 Creating this initial structure is done by the structure definition visitor. It is a simple visitor which just visits class and function definitions (method definitions are the same in the AST). Then it creates \class{Class}, \class{Function} and \class{Method} objects, which wrap the AST nodes. They also provide additional functionality, for example the \class{Module} knows which classes and functions it includes and \class{Class} contains methods.
 
 \subsection{Connecting Definitions and Uses}
+\label{connecting_definitions_and_uses}
 
 Now we have the elements of the model, but more is needed. As described in the example with the \id{foo} variable in section \vref{creating_the_model}, knowing the variables where they are defined and used is important for the type inferencer. Determining this is called flow analysis and is based on these two elements:
 
@@ -1208,6 +1209,8 @@ PyStructure is designed to be composed of multiple independent parts, as shown o
 
 % rschuett: At least another paragraph should be here, so that the picture fits. What can we write here?
 
+\todo{TOOD: describe TI migration from PEPTIC to PyStructure}
+
 \section{Infrastructure}
 
 \subsection{Type Inference Tests}
@@ -1283,7 +1286,7 @@ FindBugs is an automatic fault detection tool that can find problems in Java pro
 
 \section{Roadmap}
 
-\subsubsection{Milestone 0.5 – Week 3 – 3 March 2008}
+\subsubsection{Milestone 0.5 – Week 3}
 
 \begin{itemize}
     \item Decide whether PEPTIC's goal engine or a new one should be used
@@ -1293,7 +1296,7 @@ The goal of the first mini-milestone was deciding whether we should continue usi
 
 In the end we decided to go with our own goal engine because we wanted to keep it demand-driven and useful for IDEs. Additionally, using another technique would have meant rewriting large parts of the type inference system.
 
-\subsubsection{Milestone 1 – Week 7 – 2 April 2008}
+\subsubsection{Milestone 1 – Week 7}
 
 \begin{itemize}
     \item Minimal prototype which understands and analyses basic applications
@@ -1306,7 +1309,7 @@ In the end we decided to go with our own goal engine because we wanted to keep i
 
 This milestone was about producing a prototype that could analyse a basic application and export it to the Structure 101g XML format. Because the prototype relies on all components of PyStructure, the structural analyser and the exporter had to be created and we had to think about how to connect the exporter with the analyser and the analyser with the type inference system.
 
-\subsubsection{Milestone 2 – Week 14 – 21 May 2008}
+\subsubsection{Milestone 2 – Week 14}
 
 \begin{itemize}
     \item Second prototype which is able to analyse most common applications
@@ -1317,7 +1320,7 @@ This milestone was primarily focused on two hard type inference features, inheri
 
 % TODO: mehr schreiben
 
-\subsubsection{Milestone 3 – Week 16 – 4 June 2008}
+\subsubsection{Milestone 3 – Week 16}
 
 \begin{itemize}
     \item Final version which is usable for real-world projects
@@ -1327,28 +1330,29 @@ For the final milestone, the goal was to add support for built-in types and othe
 
 % TODO: mehr schreiben
 
- Milestones \& Roadmap \\
  (Problems, important decisions) \\
- (QA Techniques) \\
- (Used license) \\
- Effort Diagram \\
- Our Experiences \\
- Acknowledgements 
+ Our Experiences
 
-\todo{TOOD: describe IT migration from PEPTIC to PyStructure}
+\section{Used Licence}
 
+We decided to use the LGPL (version 2 or later) for the PyStructure project for the following reasons:
+
+\begin{itemize}
+    \item It is a Free Software licence and GPL-compatible.
+    \item Proprietary applications can still use the library.
+    \item Modifications to the library itself have to be released under the LGPL.
+\end{itemize}
 
 \section{Parts of Documentation from Previous Project}
 
-\begin{itemize}
-    \item 70~\% of \emph{Connecting Definitions and Uses} % TODO: percentage, add reference
-\end{itemize}
+Some parts of this document were taken from our previous project:
 
-\clearpage
+\begin{itemize}
+    \item 70~\% of section \vref{connecting_definitions_and_uses}, \emph{Connecting Definitions and Uses}
+\end{itemize}
 
 \section{Effort Diagram}
 
-\clearpage
 
 \section{Thanks}
 
