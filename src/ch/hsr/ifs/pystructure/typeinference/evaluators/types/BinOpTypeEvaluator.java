@@ -52,6 +52,7 @@ public class BinOpTypeEvaluator extends SimpleExpressionTypeEvaluator {
 		// __divmod__ is not an operator
 		METHODS.put(operatorType.Pow, "__pow__");
 		METHODS.put(operatorType.RShift, "__rshift__");
+		METHODS.put(operatorType.LShift, "__lshift__");
 		METHODS.put(operatorType.BitAnd, "__and__");
 		METHODS.put(operatorType.BitXor, "__xor__");
 		METHODS.put(operatorType.BitOr, "__or__");
