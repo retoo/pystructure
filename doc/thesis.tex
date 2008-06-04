@@ -1107,6 +1107,8 @@ return evalClass.getConstructor(goalClass).newInstance(goal);
 
 Providing an easy way to debug the type inferencer was a challenging problem. The concept of using a goal engine which controls the whole evaluation process is rather unusual and all common debug schemes don't handle it very well. In a normal debugger the developer can always look at the call stack to see what functions were called in what order. But the stack trace when debugging a goal doesn't provide many details, it doesn't show what goal was creating the current goal nor what other goals currently are active.
 
+\subsection{Loggers} 
+
 Instead of just adding debugging code to the goal engine a logging interface was defined which is called by the engine during the different stages of the evaluation. The interface \class{IGoalEngineLogger} describes a set of hooks which can be used for a wide variety of debuggers and loggers: The beginning and the end of the evaluation process (\java{evaluationStarted()} \& \java{evaluationFinished()}) and two hooks which get called when a goal has been created or finished (\java{goalCreated()} \& \java{goalFinished)}).
 
 Using this interface a logger called \class{ConsoleLogger} was developed which visualises the evaluation process as a tree printed to the console. This turned out to be very useful as it shows what goal was created when, by whom and when it was finished.
