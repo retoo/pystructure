@@ -1105,30 +1105,24 @@ return evalClass.getConstructor(goalClass).newInstance(goal);
 
 \section{Debugging}
 
-% TODO: rstocker: Wollen wir da wirklich ne subsection machen 
-\subsection{Why?}
+Providing an easy way to debug the type inferencer was a challenging problem. The concept of using a goal engine which controls the whole evaluation process is rather unusual and all common debug schemes don't handle it very well. In a normal debugger the developer can always look at the call stack to see what functions were called in what order. But the stack trace when debugging a goal doesn't provide many details, it doesn't show what goal was creating the current goal nor what other goals currently are active.
 
-Providing an easy way to debug the type inferencer was a challenging problem. The concept of using a goal engine which controls the whole evaluation process is rather unusual and all common debug scheme don't handle it very well. In a normal debugger the developer can always look at the call stack to see what functions were called in what order. But the stack trace when debugging a goal doesn't provide much details, it doesn't show what goal was creating the current goal nor what other goals currently are active.
+\subsection{Loggers}
 
-There were even some cases where a bug only appeared when the goals were processed in a particular order. Because all \emph{open} goals are treated equally it was possible that some goals are processed early or later
+Instead of just adding debugging code to the goal engine a logging interface was defined which is called by the engine during the different stages of the evaluation. The interface \class{IGoalEngineLogger} describes a set of hooks which can be used for a wide variety of debuggers and loggers: The beginning and the end of the evaluation process (\java{evaluationStarted()} \& \java{evaluationFinished()}) and two hooks which get called when a goal has been created or finished (\java{goalCreated()} \& \java{goalFinished)}).
 
-\subsection{How}
+Using this interface a logger called \class{ConsoleLogger} was developed which visualises the evaluation process as a tree printed to the console. This turned out to be very useful as it shows what goal was created when, by whom and when it was finished.
 
-% { rstocker: korrektur, und überleg mal ob wir hier wirklich methodennamen angeben sollen 
+A simple example:
 
-Instead of just adding debugging code to the goal engine a logging interface was defined which then gets called by the engine during the different stages of the evaluation. The interface \class{IGoalEngineLogger} describes a set of hooks which can be used for a wide variety of debuggers and loggers: The beginning and the end of the evaluation process (\java{evaluationStarted()} \& \java{evaluationFinished()}) and two hooks which get called when a goal has been created or finished (\java{goalCreated()} \& \java{goalFinished)}).
-
-Using this interface a logger called \class{ConsoleLogger} was developed which visualises the evaluation process as a printed tree on the console. This turned out to be very useful as it shows what goal was created when, by whom and when it was finished. 
-
-A simple example like:
 \begin{lstlisting}
 def foo(x):
     x
 foo("bar")
 \end{lstlisting}
 
-results in a console output like:
-\todo{example probably too long4}
+For the evaluation of the type of the \id{x} on the second line, the logger prints this:
+
 \begin{verbatim}
 Evaluation started of ExpressionTypeGoal: Name[id=x, ctx=Load]
 |  Created NameType ExpressionTypeGoal: Name[id=x, ctx=Load]
@@ -1152,11 +1146,13 @@ Type is: type str
 Engine finished
 \end{verbatim}
 
-Some details were removed to enhance readability. This example also illustrates the fact that goals don't have to be created or finished in a strict order, some times a different goal gets processed before a finished one is being cleaned up.
+Some details were removed to enhance readability. This example also illustrates the fact that goals don't have to be created or finished in a strict order, sometimes a different goal is processed before a finished one is cleaned up.
+
+There are also other loggers, like the \class{StatsLogger} which prints a summary of the time used for different parts of an evaluation. To use multiple loggers at once, a \class{CombinedLogger} was created which contains multiple logger objects and just delegates the log calls to them.
 
 \todo{describing the type annotator might be a good idea here}
 
-%}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Structural Analysis}
 
