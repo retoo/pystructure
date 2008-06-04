@@ -1160,7 +1160,7 @@ Some details were removed to enhance readability. This example also illustrates 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Structural Analysis}
 
-Using the information gathered by the type inferencer it is now possible to automatically deduce the internal structure of an application. The structure consists of the different components of the application, its packages, modules and classes and the dependencies between them. Expressed as a directed graph the different components would be the vertices, whereas the dependencies are edges.
+Using the information gathered by the type inferencer it is now possible to automatically deduce the internal structure of an application. The structure consists of the different components of the application, its packages, modules and classes and the dependencies between them. Expressed as a graph the different components are vertices, whereas the dependencies are edges.
 
 \section{Components}
 
@@ -1183,11 +1183,11 @@ Dependencies are formed by a wide variety of situations, these are:
     \item Types of local variables and parameters
     \item Types of attributes
     \item Called methods \& constructors
-    \item Return types of methods
-    \item Types of references attributes
+    \item Return types of methods and functions
+    \item Types of references
 \end{itemize}
 
-In the following example most of the illustrated dependencies are created:
+In the following example most of the illustrated dependencies are involved:
 
 \begin{lstlisting}
 truck.load_cargo(ship.fetch_container().unload_cargo())
@@ -1195,7 +1195,7 @@ truck.load_cargo(ship.fetch_container().unload_cargo())
 
 The local variable \id{truck} is probably a \id{Truck} object and \id{load_cargo()} takes a \id{Cargo} object as a parameter. Then there's the \id{ship} variable which creates a dependency to the \id{Ship} class. The ship carries the cargo in containers, to get the cargo object itself it first has to be unloaded from a container using the \id{unload_cargo()} method.
 
-Summarised this single line of code causes all the following dependencies: 
+Summarised this single line of code causes all the following dependencies:
 
 \begin{itemize}
     \item class \id{Truck}
@@ -1207,29 +1207,29 @@ Summarised this single line of code causes all the following dependencies:
     \item call to method \code{Container.unload_cargo()}
 \end{itemize}
 
-Concluding it can be said that any use of types or methods causes some kind of dependencies.
+Concluding, it can be said that any use of objects or methods causes some kind of dependencies.
 
 \section{Analysis}\todo{rstocker/rschuett: besserer titel}
 
-But how are these information extracted out of the application? There is the type inferencer which is able to determine the type of a single expression, but how are all dependencies detected?
+But how is the necessary information extracted from the application? There is the type inferencer which is able to determine the type of a single expression, but how are all dependencies detected?
 
 There were two viable approaches to convert the type inferencer to an engine which is able to evaluate all expressions. 
 
 \subsection{Analyse as much as possible in one pass}
 
-As explained the type inferencer chapter the evaluation is always focused on the type of a single expression. But quite often during the evaluation the types of many other expressions have to be resolved as well. For example when looking for all references of an attribute. All the potentials \emph{attribute uses} have to be checked if they actually reference to the right attribute (and not a equally named attribute of a different class). To do that the receiver of the attribute has to evaluated as well.
+As explained in the type inference chapter the evaluation is always focused on the type of a single expression. But quite often during the evaluation the types of many other expressions have to be resolved as well, for example when looking for all references of an attribute. All the potential \emph{attribute uses} have to be checked if they actually reference to the right attribute (and not a equally named attribute of a different class). To do that, the object holding the attribute has to be evaluated as well.
 
-Instead of throwing these evaluations away after finishing the root goal the type inferencer could return them to the structure analyser as well and avoid the need to resolve additional expressions. 
+Instead of throwing these evaluations away after finishing the root goal, the type inferencer could return them to the structure analyser as well and avoid the need to resolve more expressions than necessary.
 
-The drawback of this solution is that the type inferencer itself gets much more complicated. Both the structural analyser and the type inferencer have to be aware which expressions are already resolved and which aren't. Another problem is that the ``demand driven approach'' of the type inferencer has to be sacrificed, the type inferencer would be much tighter coupled to the structural analyser. 
+The drawback of this solution is that the type inferencer itself becomes much more complicated. Both the structural analyser and the type inferencer have to be aware which expressions are already resolved and which aren't. Another problem is that the ``demand-driven approach'' of the type inferencer has to be sacrificed, the type inferencer would be much tighter coupled to the structural analyser.
 
 \subsection{Evaluate one expression at a time}
 
-A much uncomplicated way would be to just iterate over all expressions and execute type inferencer for every one of them. Both the structural analyser and the type inferencer are much easier and could are completely decoupled of each other. 
+A much more uncomplicated way would be to just iterate over all expressions and query the type inferencer for every one of them. Both the structural analyser and the type inferencer are much easier and are completely decoupled of each other.
 
 On the other hand this approach would cause a lot of wasted CPU time as a lot of the evaluation would be unnecessarily done more than once.
 
-Despite the worse runtime performance it was decided to use the second approach for PyStructure. \todo{hier können wir ein paar we's verwenden evtl} To reduce the additional effort we invested more time into the caching of results in the TI itself. It is much easier to selectively increase caching for some goals / evaluators. Additionally the caching would benefit other applications of the type inferencer as well, not just the structural analyser.
+Despite the worse runtime performance it was decided to use the second approach for PyStructure. \todo{hier können wir ein paar we's verwenden evtl} To reduce the additional effort we invested more time into the caching of results in the TI itself. It is much easier to selectively increase caching for some goals/evaluators. Additionally, the caching also benefits other uses of the type inferencer, not just the structural analyser.
 
 
 
