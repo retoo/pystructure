@@ -426,7 +426,6 @@ In the first part of this section the \textbf{goal engine} and the general \text
 
 % (advantages/disadvantages)\\
 % (contexts)\\
-% TODO: Write somewhere that the goal node graph is a directed acyclic graph (DAG)
 
 The goal engine is a central part of the type inferencer, it is responsible for the orchestration of the whole evaluation and the underlying algorithm. To understand how the type inference algorithm works it is important to understand the goal engine. Theoretically the goal engine could be used to solve any type of goals.
 
@@ -512,7 +511,7 @@ The final part which brings goals and the evaluators together is the evaluator f
 
 \subsubsection{Goal Queue}
 
-Internally the goal engine  basically keeps goal nodes in a working queue. A goal node combines a goal and its evaluator. The algorithm works like in this simplified pseudocode:
+Internally the goal engine basically keeps goal nodes in a working queue. A goal node combines a goal and its evaluator. The algorithm works like in this simplified pseudocode:
 
 \begin{lstlisting}
 def evaluate_goal(root_goal):
@@ -535,9 +534,9 @@ def evaluate_goal(root_goal):
             queue.append(goal_node)
 \end{lstlisting}
 
-A goal is done when all its subgoals are done or when it created no subgoals in the first place.
+A goal is done when all its subgoals are done or when it created no subgoals in the first place. The \id{add_goals} method takes some measures to prevent the goal engine from running without ever stopping, see section \vref{recursion}.
 
-% TODO: endless loop?
+Each goal node knows all its parent goal nodes, which will be notified with the result when its evaluation is done. All the goal nodes form a graph, to be specific a directed acyclic graph (DAG).
 
 \todo{describe some goal engine behaviors like, cyclic recursion, caching, crazy ordering and so on}
 
@@ -717,6 +716,7 @@ So here again, finding all callers of a method and finding all attribute referen
 In this section, some of the difficult parts of developing a type inference system for Python are described in more detail. Each problem is illustrated with examples and shows the solution which was implemented in PyStructure is explained.
 
 \subsection{Recursion}
+\label{recursion}
 
 Recursion is a normal part of programming languages where a function is called from within itself until a certain condition is met and the recursion stops. It is often used for algorithms like the factorial function:
 
