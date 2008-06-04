@@ -1165,6 +1165,59 @@ Some details were removed to enhance readability. This example also illustrates 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Structural Analysis}
 
+Using the information gathered by the type inferencer it is now possible to automatically detect the internal structure of a application. The structure consists of the different components of the application, its packages, modules and classes and the dependencies between them. Expressed as a directed graph the different components would be the vertices, where as the dependencies are edges. 
+
+\section{Components}
+
+Components in the structure are:
+
+\begin{itemize}
+    \item Packages (Directories in Python)\todo{rstocker: klammer weg?}
+    \item Modules
+    \item Classes
+    \item Methods
+\end{itemize}
+
+The components are nested within each other. The nested component share their dependencies with all their enclosing components. For example if a method calls another class's method a dependency is formed between these two components, but at the same time the two classes also become related to each other, as they nest a dependency. 
+
+\section{Dependencies}
+
+Dependencies are formed by a wide variety of situations, these are:
+
+\begin{itemize}
+    \item Types of local variables and parameters
+    \item Types of attributes
+    \item Called methods \& constructors
+    \item Return types of methods
+    \item Types of references attributes
+\end{itemize}
+
+In the following example most of the illustrated dependencies are created:
+
+\begin{lstlisting}
+truck.load_cargo(ship.fetch_container().unload_cargo())
+\end{lstlisting}
+
+The local variable \id{truck} is probably a \id{Truck} object and \id{load_cargo()} takes a \id{Cargo} object as a parameter. Then there's the \id{ship} variable which creates a dependency to the \id{Ship} class. The ship carries the cargo in containers, to get the cargo object itself it first has to be unloaded from a container using the \id{unload_cargo()} method.
+
+Summarised this single line of code causes all the following dependencies: 
+
+\begin{itemize}
+    \item class \id{Truck}
+    \item class \id{Ship}
+    \item class \id{Container}
+    \item class \id{Cargo}
+    \item call to method \code{Truck.load_cargo()}
+    \item call to method \code{Ship.fetch_container()}
+    \item call to method \code{Container.unload_cargo()}
+\end{itemize}
+
+Concluding it can be said that any use of types or methods causes some kind of dependencies.
+
+\section{Gather the data}
+
+But how are these information extracted out of the application? There is the type inferencer which is able to determine the type of a single expression, but how does    find all
+
 How to interpret the information provided by the TI \\
 What kind of relations \\
 What kind of elements (Module, class, etc. mapping to s101g) \\
