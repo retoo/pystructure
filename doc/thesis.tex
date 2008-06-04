@@ -1231,7 +1231,22 @@ On the other hand this approach would cause a lot of wasted CPU time as a lot of
 
 Despite the worse runtime performance it was decided to use the second approach for PyStructure. \todo{hier können wir ein paar we's verwenden evtl} To reduce the additional effort we invested more time into the caching of results in the TI itself. It is much easier to selectively increase caching for some goals/evaluators. Additionally, the caching also benefits other uses of the type inferencer, not just the structural analyser.
 
+\section{Export}
 
+The structure is exported for further external analysis as an XML file. The content is separated into two parts, first a list of the components and second as the list of dependencies between the components.
+
+Python modules are represented as \id{module} tags with their full path within the python project as the attribute name. All components beneath modules are stored using the \id{submodule} tag, with a attribute \id{type} specifying the actual type of component: \emph{class, function, method or attribute}
+
+\begin{lstlisting}{language=xml}
+<module type="module" name="sudoku.board" 
+        id="sudoku.board">
+  <submodule type="class" name="Board" id="0">
+    <submodule type="method" name="__init__" id="1" />
+    <submodule type="method" name="load_file" id="2" />
+    <submodule type="attribute" name="fields" id="3" />
+  </submodule>
+</module>
+\end{lstlisting}
 
 
 
@@ -1241,7 +1256,7 @@ What kind of elements (Module, class, etc. mapping to s101g) \\
 How does the output look like \\
 Parsing a single expression vs inference all expressions (demand driven vs everything)\\
  what are `all expressions`
-
+ 
 
 But what actually is structural analysis? What exactly is analysed? 
 
