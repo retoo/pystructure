@@ -560,7 +560,7 @@ As a first step the user of the type inferencer, usually the structural analyser
 
 When the root goal is created it has to be fed into the goal engine. Every goal has to be processed by one of the available evaluators. Which one has to be used is determined by \class{PythonEvaluatorFactory}.
 
-The \class{PythonEvaluatorFactory} takes several criteria into account. In the case of an expression type goal the type of the associated expression is also considered. For example if the expression is a method call the goal is delegated to the \class{CallTypeEvaluator}, an attribute expression is processed by the \class{AttributeTypeEvaluator} and so on.\todo{rstocker: Should we a provide a list of these mappings somewhere?}
+The \class{PythonEvaluatorFactory} takes several criteria into account. In the case of an expression type goal the type of the associated expression is also considered. For example if the expression is a method call the goal is delegated to the \class{CallTypeEvaluator}, an attribute expression (e.g. \code{obj.method}) is processed by the \class{AttributeTypeEvaluator} and so on.\todo{rstocker: Should we a provide a list of these mappings somewhere?}
 
 \subsubsection{Evaluator}
 
@@ -684,7 +684,7 @@ a.cargo # what's the type?
 \begin{itemize}
     \item The expression being evaluated is in this case: \code{a.cargo}. \\
           \textbf{Note:} \emph{In the AST this is stored as \node{Attribute[value = a, attr = cargo]}}
-    \item The \class{AttributeTypeEvaluator} is responsible for evaluating \node{Attribute} nodes
+    \item The \class{AttributeTypeEvaluator} is used for evaluating \node{Attribute} nodes
     \item Evaluating attributes is done in two steps:
     \begin{itemize}
         \item[1.] Evaluate the receiver \\$\rightarrow$ a
@@ -692,13 +692,13 @@ a.cargo # what's the type?
     \end{itemize}
     \item[] \textbf{Note:} \emph{The first step was explained in previous examples, so it isn't described again.}
     \item The \class{AttributeTypeEvaluator} learns that \id{a} is a \class{Truck} object. At this point it's still unsure if cargo is a method or a real attribute. To check if it is a method a \class{MethodResolveGoal} is being created.
-    \item The \class{MethodResolveGoal} is handled by the \class{MethodResolveEvaluator} which checks if there's a method with a given name in a particular class or base classes.\\
+    \item The \class{MethodResolveGoal} is handled by the \class{MethodResolveEvaluator}. It checks if a method with a given name is in a particular class or its base classes.\\
           In the example \id{cargo} is a attribute and therefore a method can't be found
-    \item Because the \class{MethodResolveGoal} was unsuccessful \class{AttributeTypeEvaluator} evaluates if there is a attribute with this name by issuing a \class{ClassAttributeTypeGoal}.
+    \item Because the \class{MethodResolveGoal} was unsuccessful and didn't have a result, the \class{AttributeTypeEvaluator} evaluates if there is a attribute with this name by issuing a \class{ClassAttributeTypeGoal}.
     \item The \class{ClassAttributeTypeEvaluator} starts by creating an {AttributeReferencesGoal} which tries to find all references of a particular attribute.
-    \item The \class{AttributeReferencesEvaluator} works similar to the \class{FunctionReferencesEvaluator} described in the second example:
+    \item The \class{AttributeReferencesEvaluator} works in a similar manner as the \class{FunctionReferencesEvaluator} described in the second example:
     \begin{enumerate}
-        \item Find all potential references uses using the \class{PossibleReferencesEvaluator}
+        \item Find all potential references with the \class{PossibleReferencesEvaluator}
         \item Only keep references to \class{AttributUse}
         \item Only keep references whose receiver has the correct type (is a Truck)
     \end{enumerate}
@@ -1098,11 +1098,11 @@ evaluators.put(ReturnTypeGoal.class,
                ReturnTypeEvaluator.class);
 \end{lstlisting}
 
-And then, to create the evaluator, some reflection magic is used to create a new evaluator using the class from the map. It works like this (handling of reflection exceptions was omitted):
+And then, to create the evaluator, some reflection magic is used to create a new evaluator using the class from the map. It works like this (handling of reflection exceptions and generic type parameters for Class omitted):
 
 \begin{lstlisting}[style=java]
-Class<? extends IGoal> goalClass = goal.getClass();
-Class<? extends AbstractEvaluator> evalClass = evaluators.get(g);
+Class goalClass = goal.getClass();
+Class evalClass = evaluators.get(goalClass);
 return evalClass.getConstructor(goalClass).newInstance(goal);
 \end{lstlisting}
 
@@ -1135,26 +1135,26 @@ foo("bar")
 results in a console output like:
 \todo{example probably too long4}
 \begin{verbatim}
-    Evaluation started of ExpressionTypeGoal: Name[id=x, ctx=Load]
-    |  Created NameType ExpressionTypeGoal: Name[id=x, ctx=Load]
-    |  |  Ceated ArgumentType DefinitionTypeGoal: Argument x of Function foo
-    |  |  |  Created FunctionReferences FunctionReferencesGoal: Function foo
-    |  |  |  |  Created PossibleReferences PossibleReferencesGoal: foo
-    |  |  |  |  Created NameType ExpressionTypeGoal: foo
-    |  |  |  |  Finished PossibleReferencesGoal
-    |  |  |  |  |  Created FixedResult DefinitionTypeGoal: Function foo
-    |  |  |  Created FixedResult ExpressionTypeGoal: "bar"
-    |  |  |  |  |  Finished DefinitionTypeGoal, result: Function foo
-    |  |  |  |  Finished ExpressionTypeGoal, result: Function foo
-    |  |  |  Finished FunctionReferencesGoal
-    |  |  |  Finished ExpressionTypeGoal, result: type str
-    |  |  Finished DefinitionTypeGoal, result: type str
-    |  Finished ExpressionTypeGoal, result: type str
-    Evaluation finished of ExpressionTypeGoal: Name[id=x, ctx=Load]
+Evaluation started of ExpressionTypeGoal: Name[id=x, ctx=Load]
+|  Created NameType ExpressionTypeGoal: Name[id=x, ctx=Load]
+|  |  Ceated ArgumentType DefinitionTypeGoal: Argument x of Function foo
+|  |  |  Created FunctionReferences FunctionReferencesGoal: Function foo
+|  |  |  |  Created PossibleReferences PossibleReferencesGoal: foo
+|  |  |  |  Created NameType ExpressionTypeGoal: foo
+|  |  |  |  Finished PossibleReferencesGoal
+|  |  |  |  |  Created FixedResult DefinitionTypeGoal: Function foo
+|  |  |  Created FixedResult ExpressionTypeGoal: "bar"
+|  |  |  |  |  Finished DefinitionTypeGoal, result: Function foo
+|  |  |  |  Finished ExpressionTypeGoal, result: Function foo
+|  |  |  Finished FunctionReferencesGoal
+|  |  |  Finished ExpressionTypeGoal, result: type str
+|  |  Finished DefinitionTypeGoal, result: type str
+|  Finished ExpressionTypeGoal, result: type str
+Evaluation finished of ExpressionTypeGoal: Name[id=x, ctx=Load]
 
-    Expression: Name[id=x, ctx=Load] (L2 C5), context: Module example.7
-    Type is: type str
-    Engine finished
+Expression: Name[id=x, ctx=Load] (L2 C5), context: Module example.7
+Type is: type str
+Engine finished
 \end{verbatim}
 
 Some details were removed to enhance readability. This example also illustrates the fact that goals don't have to be created or finished in a strict order, some times a different goal gets processed before a finished one is being cleaned up.
