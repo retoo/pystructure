@@ -1150,7 +1150,18 @@ Some details were removed to enhance readability. This example also illustrates 
 
 There are also other loggers, like the \class{StatsLogger} which prints a summary of the time used for different parts of an evaluation. To use multiple loggers at once, a \class{CombinedLogger} was created which contains multiple logger objects and just delegates the log calls to them.
 
-\todo{describing the type annotator might be a good idea here}
+\subsection{Type Annotator}
+
+We also developed a tool which takes a Python source folder as input and creates browsable HTML files. Each module is in a HTML file with its code and the result types are annotated at the side. The types are links pointing to a page with the output of the console logger for the evaluation which lead to the type. Here's an example of annotated code:
+
+\begin{lstlisting}
+def has_rsi(typed_words):        # list
+    length = len(typed_words)    # ?, function, int, list
+    return length > 10000        # bool, int, int
+
+words = ['a', 'b']               # ?, list, str, str
+has_rsi(words)                   # function, bool, list
+\end{lstlisting}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
