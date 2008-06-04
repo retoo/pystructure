@@ -1185,8 +1185,37 @@ Key figures
 
 
 \chapter{Outlook}
+
  Possible follow-up projects
  Possibilities.. etc.
+
+\section{Type Inference}
+
+\subsection{Improvements}
+
+% rschuett: korrigieren, vielleicht noch mehr schreiben
+
+The type inference system is in no way perfect and can still be improved in various ways.
+
+The biggest weakness of the goal engine right now is its performance. It could be improved by doing a better caching of goals. For example, the calculation of a function's return type is done for each call even when the called function and the argument types are the same. To avoid this, Ole Agesen's cartesian product algorithm (CPA) could be used \cite{cpa}.
+
+There are other ways to improve the performance. For example when a class uses no attributes, all instances can be treated exactly the same. Or when two instances of a class have the same attribute types, they behave the same way and the analysis could be ``shared''.
+
+Just the elementary built-in types are supported until now. By adding more built-in types and functions, the inferencer would be able to infer more types for more projects. There are also some language features not supported yet, like generator expressions. A similar topic to built-in types is how to handle code which accesses extensions written in C or C++.
+
+Of course there are still bugs and cases where the type inferencer can't infer types. More testing with more real-world projects will reveal these.
+
+\subsection{Possible Uses}
+
+A type inference system can be used for a wide variety of tasks. Here are some possible use cases which need type inference:
+
+\begin{itemize}
+    \item IDE features like code completion, highlighting the occurrences of variable and finding references of classes or methodes
+    \item Program exploration tools for browsing source code along with type information
+    \item Type checking and compiler optimisations
+\end{itemize}
+
+Our previous project, where the type inference engine originated from, can be ported to the new engine to get the benefits of all the improvements.
 
 
 \chapter{Quality Assurance}
