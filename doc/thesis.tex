@@ -124,15 +124,15 @@ The PEPTIC/PyDev project still uses the old type inference engine for refactorin
 
 \section{Structural Analysis}
 
-\subsection{Why care?}
+\subsection{Why Care?}
 
-\paragraph{Architecture}
-\begin{wrapfigure}{r}{5cm}
-    \vspace{-0.6cm}
-    \includegraphics[width=5cm, trim=10 10 10 10    , clip=true]{dependencies}
+\begin{wrapfigure}{r}{6cm}
+    \vspace{-0.3cm}
+    \includegraphics[width=6cm, trim=10 10 10 10, clip=true]{dependencies}
     \vspace{-1cm}
 \end{wrapfigure}
-Keeping software manageable and simple as it grows is a very challenging tasks. Having a good idea from the beginning how the architecture of a software should look like is very important. Equally important, but much more challenging is actually keeping the software within the planned architecture. It's quite easy to draw some boxes representing the different components on to a white board, but even a experienced developer have a hard time to know all the time what should belong where and what is being used by it.
+
+\paragraph{Architecture} Keeping software manageable and simple as it grows is a very challenging tasks. Having a good idea from the beginning how the architecture of a software project should look like is very important. Equally important, but much more challenging is actually keeping the software within the planned architecture. It's quite easy to draw some boxes representing the different components on to a white board. But even for an experienced developer, it is hard to know all the time what should belong where and what is being used by it.
 
 \paragraph{Isolate component}
 Or imagine that you need to extract a rather big part of an application into a independent piece software. Without having a clear idea about a project's structure all one can do is to just remove the essential part and check the errors while running the program or during the compilation. Wouldn't it be nice if you could just a part of your application, be it method, class or a whole package and an instant later you could see what a) is used by this particular component (dependencies) and b) what uses it (consumers).
@@ -466,14 +466,14 @@ In PyStructure there are two main kind of goals (and therefore results):
 Report what kind of type a given expression has. There is a distinction drawn between different kind of types. These are:
 
 \begin{itemize}
-    \item \textbf{Classtype} A particular instance of a class
-    \item \textbf{Meta Classtype} A class object
+    \item \textbf{Class Type} A particular instance of a class
+    \item \textbf{Metaclass Type} A class object
     \item \textbf{Method \& Function Type}
     \item \textbf{Package Type}
     \item \textbf{Combined Type} Union of several types
 \end{itemize}
 
-In the example: \code{t = Truck()} – \id{Truck} is a Meta Classtype were as \id{t} is a Classtype.
+In the example \code{t = Truck()}, \id{Truck} is a Metaclass Type wereas \id{t} is a Class Type.
 
 
 \begin{figure}[H]
