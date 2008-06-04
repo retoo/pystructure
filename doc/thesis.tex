@@ -1211,17 +1211,17 @@ Concluding it can be said that any use of types or methods causes some kind of d
 
 \section{Analysis}\todo{rstocker/rschuett: besserer titel}
 
-But how are these information extracted out of the application? There is the type inferencer which is able to determine the type of a single expression, but how are all dependencies detected. 
+But how are these information extracted out of the application? There is the type inferencer which is able to determine the type of a single expression, but how are all dependencies detected?
 
 There were two viable approaches to convert the type inferencer to an engine which is able to evaluate all expressions. 
 
 \subsection{Analyse as much as possible in one pass}
 
-As explained the type inferencer chapter the evaluation is always focused on the type of a single expression. But quite often during the evaluation the types of many other expressions has to be resolved as well. For example when looking for all references of an attribute. All the potentials \emph{attribute uses} have to be checked if they actually reference to the right attribute (and not a equally named attribute of a different class). To do that the receiver of the attribute has to evaluated as well.
+As explained the type inferencer chapter the evaluation is always focused on the type of a single expression. But quite often during the evaluation the types of many other expressions have to be resolved as well. For example when looking for all references of an attribute. All the potentials \emph{attribute uses} have to be checked if they actually reference to the right attribute (and not a equally named attribute of a different class). To do that the receiver of the attribute has to evaluated as well.
 
 Instead of throwing these evaluations away after finishing the root goal the type inferencer could return them to the structure analyser as well and avoid the need to resolve additional expressions. 
 
-The drawback of this solution is that the type inferencer itself gets much more complicated. Both the structural analyser and the type inferencer have to be aware which expressions are already resolved and which aren't. Another problem is that the ``demand driven approach'' of the type inferencer has to be sacrifced, the type inferencer would be much tighter coupled to the structural analyser. 
+The drawback of this solution is that the type inferencer itself gets much more complicated. Both the structural analyser and the type inferencer have to be aware which expressions are already resolved and which aren't. Another problem is that the ``demand driven approach'' of the type inferencer has to be sacrificed, the type inferencer would be much tighter coupled to the structural analyser. 
 
 \subsection{Evaluate one expression at a time}
 
