@@ -124,7 +124,7 @@ The PEPTIC/PyDev project still uses the old type inference engine for refactorin
 
 \section{Structural Analysis}
 
-\subsection{Why Care?}
+There are a number of areas where structural analysis is useful:
 
 \begin{wrapfigure}{r}{6cm}
     \vspace{-0.3cm}
@@ -132,31 +132,26 @@ The PEPTIC/PyDev project still uses the old type inference engine for refactorin
     \vspace{-1cm}
 \end{wrapfigure}
 
-\paragraph{Architecture} Keeping software manageable and simple as it grows is a very challenging tasks. Having a good idea from the beginning how the architecture of a software project should look like is very important. Equally important, but much more challenging is actually keeping the software within the planned architecture. It's quite easy to draw some boxes representing the different components on to a white board. But even for an experienced developer, it is hard to know all the time what should belong where and what is being used by it.
+\paragraph{Architecture}
+Keeping software manageable and simple as it grows is a very challenging tasks. Having a good idea from the beginning how the architecture of a software project should look like is very important. Equally important, but much more challenging is actually keeping the software within the planned architecture. It's quite easy to draw some boxes representing the different components on to a white board. But even for an experienced developer, it is hard to know all the time what should belong where and what is being used by it.
 
-\paragraph{Isolate component}
-Or imagine that you need to extract a rather big part of an application into a independent piece software. Without having a clear idea about a project's structure all one can do is to just remove the essential part and check the errors while running the program or during the compilation. Wouldn't it be nice if you could just a part of your application, be it method, class or a whole package and an instant later you could see what a) is used by this particular component (dependencies) and b) what uses it (consumers).
+\paragraph{Isolating Components}
+Or imagine that you need to extract a rather big part of an application into an independent piece of software. Without having a clear idea about a project's structure all one can do is to just remove the essential part and check the errors while running the program or during the compilation. Wouldn't it be nice if you could just select a part of your application, be it a method, a class or a whole package and an instant later you could see what a) is used by this particular component (dependencies) and b) what uses it (consumers).
 
-\paragraph{Cycles} Another common unpleasant situation is when two high level components have an interdependency. For example it is usual that a GUI has full access to the business logic, but if there's some part in the business logic which knowingly accesses the GUI the two components are getting mutual dependent on each other. Between high level component this is often undesired as this means that one component cannot live without the other. 
+\paragraph{Cycles}
+Another common unpleasant situation is when two high level components have an interdependency. For example it is usual that a GUI has full access to the business logic, but if there's some part in the business logic which accesses the GUI the two components are mutual dependent on each other. Between high level components this is often undesired as this means that one component cannot work without the other.
 
-\todo{rstocker: bah, ich finde das cycles zeugs ned so gut}
-In the case of the GUI this is quite common and not that severe. But imagine that a new requirements arises which asks for the business logic to be a web server application. Suddenly bigger parts of both GUI and the logic would have to be refactored to accommodate the two needs. 
+% rschuett: anders schreiben:
+Imagine that a new requirement arises which asks for the business logic to be accessed by a web application. Suddenly bigger parts of both GUI and business logic would have to be refactored to accommodate the two needs.
 
-It has to be said that mutual dependencies on the class level, just between classes, are completely normal and often inevitable. 
+It has to be said that mutual dependencies on the class level, just between classes, are completely normal and often inevitable.
 
 
 \section{Type Inference}
 
-\subsection{Idea – Why inferring types?}
-
 Before any meaningful structure analysis of a program is possible the individual components have to be identified and analysed. To know what dependencies a component (e.g. a class) has, it first has to be determined what kind of other components are being used. For example if the GUI class calls a method of a class in the business logic we clearly have a dependency between these two components. It becomes obvious that knowing the type of a given expression, in this example the method call, is imperative for any meaningful structural analysis.
 
-% rstocker better now?
-
-This leads to the question, how can the type of a given expression be determined? In Java this question would be very simple, as a explicitly typed language the definition always states the type.
-\footnote{In the example \java{boolean isOdd(int i)}, method \java{isOdd} has a parameter \java{i} with the type \type{int} and returns a \type{boolean}.} Python, on the other hand, is a \emph{dynamically} typed language. Types aren't specified at all, they are only known at runtime by the interpreter. To still be able to determine them, a heuristic has to be used which infers the types by looking at the context and finding answers to questions like ``Where was the variable defined?'' and ``Who called that function?''. This heuristic is usually called type inferencer (TI). As the term \emph{heuristic} implies is it impossible to evaluate the type in every case, in certain cases assumptions have to be done.
-
-% TODO: Write about differences between dynamically and statically (and explicitly) typed languages.
+This leads to the question, how can the type of a given expression be determined? In Java the answer would be very simple to find, as in an explicitly and statically typed language the type is always stated in the definition.\footnote{In the example \java{boolean isOdd(int i)}, method \java{isOdd} has a parameter \java{i} with the type \type{int} and returns a \type{boolean}.} Python, on the other hand, is a \emph{dynamically} typed language. Types aren't specified at all, they are only known at runtime by the interpreter. To still be able to determine them, a heuristic has to be used which infers the types by looking at the context and finding answers to questions like ``Where was the variable defined?'' and ``Who called that function?''. This heuristic is usually called type inferencer (TI). As the term \emph{heuristic} implies is it impossible to evaluate the type in every case, in certain cases assumptions have to be made.
 
 \subsection{Goal}
 
