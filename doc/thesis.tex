@@ -167,6 +167,12 @@ This problem becomes obvious for example when a new requirement arises which ask
 
 It has to be said that mutual dependencies on the class level, just between classes, are completely normal and often inevitable.
 
+\section{Structure 101g}
+
+Writing a structural analyser which is able to reveal a programs structure is just the first step of the job\todo{hmm besser}. Being able to get a good visualisation of the structure is at least as important. Instead of reinventing the wheel and creating a own visualiser PyStructure is meant as a supplier for the commercial structural analyser \textbf{\emph{Structure 101g}} developed by \textbf{\emph{Headway Software}}.
+
+Structure 101g is able to visualise the structure of a program in a variety levels of details. It is able to do different kinds of anaylsis, like comparing the structure to a predefined architecture to detect any inconsistencies in the design or detect cyclic dependencies.
+
 \section{Type Inference}
 
 Before any meaningful structure analysis of a program is possible???, the individual components have to be identified and analysed. To know what dependencies a component (e.g. a class) has, it first has to be determined what kind of other components are being used. For example if the GUI class calls a method of a class in the business logic we clearly have a dependency between these two components. It becomes obvious that knowing the type of a given expression, in this example the method call, is imperative for any meaningful structural analysis.
@@ -211,6 +217,8 @@ The type inferencer is divided into three main process stages:
 \end{figure}
 
 The first two steps, the parsing of source code and generation of the model, lay the foundation for the type inferencer. They do a static analysis of the whole project and are independent of???from expr.... what expressions should be evaluated. As long as the underlying source code doesn't change???, these preparations can be reused for any number of type inferencer evaluations.
+
+
 
 \chapter{Model}
 
