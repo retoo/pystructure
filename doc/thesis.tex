@@ -446,13 +446,9 @@ Now, after all the source has been parsed and a generalised model of the program
 
 In the first part of this section the \textbf{goal engine} and the general \textbf{evaluation} is described. Knowing how these underlying mechanisms work is important to understand the type inferencer itself. In the second chapter the \textbf{type inference algorithm} itself is explained using some examples.
 
-%{ rschuett: korrigieren
-
 The implementation of type inference is based on Lex Spoon's DDP algorithm \cite{ddp}, which is short for Demand-Driven Type Inference with Subgoal Pruning. Demand-driven means that instead of analysing the whole code base completely, the inferencer starts out where a request is made (for example, what is the type of \emph{this} variable) and then works from there, only analysing code which is relevant to the request.
 
 Originally, some parts of the Eclipse DLTK project \cite{dltk} were used, but we have replaced all these parts with our own implementations because of the need to change and extend them.
-
-%}
 
 \section{Goal Engine}
 
