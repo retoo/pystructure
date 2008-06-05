@@ -564,7 +564,7 @@ Summarised, the evaluation works as follows: First a???-a an expression of inter
 
 \subsubsection{Picking a Root Goal}
 
-As a first step the user of the type inferencer, usually the structural analyser, has to define what has to be evaluated. This \emph{main} goal is called root goal. Usually this goal is an \class{ExpressionTypeGoal} which instructs the goal engine to determine the type of a given expression (hence the name). The expression in question can be any expression from the AST. They can for example be selected using a visitor like the \class{ExpressionAtLineVisitor} or by iterating over all expressions (like the type spider does \todo{reference to the Spider}).
+As a first step the user of the type inferencer, usually the structural analyser, has to define what has to be evaluated. This \emph{main} goal is called root goal. Usually this goal is an \class{ExpressionTypeGoal} which instructs the goal engine to determine the type of a given expression (hence the name). The expression in question can be any expression from the AST. They can for example be selected using a visitor like the \class{ExpressionAtLineVisitor} or by iterating over all expressions (like the type spider (see section \vref{sa_exp_spider}) does)
 
 \subsubsection{Selecting the Evaluator for a Goal}
 
@@ -1258,21 +1258,42 @@ But how is the necessary information extracted from the application? There is th
 
 There were two viable approaches to convert the type inferencer to an engine which is able to evaluate all expressions. 
 
-\subsection{Analyse as much as possible in one pass}
+\subsection{Possible approaches}
+
+\subsubsection{Analyse as much as possible in one pass}
 
 As explained in the type inference chapter the evaluation is always focused on the type of a single expression. But quite often during the evaluation the types of many other expressions have to be resolved as well, for example when looking for all references of an attribute. All the potential \emph{attribute uses} have to be checked if they actually reference to the right attribute (and not a equally named attribute of a different class). To do that, the object holding the attribute has to be evaluated as well.
 
 Instead of throwing these evaluations away after finishing the root goal, the type inferencer could return them to the structure analyser as well and avoid the need to resolve more expressions than necessary.
 
 The drawback of this solution is that the type inferencer itself becomes much more complicated. Both the structural analyser and the type inferencer have to be aware which expressions are already resolved and which aren't. Another problem is that the ``demand-driven approach'' of the type inferencer has to be sacrificed, the type inferencer would be much tighter coupled to the structural analyser.
-\todo{what is: all expresssions}
-\subsection{Evaluate one expression at a time}
+
+\subsubsection{Evaluate one expression at a time}
 
 A much more uncomplicated way would be to just iterate over all expressions and query the type inferencer for every one of them. Both the structural analyser and the type inferencer are much easier and are completely decoupled of each other.
 
 On the other hand this approach would cause a lot of wasted CPU time as a lot of the evaluation would be unnecessarily done more than once.
 
 Despite the worse runtime performance we decided to use the second approach for PyStructure. To reduce the additional effort we invested more time into the caching of results in the TI itself. It is much easier to selectively increase caching for some goals/evaluators. Additionally, the caching also benefits other uses of the type inferencer, not just the structural analyser.
+
+\subsection{Expression Spider}\todo{is this really a subsection?}
+\label{sa_exp_spider}
+
+Finding all the expressions which might cause structural dependencies is done by a visitor called \class{Spider}. It basically iterates over all expressions, ignoring the expressions which aren't relevant, and associates them to the structural component (method, class or module) they belong to. The structural analyser then creates \class{ExpressionTypeGoals} for each one of them. 
+
+In the truck/ship example above the relevant expressions would be:
+
+\begin{itemize}
+    \item \code{truck} $\rightarrow$ \emph{local variable}
+    \item \code{truck.load_cargo} $\rightarrow$ \emph{method}
+    \item \code{ship} $\rightarrow$ \emph{local variable}
+    \item \code{ship.fetch_container} $\rightarrow$ \emph{method}
+    \item \code{ship.fetch_container()} $\rightarrow$ \emph{call}
+    \item \code{ship.fetch_container().unload_cargo} $\rightarrow$ \emph{method}
+    \item \code{ship.fetch_container().unload_cargo()} $\rightarrow$ \emph{call}
+    \item[] \emph{… and the whole expression …}
+    \item \code{truck.load_cargo(ship.fetch_container().unload_cargo())} 
+\end{itemize}
 
 \section{Export}
 
