@@ -153,29 +153,27 @@ There are a number of areas where structural analysis is useful:
 \end{wrapfigure}
 
 \paragraph{Architecture}
-Keeping software manageable and simple as it grows is a very challenging tasks. Having a good idea from the beginning how the architecture of a software project should look like is very important. Equally important, but much more challenging is actually keeping the software within the planned architecture. It's quite easy to draw some boxes representing the different components on to a white board. But even for an experienced developer, it is hard to know all the time what should belong where and what is being used by it.
+Keeping software manageable and simple as it grows is a very challenging tasks. Having a good idea from the beginning how the architecture of a software project should look like is very important. Equally important, but much more challenging is actually keeping the software within the planned architecture. It's quite easy to draw some boxes representing the different components on to a white board. But even for an experienced developer, it is hard to always know what should belong where and what dependencies there are.
 
 \paragraph{Isolating Components}
-Or imagine that you need to extract a rather big part of an application into an independent piece of software. Without having a clear idea about a project's structure all one can do is to just remove the essential part and check the errors while running the program or during the compilation. Wouldn't it be nice if you could just select a part of your application, be it a method, a class or a whole package and an instant later you could see what a) is used by this particular component (dependencies) and b) what uses it (consumers).
+Imagine that you need to extract a rather big part of an application into an independent piece of software. Without having a clear idea about a project's structure all you can do is to just remove the essential part and check the errors while running the program or during the compilation. Wouldn't it be nice if you could just select a part of your application, be it a method, a class or a whole package and an instant later you could see what a) is used by this particular component (dependencies) and b) what uses it (consumers).
 
 \paragraph{Cycles}
-Another common unpleasant situation is when two high level components have an interdependency. For example it is usual that a GUI has full access to the business logic, but if there's some part in the business logic which accesses the GUI the two components are mutual dependent on each other. Between high level components this is often undesired as this means that one component cannot work without the other.
+Another common unpleasant situation arises when two high level components have an interdependency. For example it is usual that the GUI layer has full access to the business logic, but if there's some part in the business logic that accesses the GUI the two components are mutual dependent on each other. Between high level components this is often undesired as this means that one component cannot work without the other.
 
-This problem becomes obvious for example when a new requirement arises which asks for the business logic to be accessed by a web application. Suddenly bigger parts of both GUI and business logic would have to be refactored to accommodate the two different needs.
-
-It has to be said that mutual dependencies on the class level, just between classes, are completely normal and often inevitable.
+This problem becomes obvious when a new requirement arises that asks for the business logic to be accessed by a web application. Suddenly bigger parts of both GUI and business logic would have to be refactored to accommodate the two different needs.
 
 \section{Structure 101g}
 
-Writing a structural analyser which is able to reveal a program's structure is just the first step. Being able to get a good visualisation of the structure is at least as important. Instead of reinventing the wheel and creating our own visualiser, PyStructure is meant as a supplier for the commercial structural analyser \emph{Structure 101g} developed by \emph{Headway Software}.
+Writing a structural analyser which is able to reveal a program's structure is just the first step. Being able to get a good visualisation of the structure is equally important. Instead of reinventing the wheel and creating our own visualiser, PyStructure is meant as a supplier for the commercial structural analyser \emph{Structure 101g} developed by \emph{Headway Software}.
 
 Structure 101g is able to visualise the structure of a program in various levels of details. It is able to do different kinds of analysis, like comparing the structure to a predefined architecture to detect any inconsistencies in the design or detect cyclic dependencies.
 
 \section{Type Inference}
 
-Before any meaningful structure analysis of a program is possible???, the individual components have to be identified and analysed. To know what dependencies a component (e.g. a class) has, it first has to be determined what kind of other components are being used. For example if the GUI class calls a method of a class in the business logic we clearly have a dependency between these two components. It becomes obvious that knowing the type of a given expression, in this example the method call, is imperative for any meaningful structural analysis.
+Before any meaningful structure analysis of a program is feasible, the individual components have to be identified and analysed. To know what dependencies a component (e.g. a class) has, it first has to be determined what kind of other components are being used. For example if the GUI class calls a method of a class in the business logic, then we clearly have a dependency between these two components. It becomes obvious that knowing the type of a given expression, in this example the method call, is imperative for any meaningful structural analysis.
 
-This leads to the question, how can the type of a given expression be determined? In Java the answer would be very simple to find, as an explicitly and statically typed language the type is always stated in the definition.\footnote{In the example \java{boolean isOdd(int i)}, method \java{isOdd} has a parameter \java{i} with the type \type{int} and returns a \type{boolean}.} Python, on the other hand, is a \emph{dynamically} typed language. Types aren't specified at all, they are only known at runtime by the interpreter. To still be able to determine them, a heuristic has to be used which infers the types by looking at the context and finding answers to questions like ``Where was the variable defined?'' and ``Who called that function?''. This heuristic is usually called type inferencer (TI). As the term \emph{heuristic} implies is it impossible to evaluate the type in every case, in certain cases assumptions have to be made.
+This leads to the question: How can the type of a given expression be determined? In Java the answer would be very simple to find, as an explicitly and statically typed language the type is always stated in the definition.\footnote{In the example \java{boolean isOdd(int i)}, method \java{isOdd} has a parameter \java{i} with the type \type{int} and returns a \type{boolean}.} Python, on the other hand, is a \emph{dynamically} typed language. Types aren't specified at all, they are only known at runtime by the interpreter. To still be able to determine them, a heuristic has to be used which infers the types by looking at the context and finding answers to questions like ``Where was the variable defined?'' and ``Who called that function?''. This heuristic is usually called type inferencer (TI). As the term \emph{heuristic} implies, it is impossible to evaluate the type in every case -- assumptions have to be made.
 
 \subsection{Goal}
 
@@ -820,8 +818,8 @@ Without separating these two calls, the type inferencer would answer that the ty
 Let's look at the evaluation of the return type of the first \id{add_one} call to explain how it is solved in PyStructure. The \class{CallTypeEvaluator} will be run to evaluate the result of the call. Because it is a function call, the evaluator creates a \class{CallContext}, which contains the following information about the call:
 
 \begin{itemize}
-    \item Definition of the function which is called, e.g. the \id{add_one} function defined on the first line
-    \item Call node for the function call, e.g. \code{add_one(41)}
+    \item Definition of the function which is called: the \id{add_one} function defined on the first line
+    \item Call node for the function call: \code{add_one(41)}
     \item Module where the Call node is located
 \end{itemize}
 
@@ -1308,7 +1306,7 @@ The structure can be exported as an XML file for further analysis. The format wh
 
 The content of the XML is separated into two parts, first a list of the components and second a list of dependencies between the components.
 
-Python modules are represented as \emph{module} elements. The module's name and its full path within the project folder are specified in the \emph{name} attribute. The packages themselves are not specified, they are implicitly recognised out of the used module path by Structure 101g. E.g. when a module \emph{drivers.sound} is exported, it is implicitly assumed that there is a package \emph{drivers}.
+Python modules are represented as \emph{module} elements. The module's name and its full path within the project folder are specified in the \emph{name} attribute. The packages themselves are not specified, they are implicitly recognised out of the used module path by Structure 101g. For example when a module \emph{drivers.sound} is exported, it is implicitly assumed that there is a package \emph{drivers}.
 
 All components beneath modules are stored using the \emph{submodule} tag, with the attribute \emph{type} specifying the actual type of component (\emph{class, function, method or attribute}) and their name in the \emph{name} attribute.
 
@@ -1358,11 +1356,11 @@ The implemented structural analyser is able to extract a program's internal stru
 
 \section{Example Output}
 
-To demonstrate the results produced by PyStructure, let's take a look at the analysis of a small application. The program being shown is Pydoku, a nice and simple Sudoku solver. We used Pydoku throughout the project to test the accuracy of PyStructure. It is small enough to be comprehended in a short time, and still sufficiently complex to challenge??? most of PyStructure's capabilities.
+To demonstrate the results produced by PyStructure, let's take a look at the analysis of a small application. The program being shown is Pydoku, a nice and simple Sudoku solver. We used Pydoku throughout the project to test the accuracy of PyStructure. It is small enough to be comprehended in a short time, and still sufficiently complex to showcase most of PyStructure's capabilities.
 
 \subsection{High-level Overview}
 
-As can been seen on the figure \vref{fig:screen_structure} Pydoku consists of a package called \id{sudoku} which implements the game logic. There are three classes, \id{Board} which represents the board and holds most of the logic, \id{Area} which are either rows, columns or blocks of the sudoku board and a class \id{Field} which represents a a single field.
+As can been seen on the figure \vref{fig:screen_structure} Pydoku consists of a package called \id{sudoku} which implements the game logic. There are three classes, \id{Board} which represents the board and holds most of the logic, \id{Area} which are either rows, columns or blocks of the sudoku board and a class \id{Field} which represents a single field.
 
 \begin{figure}[H]
     \centering
@@ -1371,7 +1369,7 @@ As can been seen on the figure \vref{fig:screen_structure} Pydoku consists of a 
     \label{fig:screen_structure}
 \end{figure}
 
-The Structure 101g graph clearly reveals that board uses both areas and fields, where as the area only has relations to the field. The \id{pydoku} modules doesn't do much beside initialise everything. 
+The Structure 101g graph clearly reveals that board uses both areas and fields, whereas area only has relations to field. The \id{pydoku} modules doesn't do much besides initialising everything.
 
 \subsection{Dependency Breakdown}
 
@@ -1395,7 +1393,7 @@ Structure 101g can also be used to get an overview of the call structure within 
     \label{fig:screen_method}
 \end{figure}
 
-By selecting a single component the analyser further highlights all related components by greying all other components. You see by comparing the  following excerpt of the method \id{load_file} and the figure \vref{fig:screen_method_selected} that the structural analyser was successfully able to identify all dependencies.
+By selecting a single component, the analyser further highlights all related components by greying out all other components. You can see by comparing the  following excerpt of the method \id{load_file} and the figure \vref{fig:screen_method_selected} that the structural analyser was successfully able to identify all dependencies.
 
 \begin{lstlisting}
 def load_file(self):
@@ -1459,23 +1457,23 @@ The type inference system is in no way perfect and can still be improved in vari
 
 The biggest weakness of the goal engine right now is its performance. This is due to the contexts, which hinder caching, as described in section \vref{caching}. It could be improved by changing how contexts are used. For example, the calculation of a function's return type is done for each call even when the called function and the argument types are the same. To avoid this, Ole Agesen's cartesian product algorithm (CPA) could be used \cite{cpa}.
 
-There are other ways to improve the performance. For example when a class uses no attributes, all instances can be treated exactly the same. Or when two instances of a class have the same attribute types, they behave the same way and the analysis could be ``shared''.
+There are other ways to improve the performance. For example when a class uses no attributes, all instances can be treated exactly the same. Or when two instances of a class have the same attribute types, they behave the same way and the analysis could be shared.
 
 \subsubsection{Built-ins}
 
-Just the elementary built-in types are supported until now. By adding more built-in types and functions, the inferencer would be able to infer more types for more projects. There are also some language features not supported yet, like generator expressions. A similar topic to built-in types is how to handle code which accesses extensions written in C or C++.
+Just the elementary built-in types are supported until now. By adding more built-in types and functions, the inferencer would be able to infer more types for more projects. There are also some language features not supported yet, like generator expressions. A similar topic to built-in types is how to handle code that accesses extensions written in C or C++.
 
-\subsubsection{Get Rid of AST}
+\subsubsection{Get Rid of the AST}
 \label{aast}
 
-An idea for improving the design and make the type inference part simpler is to get rid of the AST. Instead of using a mixture of model elements and AST, it would be possible to use a more abstract representation of the source code and only deal with this in the type inferencer. The purpose of this abstract representation is to remove many syntactical constructs to simplify the type inferencer. For example, a list constructor like \code{x = [1, 2]} would be converted to a simpler form which just uses method calls: \code{x = list(); x.append(1); x.append(2)}. Or \code{x + 2} would be converted to \code{x.__add__(2)}. It could also remove the disconnect between \node{Name} nodes and the associated uses and definitions.
+An idea for improving the design and making the type inference part simpler is to get rid of the AST. Instead of using a mixture of model elements and AST, it would be possible to use a more abstract representation of the source code and only deal with this in the type inferencer. The purpose of this abstract representation is to remove many syntactical constructs to simplify the type inferencer. For example, a list constructor like \code{x = [1, 2]} would be converted to a simpler form which just uses method calls: \code{x = list(); x.append(1); x.append(2)}. Or \code{x + 2} would be converted to \code{x.__add__(2)}. It could also remove the disconnect between \node{Name} nodes and the associated uses and definitions.
 
 \subsection{Possible Uses}
 
-A type inference system can be used for a wide variety of tasks. Some possible use cases which need type inference are for example:
+A type inference system can be used for a wide variety of tasks. Some possible use cases which need type inference are:
 
 \begin{itemize}
-    \item IDE features like code completion, highlighting the occurrences of variable and finding references of classes or methodes
+    \item IDE features like code completion, highlighting the occurrences of a variable and finding references to classes or methods
     \item Type checking and compiler optimisations
     \item Increased accuracy for tools which…
     \begin{itemize}
@@ -1486,11 +1484,11 @@ A type inference system can be used for a wide variety of tasks. Some possible u
 
 \subsubsection{Code Browser}
 
-A nice idea would be to create a code browser, similar to the type annotator, which would show the source of a project enriched with information available by the type inferencer. Classes, methods and attributes could be linked together so that the user for example could automatically jump to de definition of a method by just clicking on a use of it. Instead of an independent application such functionality could of course also be integrated into a development environment like Eclipse.
+A nice idea would be to create a code browser, similar to the type annotator, which would show the source of a project enriched with information available by the type inferencer. Classes, methods and attributes could be linked together so that the user for example could automatically jump to de definition of a method by just clicking on a usage of it. Instead of an independent application such functionality could of course also be integrated into a development environment like PyDev, a Python IDE based on Eclipse.
 
 \subsubsection{Port PEPTIC}
 
-Our previous project PEPTIC\cite{peptic2}, where the initial type inference engine originated from, can be ported to the new engine to get the benefits of all the improvements. PEPTIC used the type inferencer to increase the accuracy of code refactorings. For example, when a method should be renamed, it is important to know where the particular method is used – a perfect task for a type inferencer.
+Our previous project PEPTIC\cite{peptic2}, where the initial type inference engine originated from, can be ported to the new engine to get the benefits of all the improvements. PEPTIC uses the type inferencer to increase the accuracy of code refactorings. For example, when a method should be renamed, it is important to know where the particular method is used – a perfect task for a type inferencer.
 
 \section{Structural Analyser}
 
@@ -1498,7 +1496,7 @@ Compared to the type inferencer the structural analyser was simpler and therefor
 
 \subsection{Dependency Types}
 
-Structure 101g allows to define what caused a dependency. For example this could be: \emph{extends}, \emph{calls} or \emph{refeferences}. Currently the SA doesn't take advantage of this feature and declares all dependencies as cause by \emph{references}. This could be easily improved by checking what kind of node the origin of a dependency is , e.g. \node{Call} node is a \emph{calls} reference.
+Structure 101g allows to define what caused a dependency. For example this could be: \emph{extends}, \emph{calls} or \emph{refeferences}. Currently the structural analyser doesn't take advantage of this feature and declares all dependency types as \emph{references}. This could easily be improved by checking what kind of node the origin of a dependency is, for example \node{Call} node is a \emph{calls} reference.
 
 \subsection{Implicit Abstraction}
 
@@ -1527,9 +1525,9 @@ j.scrap(car)
 
 In an explicitly typed language the \id{scrap} method would probably look like: \java{public void scrap(Vehicle vehicle)}. From the developer's point of view the argument has the type \class{Vehicle}, as the method is able to process both cars and planes. But during the normal runtime the interpreter will only see cars and planes (in our example, objects of the type \class{Vehicle} aren't instantiated at all, so the runtime wouldn't even see the base class at all).
 
-Conclusion: The runtime type and the \emph{intended} type can differ. In explicitly typed language the abstraction is explicitly stated (for example by a signature) in Python the type is only implicitly abstracted. The structural analyser doesn't take this into account yet and simply lists all concrete dependencies.
+Conclusion: The runtime type and the \emph{intended} type can differ. In an explicitly typed language the abstraction is explicitly stated (for example by a signature), whereas in Python the type is only implicitly abstracted. The structural analyser doesn't take this into account yet and simply lists all concrete dependencies.
 
-It would be better if the analyser would look for such uses of implicit abstraction. This could be done by checking what methods are called on a given object. If these are only methods of a base class, the analyser could assume that the programmer meant the class which is more abstract.
+It would be better if the analyser would detect such uses of implicit abstraction. This could be done by checking what methods are called on a given object. If these are only methods of a base class, the analyser could assume that the programmer meant the more abstract class.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1609,7 +1607,7 @@ Should the need for other sorts of tests arise, it is just a matter of adding an
 
 \subsection{Cobertura}
 
-Cobertura is a test coverage reporting tool. It runs all the tests and collects data about which line of code and which branch was executed and calculates a test coverage metric (e.g. 87~\%). The report is a browsable HTML page where the source code is annotated and coloured to show where more testing is needed.
+Cobertura is a test coverage reporting tool. It runs all the tests and collects data about which line of code and which branch was executed and calculates a test coverage metric (e.g. 87\,\%). The report is a browsable HTML page where the source code is annotated and coloured to show where more testing is needed.
 
 \subsection{FindBugs}
 
@@ -1703,7 +1701,7 @@ We decided to use the LGPL (version 2 or later) for the PyStructure project for 
 Some parts of this document were taken from our previous project:
 
 \begin{itemize}
-    \item 70~\% of section \vref{connecting_definitions_and_uses}, \emph{Connecting Definitions and Uses}
+    \item 70\,\% of section \vref{connecting_definitions_and_uses}, \emph{Connecting Definitions and Uses}
 \end{itemize}
 
 \section{Working Hours}
@@ -1744,7 +1742,7 @@ A big thank you to Headway for their support and assistance. And thanks a lot as
     \item to Peter Sommerlad and Lukas Felber for their support during the project
     \item to Christian Bachmann for the life-saving coffee machine in our study room
     \item to Headway Software for their support and for Structure 101g
-    \item to Mathias Sulser for corrections
+    \item to Mathias Sulser and Mirko Stocker for corrections
 \end{itemize}
 
 
