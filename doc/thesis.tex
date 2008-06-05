@@ -141,11 +141,11 @@ Or imagine that you need to extract a rather big part of an application into an 
 \paragraph{Cycles}
 Another common unpleasant situation is when two high level components have an interdependency. For example it is usual that a GUI has full access to the business logic, but if there's some part in the business logic which accesses the GUI the two components are mutual dependent on each other. Between high level components this is often undesired as this means that one component cannot work without the other.
 
-% rschuett: anders schreiben:
-Imagine that a new requirement arises which asks for the business logic to be accessed by a web application. Suddenly bigger parts of both GUI and business logic would have to be refactored to accommodate the two needs.
+% rstocker { 
+This problems gets obvious for example when new requirement arises which asks for the business logic to be accessed as a web application. Suddenly bigger parts of both GUI and business logic would have to be refactored to accommodate the two different needs.
+% } so okay?
 
 It has to be said that mutual dependencies on the class level, just between classes, are completely normal and often inevitable.
-
 
 \section{Type Inference}
 
@@ -871,10 +871,11 @@ The types for \id{a} and \id{b} are the same as in the example with the lists. T
 
 So the problem is that the inferencer treats the \id{Container} class as if every instance had the same type of the \id{self.element} attribute. It doesn't differentiate between instances, only between classes.
 
-%{ rschuett: korrigieren
+%{ rsch: korrigieren --> rstocker: nochmals zweiten absatz anschauen
 
-In PyStructure, the constructor call node is used to differentiate between instances of the same class. For this, an additional field \java{constructorCall} was added to \class{ClassType}, the object representing an instance of a class. It is set when a \class{ClassType} is created and is included in the comparison for equals.
+In PyStructure, the constructor call node is used to differentiate between instances of the same class. For this, an additional field \java{constructorCall} was added to \class{ClassType}. It is set when a \class{ClassType} is created and is included in the comparison for equals.
 
+\todo{rstocker: ich find den folgenden absatz immer noch bisschen schwer verständlich}
 There's also an \class{InstanceContext} for similar reasons as the \class{CallContext}. It is created when a method is called on an object with the information about the object instance. Later, it is used in the \class{MethodReferencesEvaluator} to only return references to a method on the particular instance, if an instance context for the class was set. So, for example, only calls to the \id{set} method of the right instance are returned.
 
 The idea of separating instances depending on where they were constructed was previously described by Lex Spoon for the DDP algorithm, in the section ``Extending DDP with source-tagged classes'' of \cite{ddp}.
