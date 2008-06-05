@@ -1442,9 +1442,8 @@ Our previous project, where the type inference engine originated from, can be po
 
 PyStructure is designed to be composed of multiple independent parts, as shown on the right. Each of these parts could be in a separate Jar, because a part only depend on parts below it. The reason they are separate is that for example an IDE can use the type inference system without having to bother with the structural analysis part.
 
-% rschuett: At least another paragraph should be here, so that the picture fits. What can we write here?
-
-\todo{TOOD: describe TI migration from PEPTIC to PyStructure}
+% rschuett: verbessern
+From our previous project, we had to extract the type inference system. We used Structure 101 for this, because it was very useful to see the dependencies of the type inference. With this, we could isolate the parts we really had to import into our code base.
 
 \section{Infrastructure}
 
