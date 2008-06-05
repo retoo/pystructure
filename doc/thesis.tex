@@ -1438,8 +1438,7 @@ Compared to the type inferencer the structural analyser is much simpler. Still t
 
 \subsection{Dependency types}
 
-The structural analyser currenlt
-
+Structure 101g allows to define what caused a dependency. For example this could be: \emph{extends}, \emph{calls} or \emph{refeferences}. Currently the SA doesn't take advantage of this feature and declares all dependencies as cause by \emph{references}. This could be easily improved by checking what kind of node the origin of a dependency is , e.g. \node{Call} node is a \emph{calls} reference.
 
 \subsection{Implicit Abstraction}
 
