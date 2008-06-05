@@ -1311,7 +1311,7 @@ It should be noted that only the actual explicit dependencies are stored. The in
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Results}
 
-In the 16 weeks of the project we were able to accomplish most of the planned goals. The type inferencer used in PEPTIC\cite{peptic} was separated from Eclipse and moved to an independent new project. It now supports almost all of Python's language feature and is able to produce a sensible result in most cases. 
+In the 16 weeks of the project we were able to accomplish most of the planned goals. The type inferencer used in PEPTIC\cite{peptic2} was separated from Eclipse and moved to an independent new project. It now supports almost all of Python's language feature and is able to produce a sensible result in most cases. 
 
 The implemented structural analyser is able to extract a program's internal structure, consisting of packages, modules and classes, and to identify and evaluate all dependency-relevant expressions.
 
@@ -1319,7 +1319,9 @@ The implemented structural analyser is able to extract a program's internal stru
 
 To show some examples of how this could look like here the analysis of a small application. The program being shown is PyDoku, a small simple Sudoku solver. We used PyDoku throughout the project to test the accuracy of PyStructure. It is small enough to be comprehended  in a short time, and still sufficiently complex to challenge most of Pystructure capabilities. 
 
-As can been seen on the figure \vref{fig:screen_structure} the 
+\subsection{High level overview}
+
+As can been seen on the figure \vref{fig:screen_structure} PyDoku consists of a package called \id{sudoku} which implements the game logic. There are three classes, \id{Board} which represents the board and holds most of the logic, \id{Area} which are either rows, columns or blocks of the sudoku board and a class \id{Field} which represents a a single field. 
 
 \begin{figure}[H]
     \centering
@@ -1328,12 +1330,50 @@ As can been seen on the figure \vref{fig:screen_structure} the
     \label{fig:screen_structure}
 \end{figure}
 
+The Structure 101g graph clearly reveals that board uses both areas and fields, where as the area only has relations to the field. The \id{pydoku} modules doesn't do much beside initialise everything. 
+
+\subsection{Dependency break down}\todo{rstocker: geht der titel?}
+
+When an arrow is selected Structure 101g shows a overview of the selected dependencies. The figure \vref{fig:screen_dependency_breakdown} shows this for the dependencies between the module \id{pydoku} and the \id{board}. 
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.7 \textwidth, trim=0 0 0 0, clip=true]{screen_overview}
-    \caption{Foo bars}
-    \label{fig:screen_overview}
+    \includegraphics[width=0.7 \textwidth, trim=0 0 0 0, clip=true]{screen_dependency_breakdown}
+    \caption{Dependency breakdown}
+    \label{fig:screen_dependency_breakdown}
+\end{figure}
+
+\subsection{Class overview}
+
+Structure 101g can also be used to get an overview of the call structure within a single class, as shown in figure \vref{fig:screen_method}. 
+
+\begin{figure}[H]
+    \centering
+    \fbox{\includegraphics[width=1 \textwidth, trim=150 110 120 150, clip=true]{screen_method}}
+    \caption{Method call graph within a class}
+    \label{fig:screen_method}
+\end{figure}
+
+By selecting a single component the analyser further highlights all related components by greying all other components. You see by comparing the  following excerpt of the method \id{load_file} and the figure \vref{fig:screen_method_selected} that the structural analyser was successfully able to identify all dependencies.
+
+\begin{lstlisting}
+def load_file(self):
+    board_file = file(self.filename)
+    i = 0        
+    for line in board_file:
+        for char in line:
+            if char.isspace():
+                continue
+            self.fields[i].value = (
+                int(char) if char.isdigit() else None)
+            i += 1
+\end{lstlisting}
+
+\begin{figure}[H]
+    \centering
+    \fbox{\includegraphics[width=1 \textwidth, trim=150 110 120 150, clip=true]{screen_method_selected}}
+    \caption{Highlighted method}
+    \label{fig:screen_method_selected}
 \end{figure}
 
 
