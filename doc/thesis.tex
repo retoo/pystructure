@@ -1393,9 +1393,6 @@ Key figures
 
 \subsection{Improvements}
 
-% rschuett: korrigieren, vielleicht noch mehr schreiben
-
-\todo{write something about }
 The type inference system is in no way perfect and can still be improved in various ways.
 
 The biggest weakness of the goal engine right now is its performance. It could be improved by doing a better caching of goals. For example, the calculation of a function's return type is done for each call even when the called function and the argument types are the same. To avoid this, Ole Agesen's cartesian product algorithm (CPA) could be used \cite{cpa}.
@@ -1413,15 +1410,20 @@ A nice idea would be to create a code browser, similar to the type annotator, wh
 % }
 \subsection{Possible Uses}
 
-A type inference system can be used for a wide variety of tasks. Here are some possible use cases which need type inference:
+A type inference system can be used for a wide variety of tasks. Some possible use cases which need type inference are for example:
 
 \begin{itemize}
     \item IDE features like code completion, highlighting the occurrences of variable and finding references of classes or methodes
     \item Program exploration tools for browsing source code along with type information
     \item Type checking and compiler optimisations
+    \item Increased accuracy for tools which…
+    \begin{itemize}
+        \item … detect unused/dead code
+        \item … look for possible bugs in code (like FindBugs for Java)
+    \end{itemize}  
 \end{itemize}
 
-Our previous project, where the type inference engine originated from, can be ported to the new engine to get the benefits of all the improvements.
+Our previous project PEPTIC\cite{peptic2}, where the initial type inference engine originated from, can be ported to the new engine to get the benefits of all the improvements.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1440,10 +1442,15 @@ Our previous project, where the type inference engine originated from, can be po
     \includegraphics[width=3cm]{architecture/parts}
 \end{wrapfigure}
 
-PyStructure is designed to be composed of multiple independent parts, as shown on the right. Each of these parts could be in a separate Jar, because a part only depend on parts below it. The reason they are separate is that for example an IDE can use the type inference system without having to bother with the structural analysis part.
+PyStructure is designed to be composed of multiple independent parts, as shown on the right. Each of these parts could be in a separate Jar, because a part only depend on parts below it. 
 
-% rschuett: verbessern
+Keeping the type inferencer as independent as possible from the rest of the project was an important goal for us from the beginning. This independence will be essential when type inferencer will be ported back to PyDev
+The reason they are separate is that for example an IDE can use the type inference system without having to bother with the structural analysis part.
+
 From our previous project, we had to extract the type inference system. We used Structure 101 for this, because it was very useful to see the dependencies of the type inference. With this, we could isolate the parts we really had to import into our code base.
+
+Note: 
+
 
 \section{Infrastructure}
 
