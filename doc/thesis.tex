@@ -1438,18 +1438,16 @@ Our previous project PEPTIC\cite{peptic2}, where the initial type inference engi
 \section{PyStructure's Structure}
 
 \begin{wrapfigure}{r}{3cm}
-    \vspace{-0.6cm}
+    \vspace{-0.7cm}
     \includegraphics[width=3cm]{architecture/parts}
+    \vspace{-1.5cm}
 \end{wrapfigure}
 
-PyStructure is designed to be composed of multiple independent parts, as shown on the right. Each of these parts could be in a separate Jar, because a part only depend on parts below it. 
+PyStructure is designed to be composed of multiple independent parts, as shown on the right. Each of these parts could be in a separate Jar, because a part only depends on parts below it.
 
-Keeping the type inferencer as independent as possible from the rest of the project was an important goal for us from the beginning. This independence will be essential when the type inferencer will be ported back to the refactoring engine used by PyDev.
+From our previous project, PEPTIC, we had to extract the type inference system. We used Structure 101 for this, because it was very useful to see the dependencies of the type inference. With this, the parts could be isolated that we really had to import into our code base.
 
-From our previous project, we had to extract the type inference system. We used Structure 101 for this, because it was very useful to see the dependencies of the type inference. With this, we could isolate the parts we really had to import into our code base.
-
-Note: 
-
+Keeping the type inferencer as independent as possible from the rest of the project was an important goal for us from the beginning. This independence will be essential when the PEPTIC project will be ported to use the new inferencer.
 
 \section{Infrastructure}
 
