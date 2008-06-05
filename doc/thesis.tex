@@ -1433,6 +1433,44 @@ A type inference system can be used for a wide variety of tasks. Some possible u
 Our previous project PEPTIC\cite{peptic2}, where the initial type inference engine originated from, can be ported to the new engine to get the benefits of all the improvements.
 
 
+\section{Structural analyser}
+Compared to the type inferencer the structural analyser is much simpler. Still there are some points which could be improved. 
+
+\subsection{Implicit Abstraction}
+
+% { rstocker bitte schnell durchlesen 
+One fundamental problem we identified quite early in the project was that engine only is able to predict the \emph{concrete types}, and not a \emph{abstract types} as sometimes intended by the developer
+
+The problem is best explained by a small example:
+
+\begin{lstlisting}
+class Vehicle(object): pass
+class Plane(Vehicle): pass
+class Car(Vehicle): pass
+
+class JunkProcess(object): 
+    def scrap(vehicle):
+        print "Scraping " + vehicle
+        # .. tear the vehicle appart
+        
+car = Car()
+plane = Plane()
+
+j = JunkProcess()
+
+j.scrap(plane)
+j.scrap(car)
+\end{lstlisting}
+
+In a explicitly typed language the \id{scrap} method would probably look like:  \java{public void scrape(Vehicle vehicle) }. This makes sense as from the developers point of view the argument has the type \class{Vehicle}, as the method is able to process both cars and plane. But during the normal runtime the interpreter will only see cars and planes (in our example objects of the type \class{Vehicel} aren't instantiate at all, so the runtime wouldn't even see the base class at all).
+
+Conclusion: The runtime type and the \emph{meant} type can differ. In explicitly typed language the abstraction is explicitly stated (for example by a signature) in Python the type is only implicitly abstracted. The structural analyser doesn't take this into account yet and does simply list out all dependencies. 
+
+It would be better if the analyser would look for such uses of implicit abstraction. This could be done by checking what methods on a given object are being called. Are these only methods of base class the analyser could assume that the programmer meant the class which is more abstract. 
+
+
+% }
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Quality Assurance}
 
