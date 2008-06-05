@@ -453,7 +453,7 @@ Originally, some parts of the Eclipse DLTK project \cite{dltk} were used, but we
 \section{Goal Engine}
 
 % TODO: \vref{fibonacci} somewhere
-
+\todo{we could mention somewhere that this easy parallelising a advantage of the goal engine is}
 % (advantages/disadvantages)\\
 % (contexts)\\
 
@@ -608,7 +608,7 @@ x # what type?
 \begin{itemize}
     \item The type inferencer is initialised with an \class{ExpressionTypeGoal} with the node \node{Name(x)} associated to it.
     \item The evaluator factory looks at the goal and creates an \class{NameTypeEvaluator} for it because the expression in question is a Name AST node.
-    \item The \class{NameTypeEvaluator} finds the definition of \id{x} by looking for the corresponding \class{NameUse} in the module. It then creates a \class{DefinitionTypeGoal} to determine its type. Note: if there is more than one definition the evaluator just creates a subgoal for each of them. \todo{we could mention somewhere that this easy parallelising a advantage of the goal engine is}
+    \item The \class{NameTypeEvaluator} finds the definition of \id{x} by looking for the corresponding \class{NameUse} in the module. It then creates a \class{DefinitionTypeGoal} to determine its type. Note: if there is more than one definition the evaluator just creates a subgoal for each of them.
     \item In this case the node attached to the definition is an \node{Assign} node and therefore the goal is mapped to the \class{AssignTypeEvaluator}.
     \item All the \class{AssignTypeEvaluator} does is creating a new \class{ExpressionTypeGoal} for the corresponding value on the right-hand side of the assignment. In this case this is: \code{Foo()}.
     \item Note: As \id{Foo} is capitalised it is quite obvious for the human observer that we are talking about the instantiation of an object here. But Python allows capitalised function names and therefore the TI can't be completely sure and therefore has to check what \id{Foo} actually is, a function or a class.
