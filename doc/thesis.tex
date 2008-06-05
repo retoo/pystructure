@@ -1444,8 +1444,7 @@ Our previous project PEPTIC\cite{peptic2}, where the initial type inference engi
 
 PyStructure is designed to be composed of multiple independent parts, as shown on the right. Each of these parts could be in a separate Jar, because a part only depend on parts below it. 
 
-Keeping the type inferencer as independent as possible from the rest of the project was an important goal for us from the beginning. This independence will be essential when type inferencer will be ported back to PyDev
-The reason they are separate is that for example an IDE can use the type inference system without having to bother with the structural analysis part.
+Keeping the type inferencer as independent as possible from the rest of the project was an important goal for us from the beginning. This independence will be essential when the type inferencer will be ported back to the refactoring engine used by PyDev.
 
 From our previous project, we had to extract the type inference system. We used Structure 101 for this, because it was very useful to see the dependencies of the type inference. With this, we could isolate the parts we really had to import into our code base.
 
