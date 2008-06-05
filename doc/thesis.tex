@@ -448,6 +448,8 @@ In the first part of this section the \textbf{goal engine} and the general \text
 
 \section{Goal Engine}
 
+% TODO: \vref{fibonacci} somewhere
+
 % (advantages/disadvantages)\\
 % (contexts)\\
 
@@ -1733,7 +1735,6 @@ All in all, working on this interesting project together with Reto was a pleasan
 
 \section{Evaluators}
 
-
 \begin{itemize}
     \item References
     \begin{itemize}
@@ -1776,6 +1777,194 @@ All in all, working on this interesting project together with Reto was a pleasan
         \item Method Resolve
     \end{itemize}
 \end{itemize}
+
+\section{Fibonacci Implementation Using the Goal Engine}
+\label{fibonacci}
+
+To illustrate how the goal engine works, we created a small tutorial-like example for a calculation using the goal engine. It is an implementation of the Fibonacci function, with a goal and an evaluator. It demonstrates some of the properties of the goal engine:
+
+\begin{itemize}
+    \item It is relatively much code for such a small function, which shows the additional effort needed to get the benefits of the goal engine.
+    \item Caching/memoisation of already calculated values is there without actually having implemented it, because the goal engine ``reuses'' goals which were already done.
+    \item It is not possible to get a \class{StackOverflowError}, because the Java stack is not used for the recursion.
+\end{itemize}
+
+\subsection{Classes}
+
+\class{Fibonacci} is used to put all parts together and uses the goal to calculate some Fibonacci numbers:
+
+\begin{lstlisting}[style=smalljava]
+package ch.hsr.ifs.pystructure.playground.fibonacci;
+
+import ch.hsr.ifs.pystructure.typeinference.inferencer.GoalEngine;
+import ch.hsr.ifs.pystructure.typeinference.inferencer.logger.CombinedLogger;
+import ch.hsr.ifs.pystructure.typeinference.inferencer.logger.StatsLogger;
+
+public class Fibonacci {
+	
+	private GoalEngine goalEngine;
+	
+	public Fibonacci() {
+		CombinedLogger logger = new CombinedLogger(new StatsLogger(false));
+		
+		FibonacciEvaluatorFactory factory = new FibonacciEvaluatorFactory();
+		goalEngine = new GoalEngine(factory, logger);
+	}
+
+	public int calculate(int i) {
+		FibonacciGoal fiboGoal = new FibonacciGoal(i);
+		goalEngine.evaluateGoal(fiboGoal);
+		
+		return fiboGoal.result;
+	}
+	
+	public void shutdown() {
+		goalEngine.shutdown();
+	}
+	
+	public static void main(String[] args) {
+		Fibonacci fibonacci = new Fibonacci();
+		
+		for (int i = 0; i < 20; i++) {
+			System.out.println("" + i +  ": " + fibonacci.calculate(i));
+		}
+		
+		fibonacci.shutdown();
+	}
+
+}
+\end{lstlisting}
+
+\class{FibonacciEvaluator} does the actual calculations:
+
+\begin{lstlisting}[style=smalljava]
+package ch.hsr.ifs.pystructure.playground.fibonacci;
+
+import java.util.LinkedList;
+import java.util.List;
+
+import ch.hsr.ifs.pystructure.typeinference.evaluators.base.AbstractEvaluator;
+import ch.hsr.ifs.pystructure.typeinference.goals.base.GoalState;
+import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
+
+public class FibonacciEvaluator extends AbstractEvaluator {
+
+	private int index;
+	private FibonacciGoal goal;
+
+	public FibonacciEvaluator(FibonacciGoal goal) {
+		super(goal);
+		
+		this.goal = goal;
+		this.index = goal.getIndex();
+	}
+	
+	@Override
+	public List<IGoal> init() {
+		List<IGoal> subgoals = new LinkedList<IGoal>();
+		
+		if (index <= 1) {
+			goal.result = index;
+		} else {
+			subgoals.add(new FibonacciGoal(index - 1));
+			subgoals.add(new FibonacciGoal(index - 2));
+		}
+		
+		return subgoals;
+	}
+
+	@Override
+	public List<IGoal> subgoalDone(IGoal subgoal, GoalState subgoalState) {
+		if (subgoal instanceof FibonacciGoal) {
+			FibonacciGoal g = (FibonacciGoal) subgoal;
+			
+			goal.result += g.result;
+		} else {
+			this.unexpectedSubgoal(subgoal);
+		}
+		
+		return IGoal.NO_GOALS;
+	}
+	
+}
+\end{lstlisting}
+
+\class{FibonacciGoal} says which index should be calculated by the evaluator and holds the result:
+
+\begin{lstlisting}[style=smalljava]
+package ch.hsr.ifs.pystructure.playground.fibonacci;
+
+import ch.hsr.ifs.pystructure.typeinference.contexts.ModuleContext;
+import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
+
+public class FibonacciGoal implements IGoal {
+
+	private int index;
+	public int result;
+
+	public FibonacciGoal(int index) {
+		this.index = index;
+	}
+	
+	public int getIndex() {
+		return index;
+	}
+
+	public ModuleContext getContext() {
+		return null;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + index;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		final FibonacciGoal other = (FibonacciGoal) obj;
+		if (index != other.index) {
+			return false;
+		}
+		return true;
+	}
+
+}
+\end{lstlisting}
+
+\class{FibonacciEvaluatorFactory} tells the goal engine which goal should be evaluated with which evaluator:
+
+\begin{lstlisting}[style=smalljava]
+package ch.hsr.ifs.pystructure.playground.fibonacci;
+
+import ch.hsr.ifs.pystructure.typeinference.evaluators.base.AbstractEvaluator;
+import ch.hsr.ifs.pystructure.typeinference.goals.base.IGoal;
+import
+ch.hsr.ifs.pystructure.typeinference.inferencer.dispatcher.IEvaluatorFactory;
+
+public class FibonacciEvaluatorFactory implements IEvaluatorFactory {
+
+	public AbstractEvaluator createEvaluator(IGoal goal) {
+		if (goal instanceof FibonacciGoal) {
+			return new FibonacciEvaluator((FibonacciGoal) goal);
+		}
+		
+		throw new RuntimeException("Unknown goal " + goal);
+	}
+
+}
+\end{lstlisting}
 
 \listoffigures
 
