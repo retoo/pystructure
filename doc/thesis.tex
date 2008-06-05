@@ -1032,6 +1032,7 @@ Later, when a goal is created for evaluating what \id{function} returns, the eva
 % TODO: Wo erkären wie eigentlich aliasing ? 
 
 \subsection{Caching}
+\label{caching}
 
 When an evaluation of a root goal is finished, only the end result remains. The intermediate results which lead to the end result are all lost, because they are saved nowhere. So when a subgoal is needed in the evaluation of a next root goal, it has to be calculated again, even if its result had already been calculated before. For the structural analyser, which uses a root goal for each expression, this has a very bad impact on performance, as one can easily imagine. To avoid this, intermediate results have to be cached.
 
@@ -1456,7 +1457,7 @@ The type inference system is in no way perfect and can still be improved in vari
 
 \subsubsection{Performance}
 
-The biggest weakness of the goal engine right now is its performance. It could be improved by doing a better caching of goals. For example, the calculation of a function's return type is done for each call even when the called function and the argument types are the same. To avoid this, Ole Agesen's cartesian product algorithm (CPA) could be used \cite{cpa}.
+The biggest weakness of the goal engine right now is its performance. This is due to the contexts, which hinder caching, as described in section \vref{caching}. It could be improved by changing how contexts are used. For example, the calculation of a function's return type is done for each call even when the called function and the argument types are the same. To avoid this, Ole Agesen's cartesian product algorithm (CPA) could be used \cite{cpa}.
 
 There are other ways to improve the performance. For example when a class uses no attributes, all instances can be treated exactly the same. Or when two instances of a class have the same attribute types, they behave the same way and the analysis could be ``shared''.
 
