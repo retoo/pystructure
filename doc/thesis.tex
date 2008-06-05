@@ -148,9 +148,7 @@ Or imagine that you need to extract a rather big part of an application into an 
 \paragraph{Cycles}
 Another common unpleasant situation is when two high level components have an interdependency. For example it is usual that a GUI has full access to the business logic, but if there's some part in the business logic which accesses the GUI the two components are mutual dependent on each other. Between high level components this is often undesired as this means that one component cannot work without the other.
 
-% rstocker { 
-This problems gets obvious for example when new requirement arises which asks for the business logic to be accessed as a web application. Suddenly bigger parts of both GUI and business logic would have to be refactored to accommodate the two different needs.
-% } so okay?
+This problem becomes obvious for example when a new requirement arises which asks for the business logic to be accessed by a web application. Suddenly bigger parts of both GUI and business logic would have to be refactored to accommodate the two different needs.
 
 It has to be said that mutual dependencies on the class level, just between classes, are completely normal and often inevitable.
 
@@ -413,8 +411,7 @@ There are things which are not represented in the model because it is built with
     For example: \code{class Foo(calculate_baseclass()): pass}. Of course this kind of class definition is not seen that often.}
     % TODO: do a reference to the MRO C3 section
     \item What exactly is being imported by an import statement.
-    \item The model is based on the AST nodes, which means that there may still be multiple ways an operation is represented. For example, \code{x + y} is the same as \code{x.__add__(y)} from a type inference perspective. Therefore these variants have to be handled in the type inferencer.
-    % TODO: reference section in outlook/results about transformation of AST to AAST
+    \item The model is based on the AST nodes, which means that there may still be multiple ways an operation is represented. For example, \code{x + y} is the same as \code{x.__add__(y)} from a type inference perspective. Therefore these variants have to be handled in the type inferencer. For an idea how to get rid of this duplication, see \vref{aast} in the outlook chapter.
 \end{itemize}
 
 
@@ -456,11 +453,7 @@ Examples:
 
 \subsubsection{Results}
 
-% { rstocker  neuer abschnitt
-
-When a goal gets solved the result is stored within the goal. How this result does look like depends on the kind of goals. 
-
-In PyStructure there are two main kind of goals (and therefore results):
+When a goal is solved the result is stored within the goal. How this result looks like depends on the kind of goal. In PyStructure there are two main kind of goals (and therefore results):
 
 \paragraph{Types}
 
@@ -561,7 +554,7 @@ As a first step the user of the type inferencer, usually the structural analyser
 
 When the root goal is created it has to be fed into the goal engine. Every goal has to be processed by one of the available evaluators. Which one has to be used is determined by \class{PythonEvaluatorFactory}.
 
-The \class{PythonEvaluatorFactory} takes several criteria into account. In the case of an expression type goal the type of the associated expression is also considered. For example if the expression is a method call the goal is delegated to the \class{CallTypeEvaluator}, an attribute expression (e.g. \code{obj.method}) is processed by the \class{AttributeTypeEvaluator} and so on.\todo{rstocker: Should we a provide a list of these mappings somewhere?}
+The \class{PythonEvaluatorFactory} takes several criteria into account. In the case of an expression type goal the type of the associated expression is also considered. For example if the expression is a method call the goal is delegated to the \class{CallTypeEvaluator}, an attribute expression (e.g. \code{obj.method}) is processed by the \class{AttributeTypeEvaluator} and so on.
 
 \subsubsection{Evaluator}
 
@@ -878,16 +871,12 @@ The types for \id{a} and \id{b} are the same as in the example with the lists. T
 
 So the problem is that the inferencer treats the \id{Container} class as if every instance had the same type of the \id{self.element} attribute. It doesn't differentiate between instances, only between classes.
 
-%{ rsch: korrigieren --> rstocker: nochmals zweiten absatz anschauen
+In PyStructure, the constructor call node is used to differentiate between instances of the same class. For this, an additional field \java{constructorCall} was added to \class{ClassType}. It is set when a \class{ClassType} is created and is included in the equals comparison.
 
-In PyStructure, the constructor call node is used to differentiate between instances of the same class. For this, an additional field \java{constructorCall} was added to \class{ClassType}. It is set when a \class{ClassType} is created and is included in the comparison for equals.
-
-\todo{rstocker: ich find den folgenden absatz immer noch bisschen schwer verständlich}
-There's also an \class{InstanceContext} for similar reasons as the \class{CallContext}. It is created when a method is called on an object with the information about the object instance. Later, it is used in the \class{MethodReferencesEvaluator} to only return references to a method on the particular instance, if an instance context for the class was set. So, for example, only calls to the \id{set} method of the right instance are returned.
+% rschuett: Nochmals korrekturlesen
+There's also an \class{InstanceContext} for similar reasons as the \class{CallContext}. It is created when a method is called on an object and includes the information about the object instance. Later, the \class{MethodReferencesEvaluator} might use it, when it searches for references of a method. If the instance context is set and the class of the method matches the class of the instance context, only references to methods which are called on the specified instance are returned. So, for example, only calls to the \id{set} method of the right instance are returned.
 
 The idea of separating instances depending on where they were constructed was previously described by Lex Spoon for the DDP algorithm, in the section ``Extending DDP with source-tagged classes'' of \cite{ddp}.
-
-%}
 
 \subsection{Inheritance}
 
@@ -1204,10 +1193,11 @@ Using the information gathered by the type inferencer it is now possible to auto
 Components in the structure are:
 
 \begin{itemize}
-    \item Packages (Directories in Python)\todo{rstocker: klammer weg?}
-    \item Modules
+    \item Packages (a collection of modules in a directory)
+    \item Modules (a file with Python code)
     \item Classes
     \item Methods
+    \item Functions
 \end{itemize}
 
 The components are nested within each other. The nested component share their dependencies with all their enclosing components. For example if a method calls another class's method a dependency is formed between these two components, but at the same time the two classes also become related to each other, as they nest a dependency. 
@@ -1400,28 +1390,31 @@ Key figures
 
 \subsection{Improvements}
 
-The type inference system is in no way perfect and can still be improved in various ways.
+The type inference system is in no way perfect and can still be improved in various ways. Of course there are still bugs and cases where the type inferencer can't infer types. More testing with more real-world projects will reveal these.
+
+\subsubsection{Performance}
 
 The biggest weakness of the goal engine right now is its performance. It could be improved by doing a better caching of goals. For example, the calculation of a function's return type is done for each call even when the called function and the argument types are the same. To avoid this, Ole Agesen's cartesian product algorithm (CPA) could be used \cite{cpa}.
 
 There are other ways to improve the performance. For example when a class uses no attributes, all instances can be treated exactly the same. Or when two instances of a class have the same attribute types, they behave the same way and the analysis could be ``shared''.
 
+\subsubsection{Built-ins}
+
 Just the elementary built-in types are supported until now. By adding more built-in types and functions, the inferencer would be able to infer more types for more projects. There are also some language features not supported yet, like generator expressions. A similar topic to built-in types is how to handle code which accesses extensions written in C or C++.
 
-Of course there are still bugs and cases where the type inferencer can't infer types. More testing with more real-world projects will reveal these.
+\subsubsection{Get Rid of AST}
+\label{aast}
 
-% { rstocker: bitte korrigeren und kommentieren
-\subsubsection{Code Browser}
+% rschuett: korrigieren
 
-A nice idea would be to create a code browser, similar to the type annotator, which would show the source of a project enriched with information available by the type inferencer. Classes, methods and attributes could be linked together so that the user for example could automatically jump to de definition of a method by just clicking on a use of it. Instead of an independent application such functionality could of course also be integrated into a development environment like Eclipse.
-% }
+An idea for improving the design and make the type inference part simpler is to get rid of the AST. Instead of using a mixture of model elements and AST, we could build a more abstract representation of the source code and only deal with this in the type inferencer. The purpose of this abstract representation is to remove many syntactical constructs to simplify the type inferencer. For example, a list constructor like \code{x = [1, 2]} would be converted to a simpler form which just uses method calls: \code{x = list(); x.append(1); x.append(2)}. Or \code{x + 2} would be converted to \code{x.__add__(2)}. It could also remove the disconnect between \node{Name} nodes and the associated uses and definitions.
+
 \subsection{Possible Uses}
 
 A type inference system can be used for a wide variety of tasks. Some possible use cases which need type inference are for example:
 
 \begin{itemize}
     \item IDE features like code completion, highlighting the occurrences of variable and finding references of classes or methodes
-    \item Program exploration tools for browsing source code along with type information
     \item Type checking and compiler optimisations
     \item Increased accuracy for tools which…
     \begin{itemize}
@@ -1429,6 +1422,12 @@ A type inference system can be used for a wide variety of tasks. Some possible u
         \item … look for possible bugs in code (like FindBugs for Java)
     \end{itemize}  
 \end{itemize}
+
+\subsubsection{Code Browser}
+
+A nice idea would be to create a code browser, similar to the type annotator, which would show the source of a project enriched with information available by the type inferencer. Classes, methods and attributes could be linked together so that the user for example could automatically jump to de definition of a method by just clicking on a use of it. Instead of an independent application such functionality could of course also be integrated into a development environment like Eclipse.
+
+\subsubsection{Port PEPTIC}
 
 Our previous project PEPTIC\cite{peptic2}, where the initial type inference engine originated from, can be ported to the new engine to get the benefits of all the improvements.
 
