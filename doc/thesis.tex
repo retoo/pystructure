@@ -1498,21 +1498,23 @@ Z ## mro Z,X,B,Y,A,C,object
 
 Should the need for other sorts of tests arise, it is just a matter of adding another assertion type.
 
-\subsection{Checkstyle}
+\subsection{Cobertura}
 
-We used Checkstyle to help us have a uniform Java coding standard. It's a tool which checks if the source code adheres to a certain coding style, for example that opening braces are always on the same line, and issues warnings if it violates it. There's an Eclipse plugin which annotates the source code when there's a violation.
-
-% TODO: Reference to Checkstyle?
+Cobertura is a test coverage reporting tool. It runs all the tests and collects data about which line of code and which branch was executed and calculates a test coverage metric (e.g. 87~\%). The report is a browsable HTML page where the source code is annotated and coloured to show where more testing is needed.
 
 \subsection{FindBugs}
 
 FindBugs is an automatic fault detection tool that can find problems in Java programs. It uses analysis techniques to identify code patterns known to be problematic – so-called bug patterns. We reviewed all the problems reported by FindBugs and decided to fix them or not. We have fixed all problems which either have been easy or important.
 
-% TODO: Reference to FindBugs?
+\subsection{Checkstyle}
+
+We used Checkstyle to help us have a uniform Java coding standard. It's a tool which checks if the source code adheres to a certain coding style, for example that opening braces are always on the same line, and issues warnings if it violates it. There's an Eclipse plugin which annotates the source code when there's a violation.
 
 \subsection{Continuous Integration}
 
-% TODO: Write about CruiseControl and how it does all the above things automatically. Maybe also about lava lamps.
+All of the above measures to check the code base were automatically run after each commit on our build server. We used CruiseControl for this, which automatically built the whole project, including the documentation. When there was a test failure, e-mails were sent to us that the build had failed, which allowed us to quickly detect and fix problems. It also copied all reports of the above tools to the website, so they could be easily browsed.
+
+As an additionaly gadget, we installed two lava lamps in our workspace, a green one and a red one. On one of our computers, a script was running, which continuously checked the status of the build. If the build failed, the red lava lamp was activated. When everything was okay, the green one was on. This gave us a nice visual feedback about our build status and it was fun.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
