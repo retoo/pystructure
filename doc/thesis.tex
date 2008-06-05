@@ -1287,10 +1287,19 @@ It should be noted that only the actual explicit dependencies are stored. The in
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Results}
 
-In the 16 weeks of the project we were able to accomplish most of the anticipated goals. The type inferencer used in PEPTIC\cite{peptic} was separated from Eclipse and moved to an independent new project. It now supports almost all of Python's language feature and is able to produce a sensible result in most cases. 
+In the 16 weeks of the project we were able to accomplish most of the planned goals. The type inferencer used in PEPTIC\cite{peptic} was separated from Eclipse and moved to an independent new project. It now supports almost all of Python's language feature and is able to produce a sensible result in most cases. 
 
-The implemented structural analyser is able to extract a programs internal structure, consisting of packages, modules and classes, and to identify all dependency-relevant expressions.
+The implemented structural analyser is able to extract a program's internal structure, consisting of packages, modules and classes, and to identify and evaluate all dependency-relevant expressions.
 
+To show some examples of how this could look like here the analysis of a small application. The program being shown is PyDoku, a small simple Sudoku solver. We used PyDoku throughout the project to test the accuracy of PyStructure. It is small enough to be comprehended  in a short time, and still sufficiently complex to challenge most of Pystructure capabilities. 
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7 \textwidth, trim=0 0 0 0, clip=true]{screen_overview}
+    \label{fig:screen_overview}
+    \caption{High level dependency between the different modules}
+\end{figure}
 
 
 Structure \\
