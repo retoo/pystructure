@@ -1435,6 +1435,12 @@ Our previous project PEPTIC\cite{peptic2}, where the initial type inference engi
 \section{Structural analyser}
 Compared to the type inferencer the structural analyser is much simpler. Still there are some points which could be improved. 
 
+
+\subsection{Dependency types}
+
+The structural analyser currenlt
+
+
 \subsection{Implicit Abstraction}
 
 % { rstocker bitte schnell durchlesen 
@@ -1468,11 +1474,6 @@ Conclusion: The runtime type and the \emph{meant} type can differ. In explicitly
 It would be better if the analyser would look for such uses of implicit abstraction. This could be done by checking what methods on a given object are being called. Are these only methods of base class the analyser could assume that the programmer meant the class which is more abstract. 
 
 % }
-
-\subsection{Dependency types}
-
-The structural analyser currenlt
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Quality Assurance}
