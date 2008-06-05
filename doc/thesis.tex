@@ -430,8 +430,7 @@ There are things which are not represented in the model because it is built with
 \begin{itemize}
     \item Which data attributes a class has isn't known, because they are not declared anywhere, they are just assigned as needed.
     \item The class hierarchy can't be resolved during the creation of the model, because the specification of the base class is just an expression and could be the result of a function call or an imported class.\footnote{
-    For example: \code{class Foo(calculate_baseclass()): pass}. Of course this kind of class definition is not seen that often.}
-    % TODO: do a reference to the MRO C3 section
+    For example: \code{class Foo(calculate_baseclass()): pass}. Of course this kind of class definition is not seen that often.}. The hierarchy is resolved in the MethodResolutionOrderEvaluator described in the the section \vref{ti_inheritance}.
     \item What exactly is being imported by an import statement.
     \item The model is based on the AST nodes, which means that there may still be multiple ways an operation is represented. For example, \code{x + y} is the same as \code{x.__add__(y)} from a type inference perspective. Therefore these variants have to be handled in the type inferencer. For an idea how to get rid of this duplication, see \vref{aast} in the outlook chapter.
 \end{itemize}
@@ -559,10 +558,6 @@ def evaluate_goal(root_goal):
 A goal is done when all its subgoals are done or when it created no subgoals in the first place. The \id{add_goals} method takes some measures to prevent the goal engine from running without ever stopping, see section \vref{recursion}.
 
 Each goal node knows all its parent goal nodes, which will be notified with the result when its evaluation is done. All the goal nodes form a graph, to be specific a directed acyclic graph (DAG).
-
-\todo{describe some goal engine behaviors like, cyclic recursion, caching, crazy ordering and so on}
-
-
 
 \subsection{Evaluation Process}
 
@@ -900,6 +895,7 @@ There's also an \class{InstanceContext} for similar reasons as the \class{CallCo
 The idea of separating instances depending on where they were constructed was previously described by Lex Spoon for the DDP algorithm, in the section ``Extending DDP with source-tagged classes'' of \cite{ddp}.
 
 \subsection{Inheritance}
+\label{ti_inheritance}
 
 Adding support for inheritance was much more difficult than anticipated. The main problem was that Python uses a rather sophisticated algorithm to calculate the inheritance linearisation. The algorithm has been implemented using the \class{MethodResolutionOrderEvaluator} which calculates the method resolution
 order (MRO) of a given class. The MRO defines in which order the interpreter has to look for inherited methods or attributes. 
