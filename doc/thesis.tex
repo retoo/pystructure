@@ -1473,13 +1473,11 @@ A nice idea would be to create a code browser, similar to the type annotator, wh
 
 Our previous project PEPTIC\cite{peptic2}, where the initial type inference engine originated from, can be ported to the new engine to get the benefits of all the improvements. PEPTIC used the type inferencer to increase the accuracy of code refactorings. For example, when a method should be renamed, it is important to know where the particular method is used – a perfect task for a type inferencer.
 
-\section{Structural analyser}
+\section{Structural Analyser}
 
-% rstocker {
-Compared to the type inferencer the structural analyser was much simpler and therefore was rather straightforward. But there are still some some points which could be improved.
+Compared to the type inferencer the structural analyser was simpler and therefore rather straightforward. But there are still some points which could be improved.
 
-% } 
-\subsection{Dependency types}
+\subsection{Dependency Types}
 
 Structure 101g allows to define what caused a dependency. For example this could be: \emph{extends}, \emph{calls} or \emph{refeferences}. Currently the SA doesn't take advantage of this feature and declares all dependencies as cause by \emph{references}. This could be easily improved by checking what kind of node the origin of a dependency is , e.g. \node{Call} node is a \emph{calls} reference.
 
