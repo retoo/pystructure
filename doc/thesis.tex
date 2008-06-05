@@ -74,7 +74,7 @@ The following details are extracted by the structural analyser:
     \end{itemize}
 \end{itemize}
 
-The extracted data can be visualised by Structure 101g, a program developed by Headway Software. Structure 101g shows dependencies as graphs in various levels of detail and provides a wide variety of analysis tools, like detecting cyclic dependencies or validating the current architecture. This allows to effectively monitor the progress of a project's architecture during development.
+The extracted data can be visualised by Structure 101g, a program developed by Headway Software. Structure 101g shows dependencies as graphs in various levels of detail and provides a wide variety of analysis features, like detecting cyclic dependencies or validating the current architecture. This allows to effectively monitor the progress of a project's architecture during development.
 
 The structural data itself is also useful in other areas of software development like enhanced accuracy for automatic refactoring or better support for code completion in integrated development environments.
 
@@ -87,35 +87,34 @@ The structural data itself is also useful in other areas of software development
 \section*{Motivation}
 
 Keeping software manageable and simple as it grows is a very challenging task. 
-It is not only important to define a good architecture when planning a project, but also to continuously compare it to the actual implementation. Tracking the architecture and keeping a high-level view of dependencies between components is difficult when only looking at source code. Graphical models such as domain or architecture diagrams help, but the problem with them is that they are disconnected from the source code and might not be completely accurate.
+It is not only important to define a good architecture when planning a project, but also to continuously compare it to the actual implementation. Tracking the architecture and keeping a high-level view of dependencies between components is difficult when only looking at the source code. Graphical models such as domain or architecture diagrams help, but the problem with them is that they are disconnected from the source code and might not be completely accurate.
 
-Manually checking a program's structure is time consuming and error prone and is therefore not very practical. A more preferable solution would be to have an automatic way to visualise the structure of a project. This would also be generally useful when exploring the innards of an unfamiliar code base or while evaluating the impact of a particular change.
+Manually checking a program's structure is time-consuming and error-prone and is therefore not very practical. A more preferable solution would be to have an automated way to visualise the structure of a project. This would also be generally useful when exploring the internals of an unfamiliar code base or while evaluating the impact of a particular change.
 
 \section*{Goal}
 
-PyStructure's goal was to develop an analyser which reveals these internal structures and dependencies in a Python program by statically analysing its source code. Dependencies are identified by determining what types are used in a particular component. But as Python is a dynamically typed language, types are not known before the application is run. Therefore a major aspect of the project was to develop an algorithm, called type inferencer, which deduces types by mimicking the evaluation process of the Python interpreter.
+PyStructure's goal was to develop an analyser which reveals these internal structures and dependencies in a Python program by statically analysing its source code. Dependencies are identified by determining what types are used in a particular component. Since Python is a dynamically typed language, types are not known before the application is run. Therefore, a major aspect of the project was to develop an algorithm, called type inferencer, which deduces types by mimicking the evaluation process of the Python interpreter.
 
-As part of a previous project about refactoring support for Python called PEPTIC \cite{peptic2}, we developed a basic version of such a type inferencer. For PyStructure it was decided to reuse this type inferencer and develop it further to make it usable as a base for structure analysis.
+As part of a previous project about refactoring support for Python called PEPTIC \cite{peptic2}, we developed a basic version of such a type inferencer. For PyStructure it was decided to reuse this type inferencer and develop it further to make it usable as a base for structural analysis.
 
-PyStructure should be able to export the structure and dependency data to Structure 101g, a structure visualisation program developed by Headway Software. It shows dependencies as graphs in various levels of detail and provides a wide variety of analysis tools, like detecting cyclic dependencies or validating the current architecture.
+PyStructure should be able to export the structure and dependency data to Structure 101g, a structure visualisation program developed by Headway Software. It shows dependencies as graphs in various levels of detail and provides a wide variety of analysis features, like detecting cyclic dependencies or validating the current architecture.
 
 \section*{Results}
 
-In the 16 weeks of the project we were able to accomplish most of the planned goals. PEPTIC's type inferencer was extracted and moved to an independent new project. It now supports almost all of Python's language features and is able to produce a sensible result in most cases.
+In the 16 weeks of the project we were able to accomplish most of the planned goals. PEPTIC's type inferencer was extracted to an independent new project. It now supports almost all of Python's language features and is able to produce a sensible result in most cases.
 
-The implemented structural analyser is able to extract a program's internal structure, consisting of packages, modules and classes and to identify and evaluate all expressions that cause dependencies.
+The implemented structural analyser is able to extract a program's internal structure consisting of packages, modules and classes and to identify and evaluate all expressions that cause dependencies.
 
 \section*{Outlook}
 
-There is still room for improvements and optimisations for the type inference system, like:
+There is still room for improvement and optimisations for the type inference system, such as:
 
 \begin{itemize}
-    \item The performance of the goal engine for bigger projects and in general can be improved very much. By doing better and more caching of goals, similar calculations can be done only once without sacrificing the precision of the results.
+    \item The performance of the goal engine for bigger projects and in general can be improved. By implementing better and more caching of goals, similar calculations have to be done only once without sacrificing the precision of the results.
     \item Support for more language constructs and built-in types can be added.
 \end{itemize}
 
-The PEPTIC project still uses the old type inference engine for refactorings, because the new engine has been developed in a separate repository. The code has to be ported to the new engine for the refactorings to make use of the new features. This will probably also lead to changes to the type inference system itself, because we did not take special care of the requirements of an IDE during this project.
-
+The PEPTIC project still uses the old type inference engine for refactorings, because the new engine has been developed in a separate repository. The code has to be ported to the new engine for the refactorings to make use of the new features. This will probably also lead to changes to the type inference system itself, because taking special care of the requirements of an IDE wasn't the focus in this project.
 \newpage
 
 \tableofcontents
