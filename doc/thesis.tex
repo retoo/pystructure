@@ -452,7 +452,7 @@ Originally, some parts of the Eclipse DLTK project \cite{dltk} were used, but we
 \section{Goal Engine}
 
 % TODO: \vref{fibonacci} somewhere
-\todo{we could mention somewhere that this easy parallelising a advantage of the goal engine is}
+% TODO: we could mention somewhere that this easy parallelising a advantage of the goal engine is
 % (advantages/disadvantages)\\
 % (contexts)\\
 
@@ -832,8 +832,6 @@ When this is the case the evaluator doesn't evaluate the argument of all callers
 
 If the call context doesn't apply, the \class{ArgumentTypeEvaluator} does the usual thing of finding all the calls and returning the union of all the argument expressions. This is the case when an argument type goal is evaluated as the root goal and not as a subgoal of a return type goal.
 
-% TODO: Reference to some random paper
-
 \subsection{Container Element Types}
 \label{container_element_types}
 
@@ -975,8 +973,6 @@ With this approach of simulated built-in types, the inferencer knows how these t
 
 Apart from built-in types which don't need to be imported explicitly, there are other things in the Python standard library which do need to be imported, like the \id{sys} module. The \id{builtins} module and other standard library modules reside in a special directory in the PyStructure tree. The \class{Workspace} class knows about this directory and creates a \class{SourceFolder} for it which at the end of all the source folders searched for imports.
 
-% TODO: Add diagram
-
 \subsubsection{Syntax for Initialising Data Structures}
 
 For common data structures like \id{list} or \id{dict}, Python provides convenient syntactical shortcuts for initialising their contents, for example:
@@ -1024,9 +1020,6 @@ Let's take the example from above and look at the implemented solution.
 When the definition visitor processes the first line of \file{main.py} and sees that it is an \code{import *}, it will add the import path (\id{module} in this case) to the external scope. On the next line, the definition visitor searches for the definition of \id{function}. It will check the module scope and won't find it, so it will check the parent scope of the module, which is the external scope. This returns an \class{ImplicitImportDefinition} which holds the name and the list of \code{import *} paths which were added to it up to this point.
 
 Later, when a goal is created for evaluating what \id{function} returns, the evaluation will find the \class{ImplicitImportDefinition} and the evaluator for it will be started. It walks through the import paths and tries to find the definition behind the name \id{function} until it has found it. If the imported definition is itself an \class{ImplicitImportDefinition}, its paths are added to the front of the paths which need to be searched (leading to a depth-first search).
-
-% TODO: add diagram
-% TODO: Wo erkären wie eigentlich aliasing ? 
 
 \subsection{Caching}
 \label{caching}
@@ -1434,16 +1427,11 @@ We didn't thoroughly test the performance of the analyser, but here are some dat
     \end{itemize}
 \end{itemize}
 
-% Structure \\
-% Key figures
-% \todo{maybe describe somewhere that it is very difficult to find all attributes of a given class.}
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Outlook}
 
-%TODO:  Possible follow-up projects
-% Possibilities.. etc.
+% nicedo: Possible follow-up projects
 
 \section{Type Inference}
 \label{outlook_type_inference}
@@ -1625,8 +1613,6 @@ As an additionaly gadget, we installed two lava lamps in our workspace, a green 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Project Management}
-
-% TODO: PEPTIC
 
 \section{Roadmap}
 
