@@ -1276,7 +1276,7 @@ On the other hand this approach would cause a lot of wasted CPU time as a lot of
 
 Despite the worse runtime performance we decided to use the second approach for PyStructure. To reduce the additional effort we invested more time into the caching of results in the TI itself. It is much easier to selectively increase caching for some goals/evaluators. Additionally, the caching also benefits other uses of the type inferencer, not just the structural analyser.
 
-\subsection{Expression Spider}\todo{is this really a subsection?}
+\subsection{Expression Spider}
 \label{sa_exp_spider}
 
 Finding all the expressions which might cause structural dependencies is done by a visitor called \class{Spider}. It basically iterates over all expressions, ignoring the expressions which aren't relevant, and associates them to the structural component (method, class or module) they belong to. The structural analyser then creates \class{ExpressionTypeGoals} for each one of them. 
