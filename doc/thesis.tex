@@ -1433,8 +1433,8 @@ Our previous project PEPTIC\cite{peptic2}, where the initial type inference engi
 
 
 \section{Structural analyser}
-Compared to the type inferencer the structural analyser is much simpler. Still there are some points which could be improved. 
 
+Compared to the type inferencer the structural analyser is much simpler. Still there are some points which could be improved.
 
 \subsection{Dependency types}
 
@@ -1443,10 +1443,9 @@ The structural analyser currenlt
 
 \subsection{Implicit Abstraction}
 
-% { rstocker bitte schnell durchlesen 
-One fundamental problem we identified quite early in the project was that engine only is able to predict the \emph{concrete types}, and not a \emph{abstract types} as sometimes intended by the developer
+One fundamental problem we identified quite early in the project was that the engine is only able to detect the \emph{concrete types}, and not \emph{abstract types} as sometimes intended by the developer.
 
-The problem is best explained by a small example:
+The problem is best explained by an example:
 
 \begin{lstlisting}
 class Vehicle(object): pass
@@ -1467,13 +1466,12 @@ j.scrap(plane)
 j.scrap(car)
 \end{lstlisting}
 
-In a explicitly typed language the \id{scrap} method would probably look like: \java{public void scrape(Vehicle vehicle)}. From the developers point of view the argument has the type \class{Vehicle}, as the method is able to process both cars and plane. But during the normal runtime the interpreter will only see cars and planes (in our example objects of the type \class{Vehicel} aren't instantiate at all, so the runtime wouldn't even see the base class at all).
+In an explicitly typed language the \id{scrap} method would probably look like: \java{public void scrap(Vehicle vehicle)}. From the developer's point of view the argument has the type \class{Vehicle}, as the method is able to process both cars and planes. But during the normal runtime the interpreter will only see cars and planes (in our example, objects of the type \class{Vehicle} aren't instantiated at all, so the runtime wouldn't even see the base class at all).
 
-Conclusion: The runtime type and the \emph{meant} type can differ. In explicitly typed language the abstraction is explicitly stated (for example by a signature) in Python the type is only implicitly abstracted. The structural analyser doesn't take this into account yet and does simply list out all concrete dependencies. 
+Conclusion: The runtime type and the \emph{intended} type can differ. In explicitly typed language the abstraction is explicitly stated (for example by a signature) in Python the type is only implicitly abstracted. The structural analyser doesn't take this into account yet and simply lists all concrete dependencies.
 
-It would be better if the analyser would look for such uses of implicit abstraction. This could be done by checking what methods on a given object are being called. Are these only methods of base class the analyser could assume that the programmer meant the class which is more abstract. 
+It would be better if the analyser would look for such uses of implicit abstraction. This could be done by checking what methods are called on a given object. If these are only methods of a base class, the analyser could assume that the programmer meant the class which is more abstract.
 
-% }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Quality Assurance}
