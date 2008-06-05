@@ -1471,8 +1471,10 @@ Our previous project PEPTIC\cite{peptic2}, where the initial type inference engi
 
 \section{Structural analyser}
 
-Compared to the type inferencer the structural analyser is much simpler. Still there are some points which could be improved.
+% rstocker {
+Compared to the type inferencer the structural analyser was much simpler and therefore was rather straightforward. But there are still some some points which could be improved.
 
+% } 
 \subsection{Dependency types}
 
 Structure 101g allows to define what caused a dependency. For example this could be: \emph{extends}, \emph{calls} or \emph{refeferences}. Currently the SA doesn't take advantage of this feature and declares all dependencies as cause by \emph{references}. This could be easily improved by checking what kind of node the origin of a dependency is , e.g. \node{Call} node is a \emph{calls} reference.
@@ -1646,8 +1648,6 @@ In the end we decided to go with our own goal engine because we wanted to keep i
 
 This milestone was about producing a prototype that could analyse a basic application and export it to the Structure 101g XML format. Because the prototype relies on all components of PyStructure, the structural analyser and the exporter had to be created and we had to think about how to connect the exporter with the analyser and the analyser with the type inference system.
 
-Two important features of the type inferencer were planned for later and therefore missing in this milestone, namely inheritance and container element types.
-
 \subsubsection{Milestone 2 – Week 14}
 
 \begin{itemize}
@@ -1655,7 +1655,7 @@ Two important features of the type inferencer were planned for later and therefo
     \item Support for lists and inheritance
 \end{itemize}
 
-This milestone was primarily focused on two hard type inference features, inheritance and the analysis of container element types (see \vref{container_element_types}). With support for this, PyStructure should be able to analyse more diverse projects.
+The second milestone was primarily focused on two difficult type inference features, inheritance and the analysis of container element types (see section\vref{ti_inheritance} and section\vref{container_element_types} respectively). Supporting these features, PyStructure is able to analyse more diverse projects.
 
 \subsubsection{Milestone 3 – Week 16}
 
