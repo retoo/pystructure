@@ -1428,7 +1428,7 @@ Just the elementary built-in types are supported until now. By adding more built
 
 % rschuett: korrigieren
 
-An idea for improving the design and make the type inference part simpler is to get rid of the AST. Instead of using a mixture of model elements and AST, we could build a more abstract representation of the source code and only deal with this in the type inferencer. The purpose of this abstract representation is to remove many syntactical constructs to simplify the type inferencer. For example, a list constructor like \code{x = [1, 2]} would be converted to a simpler form which just uses method calls: \code{x = list(); x.append(1); x.append(2)}. Or \code{x + 2} would be converted to \code{x.__add__(2)}. It could also remove the disconnect between \node{Name} nodes and the associated uses and definitions.
+An idea for improving the design and make the type inference part simpler is to get rid of the AST. Instead of using a mixture of model elements and AST, it would be possible to use a more abstract representation of the source code and only deal with this in the type inferencer. The purpose of this abstract representation is to remove many syntactical constructs to simplify the type inferencer. For example, a list constructor like \code{x = [1, 2]} would be converted to a simpler form which just uses method calls: \code{x = list(); x.append(1); x.append(2)}. Or \code{x + 2} would be converted to \code{x.__add__(2)}. It could also remove the disconnect between \node{Name} nodes and the associated uses and definitions.
 
 \subsection{Possible Uses}
 
