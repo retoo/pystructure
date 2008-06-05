@@ -15,7 +15,7 @@ public class Fibonacci {
 		goalEngine = new GoalEngine(factory, logger);
 	}
 
-	public int calc(int i) {
+	public int calculate(int i) {
 		FibonacciGoal fiboGoal = new FibonacciGoal(i);
 		goalEngine.evaluateGoal(fiboGoal);
 		
@@ -27,13 +27,13 @@ public class Fibonacci {
 	}
 	
 	public static void main(String[] args) {
-		Fibonacci fib = new Fibonacci();
+		Fibonacci fibonacci = new Fibonacci();
 		
 		for (int i = 0; i < 20; i++) {
-			System.out.println("" + i +  ": " + fib.calc(i));
+			System.out.println("" + i +  ": " + fibonacci.calculate(i));
 		}
 		
-		fib.shutdown();
+		fibonacci.shutdown();
 	}
 
 }

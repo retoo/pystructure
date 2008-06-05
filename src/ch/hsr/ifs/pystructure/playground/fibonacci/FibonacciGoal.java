@@ -16,7 +16,6 @@ public class FibonacciGoal implements IGoal {
 		return index;
 	}
 
-
 	public ModuleContext getContext() {
 		return null;
 	}
