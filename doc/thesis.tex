@@ -1463,7 +1463,7 @@ j.scrap(car)
 
 In a explicitly typed language the \id{scrap} method would probably look like: \java{public void scrape(Vehicle vehicle)}. From the developers point of view the argument has the type \class{Vehicle}, as the method is able to process both cars and plane. But during the normal runtime the interpreter will only see cars and planes (in our example objects of the type \class{Vehicel} aren't instantiate at all, so the runtime wouldn't even see the base class at all).
 
-Conclusion: The runtime type and the \emph{meant} type can differ. In explicitly typed language the abstraction is explicitly stated (for example by a signature) in Python the type is only implicitly abstracted. The structural analyser doesn't take this into account yet and does simply list out all dependencies. 
+Conclusion: The runtime type and the \emph{meant} type can differ. In explicitly typed language the abstraction is explicitly stated (for example by a signature) in Python the type is only implicitly abstracted. The structural analyser doesn't take this into account yet and does simply list out all concrete dependencies. 
 
 It would be better if the analyser would look for such uses of implicit abstraction. This could be done by checking what methods on a given object are being called. Are these only methods of base class the analyser could assume that the programmer meant the class which is more abstract. 
 
