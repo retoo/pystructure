@@ -1302,10 +1302,15 @@ The structure can be exported as an XML file for further analysis. The format wh
 The content of the XML is separated into two parts, first a list of the components and second a list of dependencies between the components.
 
 
-Python modules are represented as \emph{module} elements. The module's name and its full path within the project folder are specified in the \emph{name} attribute. All components beneath modules are stored using the \emph{submodule} tag, with the attribute \emph{type} specifying the actual type of component (\emph{class, function, method or attribute}) and their name in the \emph{name} attribute.
+% rstocker { reread
+Python modules are represented as \emph{module} elements. The module's name and its full path within the project folder are specified in the \emph{name} attribute. The packages itself are not specified, they have to be implicitly recognised out of the used module path. E.g. when a module \emph{drivers.sound} is exported, it is implicitly assumed that there is a package \emph{drivers}.
+
+% }
+
+All components beneath modules are stored using the \emph{submodule} tag, with the attribute \emph{type} specifying the actual type of component (\emph{class, function, method or attribute}) and their name in the \emph{name} attribute.
 
 All modules and submodules are given a unique identifier in the attribute \emph{id}. PyStructure uses the fully qualified module name (in Python module notation) for the modules and a unique number for all other components. These identifiers are used to define the dependencies.
-\todo{sagen das packages impilizte sind}
+
 \begin{lstlisting}[language=xml]
 ...
 <module type="module" name="sudoku.board" 
