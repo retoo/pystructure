@@ -1389,7 +1389,7 @@ Structure 101g can also be used to get an overview of the call structure within 
 
 \begin{figure}[H]
     \centering
-    \fbox{\includegraphics[width=0.98 \textwidth, trim=150 110 120 150, clip=true]{screen_method}}
+    \includegraphics[width=0.98 \textwidth, trim=150 110 120 150, clip=true]{screen_method}
     \caption{Method call graph within a class}
     \label{fig:screen_method}
 \end{figure}
@@ -1411,16 +1411,34 @@ def load_file(self):
 
 \begin{figure}[H]
     \centering
-    \fbox{\includegraphics[width=0.98 \textwidth, trim=150 110 120 150, clip=true]{screen_method_selected}}
+    \includegraphics[width=0.98 \textwidth, trim=150 110 120 150, clip=true]{screen_method_selected}
     \caption{Highlighted method}
     \label{fig:screen_method_selected}
 \end{figure}
 
 
-Structure \\
-types (type annotator)\\
-Key figures
-\todo{maybe describe somewhere that it is very difficult to find all attributes of a given class.}
+\section{Performance}
+
+We didn't thoroughly test the performance of the analyser, but here are some data points to give an impression. The evaluations were done on a brand new shiny laptop of course.
+
+\begin{itemize}
+    \item Pydoku, a small program to solve Sudokus:
+    \begin{itemize}
+        \item Is 304 lines long and contains 4 modules
+        \item Takes 1\,s to analyse
+        \item Uses 708 root goals and a total of 43\,288 goals
+    \end{itemize}
+    \item Mutagen, a music file tagging library:
+    \begin{itemize}
+        \item Is 7\,482 lines long and contains 21 modules
+        \item Takes 3\,min 55\,s to analyse
+        \item Uses 20\,491 root goals and a total of 8\,472\,117 goals
+    \end{itemize}
+\end{itemize}
+
+% Structure \\
+% Key figures
+% \todo{maybe describe somewhere that it is very difficult to find all attributes of a given class.}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
