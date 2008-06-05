@@ -86,7 +86,7 @@ The structural data itself is also useful in other areas of software development
 
 \section*{Motivation}
 
-Keeping software manageable and simple as it grows is a very challenging tasks. 
+Keeping software manageable and simple as it grows is a very challenging task. 
 It is not only important to define a good architecture when planning a project, but also to continuously compare it to the actual implementation. Tracking the architecture and keeping a high-level view of dependencies between components is difficult when only looking at source code. Graphical models such as domain or architecture diagrams help, but the problem with them is that they are disconnected from the source code and might not be completely accurate.
 
 Manually checking a program's structure is time consuming and error prone and is therefore not very practical. A more preferable solution would be to have an automatic way to visualise the structure of a project. This would also be generally useful when exploring the innards of an unfamiliar code base or while evaluating the impact of a particular change.
@@ -103,7 +103,7 @@ PyStructure should be able to export the structure and dependency data to Struct
 
 In the 16 weeks of the project we were able to accomplish most of the planned goals. PEPTIC's type inferencer was extracted and moved to an independent new project. It now supports almost all of Python's language features and is able to produce a sensible result in most cases.
 
-The implemented structural analyser is able to extract a program's internal structure, consisting of packages, modules and classes, and to identify and evaluate all expressions that cause dependencies.
+The implemented structural analyser is able to extract a program's internal structure, consisting of packages, modules and classes and to identify and evaluate all expressions that cause dependencies.
 
 \section*{Outlook}
 
@@ -114,7 +114,7 @@ There is still room for improvements and optimisations for the type inference sy
     \item Support for more language constructs and built-in types can be added.
 \end{itemize}
 
-The PEPTIC project still uses the old type inference engine for refactorings, because the new engine has been developed in a separate repository. For the refactorings to make use of the new features, the code has to be ported to the new engine. This will probably also lead to changes to the type inference system itself, because we did not take special care for the requirements of an IDE during this project.
+The PEPTIC project still uses the old type inference engine for refactorings, because the new engine has been developed in a separate repository. The code has to be ported to the new engine for the refactorings to make use of the new features. This will probably also lead to changes to the type inference system itself, because we did not take special care of the requirements of an IDE during this project.
 
 \newpage
 
@@ -1353,7 +1353,7 @@ It should be noted that only the actual explicit dependencies are stored. The in
 
 In the 16 weeks of the project we were able to accomplish most of the planned goals. The type inferencer used in PEPTIC\cite{peptic2} was separated from Eclipse and moved to an independent new project. It now supports almost all of Python's language features and is able to produce a sensible result in most cases.
 
-The implemented structural analyser is able to extract a program's internal structure, consisting of packages, modules and classes, and to identify and evaluate all expressions that cause dependencies.
+The implemented structural analyser is able to extract a program's internal structure, consisting of packages, modules and classes and to identify and evaluate all expressions that cause dependencies.
 
 \section{Example Output}
 
@@ -1742,6 +1742,7 @@ All in all, working on this interesting project together with Reto was a pleasan
     \item to Peter Sommerlad and Thomas Corbat for their support during the project
     \item to Christian Bachmann for the life-saving coffee machine in our study room
     \item to Headway Software for their support and for Structure 101g
+    \item to Mathias Sulser for corrections
 \end{itemize}
 
 
