@@ -214,9 +214,7 @@ The type inferencer is divided into three main process stages:
  \label{fig:process_overview}
 \end{figure}
 
-The first two steps, the parsing of source code and generation of the model, lay the foundation for the type inferencer. They do a static analysis of the whole project and are independent of???from expr.... what expressions should be evaluated. As long as the underlying source code doesn't change???, these preparations can be reused for any number of type inferencer evaluations.
-
-
+The first two steps, the parsing of source code and generation of the model, lay the foundation for the type inferencer. They do a static analysis of the whole project and are independent of what expressions should be evaluated. As long as the underlying source code doesn't change, these preparations can be reused for any number of type inferencer evaluations.
 
 \chapter{Model}
 
@@ -229,7 +227,7 @@ This chapter describes how the foundation for the type inferencer and the struct
     \includegraphics[width=2.5cm]{process_overview_parser}
 \end{wrapfigure}
 
-Before any analysis can be done on the application???, its source code has to be brought into a form which is easier to process for programs. It's quite common to express an application's source code as a tree, where an interior node represents a programming language construct and the children of that node represent meaningful components of the construct. For example the simple code \code{foo("bar")} is a call node with the parameter as a string node attached to it. This node structure is usually called abstract syntax tree (AST).
+Before any analysis of an application can be done, its source code has to be brought into a form which is easier to process for programs. It's quite common to express an application's source code as a tree, where an interior node represents a programming language construct and the children of that node represent meaningful components of the construct. For example the simple code \code{foo("bar")} is a call node with the parameter as a string node attached to it. This node structure is usually called abstract syntax tree (AST).
 
 \begin{lstlisting}
 Call
@@ -240,7 +238,7 @@ Call
 
 Instead of writing a new parser, PyStructure uses a modified version of the Jython\footnote{Jython is a Python implementation for the JVM written in Java.} parser. The modifications were done by the PyDev\footnote{PyDev is an IDE for Python developers based on Eclipse and written in Java.} project to be able to interpret Python 2.5 source code, the normal Jython parser can only parse source code written for Python 2.2. In the long term it would be advantageous to use the unmodified Jython parser, but before 2.5 syntax is supported this is not really an option.
 
-It should be noted that the parser does not do that???-that much besides converting the source code into a tree representation of the syntax. And this representation is still independent of???from the semantics of the interpreter. For example, the Python interpreter handles the expression \code{a + b} the same as \code{a.__add__(b)}, but???whereas the parser still represents the code as \node{BinOp(a, b, op=Add)} and therefore distinguishes it from literally calling the \code{__add__} method, which would be \node{Call(a.__add__, args=b)}.
+It should be noted that the parser does not do much besides converting the source code into a tree representation of the syntax. And this representation is still independent of the semantics of the interpreter. For example, the Python interpreter handles the expression \code{a + b} the same as \code{a.__add__(b)}, whereas the parser still represents the code as \node{BinOp(a, b, op=Add)} and therefore distinguishes it from literally calling the \code{__add__} method, which would be \node{Call(a.__add__, args=b)}.
 
 
 \section{Creating the Model}
@@ -273,14 +271,15 @@ Types are not yet involved at this stage, the model is just a foundation to make
 
 \subsection{Creating the Structure}
 
-The first step of???in building the model is to extract the structural elements that make up a program, like modules, classes, methods and functions. These also represent scopes for variables.
+The first step in building the model is to extract the structural elements that make up a program, like modules, classes, methods and functions. These also represent scopes for variables.
 
 Creating this initial structure is done by the structure definition visitor. It is a simple visitor which just visits class and function definitions (method definitions are the same in the AST). Then it creates \class{Class}, \class{Function} and \class{Method} objects, which wrap the AST nodes. They also provide additional functionality, for example the \class{Module} knows which classes and functions it includes and \class{Class} contains methods.
 
 \subsection{Connecting Definitions and Uses}
 \label{connecting_definitions_and_uses}
 
-???maybe rewrite this paragraph a bit Now we have the elements of the model, but more is needed. As described in the example with the \id{foo} variable in section \vref{creating_the_model}, knowing the variables where they are defined and used is important for the type inferencer. Determining this is called flow analysis and is based on these two elements:
+% nicedo: could be written a bit more bettter
+Now we have the elements of the model, but more is needed. As described in the example with the \id{foo} variable in section \vref{creating_the_model}, knowing the variables where they are defined and used is important for the type inferencer. Determining this is called flow analysis and is based on these two elements:
 
 \begin{itemize}
     \item \textbf{Definition:} Binding of a value to a name, for example through:
@@ -374,7 +373,7 @@ Therefore, the variable \id{g} in the global scope is linked to both definitions
 
 \subsubsection{Implementation}
 
-Flow analysis as shown above is primarily implemented in one visitor, the \class{DefinitionVisitor}. It visits the AST and creates \emph{definitions} and \emph{uses} of names. Each use can have multiple possible definitions associated with it, and each definitions???-s can belong to multiple uses. In other words, they have a many-to-many relationship.
+Flow analysis as shown above is primarily implemented in one visitor, the \class{DefinitionVisitor}. It visits the AST and creates \emph{definitions} and \emph{uses} of names. Each use can have multiple possible definitions associated with it, and each definition can belong to multiple uses. In other words, they have a many-to-many relationship.
 
 To resolve the definition of a name, the visitor uses a structure of nested blocks and scopes. Scopes are introduced by class and function definitions, and there's also a scope for the module the code is in. Blocks correspond to lines of code which are usually grouped by indentation.\footnote{Python actually makes indentation even mandatory and therefore doesn't need block delimiters like curly braces or end statements.} Scopes are blocks too, just with special behaviour. The following example is used to explain the algorithm:
 
@@ -399,7 +398,7 @@ The first line defines a variable with the name \id{x}, the second is a use of t
 
 On line 4, there's a function definition with the name \id{func}. It introduces a scope for the function. Because variables from the whole outer scope could be used from within the function, the visiting of the function body is deferred to later.
 
-Line 14 is a name use of \id{func}. That it is a function call doesn't matter for the \class{DefinitionVisitor}.???sounds a bit weird. moreover, does l14 belong here? is it in order of procession?
+Line 14 is a name use of \id{func}. That this is part of a function call doesn't matter to the \class{DefinitionVisitor}.
 
 The visitor now visits the body of the function. The scope of the function is created, with the module scope as the parent scope. At line 5, there's a definition of the name \id{x}.
 
@@ -407,7 +406,7 @@ At line 7, a block starts for the if clause and there's a definition for \id{y}.
 
 At line 10, the else clause begins. There's another definition of \id{y} here. Line 11 uses \id{y} and its definition is found directly in the block.
 
-On line 12, the two blocks of the if ???clause have ended. The definitions of both blocks are now set as the current definitions of \id{y}, they are said to flow out from the block. So the use on this line may refer to both???, the definitions in the if/else block and the use is created accordingly.
+On line 12, the two blocks of the \code{if} clause have ended. The definitions of both blocks are now set as the current definitions of \id{y}, they are said to flow out from the block. So the use on this line may refer to both definitions in the \code{if}/\code{else} block, and the use is created accordingly.
 
 Now the visitor is finished and can return the name uses and definitions.
 
@@ -457,7 +456,7 @@ Originally, some parts of the Eclipse DLTK project \cite{dltk} were used, but we
 % (advantages/disadvantages)\\
 % (contexts)\\
 
-The goal engine is a central part of the type inferencer, it is???-, it is responsible for the orchestration of the whole evaluation and the underlying algorithm. To understand how the type inference algorithm works it is important to understand the goal engine. Theoretically the goal engine could be used to solve any type of goals.
+The goal engine is a central part of the type inferencer. It is responsible for the orchestration of the whole evaluation and the underlying algorithm. To understand how the type inference algorithm works it is important to understand the goal engine. Theoretically the goal engine could be used to solve any type of problem.
 
 \subsection{Components}
 
@@ -465,9 +464,7 @@ The goal engine consists of the following main components:
 
 \subsubsection{Goals}
 
-Goals, as the name says, defines the \emph{goal} of a single step in the type inferencer. Usually a goal can't be solved directly, but requires several subgoals to reach a conclusion. ???singular / plural mixup or is goals a common expression?
-
-When a goal is solved the result is stored in the goal object and returned to the evaluator that created it. ???same statement can be found again after the 'examples' -> eliminate one
+A goal, as the name says, defines the \emph{goal} of a single step in the type inferencer. Usually a goal can't be solved directly, but requires several subgoals to reach a conclusion.
 
 Examples:
 
@@ -505,7 +502,7 @@ In the example \code{t = Truck()}, \id{Truck} is a Metaclass Type wereas \id{t} 
 
 \paragraph{References}
 
-Some goals return a list of references when being solved. As explained later this is for example used when the type infer???-infer inferencer has to find all callers of a given method.
+Some goals return a list of references when being solved. As explained later this is for example used when the type inferencer has to find all callers of a given method.
 
 Several kinds of references are used:
 
@@ -529,11 +526,11 @@ Several kinds of references are used:
 
 \subsubsection{Evaluators}
 
-The counterpart of the goals are the evaluators, which are responsible for solving a particular goal. If they need any further information they can create subgoals. The evaluator is notified when a subgoal is finished???finishes. 
+The counterpart of the goals are the evaluators, which are responsible for solving a particular goal. If they need any further information they can create subgoals. The evaluator is notified when a subgoal is finished. 
 
 \subsubsection{Evaluator Factory}
 
-The final part which brings goals and the???-the evaluators together is the evaluator factory. It is responsible for choosing the right evaluator for a particular goal.???now i get it with the counterpart :)
+The final part which brings goals and evaluators together is the evaluator factory. It is responsible for choosing the right evaluator for a particular goal.
 
 \subsubsection{Goal Queue}
 
@@ -566,7 +563,7 @@ Each goal node knows all its parent goal nodes, which will be notified with the 
 
 \subsection{Evaluation Process}
 
-Summarised, the evaluation works as follows: First a???-a an expression of interest has to be chosen somewhere in the code. The expression is then attached to an ``expression type goal''. This goal, called root goal because it is the root of the evaluation, is then fed into the goal engine which starts to process it. Every goal has to be processed by one evaluator. Which evaluator has to be used is determined by the evaluator factory according to the goal's type and other criteria. The particular evaluator is then initialised and processes the goal. The evaluator can (and usually will) create subgoals which are then processed as well. As a goal finishes successfully, its result is reported back to the parent goal. As soon as the root goal finishes, the result is returned to the user.
+Summarised, the evaluation works as follows: First an expression of interest has to be chosen somewhere in the code. The expression is then attached to an ``expression type goal''. This goal, called root goal because it is the root of the evaluation, is then fed into the goal engine which starts to process it. Every goal has to be processed by one evaluator. Which evaluator has to be used is determined by the evaluator factory according to the goal's type and other criteria. The particular evaluator is then initialised and processes the goal. The evaluator can (and usually will) create subgoals which are then processed as well. As a goal finishes successfully, its result is reported back to the parent goal. As soon as the root goal finishes, the result is returned to the user.
 
 \subsubsection{Picking a Root Goal}
 
@@ -679,7 +676,7 @@ function(Baz())
 
 Classes added yet another layer of complexity to the type inferencer. Methods calls are in Python written as \code{receiver.method()}. Here again the problem was to find all callers of a method. Like in the case of functions the evaluator has to check all potential matches if their names match. But this isn't enough,  additionally the receiver has to be of the correct type. Otherwise the TI would mix up a identically called method in two unrelated classes. 
 
-Attributes are even worse. Finding all references of an attribute is quite comparable to finding methods. But in Python attributes are nowhere defined, the developer can just use them and they are created ad hoc.???rewrite that prev. sentence Because attributes are public this doesn't haven???-n oder +e :) to be in the module in which the class was defined.
+Attributes are even worse. Finding all references of an attribute is quite comparable to finding methods. But in Python, attributes aren't declared, they are created when the developer assigns to them for the first time. Because attributes are public this doesn't have to be in the module in which the class was defined.
 
 In this example the TI evaluates the type of the truck's attribute cargo.
 
@@ -735,7 +732,7 @@ So here again, finding all callers of a method and finding all attribute referen
 
 \section{Challenges/Problems}
 
-In this section, some of the difficult parts of developing a type inference system for Python are described in more detail. Each problem is illustrated with examples and shows the solution which was implemented in PyStructure is explained.???rewrite, 2 verbs
+In this section, some of the difficult parts of developing a type inference system for Python are described in more detail. Each problem is illustrated with examples and shows the solution which was implemented in PyStructure.
 
 \subsection{Recursion}
 \label{recursion}
@@ -800,7 +797,7 @@ In the example at step 8, the goal engine checks for cycles. It walks upwards on
 
 When a cycle is detected, the offending subgoal is not connected to the evaluator. In addition, \java{subgoalDone} is called on the evaluator with the \java{RECURSIVE} goal state for the subgoal. The evaluator can then react to the situation, for example by ignoring it. The call type evaluator does this and returns an empty type as its result, which means the whole result will be \type{int} because of the first \code{return}.
 
-This doesn't only prevent ???from an endless loop, but still allows the TI to evaluate the return type of a recursive function correctly.
+This doesn't only prevent an endless loop, but still allows the TI to evaluate the return type of a recursive function correctly.
 
 \subsection{Call Context}
 \label{call_context}
