@@ -21,18 +21,16 @@ public class FibonacciEvaluator extends AbstractEvaluator {
 	
 	@Override
 	public List<IGoal> init() {
-		List<IGoal> subGoals = new LinkedList<IGoal>();
+		List<IGoal> subgoals = new LinkedList<IGoal>();
 		
-		if (index == 0) {
-			goal.result = 0;
-		} else if (index == 1) {
-			goal.result = 1;
+		if (index <= 1) {
+			goal.result = index;
 		} else {
-			subGoals.add(new FibonacciGoal(index - 1));
-			subGoals.add(new FibonacciGoal(index - 2));
+			subgoals.add(new FibonacciGoal(index - 1));
+			subgoals.add(new FibonacciGoal(index - 2));
 		}
 		
-		return subGoals;
+		return subgoals;
 	}
 
 	@Override
