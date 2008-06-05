@@ -1623,6 +1623,8 @@ In the end we decided to go with our own goal engine because we wanted to keep i
 
 This milestone was about producing a prototype that could analyse a basic application and export it to the Structure 101g XML format. Because the prototype relies on all components of PyStructure, the structural analyser and the exporter had to be created and we had to think about how to connect the exporter with the analyser and the analyser with the type inference system.
 
+Two important features of the type inferencer were planned for later and therefore missing in this milestone, namely inheritance and container element types.
+
 \subsubsection{Milestone 2 – Week 14}
 
 \begin{itemize}
@@ -1630,9 +1632,7 @@ This milestone was about producing a prototype that could analyse a basic applic
     \item Support for lists and inheritance
 \end{itemize}
 
-This milestone was primarily focused on two hard type inference features, inheritance and the analysis of container element types (see \vref{container_element_types}).
-
-% TODO: mehr schreiben
+This milestone was primarily focused on two hard type inference features, inheritance and the analysis of container element types (see \vref{container_element_types}). With support for this, PyStructure should be able to analyse more diverse projects.
 
 \subsubsection{Milestone 3 – Week 16}
 
@@ -1642,10 +1642,11 @@ This milestone was primarily focused on two hard type inference features, inheri
 
 For the final milestone, the goal was to add support for built-in types and other refinements to make the system usable for real-world projects.
 
-% TODO: mehr schreiben
+Of course another major goal for this last milestone was to finish this thesis document.
 
- (Problems, important decisions) \\
- Our Experiences
+% TODO: mehr schreiben
+% (Problems, important decisions) \\
+% Our Experiences
 
 \section{Used Licence}
 
