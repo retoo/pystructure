@@ -127,9 +127,11 @@ The PEPTIC project still uses the old type inference engine for refactorings, be
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Introduction}
 
-%{ rschuett: korrigieren
+%{ rschuett: 
 
-A developer wants to use PyStructure to analyse a Python project. What he or she does is to feed the source code of the project to PyStructure and after some time, an XML file is returned. This can then be opened in Structure 101g and the user can inspect the structure and dependencies of the project.
+PyStructure is a structural analyser for projects written in Python. It is able to parse an application's source code, analyse it and then generate a graph representing the internal structure of the project. The resulting data can be visualised using \emph{Structure 101g}, a generic structure analyser developed by \emph{Headway Software}.
+
+If a developer wants to use PyStructure for analysing a Python project, she feeds the source code of the project to PyStructure. After some time an XML file containing the extracted data is returned. This file can then be opened in Structure 101g which visualises the structure and dependencies of the project.
 
 \begin{figure}[H]
     \centering
@@ -138,7 +140,8 @@ A developer wants to use PyStructure to analyse a Python project. What he or she
     \label{fig:big_picture}
 \end{figure}
 
-The lower part of the picture shows the components of PyStructure that are involved in this process. % was noch?
+% rstocker {
+The components in the lower part of the picture are the ones of which PyStructure is mainly made of. 
 
 %}
 
