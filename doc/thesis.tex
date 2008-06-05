@@ -1303,11 +1303,7 @@ The structure can be exported as an XML file for further analysis. The format wh
 
 The content of the XML is separated into two parts, first a list of the components and second a list of dependencies between the components.
 
-
-% rstocker { reread
-Python modules are represented as \emph{module} elements. The module's name and its full path within the project folder are specified in the \emph{name} attribute. The packages itself are not specified, they have to be implicitly recognised out of the used module path. E.g. when a module \emph{drivers.sound} is exported, it is implicitly assumed that there is a package \emph{drivers}.
-
-% }
+Python modules are represented as \emph{module} elements. The module's name and its full path within the project folder are specified in the \emph{name} attribute. The packages themselves are not specified, they are implicitly recognised out of the used module path by Structure 101g. E.g. when a module \emph{drivers.sound} is exported, it is implicitly assumed that there is a package \emph{drivers}.
 
 All components beneath modules are stored using the \emph{submodule} tag, with the attribute \emph{type} specifying the actual type of component (\emph{class, function, method or attribute}) and their name in the \emph{name} attribute.
 
@@ -1471,9 +1467,7 @@ A nice idea would be to create a code browser, similar to the type annotator, wh
 
 \subsubsection{Port PEPTIC}
 
-% rstocker { nochamsl schnell durchlesen 
-Our previous project PEPTIC\cite{peptic2}, where the initial type inference engine originated from, can be ported to the new engine to get the benefits of all the improvements. PEPTIC used the type inferencer to increase the accuracy of code refactorings. For example, when a method should be renamed, it is important to know where the particular method is used – a prefect place for a type inferencer.
-% }
+Our previous project PEPTIC\cite{peptic2}, where the initial type inference engine originated from, can be ported to the new engine to get the benefits of all the improvements. PEPTIC used the type inferencer to increase the accuracy of code refactorings. For example, when a method should be renamed, it is important to know where the particular method is used – a perfect task for a type inferencer.
 
 \section{Structural analyser}
 
