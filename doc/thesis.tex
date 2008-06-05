@@ -113,7 +113,6 @@ There is still room for improvements and optimisations for the type inference sy
 \begin{itemize}
     \item The performance of the goal engine for bigger projects and in general can be improved very much. By doing better and more caching of goals, similar calculations can be done only once without sacrificing the precision of the results.
     \item Support for more language constructs and built-in types can be added.
-    % rschuett: Was noch?
 \end{itemize}
 
 The PEPTIC project still uses the old type inference engine for refactorings, because the new engine has been developed in a separate repository. For the refactorings to make use of the new features, the code has to be ported to the new engine. This will probably also lead to changes to the type inference system itself, because we did not take special care for the requirements of an IDE during this project.
@@ -896,7 +895,6 @@ So the problem is that the inferencer treats the \id{Container} class as if ever
 
 In PyStructure, the constructor call node is used to differentiate between instances of the same class. For this, an additional field \java{constructorCall} was added to \class{ClassType}. It is set when a \class{ClassType} is created and is included in the equals comparison.
 
-% rschuett: Nochmals korrekturlesen
 There's also an \class{InstanceContext} for similar reasons as the \class{CallContext}. It is created when a method is called on an object and includes the information about the object instance. Later, the \class{MethodReferencesEvaluator} might use it, when it searches for references of a method. If the instance context is set and the class of the method matches the class of the instance context, only references to methods which are called on the specified instance are returned. So, for example, only calls to the \id{set} method of the right instance are returned.
 
 The idea of separating instances depending on where they were constructed was previously described by Lex Spoon for the DDP algorithm, in the section ``Extending DDP with source-tagged classes'' of \cite{ddp}.
