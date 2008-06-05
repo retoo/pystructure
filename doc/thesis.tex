@@ -182,10 +182,10 @@ This leads to the question: How can the type of a given expression be determined
 So, developing a type inferencer was a central goal of the project. To be useful for structural analysis, it should be able to resolve the type of the following components:
 
 \begin{itemize}
-    \item Local \& global variables
+    \item Local and global variables
     \item Arguments
     \item Attributes
-    \item Return values of functions \& methods
+    \item Return values of functions and methods
 \end{itemize}
 
 Of course the type inferencer should take the application as a whole into account and develop a best guess what the given expression's type could be. For example, in the case of a method argument, the type inferencer should look for all places where the particular method is called and what argument type was used.
@@ -227,7 +227,7 @@ This chapter describes how the foundation for the type inferencer and the struct
     \includegraphics[width=2.5cm]{process_overview_parser}
 \end{wrapfigure}
 
-Before any analysis of an application can be done, its source code has to be brought into a form which is easier to process for programs. It's quite common to express an application's source code as a tree, where an interior node represents a programming language construct and the children of that node represent meaningful components of the construct. For example the simple code \code{foo("bar")} is a call node with the parameter as a string node attached to it. This node structure is usually called abstract syntax tree (AST).
+Before any analysis of an application can be done, its source code has to be brought into a form which is easier to process for programs. It's quite common to express an application's source code as a tree, where an interior node represents a programming language construct and the children of that node represent meaningful components of the construct. For example the simple code \code{foo("bar")} is a call node with the argument as a string node attached to it. This node structure is usually called abstract syntax tree (AST).
 
 \begin{lstlisting}
 Call
@@ -485,7 +485,7 @@ Report what kind of type a given expression has. There is a distinction drawn be
 \begin{itemize}
     \item \textbf{Class Type} A particular instance of a class
     \item \textbf{Metaclass Type} A class object
-    \item \textbf{Method \& Function Type}
+    \item \textbf{Method and Function Type}
     \item \textbf{Package Type}
     \item \textbf{Combined Type} Union of several types
 \end{itemize}
@@ -672,7 +672,7 @@ function(Baz())
     \item[] In the example this would just be \code{Baz()}.
 \end{itemize}
 
-\subsection{Methods \& Attributes}
+\subsection{Methods and Attributes}
 
 Classes added yet another layer of complexity to the type inferencer. Methods calls are in Python written as \code{receiver.method()}. Here again the problem was to find all callers of a method. Like in the case of functions the evaluator has to check all potential matches if their names match. But this isn't enough,  additionally the receiver has to be of the correct type. Otherwise the TI would mix up a identically called method in two unrelated classes. 
 
@@ -724,7 +724,7 @@ a.cargo # what's the type?
     \item \textbf{Note:} \emph{\id{self} and \id{a} are all of type \class{Truck}}
     \item Now the \class{ClassAttributeTypeEvaluator} knows all the places where the attribute was references. All what is left do do is to select all references which are used in a assignment (only the first two) and run an \class{ExpressionTypeGoal} on the values of them: \code{None} and \code{something}.
     \item The assignment of \code{None} produces the type \class{NoneType}
-    \item The the second assignment of \id{something} is defined as a parameter of the method \id{store}. Resolving this parameter causes a \class{MethodReferenceGoal}, which itself produces yet another \class{AttributeReferencesGoal} to find all callers of the method.
+    \item The the second assignment of \id{something} is defined as an argument of the method \id{store}. Resolving this argument causes a \class{MethodReferenceGoal}, which itself produces yet another \class{AttributeReferencesGoal} to find all callers of the method.
 
 So here again, finding all callers of a method and finding all attribute references is quite similar, and therefore shares a lot of code/goals.
     
@@ -990,7 +990,7 @@ In PyStructure it is solved in the evaluator which finds the type of the \node{L
 
 For \id{dict}, the procedure is the same except that initial elements are represented by calls of \id{__setitem__}, for example \code{numerals.__setitem__(1, "unu")}.
 
-\subsection{Imports with import *}
+\subsection{Imports With import *}
 \label{import_star}
 
 There's a Python feature\footnote{Some would say it's not a feature, but a wart, because it pollutes the local namespace with unused names. It is generally advised to use \code{import *} only very sparingly.} to import all the names from a module using the syntax \code{from module import *}. An example, this is the code in \file{module.py}:
@@ -1099,7 +1099,7 @@ With this, all the aforementioned weaknesses go away. The following changes were
 
 %}
 
-\subsection{Use of a Map in Evaluator Factory}
+\subsection{Use of Map in Evaluator Factory}
 
 % SVN changeset 202
 
@@ -1141,7 +1141,7 @@ Providing an easy way to debug the type inferencer was a challenging problem. Th
 
 \subsection{Loggers} 
 
-Instead of just adding debugging code to the goal engine a logging interface was defined which is called by the engine during the different stages of the evaluation. The interface \class{IGoalEngineLogger} describes a set of hooks which can be used for a wide variety of debuggers and loggers: The beginning and the end of the evaluation process (\java{evaluationStarted()} \& \java{evaluationFinished()}) and two hooks which get called when a goal has been created or finished (\java{goalCreated()} \& \java{goalFinished)}).
+Instead of just adding debugging code to the goal engine a logging interface was defined which is called by the engine during the different stages of the evaluation. The interface \class{IGoalEngineLogger} describes a set of hooks which can be used for a wide variety of debuggers and loggers: The beginning and the end of the evaluation process (\java{evaluationStarted()} and \java{evaluationFinished()}) and two hooks which get called when a goal has been created or finished (\java{goalCreated()} and \java{goalFinished)}).
 
 Using this interface a logger called \class{ConsoleLogger} was developed which visualises the evaluation process as a tree printed to the console. This turned out to be very useful as it shows what goal was created when, by whom and when it was finished.
 
@@ -1220,9 +1220,9 @@ The components are nested within each other. The nested component share their de
 Dependencies are formed by a wide variety of situations, these are:
 
 \begin{itemize}
-    \item Types of local variables and parameters
+    \item Types of local variables and arguments
     \item Types of attributes
-    \item Called methods \& constructors
+    \item Called methods and constructors
     \item Return types of methods and functions
     \item Types of references
 \end{itemize}
@@ -1233,7 +1233,7 @@ In the following example most of the illustrated dependencies are involved:
 truck.load_cargo(ship.fetch_container().unload_cargo())
 \end{lstlisting}
 
-The local variable \id{truck} is probably a \id{Truck} object and \id{load_cargo()} takes a \id{Cargo} object as a parameter. Then there's the \id{ship} variable which creates a dependency to the \id{Ship} class. The ship carries the cargo in containers, to get the cargo object itself it first has to be unloaded from a container using the \id{unload_cargo()} method.
+The local variable \id{truck} is probably a \id{Truck} object and \id{load_cargo()} takes a \id{Cargo} object as an argument. Then there's the \id{ship} variable which creates a dependency to the \id{Ship} class. The ship carries the cargo in containers, to get the cargo object itself it first has to be unloaded from a container using the \id{unload_cargo()} method.
 
 Summarised this single line of code causes all the following dependencies:
 
@@ -1255,7 +1255,7 @@ But how is the necessary information extracted from the application? There is th
 
 There were two viable approaches to convert the type inferencer to an engine which is able to evaluate all expressions. 
 
-\subsection{Possible approaches}
+\subsection{Possible Approaches}
 
 \subsubsection{Analyse as much as possible in one pass}
 
@@ -1318,7 +1318,7 @@ All modules and submodules are given a unique identifier in the attribute \emph{
 ...
 \end{lstlisting}
 
-The second part of the XML provides a list of all dependencies between the components. This is simply a list of \emph{dependency} elements, each of them specifying a \emph{type} (\emph{calls, references, extends, parameter and is type}) and a source and target component using the attributes \emph{from} and \emph{to}.
+The second part of the XML provides a list of all dependencies between the components. This is simply a list of \emph{dependency} elements, each of them specifying a \emph{type} (\emph{calls, references, extends, argument and is type}) and a source and target component using the attributes \emph{from} and \emph{to}.
 
 It should be noted that only the actual explicit dependencies are stored. The inherited dependencies between the high level components are omitted from the XML, because Structure 101g can infer them.
 
@@ -1681,7 +1681,7 @@ We decided to use the LGPL (version 2 or later) for the PyStructure project for 
     \item Modifications to the library itself have to be released under the LGPL.
 \end{itemize}
 
-\section{Parts of Documentation from Previous Project}
+\section{Parts of Documentation From Previous Project}
 
 Some parts of this document were taken from our previous project:
 
