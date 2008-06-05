@@ -392,8 +392,8 @@ After building the structure and connecting definitions and uses, the building o
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8 \textwidth, trim=30 440 30 30, clip=true]{model}
-    \label{fig:model}
     \caption{Domain Model}
+    \label{fig:model}
 \end{figure}
 
 \section{Limits of the Model}
@@ -473,8 +473,8 @@ In the example \code{t = Truck()}, \id{Truck} is a Metaclass Type wereas \id{t} 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8 \textwidth, trim=30 500 60 30, clip=true]{ti_results}
-    \label{fig:ti_results}
     \caption{Domain of the result types}
+    \label{fig:ti_results}
 \end{figure}
 
 \paragraph{References}
@@ -495,8 +495,8 @@ Several kinds of references are used:
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.7 \textwidth, trim=30 530 125 30, clip=true]{ti_references}
-    \label{fig:ti_referenes}
     \caption{Domain Model of the reference types}
+    \label{fig:ti_referenes}
 \end{figure}
 
 % }
@@ -748,8 +748,8 @@ For evaluating line 5, a new return type goal is created, which already existed 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.7\textwidth, trim=30 380 80 30, clip=true]{recursive_goal}
-    \label{fig:recursive_goal}
     \caption{Evaluation with a recursive goal}
+    \label{fig:recursive_goal}
 \end{figure}
 
 The creation of the call type goal at step 5 is not yet recursive, because it is for a different call node. The recursive goal is the return type goal at 8, which forms a cycle with 5. This means that both evaluators are waiting for the result of each other. Because of this, neither evaluator ever finishes and the goal engine loops forever.
@@ -977,7 +977,8 @@ In PyStructure it is solved in the evaluator which finds the type of the \node{L
 
 For \id{dict}, the procedure is the same except that initial elements are represented by calls of \id{__setitem__}, for example \code{numerals.__setitem__(1, "unu")}.
 
-\subsection{Imports with import *}\label{import_star}
+\subsection{Imports with import *}
+\label{import_star}
 
 There's a Python feature\footnote{Some would say it's not a feature, but a wart, because it pollutes the local namespace with unused names. It is generally advised to use \code{import *} only very sparingly.} to import all the names from a module using the syntax \code{from module import *}. An example, this is the code in \file{module.py}:
 
@@ -1291,14 +1292,25 @@ In the 16 weeks of the project we were able to accomplish most of the planned go
 
 The implemented structural analyser is able to extract a program's internal structure, consisting of packages, modules and classes, and to identify and evaluate all dependency-relevant expressions.
 
+\section{Example Output}
+
 To show some examples of how this could look like here the analysis of a small application. The program being shown is PyDoku, a small simple Sudoku solver. We used PyDoku throughout the project to test the accuracy of PyStructure. It is small enough to be comprehended  in a short time, and still sufficiently complex to challenge most of Pystructure capabilities. 
+
+As can been seen on the figure \vref{fig:screen_structure} the 
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3 \textwidth, trim=0 0 0 0, clip=true]{screen_structure}
+    \caption{High level dependency between the different modules}
+    \label{fig:screen_structure}
+\end{figure}
 
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.7 \textwidth, trim=0 0 0 0, clip=true]{screen_overview}
+    \caption{Foo bars}
     \label{fig:screen_overview}
-    \caption{High level dependency between the different modules}
 \end{figure}
 
 
@@ -1448,6 +1460,7 @@ FindBugs is an automatic fault detection tool that can find problems in Java pro
  \centering
  \includegraphics[width=\textwidth, trim=50 220 80 50, clip=true]{project/project-plan-v2}
  \caption{Project plan}
+ \label{fig:project_plan}
 \end{figure}
 
 \subsubsection{Milestone 0.5 – Week 3}
@@ -1523,6 +1536,7 @@ The diagram below shows the hours per week we worked on this bachelor thesis. Th
  \centering
  \includegraphics[width=\textwidth, trim=50 570 90 70, clip=true]{project/working_hours}
  \caption{Diagram of working hours per week}
+ \label{fig:working_hours}
 \end{figure}
 
 \section{Thanks}
