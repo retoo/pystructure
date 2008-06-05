@@ -1319,7 +1319,7 @@ The implemented structural analyser is able to extract a program's internal stru
 
 To show some examples of how this could look like here the analysis of a small application. The program being shown is PyDoku, a small simple Sudoku solver. We used PyDoku throughout the project to test the accuracy of PyStructure. It is small enough to be comprehended  in a short time, and still sufficiently complex to challenge most of Pystructure capabilities. 
 
-\subsection{High level overview}
+\subsection{High-level Overview}
 
 As can been seen on the figure \vref{fig:screen_structure} PyDoku consists of a package called \id{sudoku} which implements the game logic. There are three classes, \id{Board} which represents the board and holds most of the logic, \id{Area} which are either rows, columns or blocks of the sudoku board and a class \id{Field} which represents a a single field. 
 
@@ -1332,7 +1332,7 @@ As can been seen on the figure \vref{fig:screen_structure} PyDoku consists of a 
 
 The Structure 101g graph clearly reveals that board uses both areas and fields, where as the area only has relations to the field. The \id{pydoku} modules doesn't do much beside initialise everything. 
 
-\subsection{Dependency break down}\todo{rstocker: geht der titel?}
+\subsection{Dependency Breakdown}
 
 When an arrow is selected Structure 101g shows a overview of the selected dependencies. The figure \vref{fig:screen_dependency_breakdown} shows this for the dependencies between the module \id{pydoku} and the \id{board}. 
 
@@ -1343,7 +1343,7 @@ When an arrow is selected Structure 101g shows a overview of the selected depend
     \label{fig:screen_dependency_breakdown}
 \end{figure}
 
-\subsection{Class overview}
+\subsection{Class Overview}
 
 Structure 101g can also be used to get an overview of the call structure within a single class, as shown in figure \vref{fig:screen_method}. 
 
