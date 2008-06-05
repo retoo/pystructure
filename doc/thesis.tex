@@ -87,17 +87,24 @@ The structural data itself is also useful in other areas of software development
 
 \section*{Motivation}
 
-%Structure and dependency analysis is a useful tool to have when developing software.
+Keeping software manageable and simple as it grows is a very challenging tasks. 
+It is not only important to define a good architecture when planning a project, but also to continuously compare it to the actual implementation. Tracking the architecture and keeping a high-level view of dependencies between components is difficult when only looking at source code. Graphical models such as domain or architecture diagrams help, but the problem with them is that they are disconnected from the source code and might not be completely accurate.
+
+Manually checking a program's structure is time consuming and error prone and is therefore not very practical. A more preferable solution would be to have an automatic way to visualise the structure of a project. This would also be generally useful when exploring the innards of an unfamiliar code base or while evaluating the impact of a particular change.
 
 \section*{Goal}
 
-The goal of the PyStructure project was to develop a structural analyser for Python projects. ...
+PyStructure's goal was to develop an analyser which reveals these internal structures and dependencies in a Python program by statically analysing its source code. Dependencies are identified by determining what types are used in a particular component. But as Python is a dynamically typed language, types are not known before the application is run. Therefore a major aspect of the project was to develop an algorithm, called type inferencer, which deduces types by mimicking the evaluation process of the Python interpreter.
 
-In our previous project, called PEPTIC, we developed some refactorings for PyDev, an Eclipse plugin that provides a Python IDE. To support the refactorings with the necessary information, we created a type inference engine.
+As part of a previous project about refactoring support for Python called PEPTIC \cite{peptic2}, we developed a basic version of such a type inferencer. For PyStructure it was decided to reuse this type inferencer and develop it further to make it usable as a base for structure analysis.
+
+PyStructure should be able to export the structure and dependency data to Structure 101g, a structure visualisation program developed by Headway Software. It shows dependencies as graphs in various levels of detail and provides a wide variety of analysis tools, like detecting cyclic dependencies or validating the current architecture.
 
 \section*{Results}
 
-The type inference system has improved a lot during the development. We implemented some advanced features like determining the type of list elements.
+In the 16 weeks of the project we were able to accomplish most of the planned goals. PEPTIC's type inferencer was extracted and moved to an independent new project. It now supports almost all of Python's language features and is able to produce a sensible result in most cases.
+
+The implemented structural analyser is able to extract a program's internal structure, consisting of packages, modules and classes, and to identify and evaluate all expressions that cause dependencies.
 
 \section*{Outlook}
 
@@ -109,7 +116,7 @@ There is still room for improvements and optimisations for the type inference sy
     % rschuett: Was noch?
 \end{itemize}
 
-The PEPTIC/PyDev project still uses the old type inference engine for refactorings, because the new engine has been developed in a separate repository. For the refactorings to make use of the new features, the code has to be ported to the new engine. This will probably also lead to changes to the type inference system itself, because we did not take special care for the requirements of an IDE during this project.
+The PEPTIC project still uses the old type inference engine for refactorings, because the new engine has been developed in a separate repository. For the refactorings to make use of the new features, the code has to be ported to the new engine. This will probably also lead to changes to the type inference system itself, because we did not take special care for the requirements of an IDE during this project.
 
 \newpage
 
@@ -1310,17 +1317,17 @@ It should be noted that only the actual explicit dependencies are stored. The in
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Results}
 
-In the 16 weeks of the project we were able to accomplish most of the planned goals. The type inferencer used in PEPTIC\cite{peptic2} was separated from Eclipse and moved to an independent new project. It now supports almost all of Python's language feature and is able to produce a sensible result in most cases. 
+In the 16 weeks of the project we were able to accomplish most of the planned goals. The type inferencer used in PEPTIC\cite{peptic2} was separated from Eclipse and moved to an independent new project. It now supports almost all of Python's language features and is able to produce a sensible result in most cases.
 
-The implemented structural analyser is able to extract a program's internal structure, consisting of packages, modules and classes, and to identify and evaluate all dependency-relevant expressions.
+The implemented structural analyser is able to extract a program's internal structure, consisting of packages, modules and classes, and to identify and evaluate all expressions that cause dependencies.
 
 \section{Example Output}
 
-To show some examples of how this could look like here the analysis of a small application. The program being shown is PyDoku, a small simple Sudoku solver. We used PyDoku throughout the project to test the accuracy of PyStructure. It is small enough to be comprehended  in a short time, and still sufficiently complex to challenge most of Pystructure capabilities. 
+To demonstrate the results produced by PyStructure, let's take a look at the analysis of a small application. The program being shown is Pydoku, a nice and simple Sudoku solver. We used Pydoku throughout the project to test the accuracy of PyStructure. It is small enough to be comprehended in a short time, and still sufficiently complex to challenge??? most of PyStructure's capabilities.
 
 \subsection{High-level Overview}
 
-As can been seen on the figure \vref{fig:screen_structure} PyDoku consists of a package called \id{sudoku} which implements the game logic. There are three classes, \id{Board} which represents the board and holds most of the logic, \id{Area} which are either rows, columns or blocks of the sudoku board and a class \id{Field} which represents a a single field. 
+As can been seen on the figure \vref{fig:screen_structure} Pydoku consists of a package called \id{sudoku} which implements the game logic. There are three classes, \id{Board} which represents the board and holds most of the logic, \id{Area} which are either rows, columns or blocks of the sudoku board and a class \id{Field} which represents a a single field.
 
 \begin{figure}[H]
     \centering
@@ -1363,8 +1370,8 @@ def load_file(self):
         for char in line:
             if char.isspace():
                 continue
-            self.fields[i].value = (
-                int(char) if char.isdigit() else None)
+            value = int(char) if char.isdigit() else None
+            self.fields[i].value = value
             i += 1
 \end{lstlisting}
 
