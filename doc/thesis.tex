@@ -139,6 +139,7 @@ If a developer wants to use PyStructure for analysing a Python project, she feed
     \label{fig:big_picture}
 \end{figure}
 
+\clearpage
 
 \section{Structural Analysis}
 
@@ -193,6 +194,8 @@ vehicle = Car() if input == "car" else Plane()
 \end{lstlisting}
 
 In this case the type inferencer has to detect that \code{vehicle} can be of type \type{Car} or \type{Plane}.
+
+\clearpage
 
 \subsection{Process Overview}
 
@@ -491,7 +494,7 @@ In the example \code{t = Truck()}, \id{Truck} is a Metaclass Type wereas \id{t} 
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8 \textwidth, trim=30 500 60 30, clip=true]{ti_results}
+    \includegraphics[width=0.5 \textwidth, trim=30 500 60 30, clip=true]{ti_results}
     \caption{Domain of the result types}
     \label{fig:ti_results}
 \end{figure}
@@ -513,8 +516,8 @@ Several kinds of references are used:
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.7 \textwidth, trim=30 530 125 30, clip=true]{ti_references}
-    \caption{Domain Model of the reference types}
+    \includegraphics[width=0.5 \textwidth, trim=30 530 125 30, clip=true]{ti_references}
+    \caption{Domain model of the reference types}
     \label{fig:ti_referenes}
 \end{figure}
 
@@ -615,6 +618,8 @@ x # what type?
 
 So, briefly summarised the evaluation works as follows: First the TI locates the variable's definition, in this case an assignment and then finds out what was assigned.
 
+\clearpage
+
 \subsection{Function Call}
 
 The second example is similar to the first one, but instead of the creation of a new object a function is called.
@@ -641,6 +646,8 @@ x # what type?
 \end{itemize}
 
 So the only difference between creating an object and calling a function is that for the function, all the return statements have to be analysed.
+
+\clearpage
 
 \subsection{Arguments}
 
@@ -726,6 +733,8 @@ So here again, finding all callers of a method and finding all attribute referen
     
 \end{itemize}
 
+\clearpage
+
 \section{Challenges/Problems}
 
 In this section, some of the difficult parts of developing a type inference system for Python are described in more detail. Each problem is illustrated with examples and shows the solution which was implemented in PyStructure.
@@ -747,6 +756,8 @@ For a naive type inferencer that isn't prepared to handle it, recursion results 
 \subsubsection{Handling Duplicate Goals}
 
 PyStructure's goal engine has a mechanism in place to detect that a goal has already been created. When this is the case, it just connects the already existing goal node with the evaluator which has asked for the same goal. When the existing goal is finished, the result is passed to the evaluator as usual. But does this suffice to prevent endless looping? Let's look at a simpler recursive example to answer that question:
+
+\clearpage
 
 \begin{lstlisting}[numbers=left]
 def recursive():
@@ -794,6 +805,8 @@ In the example at step 8, the goal engine checks for cycles. It walks upwards on
 When a cycle is detected, the offending subgoal is not connected to the evaluator. In addition, \java{subgoalDone} is called on the evaluator with the \java{RECURSIVE} goal state for the subgoal. The evaluator can then react to the situation, for example by ignoring it. The call type evaluator does this and returns an empty type as its result, which means the whole result will be \type{int} because of the first \code{return}.
 
 This doesn't only prevent an endless loop, but still allows the TI to evaluate the return type of a recursive function correctly.
+
+\clearpage
 
 \subsection{Call Context}
 \label{call_context}
@@ -1353,7 +1366,7 @@ As can been seen on the figure \vref{fig:screen_structure} Pydoku consists of a 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.3 \textwidth, trim=0 0 0 0, clip=true]{screen_structure}
-    \caption{High level dependency between the different modules}
+    \caption{High-level dependency between the different modules}
     \label{fig:screen_structure}
 \end{figure}
 
@@ -1370,18 +1383,20 @@ When an arrow is selected Structure 101g shows a overview of the selected depend
     \label{fig:screen_dependency_breakdown}
 \end{figure}
 
+\clearpage
+
 \subsection{Class Overview}
 
 Structure 101g can also be used to get an overview of the call structure within a single class, as shown in figure \vref{fig:screen_method}. 
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.98 \textwidth, trim=150 110 120 150, clip=true]{screen_method}
+    \includegraphics[width=0.8 \textwidth, trim=150 110 120 150, clip=true]{screen_method}
     \caption{Method call graph within a class}
     \label{fig:screen_method}
 \end{figure}
 
-By selecting a single component, the analyser further highlights all related components by greying out all other components. You can see by comparing the  following excerpt of the method \id{load_file} and the figure \vref{fig:screen_method_selected} that the structural analyser was successfully able to identify all dependencies.
+By selecting a single component, the analyser further highlights all related components by greying out all other components. You can see by comparing the following excerpt of method \id{load_file} and figure \vref{fig:screen_method_selected} that the structural analyser was successfully able to identify all dependencies.
 
 \begin{lstlisting}
 def load_file(self):
@@ -1398,7 +1413,7 @@ def load_file(self):
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.98 \textwidth, trim=150 110 120 150, clip=true]{screen_method_selected}
+    \includegraphics[width=0.8 \textwidth, trim=150 110 120 150, clip=true]{screen_method_selected}
     \caption{Highlighted method}
     \label{fig:screen_method_selected}
 \end{figure}
@@ -1485,6 +1500,8 @@ Structure 101g allows to define what caused a dependency. For example this could
 
 One fundamental problem we identified quite early in the project was that the engine is only able to detect the \emph{concrete types}, and not \emph{abstract types} as sometimes intended by the developer.
 
+\clearpage
+
 The problem is best explained by an example:
 
 \begin{lstlisting}
@@ -1540,7 +1557,11 @@ Keeping the type inferencer as independent as possible from the rest of the proj
 
 \subsection{Type Inference Tests}
 
-The type inference system was developed in a test-driven manner. To be able to add tests in the easiest way possible, we developed a test framework. Each test case is a Python file in a test directory. Assertions are added by putting markers at the end of lines of interest. An example:
+The type inference system was developed in a test-driven manner. To be able to add tests in the easiest way possible, we developed a test framework. Each test case is a Python file in a test directory. Assertions are added by putting markers at the end of lines of interest.
+
+\clearpage
+
+An example:
 
 \begin{lstlisting}
 def add_one(value):
@@ -1669,6 +1690,19 @@ For the final milestone, the goal was to add support for built-in types and othe
 
 Of course another major goal for this last milestone was to finish this thesis document.
 
+\section{Working Hours}
+
+The diagram below shows the hours per week we worked on this bachelor thesis. The orange line shows the recommended number of hours and the bars are our actual hours. The first 14 weeks were in the semester alongside the lectures and 20 hours of work per week were recommended. The last 2 weeks we could work full time, which means 45 hours each week.
+
+\begin{figure}[H]
+ \centering
+ \includegraphics[width=\textwidth, trim=50 570 90 70, clip=true]{project/working_hours}
+ \caption{Diagram of working hours per week}
+ \label{fig:working_hours}
+\end{figure}
+
+\clearpage
+
 \section{Used Licence}
 
 We decided to use the LGPL (version 2 or later) for the PyStructure project for the following reasons:
@@ -1686,17 +1720,6 @@ Some parts of this document were taken from our previous project:
 \begin{itemize}
     \item 70\,\% of section \vref{connecting_definitions_and_uses}, \emph{Connecting Definitions and Uses}
 \end{itemize}
-
-\section{Working Hours}
-
-The diagram below shows the hours per week we worked on this bachelor thesis. The orange line shows the recommended number of hours and the bars are our actual hours. The first 14 weeks were in the semester alongside the lectures and 20 hours of work per week were recommended. The last 2 weeks we could work full time, which means 45 hours each week.
-
-\begin{figure}[H]
- \centering
- \includegraphics[width=\textwidth, trim=50 570 90 70, clip=true]{project/working_hours}
- \caption{Diagram of working hours per week}
- \label{fig:working_hours}
-\end{figure}
 
 \section{Our Experiences}
 
@@ -1999,6 +2022,8 @@ public class FibonacciEvaluator extends AbstractEvaluator {
 }
 \end{lstlisting}
 
+\clearpage
+
 \class{FibonacciGoal} says which index should be calculated by the evaluator and holds the result:
 
 \begin{lstlisting}[style=smalljava]
@@ -2052,6 +2077,8 @@ public class FibonacciGoal implements IGoal {
 
 }
 \end{lstlisting}
+
+\clearpage
 
 \class{FibonacciEvaluatorFactory} tells the goal engine which goal should be evaluated with which evaluator:
 
