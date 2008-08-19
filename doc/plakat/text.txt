@@ -1,0 +1,34 @@
+A vital part of software development is defining a good architecture when planning a project. But during implementation, the intended structures are often neglected and the program’s architecture grows in a different way than planned – a problem called architectural decay. When only looking at source code, tracking the architecture and keeping a high-level view of dependencies between components is difficult. Commonly used graphical models such as domain or architecture diagrams are helpful, but they usually just describe the intended design, rather than the actual structure.
+
+Ein wichtiger Bestandteil von Software-Entwicklung ist eine gute Architektur zu definieren. Aber während der Implementierung kommt es oft dazu, dass man von der anfangs geplanten Architektur abweicht. Nur durch das Betrachten des Quelltextes ist es schwierig ein Bild der Architektur, der Komponenten und ihrer Abhängigkeiten zu gewinnen. Grafische Modelle wie Domänen- oder Architekturdiagramme helfen zwar, sie beschreiben aber normalerweise nur die gewünschte Struktur, nicht die tatsächliche.
+
+
+PyStructure’s goal was to develop an analyser which reveals these internal structures and dependencies in a Python program by statically analysing its source code. Dependencies are identified by determining what types are used in a particular component. But as Python is a dynamically typed language, types are not known before the application is run. Therefore a major aspect of the project was to develop an algorithm, called type inferencer, which deduces types by mimicking the evaluation process of the Python interpreter.
+
+Das Ziel von PyStructure war es ein Programm zu entwickeln, das mittels statischer Analyse die interne Struktur und die Abhängigkeiten in Python-Programmen offenbaren kann. Abhängigkeiten werden erkannt indem analysiert wird welche Typen in welchen Komponenten verwendet werden. Aber da Python eine dynamisch typisierte Programmiersprache ist, sind die Typen vor dem Ausführen nicht bekannt. Darum war ein wichtiger Aspekt dieser Arbeit das Entwickeln eines Algorithmus, der Typen ableiten kann indem die Ausführung simuliert wird.
+
+
+The following details are extracted by the structural analyser:
+- All involved components such as modules, classes and methods
+- Dependencies between these components caused by:
+  - Method calls
+  - Variables, arguments or attributes of a certain type
+  - Inheritance
+
+Folgende Informationen werden durch die Stukturanalyse hervorgebracht:
+- Alle Komponenten wie Module, Klassen und Methoden
+- Abhängigkeiten zwischen diesen Komponenten, verursacht durch:
+  - Methodenaufrufe
+  - Variablen, Argumente oder Attribute eines bestimmten Typs
+  - Vererbung
+
+
+The extracted data can be visualised by Structure 101g, a program developed by Headway Software. Structure 101g shows dependencies as graphs in various levels of detail and provides a wide variety of analysis tools, like detecting cyclic dependencies or validating the current architecture. This allows to effectively monitor the progress of a project’s architecture during development.
+
+Die gewonnenen Daten können anschliessend von Structure 101g dargestellt werden, einem Programm das von Headway Software entwickelt wurde. Structure 101g zeigt Abhängigkeiten als Graph in wählbaren Detaillierungsgraden und stellt eine Reihe von Analysewerkzeugen zur Verfügung wie das Erkennen von Zyklen oder das Vergleichen mit einer Soll-Architektur. Dies erlaubt die effektive Überwachung der Architektur eines Projektes während der Entwicklung.
+
+
+The structural data itself is also useful in other areas of software development like enhanced accuracy for automatic refactoring or better support for code completion in integrated development environments.
+
+Die Strukturdaten sind auch für andere Bereiche der Software-Entwicklung nützlich. Beispiele sind verbesserte Refactorings und intelligentere Autovervollständigung in Entwicklungsumgebungen wie Eclipse.
+
