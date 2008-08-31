@@ -1,0 +1,87 @@
+Timetable
+
+20 min Presentation
+10 min Demonstration
+
+
+Topics: 
+
+ - Wieso Strukturanalyse?
+   - Was versteht man unter Strukturanalyse? 
+      - 
+   - Geplante Struktur vs. tatsächliche Struktur
+   - Grosse Refactorings planen (Einfluss auf Architektur)
+   - Visualisierung von Abhängigkeiten
+     - Wer ruft Methode X auf
+     - Wer verwendet Klasse Y
+     - Extrahieren von Komponenten. (Ich will Package Z in einem anderen Projekt verwenden, welche anderen Komponente brauch ich auch noch)
+ - Wie?
+   - Aber was ist genau Struktur / Abhängigkeit
+     - Struktur Packages / Module / Klasse / Methode / Attribute
+        - Einfach zum auslesen, bereits aus AST ersichtlich (Attribute sind Spezialfall)
+     - Abhängigkeit
+        - Komponente A lauft nur Wenn Komponente B
+        - A ruft Methoden von B auf, verwendet Typen von B --> A depends on B
+   - Wie auslesen? 
+     - Statische Sprachen -> relativ Simpel 
+        -> Java Beispiel
+     - Dynamische Sprachen -> komplizierter
+        -> Python Beispiel
+  --> Knackpunkt: In Dynamischen Sprachen sind Typen nicht bekannt -> 
+   - Wie Typen herausfinden
+     -> Typen ableiten mit einem Type Inferencer
+ - Wie funktioniert TI 
+  - Type Inferencer DDP
+       - Algorithmus von Lex Spoon 
+       - Funktionalität: man gibt Expression, man bekommt Mengen von Typen
+
+  - Generelles Vorgehen 
+    - Beispiele
+   UND
+    - Teilschritte (genannt Goals & Subgoals)
+    - Evaluator, lösen ein Teilschrit
+    - Goalengine, evtl. Default Factory
+  -  TI DDP Advanced 
+       - Eigenschaften
+         - Demand Driven
+         - Problem nicht perfekt Lösbar: DDP wird einfach ungenauer wenn Typ nicht genau eruierbar -> z.B. mehrere Typen oder Basisklasse
+       - Kernproblem unserer BA
+  - Herausforderungen im TI
+ - Strukturanalyse
+   - Einführung 
+    - TI kann jetzt für die eigentliche Analyse (Abhängigkeitserkennung) verwendet werden
+    - Alle Expressions müssen analysiert werden, z.B. alle Calls, alle return Werte
+      - Ti analysiert nur einen Teil (Demand driven), in unserem Fall eher nachteilig
+    --> Spider
+    - TI füttern
+    - Abhängigkeiten in die Struktur einflechten
+      - Graph aufbauen
+ - Auswertung der Struktur/Abhängigkeitsdaten
+   - Auswertung am besten Grafisch
+   - Rad nicht neu erfinden
+   - Structure 101g 
+      - Kommt aus der Java Welt
+      - Generische Version bekommt Strukturdaten als XML
+      - Bietet verschiedene Auswertungen 
+        - Drilldown 
+   Screenshots
+ - Ausblick 
+   - Verbesserungsmöglichkeiten
+     - Performance Caching
+     - Genauigkeit (weglassen, Problem sind Listen in Listen)
+   - Anwendungsgebiete für den Type Inferencer
+     - Aus Doku
+     - 		
+
+
+
+
+
+
+   
+   
+   
+   - Why 
+     - PEPTIC
+     - Refactoring -> only useful when types are known
+     - Good base for structural analysis
